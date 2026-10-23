@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#131c1c">
+  <meta name="description" content="욕심은 소리를 낸다. 카드로 길을 열고, 용이 잠든 도트 던전에서 유물을 훔쳐 탈출하세요. 잿불 금고 — 싱글플레이 덱빌딩 던전 크롤러.">
+  <title>잿불 금고 · EMBER VAULT</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23131c1c'/%3E%3Cpath d='M8 8h16l5 8-13 14L3 16Z' fill='%23e4b66e'/%3E%3Cpath d='m16 3 4 13-4 14-4-14Z' fill='%23f9dc9c'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="잿불 금고 홈"><canvas data-icon="heartgem" width="32" height="32" aria-hidden="true"></canvas><div><span class="brand-en">EMBER VAULT</span><span class="brand-ko">잿불 금고</span></div></a>
+      <div class="header-middle"><i></i> SOLO EXPEDITION <span>/</span> 욕심은 소리를 낸다.</div>
+      <nav aria-label="게임 메뉴"><button class="nav-button" data-act="deck">내 덱 <span id="deckTotal">10</span></button><button class="nav-button" data-act="help" aria-label="플레이 방법">플레이 방법</button><button class="icon-button sound-toggle" data-act="sound" aria-label="효과음 켜기" title="효과음 켜기">♪<span class="sound-line"></span></button></nav>
+    </header>
+    <main>
+      <div class="expedition-heading"><div><span class="eyebrow">THE FORGOTTEN CATACOMBS</span><h1>잊힌 지하묘지 <span class="floor-badge">B1 — B4</span></h1></div><button class="new-run-button" data-act="new">새 탐험 <span>↗</span></button></div>
+      <section class="status-bar" aria-label="탐험가 상태">
+        <button class="character-status" data-act="new" id="characterStatus"></button>
+        <div class="health-status" id="healthStatus"></div>
+        <div class="gold-status"><canvas data-icon="coin" width="28" height="28" aria-hidden="true"></canvas><div><span class="stat-label">금화</span><strong id="goldValue">0</strong></div></div>
+        <div class="artifact-status" id="artifactStatus"></div>
+        <div class="score-status"><span class="stat-label">최고 기록</span><strong id="bestValue">—</strong></div>
+      </section>
+      <div class="game-layout">
+        <div class="game-main">
+          <section class="dungeon-panel" aria-label="던전 지도">
+            <div class="panel-top"><div class="live-tag"><span></span> <span id="mapLocation">무너진 입구</span></div><div class="map-controls"><span id="turnValue">TURN 01</span><button class="icon-button" data-act="zoom" title="전체 지도" aria-label="전체 지도 보기" aria-pressed="false">⛶</button></div></div>
+            <div class="canvas-wrap"><canvas id="dungeon" width="720" height="420" tabindex="0" aria-label="던전 지도. 연결된 방을 누르거나, 오른쪽 이동 버튼 또는 방향키로 이동하세요."></canvas><div class="map-vignette"></div></div>
+            <div class="map-caption"><span id="mapHint"></span><div class="map-key"><i class="here"></i> 현재 위치 <i class="reachable"></i> 이동 가능</div></div>
+          </section>
+          <section class="hand-panel" aria-label="손패와 턴 행동">
+            <div class="hand-heading"><div class="hand-title"><span class="eyebrow">YOUR HAND</span><h2>지금, 어떤 수를 둘까요? <span id="handCount">5장</span></h2></div><div id="resources" class="resources"></div></div>
+            <div id="hand" class="hand"></div>
+            <div class="hand-bottom"><div class="piles"><button data-act="deck" data-pile="deck"><span class="pile-icon">▱</span> 뽑을 카드 <b id="drawCount">5</b></button><button data-act="deck" data-pile="discard"><span class="pile-icon discard">▱</span> 버린 카드 <b id="discardCount">0</b></button><button class="played-link" data-act="deck" data-pile="played">사용 <b id="playedCount">0</b></button></div><button class="end-button" data-act="end"><span>턴 종료</span><small>새 카드 5장</small><span class="arrow">→</span></button></div>
+          </section>
+          <div class="under-notes"><span><i></i> 진행 상황 자동 저장</span><button data-act="log">탐험 일지 열기 <span>↗</span></button><span class="keyboard-note">1–5 카드 · 방향키 이동 · Space 턴 종료</span></div>
+        </div>
+        <aside class="game-sidebar" aria-label="현재 방과 교역소">
+          <section class="danger-panel" id="dangerPanel"></section>
+          <section class="room-panel" id="roomPanel"></section>
+          <section class="market-panel"><div class="section-heading"><div><span class="eyebrow">GROW YOUR DECK</span><h2>그림자 교역소</h2></div><button class="refresh-button" data-act="refresh" title="금화 2로 교체 · 턴당 한 번" aria-label="금화 2로 교역소 교체">↻ <span>2 G</span></button></div><p class="market-note">기술로 영입 · 다음 순환부터 손패에 등장</p><div id="market"></div></section>
+        </aside>
+      </div>
+    </main>
+    <footer><span>EMBER VAULT <b>01</b></span><span>조금만 더 깊이. 아니면, 지금 돌아갈 시간.</span><button data-act="help">탐험 안내서 ↗</button></footer>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="modal" aria-labelledby="modalTitle"><div id="modalContent"></div></dialog>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
