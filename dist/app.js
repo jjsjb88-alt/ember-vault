@@ -1,70 +1,75 @@
-import {CARDS,ROLES,VERSION,newRun,apply,neighbours,moveCost,validSave} from './engine.js';
+import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveNoise,previewNoise,validSave,migrateSave} from './engine.js';
 import {paintIcons,makeRenderer} from './art.js';
-const $=s=>document.querySelector(s),SAVE_KEY='ember-vault-save-v1',BEST_KEY='ember-vault-best-v1';
-let state,storageOK=true,best=0,sound=false,selectedRole='rogue',dialogMode='',lastFocus=null,toastTimer,audio;
-try{const saved=JSON.parse(localStorage.getItem(SAVE_KEY));state=validSave(saved)?saved:newRun();best=Number(localStorage.getItem(BEST_KEY))||0;sound=localStorage.getItem('ember-vault-sound')==='on';}catch{state=newRun();storageOK=false;}
+const $=s=>document.querySelector(s),SAVE_KEY='ember-vault-save-v2',BEST_KEY='ember-vault-best-v1';
+let state,storageOK=true,best=0,sound=false,selectedRole='rogue',dialogMode='',lastFocus=null,toastTimer,audio,migrated=false,revealEpoch=0;
+try{let saved=JSON.parse(localStorage.getItem(SAVE_KEY));if(!validSave(saved)){const prior=JSON.parse(localStorage.getItem('ember-vault-save-v1'));if(prior){saved=migrateSave(prior);migrated=!!saved;}}state=validSave(saved)?saved:newRun();best=Number(localStorage.getItem(BEST_KEY))||0;sound=localStorage.getItem('ember-vault-sound')==='on';}catch{state=newRun();storageOK=false;}
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+const portrait=(role,cls='')=>`<span class="portrait ${role} ${cls}" role="img" aria-label="${ROLES[role].name} 초상화"></span>`;
 const ico=(name,n=32)=>`<canvas data-icon="${name}" width="${n}" height="${n}" aria-hidden="true"></canvas>`;
-const renderer=makeRenderer($('#dungeon'),()=>state);
+const renderer=makeRenderer($('#dungeon'),()=>state,$('#minimap'));
 function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(state));if(state.phase==='won'&&state.score>best){best=state.score;localStorage.setItem(BEST_KEY,String(best));}storageOK=true;}catch{storageOK=false;}}
 function beep(type='card'){
  if(!sound)return;
- try{audio??=new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const notes={card:[330,440],move:[220,294],attack:[98,73],buy:[523,659,784],win:[392,523,659,784],bad:[110,82],turn:[294,330],relic:[392,523,784,1047]}[type]||[440];
- notes.forEach((f,i)=>{const o=audio.createOscillator(),g=audio.createGain();o.type=type==='attack'?'sawtooth':'triangle';o.frequency.value=f;const at=audio.currentTime+i*.075;g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.045,at+.01);g.gain.exponentialRampToValueAtTime(.0001,at+.16);o.connect(g);g.connect(audio.destination);o.start(at);o.stop(at+.18);});}catch{}
+ try{audio??=new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();
+  if(['move','attack','lure','bad'].includes(type)){
+   const len=audio.sampleRate*.22,b=audio.createBuffer(1,len,audio.sampleRate),d=b.getChannelData(0);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*(1-i/len);
+   const src=audio.createBufferSource(),f=audio.createBiquadFilter(),g=audio.createGain();src.buffer=b;f.type='lowpass';f.frequency.value=type==='attack'?1800:state.rooms[state.pos].terrain==='water'?1200:350;g.gain.value=type==='move'?.035:.065;src.connect(f);f.connect(g);g.connect(audio.destination);src.start();
+  }
+  const notes={card:[440],move:[95],attack:[73],buy:[523,659,784],win:[392,523,659,784],bad:[82],turn:[261,330,392],relic:[392,523,784,1047],lure:[780,510]}[type]||[440];
+  notes.forEach((f,i)=>{const o=audio.createOscillator(),g=audio.createGain();o.type='triangle';o.frequency.value=f;const at=audio.currentTime+i*.09;g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.035,at+.01);g.gain.exponentialRampToValueAtTime(.0001,at+.16);o.connect(g);g.connect(audio.destination);o.start(at);o.stop(at+.18);});
+ }catch{}
 }
 function toast(text,bad=false){const el=$('#toast');el.textContent=text;el.className='show'+(bad?' bad':'');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.className='',2800);}
-function cardMarkup(id,index,action='play'){
- const c=CARDS[id];return `<button class="card ${c.family}" data-act="${action}" data-index="${index}" data-id="${id}" aria-label="${c.name}, ${c.text}${action==='reward'?', 보상으로 선택':', 사용'}" ${state.phase!=='playing'&&action==='play'?'disabled':''}><div class="card-top"><span>${c.kind}</span><span class="keycap">${action==='play'?(index<5?index+1:'·'):'선택'}</span></div><div class="card-art">${ico(c.icon)}</div><strong class="card-name">${c.name}</strong><p class="card-effect">${c.text}</p><div class="card-bottom"></div></button>`;
+function cardMarkup(id,index,action='reward'){
+ const c=CARDS[id];return `<button class="ability-choice ${c.family}" data-act="${action}" data-index="${index}" data-id="${id}" aria-label="${c.name}, ${c.text}, 보상으로 선택"><span class="ability-gem">${ico(c.icon,54)}</span><small>${c.kind}</small><strong>${c.name}</strong><p>${c.text}</p><span class="choose-label">풀에 추가 +</span></button>`;
 }
-function roomTypeIcon(r){return r.enemy?.hp>0?r.enemy.kind:({entry:'door',chest:'chest',camp:'camp',merchant:'merchant',shrine:'shrine',relic:r.relic?.icon,enemy:'skull'}[r.type]);}
 function roomAction(r){
  if(state.phase!=='playing')return {act:'result',text:'탐험 결과 보기',enabled:true};
- if(r.enemy?.hp>0)return {act:'attack',text:`공격하기 · ${Math.min(state.resource.sword,r.enemy.hp)} 피해`,enabled:state.resource.sword>0,cls:'attack'};
+ if(r.enemy?.hp>0)return {act:'attack',text:`공격 · ${Math.min(state.resource.sword,r.enemy.hp)} 피해`,enabled:state.resource.sword>0,cls:'attack'};
  if(r.type==='entry')return {act:'interact',text:state.relic?'유물과 함께 탈출':'유물을 찾아 돌아오세요',enabled:!!state.relic,cls:'relic'};
  if(r.used)return {act:'',text:'이 방의 보상을 받았습니다',enabled:false};
- const a={chest:['상자 열기','interact',true],camp:['휴식 · 체력 +6 / 소음 −3','interact',state.hp<state.maxHp||state.noise>0],shrine:['카드 1장 영구 제거','interact',true],merchant:['물약 구매 · 금화 5','merchant',state.gold>=5&&state.hp<state.maxHp],relic:[`${r.relic?.name} 획득 · ${r.relic?.value}점`,'interact',!state.relic||state.relic.value<r.relic?.value]};
- return a[r.type]?{text:a[r.type][0],act:a[r.type][1],enabled:a[r.type][2],cls:r.type==='relic'?'relic':''}:{act:'',text:'수호자를 쓰러뜨렸습니다',enabled:false};
+ const a={chest:['상자 열기','interact',true],camp:['휴식 · 체력 +6 / 경계 −3','interact',state.hp<state.maxHp||state.noise>0],shrine:['능력 하나 영구 제거','interact',true],merchant:['물약 구매 · 금화 5','merchant',state.gold>=5&&state.hp<state.maxHp],relic:[`${r.relic?.name} 획득`,'interact',!state.relic||state.relic.value<r.relic?.value]};
+ return a[r.type]?{text:a[r.type][0],act:a[r.type][1],enabled:a[r.type][2],cls:r.type==='relic'?'relic':''}:{act:'',text:'길이 열렸습니다',enabled:false};
 }
-function tip(){
- const r=state.rooms[state.pos];
- if(state.phase==='won')return '탐험 완료 · 금고에서 살아 돌아왔습니다.';
- if(state.phase==='lost')return '탐험 종료 · 다시 도전할 준비가 되셨나요?';
- if(r.enemy?.hp>0)return state.resource.sword?'모아 둔 공격력으로 수호자를 공격하세요.':'공격 카드를 눌러 힘을 모으세요. 턴이 끝나면 적이 반격합니다.';
- if(state.relic)return `유물을 확보했습니다. 입구로 돌아가세요 · 붕괴까지 ${state.countdown}턴`;
- if(state.turn===1&&state.pos===0)return '카드를 눌러 자원을 얻고, 테두리가 표시된 방을 눌러 이동하세요.';
- if(r.type==='relic'&&!r.used)return '유물을 챙길까요? 더 깊은 곳에는 더 값진 보물이 있습니다.';
- if(r.type==='chest'&&!r.used)return '상자를 발견했습니다. 행동 버튼을 눌러 금화를 챙기세요.';
- return '방 한 칸에 이동 1 · 가장 깊은 층은 이동 2가 필요합니다.';
-}
-function render(){
- const s=state,r=s.rooms[s.pos],role=ROLES[s.role],active=s.phase==='playing';
- $('#characterStatus').innerHTML=`${ico(role.icon)}<div><span class="stat-label">탐험가 · ${s.rooms.filter(x=>x.visited).length}/16 방</span><strong>${role.name}</strong></div>`;
- const blocks=12,filled=Math.ceil(s.hp/s.maxHp*blocks);
- $('#healthStatus').innerHTML=`<div class="health-text"><span>체력</span><strong>${s.hp} <span style="color:var(--muted);font-size:10px">/ ${s.maxHp}</span></strong></div><div class="health-track ${s.hp/s.maxHp<.3?'low':''}" role="meter" aria-label="체력" aria-valuemin="0" aria-valuemax="${s.maxHp}" aria-valuenow="${s.hp}">${Array.from({length:blocks},(_,i)=>`<span class="${i<filled?'filled':''}"></span>`).join('')}</div>`;
- $('#goldValue').textContent=s.gold;
- $('#artifactStatus').innerHTML=`${ico(s.relic?.icon||'crystal',26)}<div><span class="stat-label">이번 탐험의 유물</span><strong class="${s.relic?'':'waiting'}">${s.relic?`${s.relic.name} · ${s.relic.value}점`:'아직 발견하지 못한 보물'}</strong></div>`;
- $('#bestValue').textContent=best?`${best} P`:'—';
- $('#dungeon').setAttribute('aria-label',`던전 지도. 현재 ${r.name}. ${r.enemy?.hp>0?'적 체력 '+r.enemy.hp+'. ':''}연결된 방: ${neighbours(s).map(id=>s.rooms[id].name).join(', ')}. 연결된 방 버튼이나 방향키로 이동할 수 있습니다.`);
- $('#mapLocation').textContent=r.name;$('#turnValue').textContent=`TURN ${String(s.turn).padStart(2,'0')}`;$('#mapHint').textContent=tip();
- const ra=roomAction(r);
- if(!$('#quickAction')){const b=document.createElement('button');b.id='quickAction';b.className='quick-action';$('.map-caption').appendChild(b);}
- const qb=$('#quickAction');qb.dataset.act=ra.act;qb.textContent=ra.text;qb.disabled=!ra.enabled;qb.hidden=!ra.act;
- $('#resources').innerHTML=[['move','boot','이동'],['sword','dagger','공격'],['skill','book','기술'],['block','shield','방어']].map(([key,icon,name])=>`<div class="resource ${key}" title="${name} ${s.resource[key]} · 이번 턴에만 사용" aria-label="${name} ${s.resource[key]}">${ico(icon,24)}<span class="res-name">${name}</span><strong>${s.resource[key]}</strong></div>`).join('');
- $('#handCount').textContent=`${s.hand.length}장`;
- $('#hand').innerHTML=s.hand.length?s.hand.map((id,i)=>cardMarkup(id,i)).join(''):`<div class="hand-empty"><strong>모든 카드를 펼쳤습니다.</strong><span>남은 자원으로 이동·공격·영입 후 턴을 마치세요.</span></div>`;
- $('#drawCount').textContent=s.deck.length;$('#discardCount').textContent=s.discard.length;$('#playedCount').textContent=s.played.length;$('#deckTotal').textContent=s.hand.length+s.deck.length+s.discard.length+s.played.length;
- const danger=s.noise>=8;
- $('#dangerPanel').innerHTML=`<div class="danger-title"><h2>${s.relic?'깨어난 용의 분노':'잠든 용의 경계'}</h2><strong>${s.noise}<span> / 8</span></strong></div><div class="noise-bar" role="meter" aria-label="소음" aria-valuemin="0" aria-valuemax="12" aria-valuenow="${s.noise}">${Array.from({length:8},(_,i)=>`<span class="${i<s.noise?'on':''} ${danger?'hot':''}"></span>`).join('')}</div><div class="danger-sub"><span>${danger?'턴 종료 시 용의 공격!':'소음 8 이상이면 용이 공격'}</span><b>피해 ${3+Math.floor(s.turn/10)}</b></div><div class="quest ${s.relic?'urgent':''}">${ico(s.relic?'door':'crystal')}<div><strong>${s.relic?`입구로 탈출 · ${s.countdown}턴 남음`:'유물을 찾아, 살아 돌아오세요.'}</strong><p>${s.relic?`용의 주기 공격까지 ${s.turn%3===0?'이번 턴':3-s.turn%3+'턴'} · 피해 2`:'달의 눈물 18 · 왕관 28 · 심장 42'}</p></div></div>`;
- const descriptions={entry:'작은 빛이 새어 들어옵니다. 유물을 챙겨 이곳으로 돌아오면 탐험에 성공합니다.',chest:r.id===12?'금화가 가득한 상자. 열면 금화 10과 소음 2를 얻습니다.':'먼지 속에 남겨진 상자입니다. 금화는 탐험이 끝날 때 점수가 됩니다.',camp:'잠시 숨을 고를 수 있습니다. 한 번만 체력 6을 회복하고 소음 3을 줄입니다.',merchant:'떠돌이 상인이 마지막 물약을 팝니다. 금화 5로 체력 8을 회복합니다.',shrine:'기억 하나를 바치면 발걸음이 가벼워집니다. 덱에서 카드 1장을 영구히 지웁니다.',relic:`${r.relic?.value}점의 유물이 잠들어 있습니다. 획득하면 용이 깨어나고 탈출까지 14턴이 주어집니다.`,enemy:'수호자가 길을 막고 있습니다. 공격력을 모아 쓰러뜨리면 금화와 카드 보상을 받습니다.'};
- const enemy=r.enemy?.hp>0;
- const actionHTML=ra.act?`<button class="primary-action ${ra.cls||''}" data-act="${ra.act}" ${!ra.enabled?'disabled':''}><span>${ra.text}</span><span>→</span></button>`:`<div class="room-done">✓ ${ra.text}</div>`;
- $('#roomPanel').innerHTML=`<span class="eyebrow">CURRENT ROOM · ${String(s.pos+1).padStart(2,'0')}</span><div class="room-title">${ico(roomTypeIcon(r))}<h2>${r.name}</h2></div><p class="room-description">${enemy?`${r.enemy.name}의 기척이 느껴집니다. 공격 카드를 사용한 뒤 공격 버튼을 누르세요.`:descriptions[r.type]}</p>${enemy?`<div class="enemy-info"><span>적 체력 <strong>${r.enemy.hp} / ${r.enemy.maxHp}</strong></span><span>다음 반격 <strong>${r.enemy.damage} 피해</strong></span></div>`:''}${actionHTML}<div class="directions"><div class="directions-label"><span>${enemy?'적을 격파하거나 들어온 방으로 후퇴':'연결된 방으로 이동'}</span><span>이동 ${s.resource.move} 보유</span></div><div class="door-list">${neighbours(s).map(id=>{const n=s.rooms[id],cost=moveCost(s,id),retreat=enemy&&id===s.from,blocked=(enemy&&!retreat)||s.resource.move<cost||!active;return `<button class="door" data-act="move" data-id="${id}" ${blocked?'disabled':''} title="${n.name} · 이동 ${cost}${retreat?' · 후퇴 시 소음 +1':''}"><span class="door-label">${retreat?'↶ ':''}${n.name}</span><span class="cost">${cost} 발</span></button>`;}).join('')}</div></div>`;
- $('#market').innerHTML=s.market.map((id,i)=>{const c=CARDS[id],can=s.resource.skill>=c.cost&&active;return `<button class="market-card ${can?'affordable':''}" data-act="buy" data-index="${i}" aria-label="${c.name}, ${c.text}, 기술 ${c.cost}점으로 영입" ${!can?'disabled':''}>${ico(c.icon)}<span class="offer"><strong>${c.name}</strong><small>${c.text}</small></span><span class="price">${c.cost}</span></button>`;}).join('');
- $('[data-act="refresh"]').disabled=s.gold<2||s.refreshTurn===s.turn||!active;
- $('[data-act="end"]').disabled=!active||!!s.pending;
+function tip(){const s=state,r=s.rooms[s.pos];if(s.phase!=='playing')return s.phase==='won'?'유물과 함께 지상으로 돌아왔습니다.':'다음 탐험에는 더 조용한 발걸음으로.';if(r.enemy?.hp>0)return `반격 ${r.enemy.damage} · 공격하거나 들어온 방으로 후퇴하세요.`;if(s.relic)return `붕괴까지 ${s.countdown}턴 · 입구로 돌아가세요.`;if(r.type==='chest'&&!r.used)return `상자 소리 ${previewNoise(s,r.row===3?7:3)} · 주변의 귀를 조심하세요.`;return '오른쪽 지도나 연결된 통로를 눌러 이동하세요.';}
+function render(reveal=false){
+ revealEpoch++;
+ const s=state,r=s.rooms[s.pos],role=ROLES[s.role],active=s.phase==='playing',enemy=r.enemy?.hp>0,ra=roomAction(r);
+ $('#characterStatus').innerHTML=`${portrait(s.role)}<div><span class="stat-label">탐험가 · ${s.rooms.filter(x=>x.visited).length}/16</span><strong>${role.name}</strong></div>`;
+ $('#healthStatus').innerHTML=`<div class="health-text"><span>체력</span><strong>${s.hp} <small>/ ${s.maxHp}</small></strong></div><div class="health-track ${s.hp/s.maxHp<.3?'low':''}" role="meter" aria-label="체력" aria-valuemin="0" aria-valuemax="${s.maxHp}" aria-valuenow="${s.hp}">${Array.from({length:12},(_,i)=>`<span class="${i<Math.ceil(s.hp/s.maxHp*12)?'filled':''}"></span>`).join('')}</div>`;
+ $('#goldValue').textContent=s.gold;$('#artifactStatus').innerHTML=`${ico(s.relic?.icon||'crystal',26)}<div><span class="stat-label">회수할 유물</span><strong class="${s.relic?'':'waiting'}">${s.relic?`${s.relic.name} · ${s.relic.value}점`:'달의 눈물 18 · 왕관 28 · 심장 42'}</strong></div>`;$('#bestValue').textContent=best?`${best} P`:'—';
+ $('#mapLocation').textContent=`B${r.row+1} · ${r.name}`;$('#turnValue').textContent=`TURN ${String(s.turn).padStart(2,'0')}`;$('#mapHint').textContent=tip();
+ $('#sceneRoom').textContent=r.name;$('#sceneChapter').textContent=`THE FORGOTTEN CATACOMBS / DEPTH 0${r.row+1}`;
+ $('#sceneMood').textContent=enemy?(r.enemy.mode==='idle'?'아직, 당신의 기척을 눈치채지 못했다.':'어둠 속의 시선이 이쪽을 향한다.'):({entry:'돌아오는 발소리만이 이 문을 다시 연다.',chest:'금빛 욕심 아래, 오래된 경첩이 잠들어 있다.',camp:'작은 불씨가 긴 침묵을 데운다.',shrine:'내려놓은 기억만큼, 발걸음은 가벼워진다.',merchant:'낯선 등불 하나가 어둠을 지키고 있다.',relic:'봉인을 깨는 순간, 금고 전체가 깨어난다.'}[r.type]||'발소리가 사라진 자리에도 흔적은 남는다.');
+ $('#sceneFooting').innerHTML=`<span>${ico('boot',18)} ${TERRAINS[r.terrain].name}</span><span>${MODES[s.mode].name}${s.hidden?' · 은신 중':''}</span>`;
+ $('#enemyOverlay').innerHTML=enemy?`<span class="enemy-state ${r.enemy.mode}">${ALERTS[r.enemy.mode]}${r.enemy.anchored?' · 자리 수호':''}</span><strong>${r.enemy.name}</strong><div class="enemy-life"><i style="width:${r.enemy.hp/r.enemy.maxHp*100}%"></i></div><small>HP ${r.enemy.hp} / ${r.enemy.maxHp} · 반격 ${r.enemy.damage}</small>`:'';
+ const snd=s.lastSound,recent=snd&&snd.turn===s.turn;
+ $('#sceneSound').innerHTML=recent?`<span class="sound-eq ${snd.strength>=5?'loud':''}">${Array.from({length:9},(_,i)=>`<i style="--i:${i};height:${4+((i*7)%13)+snd.strength}px"></i>`).join('')}</span><span>${esc(snd.label)} <b>${snd.strength===0?'무음':snd.strength}</b></span>`:'<span class="quiet-dot"></span> 고요한 금고';
+ $('#quickAction').dataset.act=ra.act;$('#quickAction').textContent=ra.text;$('#quickAction').disabled=!ra.enabled;$('#quickAction').hidden=!ra.act;
+ $('#resources').innerHTML=[['sword','dagger','공격력','공격에 사용'],['move','boot','이동력','통로를 건널 힘'],['skill','book','기술','영입 · 유인'],['block','shield','방어','반격 자동 방어']].map(([key,icon,name,help])=>`<div class="resource ${key}" aria-label="${name} ${s.resource[key]}"><div class="res-top">${ico(icon,key==='sword'||key==='move'?34:24)}<span>${name}</span></div><div class="res-number"><strong>${s.resource[key]}</strong><span>/ ${s.poolTotal[key]}</span></div><small>${help}</small></div>`).join('');
+ $('#poolStatus').innerHTML=`${s.resource.quiet?`<span>은신 <b>${s.resource.quiet}</b></span>`:''}${s.resource.rattle?`<span class="rattle">첫 소음 <b>+${s.resource.rattle}</b></span>`:''}<span class="auto-check">✓ 자동 합산</span>`;
+ $('#handCount').textContent=`${s.played.length}개`;
+ $('#hand').innerHTML=s.played.map((id,i)=>{const a=CARDS[id];return `<div class="draw-token ${a.family}" style="--delay:${Math.min(i,12)*65}ms" title="${a.name} · ${a.text}"><span class="token-icon">${ico(a.icon,30)}</span><span><strong>${a.name}</strong><small>${a.text}</small></span></div>`;}).join('');
+ $('.pool-panel').classList.remove('revealing');if(reveal){void $('.pool-panel').offsetWidth;$('.pool-panel').classList.add('revealing');}
+ $('#drawCount').textContent=s.deck.length;$('#discardCount').textContent=s.discard.length;$('#playedCount').textContent=s.played.length;$('#deckTotal').textContent=s.deck.length+s.discard.length+s.played.length;
+ const danger=s.noise>=8,alerted=s.rooms.filter(x=>x.seen&&x.enemy?.hp>0&&x.enemy.mode!=='idle');
+ $('#dangerPanel').innerHTML=`<div class="danger-title"><h3>던전 경계</h3><strong class="${danger?'hot':''}">${s.noise}<span> / 8</span></strong></div><div class="noise-bar" role="meter" aria-label="던전 경계" aria-valuemin="0" aria-valuemax="12" aria-valuenow="${s.noise}">${Array.from({length:8},(_,i)=>`<span class="${i<s.noise?'on':''} ${danger?'hot':''}"></span>`).join('')}</div><div class="danger-sub"><span>${danger?'다음 턴으로 넘기면 용의 공격':'8 이상이면 턴 끝에 용의 공격'}</span><b>피해 ${3+Math.floor(s.turn/10)}</b></div><div class="last-sound"><span>${recent?`발생 ${snd.raw}${snd.absorbed?` · 흡수 ${snd.absorbed}`:''} → 소리 <b>${snd.strength}</b>`:'통로마다 소리 −2 · 이끼는 −1 추가'}</span><small>${recent?(snd.heard.length?`${snd.heard.length}명이 들음 · ${s.rooms[snd.origin].name}`:'적에게 닿은 소리 없음'):'주황색 영역은 이번 소리의 도달 범위'}</small></div>${alerted.length?`<div class="listening-enemies">${alerted.slice(0,3).map(x=>`<div><i class="alert-eye">${x.enemy.mode==='hunt'?'!':'?'}</i><span>${x.enemy.name}<small>${x.name} · ${ALERTS[x.enemy.mode]}</small></span><b>${x.enemy.anchored?'수호':x.id===s.pos?'교전':x.enemy.mode==='listen'?'대기':'→ 조사'}</b></div>`).join('')}</div>`:`<div class="silence-note"><span></span> ${recent&&snd.heard.length?'미탐험 구역에서 기척이 느껴짐':'경계 중인 적이 보이지 않음'}</div>`}${s.relic?`<div class="escape-clock">탈출까지 <strong>${s.countdown}턴</strong><small>입구로 귀환 · 용의 주기 공격 ${s.turn%3===0?'이번 턴':3-s.turn%3+'턴 뒤'}</small></div>`:''}`;
+ const hideCan=active&&!enemy&&s.hideTurn!==s.turn&&s.resource.move>=1;
+ $('#roomPanel').innerHTML=`<div class="section-heading"><div><span class="eyebrow">CHOOSE YOUR FOOTSTEPS</span><h2>다음 발걸음</h2></div><span class="terrain-tag">${TERRAINS[r.terrain].name}</span></div><div class="movement-modes" role="group" aria-label="이동 방식">${Object.entries(MODES).map(([id,m])=>`<button data-act="mode" data-id="${id}" aria-pressed="${s.mode===id}" class="${s.mode===id?'selected':''}" ${!active?'disabled':''}><strong>${m.name}</strong><small>${id==='sneak'?'이동 +1 · 조용히':id==='rush'?'깊은 층 −1 · 소리 5':'기본 이동 · 소리 2'}</small></button>`).join('')}</div><div class="door-list">${neighbours(s).map(id=>{const n=s.rooms[id],cost=moveCost(s,id),quiet=previewNoise(s,moveNoise(s,id)),retreat=enemy&&id===s.from,blocked=(enemy&&!retreat)||s.resource.move<cost||!active;return `<div class="route-row"><button class="door" data-act="move" data-id="${id}" ${blocked?'disabled':''} aria-label="${n.name} ${retreat?'후퇴':'이동'}, 이동 ${cost}, 소리 ${quiet}"><span class="door-label">${retreat?'↶ ':''}${n.name}<small>${TERRAINS[n.terrain].name}${n.enemy?.hp>0?' · 적':''}</small></span><span class="route-cost"><b>${cost} 발</b><small class="${quiet>=5?'loud':''}">${quiet?'소리 '+quiet:'무음'}</small></span></button><button class="lure-button" data-act="lure" data-id="${id}" ${s.resource.skill<1||s.lureTurn===s.turn||!active?'disabled':''} title="이 방에 돌멩이 던지기 · 기술 1 · 소리 5" aria-label="${n.name}에 유인, 기술 1, 소리 5">유인<small>기술 1</small></button></div>`;}).join('')}</div><button class="hide-button" data-act="hide" ${!hideCan?'disabled':''}>${ico('cloak',21)}<span>숨죽이기 <small>이동 1 · 경계 −2 · 은신 +2</small></span><span>↘</span></button>`;
+ $('#market').innerHTML=s.market.map((id,i)=>{const a=CARDS[id],can=s.resource.skill>=a.cost&&active;return `<button class="market-card ${can?'affordable':''}" data-act="buy" data-index="${i}" aria-label="${a.name}, ${a.text}, 기술 ${a.cost}점으로 영입" ${!can?'disabled':''}>${ico(a.icon)}<span class="offer"><strong>${a.name}</strong><small>${a.text}</small></span><span class="price">${a.cost}</span></button>`;}).join('');
+ $('[data-act="refresh"]').disabled=s.gold<2||s.refreshTurn===s.turn||!active;$('[data-act="end"]').disabled=!active||!!s.pending;
  $('.under-notes>span:first-child').innerHTML=`<i></i> ${storageOK?'진행 상황 자동 저장':'현재 브라우저에서 저장할 수 없음'}`;
- const soundButton=$('.sound-toggle');soundButton.setAttribute('aria-label',sound?'효과음 끄기':'효과음 켜기');soundButton.title=sound?'효과음 끄기':'효과음 켜기';soundButton.innerHTML=`♪${sound?'':'<span class="sound-line"></span>'}`;
+ const sb=$('.sound-toggle');sb.setAttribute('aria-label',sound?'효과음 끄기':'효과음 켜기');sb.setAttribute('aria-pressed',String(sound));sb.innerHTML=`♪${sound?'':'<span class="sound-line"></span>'}`;
+ $('#minimap').setAttribute('aria-label',`현재 ${r.name}. 연결: ${neighbours(s).map(id=>s.rooms[id].name).join(', ')}. 경계 ${s.noise}. 오른쪽 통로 버튼이나 방향키로도 이동할 수 있습니다.`);
  paintIcons();
+ if(reveal&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  const epoch=revealEpoch,started=performance.now(),ids=[...s.played],keys=['sword','move','skill','block'];
+  const initial=Object.fromEntries(keys.map(k=>[k,Math.max(0,s.resource[k]-ids.reduce((n,id)=>n+(CARDS[id].e[k]||0),0))]));
+  function tick(ms){if(epoch!==revealEpoch)return;const count=Math.min(ids.length,Math.floor((ms-started)/130)+1),sums={...initial};for(let i=0;i<count;i++)for(const k of keys)sums[k]+=CARDS[ids[i]].e[k]||0;
+   for(const k of keys)$(`.resource.${k} strong`).textContent=Math.min(s.resource[k],sums[k]);
+   if(count<ids.length)requestAnimationFrame(tick);
+  }requestAnimationFrame(tick);
+ }
 }
 function openModal(html,mode){
  const d=$('#modal');if(!d.open)lastFocus=document.activeElement;
@@ -74,8 +79,8 @@ function openModal(html,mode){
 const modalShell=(title,eyebrow,body,close=true)=>`<div class="modal-inner"><div class="modal-top"><div><span class="eyebrow">${eyebrow}</span><h2 id="modalTitle">${title}</h2></div>${close?'<button class="close-button" data-act="close" aria-label="닫기">×</button>':''}</div>${body}</div>`;
 function closeModal(){if(state.pending){toast('보상을 고르거나 건너뛰기를 눌러 주세요.');return;}$('#modal').close();dialogMode='';lastFocus?.focus();}
 function pendingModal(){
- if(state.pending?.type==='reward')openModal(modalShell('승리의 전리품','CHOOSE YOUR REWARD',`<p class="modal-sub">새 카드를 1장 골라 덱에 추가하세요. 버린 카드 더미에 들어가며, 다음 순환부터 사용할 수 있습니다.</p><div class="modal-cards">${state.pending.options.map((id,i)=>cardMarkup(id,i,'reward')).join('')}</div><div class="modal-actions"><span class="modal-sub" style="margin:0">가벼운 덱을 유지해도 좋습니다.</span><button class="subtle-button" data-act="skipReward">받지 않고 계속 →</button></div>`,false),'reward');
- else if(state.pending?.type==='purge')openModal(modalShell('내려놓을 기억','FORGET ONE CARD',`<p class="modal-sub">선택한 카드 1장을 덱에서 영구히 제거합니다. 이 제단은 한 번만 사용할 수 있습니다.</p><div class="deck-list">${state.pending.options.map(id=>`<button class="deck-item" data-act="purge" data-id="${id}">${ico(CARDS[id].icon)}<div><strong>${CARDS[id].name}</strong><small>${CARDS[id].text}</small></div><b>제거</b></button>`).join('')}</div><div class="modal-actions"><button class="subtle-button" data-act="cancelPurge">지금은 지나가기</button></div>`,false),'purge');
+ if(state.pending?.type==='reward')openModal(modalShell('승리의 전리품','CHOOSE YOUR REWARD',`<p class="modal-sub">새 능력 하나를 추출 풀에 더하세요. 다음 순환부터 자동으로 합산됩니다.</p><div class="modal-cards">${state.pending.options.map((id,i)=>cardMarkup(id,i,'reward')).join('')}</div><div class="modal-actions"><span class="modal-sub" style="margin:0">가벼운 풀을 유지해도 좋습니다.</span><button class="subtle-button" data-act="skipReward">받지 않고 계속 →</button></div>`,false),'reward');
+ else if(state.pending?.type==='purge')openModal(modalShell('내려놓을 기억','FORGET ONE CARD',`<p class="modal-sub">선택한 능력 하나을 풀에서 영구히 제거합니다. 이 제단은 한 번만 사용할 수 있습니다.</p><div class="deck-list">${state.pending.options.map(id=>`<button class="deck-item" data-act="purge" data-id="${id}">${ico(CARDS[id].icon)}<div><strong>${CARDS[id].name}</strong><small>${CARDS[id].text}</small></div><b>제거</b></button>`).join('')}</div><div class="modal-actions"><button class="subtle-button" data-act="cancelPurge">지금은 지나가기</button></div>`,false),'purge');
 }
 function showResult(){
  const s=state,won=s.phase==='won';
@@ -86,64 +91,49 @@ function showNew(){
  renderNew();
 }
 function renderNew(){
- openModal(modalShell('누가 금고로 내려갈까요?','A NEW EXPEDITION',`<p class="modal-sub">직업마다 시작 카드와 특성이 다릅니다. 새 탐험을 시작하면 현재 진행은 초기화되고 최고 기록은 남습니다.</p><div class="role-list" role="radiogroup" aria-label="직업 선택">${Object.entries(ROLES).map(([key,r])=>`<button class="role-option ${key===selectedRole?'selected':''}" data-act="role" data-id="${key}" role="radio" aria-checked="${key===selectedRole}">${ico(r.icon)}<strong>${r.name}</strong><span>${r.desc}</span><small>${r.trait}</small></button>`).join('')}</div><div class="modal-actions"><button class="subtle-button" data-act="close">현재 탐험으로 돌아가기</button><button class="large-button" data-act="start">금고로 내려가기 →</button></div>`),'new');
+ openModal(modalShell('누가 금고로 내려갈까요?','A NEW EXPEDITION',`<p class="modal-sub">직업마다 시작 능력과 특성이 다릅니다. 새 탐험을 시작하면 현재 진행은 초기화되고 최고 기록은 남습니다.</p><div class="role-list" role="radiogroup" aria-label="직업 선택">${Object.entries(ROLES).map(([key,r])=>`<button class="role-option ${key===selectedRole?'selected':''}" data-act="role" data-id="${key}" role="radio" aria-checked="${key===selectedRole}">${portrait(key,'select-portrait')}<strong>${r.name}</strong><span>${r.desc}</span><small>${r.trait}</small></button>`).join('')}</div><div class="modal-actions"><button class="subtle-button" data-act="close">현재 탐험으로 돌아가기</button><button class="large-button" data-act="start">금고로 내려가기 →</button></div>`),'new');
 }
 function showHelp(){
- openModal(modalShell('들어갈 용기. 돌아올 지혜.','FIELD GUIDE',`<p class="modal-sub">용의 유물을 하나 챙겨 시작 지점으로 돌아오세요. 더 깊은 유물은 더 높은 점수를 줍니다.</p><div class="help-steps"><div class="help-step"><b>01 / CARDS</b><h3>카드로 자원을 만드세요</h3><p>매 턴 5장을 뽑습니다. 카드를 누르면 이동·공격·기술·방어를 얻습니다. 사용 순서는 자유입니다.</p></div><div class="help-step"><b>02 / EXPLORE</b><h3>방을 눌러 탐험하세요</h3><p>연결된 방으로 이동합니다. 기본 이동은 매 턴 1. 가장 깊은 층에 들어가려면 이동 2가 필요합니다.</p></div><div class="help-step"><b>03 / BUILD</b><h3>싸우고, 덱을 키우세요</h3><p>공격 카드를 낸 뒤 공격 버튼을 누르세요. 적은 턴 끝에 반격합니다. 교역소 카드는 기술로 영입하며 버린 더미에 들어갑니다.</p></div><div class="help-step"><b>04 / ESCAPE</b><h3>욕심을 멈출 때를 고르세요</h3><p>유물을 얻으면 14턴 후 금고가 붕괴합니다. 입구로 돌아와 탈출하세요. 모닥불과 방어가 귀환을 돕습니다.</p></div></div><div class="help-warning">소음 8 이상 → 턴 끝에 용의 공격. 유물을 얻은 뒤에는 3의 배수 턴마다 용이 공격합니다. 방어로 피해를 막을 수 있습니다.<br>턴이 끝나면 남은 자원은 사라지고, 사용하지 않은 손패도 버려집니다. 새 카드는 뽑을 덱이 떨어지면 버린 더미와 함께 섞입니다.</div><p class="modal-sub" style="margin:17px 0 0">점수 = 유물 + 금화 + 방문한 방 × 2 + 남은 체력 + 탈출 보너스 20<br>조작: 카드와 방 터치 / 키보드 1–5 · 방향키 · Space<br>이 게임은 첨부 자료의 탐험·덱 성장·소음·귀환 구조를 바탕으로 만든 독자적인 싱글플레이 게임입니다.</p><div class="modal-actions"><span class="eyebrow">${ROLES[state.role].name} · ${ROLES[state.role].trait}</span><button class="large-button" data-act="close">탐험 계속하기 →</button></div>`),'help');
+ openModal(modalShell('소리를 다루는 탐험가','FIELD GUIDE · V2',`<p class="modal-sub">능력은 자동으로 추출됩니다. 큰 공격력·이동력 숫자가 지금 쓸 수 있는 힘입니다. 유물 하나를 챙겨 입구로 돌아오세요.</p><div class="help-steps"><div class="help-step"><b>01 / DRAW</b><h3>뽑고, 자동으로 합산</h3><p>매 턴 능력 5개를 추출합니다. 추가 추출도 자동입니다. 이동은 방을 건널 때, 공격은 공격할 때 사용합니다. 기술로 새 능력을 영입하고 방어는 피해를 막습니다. 남은 자원은 다음 턴에 사라집니다.</p></div><div class="help-step"><b>02 / FOOTSTEPS</b><h3>발밑을 살피세요</h3><p>걷기는 이동 1·기본 소리 2. 살금살금은 이동 +1·기본 소리 0. 질주는 깊은 층 이동을 1 줄이지만 소리 5. 물웅덩이 +1, 돌 파편 +2, 이끼 −1. 문 옆에 최종 소리가 표시됩니다.</p></div><div class="help-step"><b>03 / LISTEN</b><h3>소리는 통로를 따라 퍼집니다</h3><p>방을 건널 때 소리 2가 줄고, 이끼 방은 1을 더 흡수합니다. 들은 적은 청취 → 조사 → 추적으로 경계합니다. 턴 끝에 조사·추적 중인 적이 마지막 소리의 방으로 한 칸 이동합니다. 유물 수호자는 자리를 지킵니다.</p></div><div class="help-step"><b>04 / MISDIRECT</b><h3>소리로 길을 만드세요</h3><p>문 옆의 유인 버튼으로 기술 1을 써 돌멩이 소리 5를 냅니다. 적의 목적지를 바꿀 수 있습니다. 숨죽이기는 이동 1로 경계 −2, 은신 +2. 둘 다 턴당 한 번입니다.</p></div></div><div class="help-warning">은신은 다음 개인 행동의 소리를 흡수하고, 첫 소음은 다음 개인 행동에 더해집니다. 돌멩이에는 적용되지 않습니다. 소리 크기의 절반(올림)이 던전 경계에 누적되며, 8 이상이면 턴 끝에 용이 공격합니다. 새 턴에는 경계가 2 감소하고 도적은 1 더 줄입니다.<br><br>같은 방의 적은 턴 끝에 반격합니다. 추적으로 방에 도착한 적은 그 다음 턴부터 반격합니다. 유물을 챙기면 14턴 안에 귀환해야 하며 3의 배수 턴마다 용이 공격합니다. 방어가 피해를 흡수합니다.</div><p class="modal-sub" style="margin:16px 0 0">조작: 방향키 이동 · 1 걷기 / 2 살금살금 / 3 질주 · A 공격 · E 상호작용 · C 숨죽이기 · Space 다음 턴<br>점수 = 유물 + 금화 + 방문 방 × 2 + 남은 체력 + 탈출 20</p><div class="modal-actions"><span class="eyebrow">소리가 없는 것도, 하나의 선택.</span><button class="large-button" data-act="close">탐험 계속하기 →</button></div>`),'help');
 }
 function showDeck(pile='all'){
- const labels={all:'전체 덱',hand:'손패',deck:'뽑을 카드',discard:'버린 카드',played:'사용한 카드'};
+ const labels={all:'전체 풀',deck:'대기 중',discard:'다음 순환',played:'이번 추출'};
  if(!labels[pile])pile='all';
  const ids=pile==='all'?[...state.hand,...state.deck,...state.discard,...state.played]:state[pile];
  const counts={};ids.forEach(id=>counts[id]=(counts[id]||0)+1);
- openModal(modalShell('내 손으로 만든 덱','YOUR COLLECTION',`<div class="deck-tabs">${Object.entries(labels).map(([k,v])=>`<button class="${pile===k?'selected':''}" data-act="deck" data-pile="${k}">${v}</button>`).join('')}</div><p class="modal-sub">${labels[pile]} · ${ids.length}장${pile==='deck'?' · 뽑는 순서는 숨겨져 있습니다.':''}</p><div class="deck-list">${Object.entries(counts).map(([id,n])=>`<div class="deck-item">${ico(CARDS[id].icon)}<div><strong>${CARDS[id].name}</strong><small>${CARDS[id].text}</small></div><b>×${n}</b></div>`).join('')||'<p class="empty-list">아직 카드가 없습니다.</p>'}</div>`),'deck');
+ openModal(modalShell('나의 능력 풀','YOUR DRAW POOL',`<div class="deck-tabs">${Object.entries(labels).map(([k,v])=>`<button class="${pile===k?'selected':''}" data-act="deck" data-pile="${k}">${v}</button>`).join('')}</div><p class="modal-sub">${labels[pile]} · ${ids.length}개${pile==='deck'?' · 뽑는 순서는 숨겨져 있습니다.':''}</p><div class="deck-list">${Object.entries(counts).map(([id,n])=>`<div class="deck-item">${ico(CARDS[id].icon)}<div><strong>${CARDS[id].name}</strong><small>${CARDS[id].text}</small></div><b>×${n}</b></div>`).join('')||'<p class="empty-list">아직 능력이 없습니다.</p>'}</div>`),'deck');
 }
 function showLog(){openModal(modalShell('어둠 속에 남긴 발자국','EXPEDITION JOURNAL',`<p class="modal-sub">탐험 코드 ${state.seed.toString(36).toUpperCase()} · 최근 행동부터 표시</p><div class="log-list">${state.log.map(x=>`<div class="log-row ${x.tone}"><small>T${String(x.turn).padStart(2,'0')}</small><span>${esc(x.message)}</span></div>`).join('')}</div>`),'log');}
 function act(action){
- const beforeHP=state.hp,wasRelic=!!state.relic;
- const result=apply(state,action);
- if(!result.ok){toast(result.message,true);beep('bad');return false;}
- save();render();
- if(action.type==='attack'||action.type==='interact'||action.type==='buy'||action.type==='reward')renderer.burst();
- if(state.hp<beforeHP)renderer.burst('bad');
- beep(action.type==='end'?'turn':action.type==='buy'||action.type==='reward'?'buy':action.type==='move'?'move':action.type==='attack'?'attack':!wasRelic&&state.relic?'relic':'card');
- if(action.type!=='play')toast(result.message);
- if(state.pending)pendingModal();
- else if(state.phase!=='playing'){showResult();beep(state.phase==='won'?'win':'bad');}
- else if(['reward','skipReward','purge','cancelPurge'].includes(action.type)){$('#modal').close();dialogMode='';}
+ const beforeHP=state.hp,wasRelic=!!state.relic,enemyHP=state.rooms[state.pos].enemy?.hp||0;
+ const result=apply(state,action);if(!result.ok){toast(result.message,true);beep('bad');return false;}
+ save();render(action.type==='end');
+ if(action.type==='attack')renderer.burst('attack',`−${enemyHP-(state.rooms[state.pos].enemy?.hp||0)}`);
+ if(action.type==='interact'||action.type==='reward')renderer.burst('reward');if(state.hp<beforeHP)renderer.burst('bad');
+ if(action.type!=='mode')beep(action.type==='end'?'turn':action.type==='buy'||action.type==='reward'?'buy':action.type==='move'?'move':action.type==='attack'?'attack':action.type==='lure'?'lure':!wasRelic&&state.relic?'relic':'card');
+ if(action.type!=='mode')toast(result.message);
+ if(state.pending)pendingModal();else if(state.phase!=='playing'){showResult();beep(state.phase==='won'?'win':'bad');}else if(['reward','skipReward','purge','cancelPurge'].includes(action.type)){$('#modal').close();dialogMode='';}
  return true;
 }
 document.addEventListener('click',ev=>{
- const b=ev.target.closest('button[data-act]');if(!b||b.disabled)return;
- const a=b.dataset.act;
- if(a==='close')return closeModal();
- if(a==='help')return showHelp();
- if(a==='new')return showNew();
- if(a==='role'){selectedRole=b.dataset.id;return renderNew();}
- if(a==='start'){state=newRun({role:selectedRole});renderer.reset();save();$('#modal').close();dialogMode='';render();toast('새로운 탐험을 시작합니다.');beep('relic');window.scrollTo({top:0,behavior:'smooth'});return;}
- if(a==='deck')return showDeck(b.dataset.pile||'all');
- if(a==='log')return showLog();
- if(a==='result')return showResult();
- if(a==='zoom'){const on=renderer.toggleZoom();b.setAttribute('aria-pressed',String(on));b.setAttribute('aria-label',on?'지도 가까이 보기':'전체 지도 보기');b.title=on?'가까이 보기':'전체 지도';return;}
+ const b=ev.target.closest('button[data-act]');if(!b||b.disabled)return;const a=b.dataset.act;
+ if(a==='close')return closeModal();if(a==='help')return showHelp();if(a==='new')return showNew();if(a==='role'){selectedRole=b.dataset.id;return renderNew();}
+ if(a==='start'){state=newRun({role:selectedRole});renderer.reset();save();$('#modal').close();dialogMode='';render(true);toast('새로운 능력 풀이 준비되었습니다.');beep('relic');window.scrollTo({top:0,behavior:'smooth'});return;}
+ if(a==='deck')return showDeck(b.dataset.pile||'all');if(a==='log')return showLog();if(a==='result')return showResult();
+ if(a==='zoom'){const on=renderer.toggleZoom();b.setAttribute('aria-pressed',String(on));b.setAttribute('aria-label',on?'던전 장면 보기':'지도 펼치기');$('.canvas-wrap').classList.toggle('mapview',on);$('.scene-title').hidden=on;$('#enemyOverlay').hidden=on;return;}
  if(a==='sound'){sound=!sound;try{localStorage.setItem('ember-vault-sound',sound?'on':'off');}catch{}render();if(sound)beep();return;}
- if(a==='play'||a==='buy')return act({type:a,index:Number(b.dataset.index)});
- if(a==='move')return act({type:a,id:Number(b.dataset.id)});
- if(a==='reward'||a==='purge')return act({type:a,id:b.dataset.id});
- if(a)act({type:a});
+ if(a==='buy')return act({type:a,index:Number(b.dataset.index)});if(['move','lure'].includes(a))return act({type:a,id:Number(b.dataset.id)});if(['reward','purge','mode'].includes(a))return act({type:a,id:b.dataset.id});if(a)act({type:a});
 });
-$('#dungeon').addEventListener('click',ev=>{if($('#modal').open||state.phase!=='playing')return;const id=renderer.hit(ev.clientX,ev.clientY);if(id===state.pos){const a=roomAction(state.rooms[id]);if(a.act&&a.enabled)act({type:a.act});else toast('카드를 사용하거나 연결된 방으로 이동하세요.');}else if(id>=0)act({type:'move',id});});
-$('#dungeon').addEventListener('mousemove',ev=>renderer.setHover(renderer.hit(ev.clientX,ev.clientY)));
-$('#dungeon').addEventListener('mouseleave',()=>renderer.setHover(-1));
+$('#minimap').addEventListener('click',ev=>{if($('#modal').open||state.phase!=='playing')return;const id=renderer.hitMini(ev.clientX,ev.clientY);if(id>=0&&id!==state.pos)act({type:'move',id});});
+$('#dungeon').addEventListener('click',ev=>{if($('#modal').open||state.phase!=='playing')return;const id=renderer.hit(ev.clientX,ev.clientY);if(id>=0&&id!==state.pos)act({type:'move',id});});
 document.addEventListener('keydown',ev=>{
- if($('#modal').open||ev.ctrlKey||ev.metaKey||ev.altKey||['INPUT','TEXTAREA','SELECT'].includes(ev.target.tagName))return;
- if(state.phase!=='playing')return;
- if(/^[1-5]$/.test(ev.key)){ev.preventDefault();act({type:'play',index:Number(ev.key)-1});}
- if(ev.code==='Space'){ev.preventDefault();act({type:'end'});}
- if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(ev.key)){
-  ev.preventDefault();const dir={ArrowUp:-4,ArrowDown:4,ArrowLeft:-1,ArrowRight:1}[ev.key],id=state.pos+dir;if(neighbours(state).includes(id))act({type:'move',id});else toast('그 방향에는 연결된 통로가 없습니다.',true);
- }
+ if($('#modal').open||ev.ctrlKey||ev.metaKey||ev.altKey||['INPUT','TEXTAREA','SELECT'].includes(ev.target.tagName)||state.phase!=='playing')return;
+ if(['1','2','3'].includes(ev.key)){ev.preventDefault();act({type:'mode',id:{1:'walk',2:'sneak',3:'rush'}[ev.key]});}
+ if(ev.code==='Space'&&ev.target.tagName!=='BUTTON'){ev.preventDefault();act({type:'end'});}
+ if(ev.key.toLowerCase()==='a'){ev.preventDefault();act({type:'attack'});}if(ev.key.toLowerCase()==='c'){ev.preventDefault();act({type:'hide'});}if(ev.key.toLowerCase()==='e'){const a=roomAction(state.rooms[state.pos]);if(a.act&&a.enabled){ev.preventDefault();act({type:a.act});}}
+ if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(ev.key)){ev.preventDefault();const dir={ArrowUp:-4,ArrowDown:4,ArrowLeft:-1,ArrowRight:1}[ev.key],id=state.pos+dir;if(neighbours(state).includes(id))act({type:'move',id});else toast('그 방향에는 연결된 통로가 없습니다.',true);}
 });
 $('#modal').addEventListener('cancel',ev=>{if(state.pending)ev.preventDefault();else dialogMode='';});
 $('#modal').addEventListener('click',ev=>{if(ev.target===$('#modal')&&!state.pending){const q=$('#modal').getBoundingClientRect();if(ev.clientX<q.left||ev.clientX>q.right||ev.clientY<q.top||ev.clientY>q.bottom)closeModal();}});
-save();render();
+save();render(true);if(migrated)toast('기존 탐험을 이어갑니다. 남은 손패가 자동 합산되었습니다.');
 if(state.pending)pendingModal();else if(state.phase!=='playing')showResult();
