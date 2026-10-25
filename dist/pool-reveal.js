@@ -28,12 +28,13 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
  function clear(){for(const id of timers)clearTimeout(id);timers.clear();}
  function soundButton(){q('[data-reveal="sound"]').textContent=getSound()?'♪ 효과음 켜짐':'♪ 효과음 꺼짐';q('[data-reveal="sound"]').setAttribute('aria-pressed',String(getSound()));}
  function strip(){
-  q('.reveal-slots').innerHTML=Array.from({length:visibleSlots},(_,i)=>{
+  const start=Math.min(Math.max(0,visibleSlots-5),Math.floor(Math.max(0,index+1)/5)*5);
+  q('.reveal-slots').innerHTML=Array.from({length:Math.min(5,visibleSlots-start)},(_,offset)=>{
+   const i=start+offset;
    const known=i<=index,card=known?CARDS[plan.steps[i].id]:null;
    return `<div class="sealed-token ${known?'opened '+card.family:''} ${i===index+1&&!complete?'next':''}" aria-label="${known?card.name:'미공개 능력'}">${known?glyph(card.icon,28):'<span>◇</span>'}<small>${known?card.name:String(i+1).padStart(2,'0')}</small></div>`;
   }).join('');
   paintIcons(q('.reveal-slots'));
-  q('.sealed-token.next')?.scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});
  }
  function totals(values,delta={}){
   for(const [key]of VALUES){

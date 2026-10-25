@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./landscape.css">
   <link rel="stylesheet" href="./pool-reveal.css">
+  <link rel="stylesheet" href="./viewport.css">
 </head>
 <body>
   <div class="app-shell">
@@ -37,9 +38,10 @@
             <div class="map-caption"><span id="mapHint"></span><button id="quickAction" class="quick-action" data-act="interact"></button></div>
           </section>
           <section class="hand-panel pool-panel" aria-label="자동 추출된 이번 턴의 자원">
-            <div class="pool-heading"><div><span class="eyebrow">FROM THE POOL</span><h2>이번 턴의 추출</h2></div><span class="pool-ready" id="poolStatus">능력 추출 완료</span></div>
+            <div class="pool-heading"><div><span class="eyebrow">FROM THE POOL</span><h2>이번 추출</h2></div><span class="pool-ready" id="poolStatus">능력 추출 완료</span></div>
             <div class="draw-heading"><span>이번 추출 <b id="handCount">5개</b></span><span>효과는 자동으로 합산됩니다</span></div>
             <div id="hand" class="token-strip" aria-label="이번 턴에 추출된 능력"></div>
+            <div id="handPager"></div>
             <div class="hand-bottom"><div class="piles"><button data-act="deck" data-pile="deck">대기 <b id="drawCount">5</b></button><button data-act="deck" data-pile="discard">순환 <b id="discardCount">0</b></button><button data-act="deck" data-pile="played">추출 <b id="playedCount">5</b></button></div><button class="end-button" data-act="end"><span>풀 뽑기</span><small>턴 종료 · 능력 5개 추출</small><span class="arrow">✧</span></button></div>
           </section>
           <div class="under-notes"><span><i></i> 진행 상황 자동 저장</span><button data-act="log">탐험 일지 열기 <span>↗</span></button><span class="keyboard-note">방향키 이동 · A 공격 · Space 다음 턴</span></div>
@@ -48,7 +50,7 @@
           <div class="landscape-tabs" role="tablist" aria-label="탐험 패널"><button id="routesTab" role="tab" aria-selected="true" aria-controls="roomPanel" data-act="panel" data-id="routes">이동</button><button id="soundTab" role="tab" aria-selected="false" aria-controls="soundPanel" data-act="panel" data-id="sound">소리 <span id="soundTabBadge">0</span></button><button id="marketTab" role="tab" aria-selected="false" aria-controls="marketPanel" data-act="panel" data-id="market">교역</button></div>
           <section class="acoustic-panel" id="soundPanel"><div class="section-heading"><div><span class="eyebrow">EVERY SOUND LEAVES A TRACE</span><h2>소리의 흔적</h2></div><span class="live-dot">LIVE</span></div><canvas id="minimap" width="360" height="244" aria-label="소음과 적의 경로를 보여 주는 지도"></canvas><div class="sound-map-key"><span><i class="you"></i> 나</span><span><i class="hear"></i> 소리</span><span><i class="enemy"></i> 적</span><span>방을 눌러 이동</span></div><div id="dangerPanel"></div></section>
           <section class="room-panel" id="roomPanel"></section>
-          <section class="market-panel" id="marketPanel"><div class="section-heading"><div><span class="eyebrow">BUILD YOUR POOL</span><h2>그림자 교역소</h2></div><button class="refresh-button" data-act="refresh" title="금화 2로 교체 · 턴당 한 번" aria-label="금화 2로 교역소 교체">↻ <span>2 G</span></button></div><p class="market-note">기술로 영입 · 다음 순환부터 자동 추출</p><div id="market"></div></section>
+          <section class="market-panel" id="marketPanel"><div class="section-heading"><div><span class="eyebrow">BUILD YOUR POOL</span><h2>그림자 교역소</h2></div><button class="refresh-button" data-act="refresh" title="금화 2로 교체 · 턴당 한 번" aria-label="금화 2로 교역소 교체">↻ <span>2 G</span></button></div><p class="market-note">기술로 영입 · 다음 순환부터 합산</p><div id="market"></div></section>
           <div class="landscape-turn"><span id="turnRisk"></span><button class="end-button" data-act="end"><span>풀 뽑기</span><small>턴 종료 · 새 능력 5개</small><span class="arrow">✧</span></button></div>
         </aside>
       </div>
