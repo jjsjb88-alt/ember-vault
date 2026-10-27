@@ -1,0 +1,34 @@
+{
+  "version": 5,
+  "description": "Actual delivered runtime assets. Briefs describe the delivered art, not verbatim prompt transcripts.",
+  "assets": [
+    {
+      "file": "dist/assets/library-stage-v5.png",
+      "sha256": "ac3ddb2a5f4c8366e876b7cc8fb087a10c0e3cd33cba864e6cae668130913951",
+      "generator": "OpenAI image generation",
+      "brief": "UI·인물 없는 청색 석재 서고, 금빛 촛불·청록 수로 배경",
+      "source_pixels_modified": false
+    },
+    {
+      "file": "dist/assets/rogue-walk-v5.png",
+      "sha256": "f3936298e25e69e95d8b5f2cadfefc65e2522f8b38eda8433699d1f42f8a9cf4",
+      "generator": "OpenAI image generation",
+      "brief": "성인 검은 머리 도적, 청록 망토·단검·등불, 8방향 × 걷기 4단계",
+      "source_pixels_modified": false
+    },
+    {
+      "file": "dist/assets/rogue-attack-v5.png",
+      "sha256": "f5fcd6cc7401a7e1a7e69a902a31a21368031f42b4e8b66496f5254b0846310b",
+      "generator": "OpenAI image generation",
+      "brief": "같은 도적의 방향별 준비·타격·복귀 3단계",
+      "source_pixels_modified": false
+    },
+    {
+      "file": "dist/assets/seal-v5.png",
+      "sha256": "f1f3acec0bb215afff6e532e49d79eef87f48a0f61dce36b03bc05977b0129d1",
+      "generator": "OpenAI image generation",
+      "brief": "투명 배경의 검정·금빛 육각 봉인, 빛나는 균열",
+      "source_pixels_modified": false
+    }
+  ]
+}

@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="./landscape.css">
   <link rel="stylesheet" href="./pool-reveal.css">
   <link rel="stylesheet" href="./viewport.css">
+  <link rel="stylesheet" href="./vault-v5.css">
 </head>
 <body>
   <div class="app-shell">
@@ -34,7 +35,7 @@
           <section class="combat-bar" aria-label="이번 턴 남은 공격력과 이동력"><div id="resources" class="resources"></div></section>
           <section class="dungeon-panel" aria-label="던전 플레이 화면">
             <div class="panel-top"><div class="live-tag"><span></span><span id="mapLocation">무너진 입구</span></div><div class="map-controls"><span id="turnValue">TURN 01</span><button class="icon-button" data-act="zoom" title="지도 펼치기" aria-label="지도 펼치기" aria-pressed="false">⛶</button></div></div>
-            <div class="canvas-wrap"><canvas id="dungeon" width="960" height="540" aria-label="움직이는 도트 던전"></canvas><div class="scene-title"><span class="eyebrow" id="sceneChapter">THE FORGOTTEN CATACOMBS</span><h2 id="sceneRoom">무너진 입구</h2><p id="sceneMood">어둠은 모든 소리를 기억한다.</p></div><div id="enemyOverlay" class="enemy-overlay"></div><div id="sceneFooting" class="scene-footing"></div><div id="sceneSound" class="scene-sound" aria-live="polite"></div></div>
+            <div class="canvas-wrap"><canvas id="dungeon" width="960" height="540" aria-label="움직이는 도트 던전"></canvas><div class="scene-title"><span class="eyebrow" id="sceneChapter">THE FORGOTTEN CATACOMBS</span><h2 id="sceneRoom">무너진 입구</h2><p id="sceneMood">어둠은 모든 소리를 기억한다.</p></div><div class="hud-minimap"><button class="map-expand" data-act="zoom" aria-label="지도 펼치기">⛶</button><canvas id="minimap" width="360" height="244" aria-label="소음과 적의 경로를 보여 주는 지도"></canvas><div class="mini-caption"><span id="miniDepth">B1</span><span>소리의 흔적</span></div></div><div id="enemyOverlay" class="enemy-overlay"></div><div id="sceneFooting" class="scene-footing"></div><div id="sceneSound" class="scene-sound" aria-live="polite"></div></div>
             <div class="map-caption"><span id="mapHint"></span><button id="quickAction" class="quick-action" data-act="interact"></button></div>
           </section>
           <section class="hand-panel pool-panel" aria-label="자동 추출된 이번 턴의 자원">
@@ -48,7 +49,7 @@
         </div>
         <aside class="game-sidebar" data-panel="routes" aria-label="현재 방과 교역소">
           <div class="landscape-tabs" role="tablist" aria-label="탐험 패널"><button id="routesTab" role="tab" aria-selected="true" aria-controls="roomPanel" data-act="panel" data-id="routes">이동</button><button id="soundTab" role="tab" aria-selected="false" aria-controls="soundPanel" data-act="panel" data-id="sound">소리 <span id="soundTabBadge">0</span></button><button id="marketTab" role="tab" aria-selected="false" aria-controls="marketPanel" data-act="panel" data-id="market">교역</button></div>
-          <section class="acoustic-panel" id="soundPanel"><div class="section-heading"><div><span class="eyebrow">EVERY SOUND LEAVES A TRACE</span><h2>소리의 흔적</h2></div><span class="live-dot">LIVE</span></div><canvas id="minimap" width="360" height="244" aria-label="소음과 적의 경로를 보여 주는 지도"></canvas><div class="sound-map-key"><span><i class="you"></i> 나</span><span><i class="hear"></i> 소리</span><span><i class="enemy"></i> 적</span><span>방을 눌러 이동</span></div><div id="dangerPanel"></div></section>
+          <section class="acoustic-panel" id="soundPanel"><div class="section-heading"><div><span class="eyebrow">EVERY SOUND LEAVES A TRACE</span><h2>소리의 흔적</h2></div><span class="live-dot">LIVE</span></div><div class="sound-map-key"><span><i class="you"></i> 나</span><span><i class="hear"></i> 소리</span><span><i class="enemy"></i> 적</span><span>방을 눌러 이동</span></div><div id="dangerPanel"></div></section>
           <section class="room-panel" id="roomPanel"></section>
           <section class="market-panel" id="marketPanel"><div class="section-heading"><div><span class="eyebrow">BUILD YOUR POOL</span><h2>그림자 교역소</h2></div><button class="refresh-button" data-act="refresh" title="금화 2로 교체 · 턴당 한 번" aria-label="금화 2로 교역소 교체">↻ <span>2 G</span></button></div><p class="market-note">기술로 영입 · 다음 순환부터 합산</p><div id="market"></div></section>
           <div class="landscape-turn"><span id="turnRisk"></span><button class="end-button" data-act="end"><span>풀 뽑기</span><small>턴 종료 · 새 능력 5개</small><span class="arrow">✧</span></button></div>

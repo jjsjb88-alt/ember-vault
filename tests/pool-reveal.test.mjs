@@ -1,7 +1,25 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {newRun,apply,resolvePool} from '../dist/engine.js';
-import {buildRevealPlan} from '../dist/pool-reveal.js';
+import {buildRevealPlan,revealStakes} from '../dist/pool-reveal.js';
+
+test('last-seal hint uses only revealed resources, never the committed final draw',()=>{
+ const s=newRun({seed:1});s.pos=4;
+ const shown={sword:1,move:1,skill:0,block:0};
+ assert.equal(revealStakes(s,shown),'공격력이 2 더 필요하다');
+ s.poolTotal.sword=100;s.resource.sword=100;s.played=['fury'];
+ assert.equal(revealStakes(s,shown),'공격력이 2 더 필요하다');
+ assert.equal(revealStakes(s,{...shown,sword:3}),'돌파할 공격력이 모였다');
+});
+
+test('movement stakes follow current stance cost and do not expose the final movement total',()=>{
+ const s=newRun({seed:1});s.mode='sneak';
+ const shown={sword:0,move:1,skill:0,block:0};
+ assert.equal(revealStakes(s,shown),'한 걸음 더. 이동력이 1 더 필요하다');
+ s.poolTotal.move=99;s.resource.move=99;
+ assert.equal(revealStakes(s,shown),'한 걸음 더. 이동력이 1 더 필요하다');
+ assert.equal(revealStakes(s,{...shown,move:2}),'다음 발걸음은, 이 추출에 달려 있다');
+});
 
 test('cinematic totals match committed draws across roles and turns without changing game or RNG',()=>{
  for(const role of ['rogue','knight','mage'])for(let seed=1;seed<=15;seed++){

@@ -1,0 +1,31 @@
+{
+  "created": "2026-10-27",
+  "generator": "built-in image generation",
+  "runtime_asset": false,
+  "images": [
+    {
+      "path": "docs/visual/approved/exploration-landscape.png",
+      "bytes": 2457350,
+      "sha256": "3757bee857960c6b724888100841fbaadbb38e0fc1f432027b4016a1047b422f",
+      "status": "approved-target-mockup"
+    },
+    {
+      "path": "docs/visual/approved/pool-final-seal.png",
+      "bytes": 1829161,
+      "sha256": "1944913e4713eb577302251e30d2ed2938d81bf85707d92e5b7a903508851885",
+      "status": "approved-target-mockup"
+    },
+    {
+      "path": "docs/visual/archive/exploration-first-draft.png",
+      "bytes": 2561570,
+      "sha256": "339e0cfa6f3fb0584f4ccc1acbb22d06ad02b5f3446df25fb20de42a91d73180",
+      "status": "superseded-draft"
+    },
+    {
+      "path": "docs/visual/archive/pool-before-spoiler-fix.png",
+      "bytes": 1908156,
+      "sha256": "5854568bb19a6331961d4f256c9bfd16aea5d201a280c17fd61b0d162711bb33",
+      "status": "superseded-draft"
+    }
+  ]
+}

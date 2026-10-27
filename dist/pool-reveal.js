@@ -1,9 +1,19 @@
-import {CARDS} from './engine.js';
+import {CARDS,neighbours,moveCost} from './engine.js';
 import {paintIcons} from './art.js';
 
 const KEYS=['sword','move','skill','block','quiet','rattle'];
 const VALUES=[['sword','공격력'],['move','이동력'],['skill','기술'],['block','방어']];
 const glyph=(name,size=64)=>`<canvas data-icon="${name}" width="${size}" height="${size}" aria-hidden="true"></canvas>`;
+
+export function revealStakes(state,shown){
+ const enemy=state.rooms[state.pos].enemy;
+ if(enemy?.hp>0){const need=Math.max(0,enemy.hp-shown.sword);return need?`공격력이 ${need} 더 필요하다`:'돌파할 공격력이 모였다';}
+ const costs=neighbours(state).map(id=>moveCost(state,id));
+ const need=Math.max(0,Math.min(...costs)-shown.move);
+ if(need)return `한 걸음 더. 이동력이 ${need} 더 필요하다`;
+ if(state.relic)return `붕괴까지 ${state.countdown}턴 · 돌아갈 힘을 모아라`;
+ return '다음 발걸음은, 이 추출에 달려 있다';
+}
 
 // Presentation only: consume the already committed draw, never draw or mutate a run.
 export function buildRevealPlan(state){
@@ -32,7 +42,7 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   q('.reveal-slots').innerHTML=Array.from({length:Math.min(5,visibleSlots-start)},(_,offset)=>{
    const i=start+offset;
    const known=i<=index,card=known?CARDS[plan.steps[i].id]:null;
-   return `<div class="sealed-token ${known?'opened '+card.family:''} ${i===index+1&&!complete?'next':''}" aria-label="${known?card.name:'미공개 능력'}">${known?glyph(card.icon,28):'<span>◇</span>'}<small>${known?card.name:String(i+1).padStart(2,'0')}</small></div>`;
+   return `<div class="sealed-token ${known?'opened '+card.family:''} ${i===index+1&&!complete?'next':''}" aria-label="${known?card.name:'미공개 능력'}"><span class="seal-face">${known?glyph(card.icon,28):'<b>◇</b>'}</span><small>${known?card.name:String(i+1).padStart(2,'0')}</small></div>`;
   }).join('');
   paintIcons(q('.reveal-slots'));
  }
@@ -66,10 +76,11 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   q('.reveal-orb-core').innerHTML='<span class="sealed-mark">✧</span>';
   q('.reveal-name').textContent=step.last?'숨을 죽이세요':'봉인이 흔들린다';
   q('.reveal-effect').textContent=step.last?'이번 턴을 바꿀 마지막 힘':'아직, 무엇이 나올지 알 수 없습니다.';
-  q('.reveal-count').textContent=`${String(index+2).padStart(2,'0')} / ${String(visibleSlots).padStart(2,'0')} · 봉인 해제 중`;
+  q('.reveal-count').textContent=`${index+1} / ${visibleSlots} 공개 · 자동 합산`;
+  q('#revealStakes').textContent=revealStakes(run,step.before);
   strip();cue('charge',step);
   if(step.last){later(()=>cue('heartbeat',step),330);later(()=>cue('hush',step),680);}
-  later(reveal,step.last?1100:index<0?650:index>=4?320:430);
+  later(reveal,step.last?1500:index<0?650:index>=4?320:430);
  }
  function reveal(){
   const step=plan.steps[++index],card=CARDS[step.id];
@@ -80,6 +91,7 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   q('.reveal-effect').textContent=card.text;
   q('.reveal-count').textContent=step.added?`연쇄 추출 · 봉인 ${step.added}개 추가`:`${String(index+1).padStart(2,'0')} / ${String(visibleSlots).padStart(2,'0')} · ${card.kind}`;
   totals(step.totals,step.delta);strip();paintIcons(q('.reveal-orb-core'));
+  q('#revealStakes').textContent=revealStakes(run,step.totals);
   cue(step.last?'last-reveal':step.added?'chain':'reveal',step);
   q('.reveal-announcement').textContent=`${card.name}. ${card.text}${step.added?`. ${step.added}개 추가 추출`:''}`;
   later(step.last?summary:anticipate,step.last?720:index>=4?400:510);
@@ -88,11 +100,10 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   if(!active)return;clear();active=false;cue('stop');dialog.close();document.body.classList.remove('drawing-pool');
   previousFocus?.isConnected&&previousFocus.focus({preventScroll:true});onClose();
  }
- function start(state,{fast=false,beforeHp=state.hp}={}){
+ function start(state,{fast=false}={}){
   if(active)close();run=state;plan=buildRevealPlan(state);index=-1;visibleSlots=plan.initialSlots;complete=false;active=true;
   previousFocus=document.activeElement;
-  const enemy=state.rooms[state.pos].enemy;
-  const stakes=beforeHp>state.hp?`체력 ${beforeHp} → ${state.hp} · 살아남을 새 힘이 필요합니다.`:enemy?.hp>0?`${enemy.name} HP ${enemy.hp} · 돌파할 공격력이 필요합니다.`:state.relic?`붕괴까지 ${state.countdown}턴 · 돌아갈 이동력이 필요합니다.`:'다음 발걸음은, 이 추출에 달려 있다.';
+  const stakes=revealStakes(state,plan.base);
   root.innerHTML=`<div class="reveal-grain" aria-hidden="true"></div><div class="reveal-top"><div><span class="reveal-kicker">THE MOMENT BEFORE</span><h2 id="revealTitle">금고가 숨을 죽인다</h2></div><button data-reveal="sound" type="button"></button></div><p id="revealStakes">${stakes}</p><div class="reveal-slots" aria-label="추출 진행"></div><div class="reveal-stage"><div class="reveal-orb" aria-hidden="true"><div class="orb-ring outer"></div><div class="orb-ring inner"></div><div class="orb-rays"></div><div class="reveal-orb-core"><span class="sealed-mark">✧</span></div>${Array.from({length:12},(_,i)=>`<i class="orb-mote" style="--n:${i}"></i>`).join('')}</div><div class="reveal-identity"><span class="reveal-count">봉인된 능력 ${visibleSlots}개</span><h3 class="reveal-name">능력을 불러오는 중</h3><p class="reveal-effect">작은 힘 하나가, 탈출을 결정합니다.</p></div></div><div class="reveal-bottom"><div class="reveal-totals">${VALUES.map(([key,name])=>`<div class="reveal-stat ${key}" data-total="${key}"><span>${name}</span><strong>0</strong><em></em></div>`).join('')}</div><div class="reveal-traits"></div><button class="reveal-skip" data-reveal="skip" type="button">결과 바로 보기 →</button></div><p class="reveal-announcement sr-only" aria-live="polite" aria-atomic="true"></p>`;
   dialog.dataset.phase='gather';dialog.dataset.family='gold';soundButton();totals(plan.base);strip();
   document.body.classList.add('drawing-pool');dialog.showModal();q('[data-reveal="skip"]').focus({preventScroll:true});cue('gather');
