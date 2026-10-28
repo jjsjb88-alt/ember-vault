@@ -5,6 +5,11 @@ const KEYS=['sword','move','skill','block','quiet','rattle'];
 const VALUES=[['sword','공격력'],['move','이동력'],['skill','기술'],['block','방어']];
 const glyph=(name,size=64)=>`<canvas data-icon="${name}" width="${size}" height="${size}" aria-hidden="true"></canvas>`;
 
+export function noiseDrawState(step){
+ const added=step.delta.rattle||0,stored=step.totals.rattle||0,quiet=step.totals.quiet||0;
+ return {added,stored,quiet,exposed:Math.max(0,stored-quiet)};
+}
+
 export function revealStakes(state,shown){
  const enemy=state.rooms[state.pos].enemy;
  if(enemy?.hp>0){const need=Math.max(0,enemy.hp-shown.sword);return need?`공격력이 ${need} 더 필요하다`:'돌파할 공격력이 모였다';}
@@ -32,7 +37,7 @@ export function buildRevealPlan(state){
 
 export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound=()=>{},onClose=()=>{}}={}){
  const root=dialog.querySelector('.reveal-content');
- let plan=null,run=null,index=-1,visibleSlots=5,timers=new Set(),active=false,complete=false,previousFocus=null;
+ let plan=null,run=null,index=-1,visibleSlots=5,timers=new Set(),active=false,complete=false,previousFocus=null,holdNoise=false,noiseHeld=false;
  const q=s=>root.querySelector(s);
  function later(fn,ms){const id=setTimeout(()=>{timers.delete(id);if(active)fn();},ms);timers.add(id);}
  function clear(){for(const id of timers)clearTimeout(id);timers.clear();}
@@ -56,7 +61,7 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
  }
  function summary(){
   if(!active||complete)return;
-  clear();complete=true;index=plan.steps.length-1;visibleSlots=plan.steps.length;
+  clear();complete=true;noiseHeld=false;index=plan.steps.length-1;visibleSlots=plan.steps.length;
   dialog.dataset.phase='complete';dialog.dataset.family='gold';
   q('#revealTitle').textContent='이번 턴의 힘';q('.reveal-kicker').textContent=`TURN ${String(run.turn).padStart(2,'0')} · POOL REVEALED`;
   q('.reveal-orb-core').innerHTML=glyph('heartgem',100);
@@ -84,24 +89,27 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
  }
  function reveal(){
   const step=plan.steps[++index],card=CARDS[step.id];
+  const noise=noiseDrawState(step);
   visibleSlots=step.slots;
-  dialog.dataset.phase='revealed';dialog.dataset.family=card.family;
-  q('.reveal-orb-core').innerHTML=glyph(card.icon,100);
+  dialog.dataset.phase=noise.added?'noise':'revealed';dialog.dataset.family=card.family;
+  q('.reveal-orb-core').innerHTML=noise.added?'<img class="draw-noise-seal" src="./assets/noise-seal-v6.png" alt="금이 간 소음의 봉인">':glyph(card.icon,100);
   q('.reveal-name').textContent=card.name;
   q('.reveal-effect').textContent=card.text;
   q('.reveal-count').textContent=step.added?`연쇄 추출 · 봉인 ${step.added}개 추가`:`${String(index+1).padStart(2,'0')} / ${String(visibleSlots).padStart(2,'0')} · ${card.kind}`;
   totals(step.totals,step.delta);strip();paintIcons(q('.reveal-orb-core'));
   q('#revealStakes').textContent=revealStakes(run,step.totals);
-  cue(step.last?'last-reveal':step.added?'chain':'reveal',step);
+  if(noise.added){q('#revealTitle').textContent='소음을 뽑았다.';q('#revealStakes').textContent=`다음 행동 소음 +${noise.stored}${noise.quiet?` · 은신 ${noise.quiet}로 완화`:''}`;q('.reveal-effect').textContent='지금은 예고. 다음 발소리가 금고를 깨운다.';}
+  cue(noise.added?'noise-reveal':step.last?'last-reveal':step.added?'chain':'reveal',step);
   q('.reveal-announcement').textContent=`${card.name}. ${card.text}${step.added?`. ${step.added}개 추가 추출`:''}`;
-  later(step.last?summary:anticipate,step.last?720:index>=4?400:510);
+  if(noise.added&&holdNoise){noiseHeld=true;q('[data-reveal="skip"]').textContent='다음 봉인 →';}
+  else later(step.last?summary:anticipate,noise.added?3000:step.last?720:index>=4?400:510);
  }
  function close(){
   if(!active)return;clear();active=false;cue('stop');dialog.close();document.body.classList.remove('drawing-pool');
   previousFocus?.isConnected&&previousFocus.focus({preventScroll:true});onClose();
  }
- function start(state,{fast=false}={}){
-  if(active)close();run=state;plan=buildRevealPlan(state);index=-1;visibleSlots=plan.initialSlots;complete=false;active=true;
+ function start(state,{fast=false,holdNoise:hold=false}={}){
+  if(active)close();run=state;plan=buildRevealPlan(state);index=-1;visibleSlots=plan.initialSlots;complete=false;active=true;holdNoise=hold;noiseHeld=false;
   previousFocus=document.activeElement;
   const stakes=revealStakes(state,plan.base);
   root.innerHTML=`<div class="reveal-grain" aria-hidden="true"></div><div class="reveal-top"><div><span class="reveal-kicker">THE MOMENT BEFORE</span><h2 id="revealTitle">금고가 숨을 죽인다</h2></div><button data-reveal="sound" type="button"></button></div><p id="revealStakes">${stakes}</p><div class="reveal-slots" aria-label="추출 진행"></div><div class="reveal-stage"><div class="reveal-orb" aria-hidden="true"><div class="orb-ring outer"></div><div class="orb-ring inner"></div><div class="orb-rays"></div><div class="reveal-orb-core"><span class="sealed-mark">✧</span></div>${Array.from({length:12},(_,i)=>`<i class="orb-mote" style="--n:${i}"></i>`).join('')}</div><div class="reveal-identity"><span class="reveal-count">봉인된 능력 ${visibleSlots}개</span><h3 class="reveal-name">능력을 불러오는 중</h3><p class="reveal-effect">작은 힘 하나가, 탈출을 결정합니다.</p></div></div><div class="reveal-bottom"><div class="reveal-totals">${VALUES.map(([key,name])=>`<div class="reveal-stat ${key}" data-total="${key}"><span>${name}</span><strong>0</strong><em></em></div>`).join('')}</div><div class="reveal-traits"></div><button class="reveal-skip" data-reveal="skip" type="button">결과 바로 보기 →</button></div><p class="reveal-announcement sr-only" aria-live="polite" aria-atomic="true"></p>`;
@@ -109,8 +117,9 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   document.body.classList.add('drawing-pool');dialog.showModal();q('[data-reveal="skip"]').focus({preventScroll:true});cue('gather');
   if(fast||matchMedia('(prefers-reduced-motion: reduce)').matches||!plan.steps.length)summary();else later(anticipate,520);
  }
- root.addEventListener('click',ev=>{const action=ev.target.closest('[data-reveal]')?.dataset.reveal;if(action==='skip')complete?close():summary();if(action==='sound'){toggleSound();soundButton();}});
- dialog.addEventListener('cancel',ev=>{ev.preventDefault();complete?close():summary();});
+ function advance(){if(noiseHeld){noiseHeld=false;q('[data-reveal="skip"]').textContent='결과 바로 보기 →';return plan.steps[index].last?summary():anticipate();}complete?close():summary();}
+ root.addEventListener('click',ev=>{const action=ev.target.closest('[data-reveal]')?.dataset.reveal;if(action==='skip')advance();if(action==='sound'){toggleSound();soundButton();}});
+ dialog.addEventListener('cancel',ev=>{ev.preventDefault();advance();});
  document.addEventListener('visibilitychange',()=>{if(document.hidden&&active&&!complete)summary();});
  return {start,close,get active(){return active;}};
 }

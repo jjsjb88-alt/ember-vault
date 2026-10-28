@@ -1,0 +1,62 @@
+{
+  "version": 6,
+  "prompts": "docs/visual/PROMPTS-V6.md",
+  "assets": [
+    {
+      "file": "dist/assets/noise-seal-v6.png",
+      "sha256": "5a01b459280c0480e98decd5dbd4044bd450d5e696898a7e88682527987fda69",
+      "bytes": 1930155,
+      "size": [
+        1254,
+        1254
+      ],
+      "generator": "OpenAI built-in image generation",
+      "brief": "소음 능력 추출의 투명 육각 봉인",
+      "runtime": "pool-reveal.js, noise-moment.js",
+      "transparent_background": true,
+      "source_pixels_modified": false
+    },
+    {
+      "file": "dist/assets/dragon-eye-v6.png",
+      "sha256": "d3fd82953619aeff0f64812ae9ce000e12daacccc30e7b0bb5d079e616cc1d46",
+      "bytes": 1698203,
+      "size": [
+        1672,
+        941
+      ],
+      "generator": "OpenAI built-in image generation",
+      "brief": "소음 추출과 용의 분노에 드러나는 용의 눈",
+      "runtime": "encounter.css",
+      "transparent_background": false,
+      "source_pixels_modified": false
+    },
+    {
+      "file": "dist/assets/lunar-vault-v6.png",
+      "sha256": "dc6e08e6f4f9bb9f28caf0d359746251e069fd3a73e2ff99735e8d5389ca7488",
+      "bytes": 3473380,
+      "size": [
+        1672,
+        941
+      ],
+      "generator": "OpenAI built-in image generation",
+      "brief": "달의 봉인실과 제단 배경",
+      "runtime": "scene-v5.js",
+      "transparent_background": false,
+      "source_pixels_modified": false
+    },
+    {
+      "file": "dist/assets/ember-refuge-v6.png",
+      "sha256": "6fd88dee11ef1a4c122430ee60c99460d14ae786b15880e33a428e3a374f9c89",
+      "bytes": 3513848,
+      "size": [
+        1672,
+        941
+      ],
+      "generator": "OpenAI built-in image generation",
+      "brief": "캠프와 상인 방의 불씨 쉼터 배경",
+      "runtime": "scene-v5.js",
+      "transparent_background": false,
+      "source_pixels_modified": false
+    }
+  ]
+}

@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="./pool-reveal.css">
   <link rel="stylesheet" href="./viewport.css">
   <link rel="stylesheet" href="./vault-v5.css">
+  <link rel="stylesheet" href="./encounter.css">
 </head>
 <body>
   <div class="app-shell">
@@ -35,7 +36,7 @@
           <section class="combat-bar" aria-label="이번 턴 남은 공격력과 이동력"><div id="resources" class="resources"></div></section>
           <section class="dungeon-panel" aria-label="던전 플레이 화면">
             <div class="panel-top"><div class="live-tag"><span></span><span id="mapLocation">무너진 입구</span></div><div class="map-controls"><span id="turnValue">TURN 01</span><button class="icon-button" data-act="zoom" title="지도 펼치기" aria-label="지도 펼치기" aria-pressed="false">⛶</button></div></div>
-            <div class="canvas-wrap"><canvas id="dungeon" width="960" height="540" aria-label="움직이는 도트 던전"></canvas><div class="scene-title"><span class="eyebrow" id="sceneChapter">THE FORGOTTEN CATACOMBS</span><h2 id="sceneRoom">무너진 입구</h2><p id="sceneMood">어둠은 모든 소리를 기억한다.</p></div><div class="hud-minimap"><button class="map-expand" data-act="zoom" aria-label="지도 펼치기">⛶</button><canvas id="minimap" width="360" height="244" aria-label="소음과 적의 경로를 보여 주는 지도"></canvas><div class="mini-caption"><span id="miniDepth">B1</span><span>방을 눌러 이동</span></div></div><div id="sceneExits" class="scene-exits" role="group" aria-label="다음 방을 눌러 이동"></div><div id="travelHint" class="travel-hint" aria-live="polite"></div><div id="enemyOverlay" class="enemy-overlay"></div><div id="sceneFooting" class="scene-footing"></div><div id="sceneSound" class="scene-sound" aria-live="polite"></div></div>
+            <div class="canvas-wrap"><canvas id="dungeon" width="960" height="540" aria-label="움직이는 도트 던전"></canvas><div class="scene-title"><span class="eyebrow" id="sceneChapter">THE FORGOTTEN CATACOMBS</span><h2 id="sceneRoom">무너진 입구</h2><p id="sceneMood">어둠은 모든 소리를 기억한다.</p></div><div class="hud-minimap"><button class="map-expand" data-act="zoom" aria-label="지도 펼치기">⛶</button><canvas id="minimap" width="360" height="244" aria-label="소음과 적의 경로를 보여 주는 지도"></canvas><div class="mini-caption"><span id="miniDepth">B1</span><span>방을 눌러 이동</span></div></div><div id="sceneExits" class="scene-exits" role="group" aria-label="다음 방을 눌러 이동"></div><div id="travelHint" class="travel-hint" aria-live="polite"></div><div id="enemyOverlay" class="enemy-overlay"></div><button id="sceneTarget" class="scene-target" data-act="sceneInteract" hidden></button><div id="sceneFooting" class="scene-footing"></div><div id="sceneSound" class="scene-sound" aria-live="polite"></div></div>
             <div class="map-caption"><span id="mapHint"></span><button id="quickAction" class="quick-action" data-act="interact"></button></div>
           </section>
           <section class="hand-panel pool-panel" aria-label="자동 추출된 이번 턴의 자원">
@@ -58,7 +59,9 @@
     </main>
     <footer><span>EMBER VAULT <b>03</b></span><span>조금만 더 깊이. 아니면, 지금 돌아갈 시간.</span><button data-act="menu">탐험 설정 ↗</button></footer>
   </div>
+  <aside id="tutorialCoach" class="tutorial-coach" aria-live="polite" hidden></aside>
   <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="noiseMoment" class="noise-moment" aria-labelledby="noiseTitle"></dialog>
   <dialog id="modal" aria-labelledby="modalTitle"><div id="modalContent"></div></dialog>
   <dialog id="poolReveal" class="pool-reveal" aria-labelledby="revealTitle" aria-describedby="revealStakes"><div class="reveal-content"></div></dialog>
   <script type="module" src="./app.js"></script>

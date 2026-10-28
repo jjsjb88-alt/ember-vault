@@ -4,17 +4,22 @@ import {makeRenderer} from './scene-v5.js';
 import {makePoolReveal} from './pool-reveal.js';
 import {pageOf,pager} from './pages.js';
 import {exitAnchor} from './scene-layout.js';
+import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js';
+import {makeNoiseMoment} from './noise-moment.js';
+import {TUTORIAL_STEPS,createTutorialRun,tutorialAllows,tutorialAdvance} from './tutorial.js';
 const $=s=>document.querySelector(s),SAVE_KEY='ember-vault-save-v2',BEST_KEY='ember-vault-best-v1';
 let state,storageOK=true,best=0,sound=false,selectedRole='rogue',dialogMode='',lastFocus=null,toastTimer,audio,migrated=false,loadedRun=false,fastDraw=false;
 try{let saved=JSON.parse(localStorage.getItem(SAVE_KEY));if(!validSave(saved)){const prior=JSON.parse(localStorage.getItem('ember-vault-save-v1'));if(prior){saved=migrateSave(prior);migrated=!!saved;}}loadedRun=validSave(saved);state=loadedRun?saved:newRun();best=Number(localStorage.getItem(BEST_KEY))||0;sound=localStorage.getItem('ember-vault-sound')==='on';fastDraw=localStorage.getItem('ember-vault-fast-draw')==='on';}catch{state=newRun();storageOK=false;}
-let handPage=0,enemyPage=0,lureMode=false,travelUntil=0;
+let handPage=0,enemyPage=0,lureMode=false,travelUntil=0,actionBusy=false,tutorial=null,tutorialSeen=false;
+try{tutorialSeen=!!localStorage.getItem('ember-vault-tutorial-v1');}catch{}
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const portrait=(role,cls='')=>`<span class="portrait ${role} ${cls}" role="img" aria-label="${ROLES[role].name} 초상화"></span>`;
 const ico=(name,n=32)=>`<canvas data-icon="${name}" width="${n}" height="${n}" aria-hidden="true"></canvas>`;
 const renderer=makeRenderer($('#dungeon'),()=>state,$('#minimap'));
-const poolReveal=makePoolReveal($('#poolReveal'),{cue:drawCue,getSound:()=>sound,toggleSound,onClose:()=>{$('.pool-panel').classList.remove('revealing');void $('.pool-panel').offsetWidth;$('.pool-panel').classList.add('revealing');}});
+const poolReveal=makePoolReveal($('#poolReveal'),{cue:drawCue,getSound:()=>sound,toggleSound,onClose:()=>{$('.pool-panel').classList.remove('revealing');void $('.pool-panel').offsetWidth;$('.pool-panel').classList.add('revealing');renderTutorial();}});
+const noiseMoment=makeNoiseMoment($('#noiseMoment'),{cue:noiseCue,getSound:()=>sound,toggleSound});
 const drawNodes=new Set();
-function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(state));if(state.phase==='won'&&state.score>best){best=state.score;localStorage.setItem(BEST_KEY,String(best));}storageOK=true;}catch{storageOK=false;}}
+function save(){if(tutorial)return;try{localStorage.setItem(SAVE_KEY,JSON.stringify(state));if(state.phase==='won'&&state.score>best){best=state.score;localStorage.setItem(BEST_KEY,String(best));}storageOK=true;}catch{storageOK=false;}}
 function beep(type='card'){
  if(!sound)return;
  try{audio??=new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();
@@ -39,7 +44,8 @@ function drawCue(type,step){
    g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(gain,at+.012);g.gain.exponentialRampToValueAtTime(.0001,at+length);
    o.connect(g);g.connect(audio.destination);drawNodes.add(o);o.onended=()=>{drawNodes.delete(o);o.disconnect();g.disconnect();};o.start(at);o.stop(at+length+.025);
   };
-  if(type==='gather'){pulse(92,0,.55,.045,'sine',42);pulse(184,.08,.4,.012,'triangle',98);}
+  if(type==='noise-reveal'){pulse(59,0,.75,.07,'sine',28);pulse(147,.04,.3,.035,'triangle',61);pulse(370,.06,.22,.012,'sawtooth',120);pulse(48,.65,.3,.045,'sine',30);}
+  else if(type==='gather'){pulse(92,0,.55,.045,'sine',42);pulse(184,.08,.4,.012,'triangle',98);}
   else if(type==='charge'||type==='heartbeat'){pulse(74,0,.17,.065,'sine',40);pulse(57,.14,.16,.04,'sine',32);if(type==='charge'&&!step?.last)pulse(170,.06,.23,.008,'triangle',290);}
   else if(type==='resolve'){[196,293.66,392].forEach((f,i)=>pulse(f,i*.06,.4,.018,'triangle'));}
   else{
@@ -51,14 +57,59 @@ function drawCue(type,step){
  }catch{}
 }
 function toggleSound(){sound=!sound;try{localStorage.setItem('ember-vault-sound',sound?'on':'off');}catch{}if(!sound)drawCue('stop');render();if(sound)beep();}
+function noiseCue(type){
+ if(type==='stop')return drawCue('stop');
+ if(type==='heartbeat'||type==='rage')return drawCue('heartbeat');
+ if(type==='noise')return beep('lure');
+ if(type==='heard'||type==='impact')return beep('bad');
+}
+function renderInteraction(ra){
+ const target=$('#sceneTarget'),r=state.rooms[state.pos];
+ target.hidden=!ra.act||state.phase!=='playing'||!!state.pending||(r.type==='entry'&&!state.relic);
+ target.className=`scene-target ${ra.kind||''} ${ra.enabled?'':'unavailable'}`;
+ target.setAttribute('aria-label',`${ra.subject||r.name} 직접 ${ra.short}. ${ra.enabled?ra.detail:ra.reason}`);
+ target.setAttribute('aria-disabled',String(!ra.enabled));
+ target.innerHTML=`<span class="target-corners" aria-hidden="true"></span><span class="target-label">${esc(ra.short||'')} <b>＋</b></span>`;
+ $('#quickAction').title=ra.detail||ra.reason||ra.text;
+ $('.hud-location')?.setAttribute('title',state.relic?`유물 회수 완료 · ${state.countdown}턴 안에 입구로`:'유물 하나를 회수하고 입구로 돌아오세요');
+}
+function markTutorial(value){tutorialSeen=true;try{localStorage.setItem('ember-vault-tutorial-v1',value);}catch{}}
+function showTutorialIntro(){
+ if(tutorial)return;
+ openModal(modalShell('소리가 금고를 깨웁니다','LEARN BY PLAYING',`<div class="tutorial-intro"><img src="./assets/noise-seal-v6.png" alt="갈라진 소음의 봉인"><div><p>방을 누르고, 상자를 열고, 소리를 따라오는 적을 만나세요.</p><p><b>8단계 연습</b>에서 용의 분노와 전투까지 직접 경험합니다. 현재 탐험은 유지됩니다.</p><label><input id="tutorialAudio" type="checkbox" checked> 효과음과 함께 연습</label></div></div><div class="modal-actions"><button class="subtle-button" data-act="tutorialSkip">바로 탐험하기</button><button class="large-button" data-act="tutorialStart">직접 배워보기 →</button></div>`),'tutorialIntro');
+}
+function startTutorial(){
+ const withAudio=$('#tutorialAudio')?.checked;
+ if(withAudio&&!sound)toggleSound();
+ tutorial={saved:state,index:0};state=createTutorialRun();handPage=0;enemyPage=0;lureMode=false;travelUntil=0;renderer.reset();
+ $('#modal').close();dialogMode='';document.body.classList.add('tutorial-mode');selectPanel('routes');render();poolReveal.start(state,{fast:false,holdNoise:true});
+}
+function exitTutorial(){
+ if(!tutorial)return;const completed=tutorial.index>=TUTORIAL_STEPS.length;state=tutorial.saved;tutorial=null;
+ document.body.classList.remove('tutorial-mode');markTutorial(completed?'completed':'seen');renderer.reset();lureMode=false;handPage=0;enemyPage=0;travelUntil=0;
+ $('#modal').close();dialogMode='';selectPanel('routes');render();save();toast(completed?'연습 완료 · 유물을 찾아 입구로 돌아오세요.':'원래 탐험으로 돌아왔습니다.');
+}
+function renderTutorial(){
+ const coach=$('#tutorialCoach');document.querySelectorAll('.coach-target').forEach(e=>e.classList.remove('coach-target'));
+ coach.hidden=!tutorial;if(!tutorial)return;
+ const step=TUTORIAL_STEPS[tutorial.index];
+ if(!step){coach.innerHTML='<span>연습 완료</span><strong>이제 유물을 찾아, 입구로 돌아오세요.</strong><button data-act="tutorialExit">탐험으로 →</button>';return;}
+ coach.innerHTML=`<span>연습 ${tutorial.index+1} / ${TUTORIAL_STEPS.length}</span><strong>${step.title}</strong><p>${step.text}</p><button class="tutorial-leave" data-act="tutorialExit" aria-label="연습 끝내고 원래 탐험으로">×</button>`;
+ let target=step.target;
+ if(tutorial.index===3)target=$('.game-sidebar').dataset.panel!=='routes'?'#routesTab':!lureMode?'[data-act="lureMode"]':'.scene-exit[data-id="5"]';
+ if(tutorial.index===4)target=state.mode!=='rush'?'[data-act="mode"][data-id="rush"]':'.scene-exit[data-id="2"]';
+ if(target)document.querySelectorAll(target).forEach(e=>e.classList.add('coach-target'));
+}
+function advanceTutorial(action){if(!tutorial)return;tutorial.index=tutorialAdvance(tutorial.index,action);renderTutorial();}
 function selectPanel(id){
  if(!['routes','sound','market'].includes(id))return;
  $('.game-sidebar').dataset.panel=id;
  const map=id==='sound';renderer.setZoom(map);$('.canvas-wrap').classList.toggle('mapview',map);
  for(const q of ['.scene-title','#enemyOverlay','#sceneFooting','#sceneSound'])$(q).hidden=map;
  document.querySelectorAll('[data-act="panel"][role="tab"]').forEach(b=>{b.setAttribute('aria-selected',String(b.dataset.id===id));b.tabIndex=b.dataset.id===id?0:-1;});
+ renderTutorial();
 }
-function showMenu(){openModal(modalShell('탐험 메뉴','EMBER VAULT',`<div class="game-menu"><button data-act="deck">나의 능력 풀<small>현재 풀과 남은 능력 보기</small></button><button data-act="help">플레이 방법<small>추출 · 이동 · 소리 · 탈출</small></button><button data-act="sound" class="${sound?'selected':''}">효과음 ${sound?'켜짐':'꺼짐'}<small>추출의 심장 박동과 봉인 파열음</small></button><button data-act="speed" class="${fastDraw?'selected':''}">${fastDraw?'빠른 추출':'긴장감 있는 추출'}<small>${fastDraw?'합산 결과만 빠르게 표시':'하나씩 공개 · 마지막 능력까지 기다림'}</small></button><button data-act="log">탐험 일지<small>발소리와 전투 기록</small></button><button data-act="new">새 탐험<small>캐릭터 선택 · 현재 탐험 초기화</small></button></div>`),'menu');}
+function showMenu(){openModal(modalShell('탐험 메뉴','EMBER VAULT',`<div class="game-menu"><button data-act="deck">나의 능력 풀<small>현재 풀과 남은 능력 보기</small></button><button data-act="tutorialIntro">직접 배우는 튜토리얼<small>소음 · 용의 분노 · 전투 연습</small></button><button data-act="help">플레이 방법<small>추출 · 이동 · 소리 · 탈출</small></button><button data-act="sound" class="${sound?'selected':''}">효과음 ${sound?'켜짐':'꺼짐'}<small>추출의 심장 박동과 봉인 파열음</small></button><button data-act="speed" class="${fastDraw?'selected':''}">${fastDraw?'빠른 추출':'긴장감 있는 추출'}<small>${fastDraw?'합산 결과만 빠르게 표시':'하나씩 공개 · 마지막 능력까지 기다림'}</small></button><button data-act="log">탐험 일지<small>발소리와 전투 기록</small></button><button data-act="new">새 탐험<small>캐릭터 선택 · 현재 탐험 초기화</small></button></div>`),'menu');}
 async function fullscreen(){
  try{if(document.fullscreenElement)await document.exitFullscreen();else if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else toast('이 브라우저에서는 가로 화면으로 바로 플레이하세요.');}
  catch{toast('전체 화면을 열지 못했습니다. 가로 화면으로 플레이할 수 있습니다.');}
@@ -66,14 +117,6 @@ async function fullscreen(){
 function toast(text,bad=false){const el=$('#toast');el.textContent=text;el.className='show'+(bad?' bad':'');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.className='',2800);}
 function cardMarkup(id,index,action='reward'){
  const c=CARDS[id];return `<button class="ability-choice ${c.family}" data-act="${action}" data-index="${index}" data-id="${id}" aria-label="${c.name}, ${c.text}, 보상으로 선택"><span class="ability-gem">${ico(c.icon,54)}</span><small>${c.kind}</small><strong>${c.name}</strong><p>${c.text}</p><span class="choose-label">풀에 추가 +</span></button>`;
-}
-function roomAction(r){
- if(state.phase!=='playing')return {act:'result',text:'탐험 결과 보기',enabled:true};
- if(r.enemy?.hp>0)return {act:'attack',text:`공격 · ${Math.min(state.resource.sword,r.enemy.hp)} 피해`,enabled:state.resource.sword>0,cls:'attack'};
- if(r.type==='entry')return {act:'interact',text:state.relic?'유물과 함께 탈출':'유물을 찾아 돌아오세요',enabled:!!state.relic,cls:'relic'};
- if(r.used)return {act:'',text:'이 방의 보상을 받았습니다',enabled:false};
- const a={chest:['상자 열기','interact',true],camp:['휴식 · 체력 +6 / 경계 −3','interact',state.hp<state.maxHp||state.noise>0],shrine:['능력 하나 영구 제거','interact',true],merchant:['물약 구매 · 금화 5','merchant',state.gold>=5&&state.hp<state.maxHp],relic:[`${r.relic?.name} 획득`,'interact',!state.relic||state.relic.value<r.relic?.value]};
- return a[r.type]?{text:a[r.type][0],act:a[r.type][1],enabled:a[r.type][2],cls:r.type==='relic'?'relic':''}:{act:'',text:'길이 열렸습니다',enabled:false};
 }
 function tip(){const s=state,r=s.rooms[s.pos];if(s.phase!=='playing')return s.phase==='won'?'유물과 함께 지상으로 돌아왔습니다.':'다음 탐험에는 더 조용한 발걸음으로.';if(r.enemy?.hp>0)return `반격 ${r.enemy.damage} · 공격하거나 들어온 방으로 후퇴하세요.`;if(s.relic)return `붕괴까지 ${s.countdown}턴 · 입구로 돌아가세요.`;if(r.type==='chest'&&!r.used)return `상자 소리 ${previewNoise(s,r.row===3?7:3)} · 주변의 귀를 조심하세요.`;return '연결된 통로로 이동 · 소리 지도에서 적의 경로 확인';}
 function renderExits(){
@@ -92,13 +135,13 @@ function renderExits(){
  $('#travelHint').textContent=lureMode?'유인할 방을 누르세요':enemy?'적을 처치하거나 후퇴할 방을 누르세요':routes.some(r=>r.allowed)?'금빛 방 이름을 누르면 이동합니다':'이동력이 부족해요 · 풀 뽑기로 다음 턴';
 }
 function travelTo(id){
- if(poolReveal.active||$('#modal').open||id===state.pos)return false;
+ if(poolReveal.active||noiseMoment.active||actionBusy||$('#modal').open||id===state.pos)return false;
  const luring=lureMode,ok=act({type:luring?'lure':'move',id});
  if(ok&&!luring)selectPanel('routes');
  return ok;
 }
 function render(){
- const s=state,r=s.rooms[s.pos],role=ROLES[s.role],active=s.phase==='playing',enemy=r.enemy?.hp>0,ra=roomAction(r);
+ const s=state,r=s.rooms[s.pos],role=ROLES[s.role],active=s.phase==='playing',enemy=r.enemy?.hp>0,ra=roomInteraction(s);
  $('#characterStatus').innerHTML=`${portrait(s.role)}<div><span class="stat-label">탐험가 · ${s.rooms.filter(x=>x.visited).length}/16</span><strong>${role.name}</strong></div>`;
  $('#healthStatus').innerHTML=`<div class="health-text"><span>체력</span><strong>${s.hp} <small>/ ${s.maxHp}</small></strong></div><div class="health-track ${s.hp/s.maxHp<.3?'low':''}" role="meter" aria-label="체력" aria-valuemin="0" aria-valuemax="${s.maxHp}" aria-valuenow="${s.hp}">${Array.from({length:12},(_,i)=>`<span class="${i<Math.ceil(s.hp/s.maxHp*12)?'filled':''}"></span>`).join('')}</div>`;
  $('#goldValue').textContent=s.gold;$('#artifactStatus').innerHTML=`${ico(s.relic?.icon||'crystal',26)}<div><span class="stat-label">회수할 유물</span><strong class="${s.relic?'':'waiting'}">${s.relic?`${s.relic.name} · ${s.relic.value}점`:'달의 눈물 18 · 왕관 28 · 심장 42'}</strong></div>`;$('#bestValue').textContent=best?`${best} P`:'—';
@@ -135,7 +178,7 @@ function render(){
  const risks=[];if(enemy)risks.push(`반격 ${r.enemy.damage}`);if(danger)risks.push(`용의 공격 ${3+Math.floor(s.turn/10)}`);else if(s.relic&&s.turn%3===0)risks.push('용의 공격 2');
  $('#turnRisk').textContent=active?(risks.length?`턴 종료 시 ${risks.join(' · ')}`:s.relic?`귀환까지 ${s.countdown}턴 · 남은 자원은 사라집니다`:'턴을 마치면 남은 자원이 사라집니다'):'탐험이 끝났습니다';$('#turnRisk').classList.toggle('hot',risks.length>0);
  $('#minimap').setAttribute('aria-label',`현재 ${r.name}. 연결: ${neighbours(s).map(id=>s.rooms[id].name).join(', ')}. 경계 ${s.noise}. 금빛으로 표시된 연결 방을 눌러 이동합니다.`);
- renderExits();paintIcons();
+ renderExits();renderInteraction(ra);renderTutorial();paintIcons();
 }
 
 function openModal(html,mode){
@@ -173,7 +216,7 @@ const guide=[
 ];
 function showHelp(page=0){
  const v=pageOf(guide,page,1),[tag,title,first,second]=v.items[0];
- openModal(modalShell('소리를 다루는 탐험가','FIELD GUIDE · V5',`<article class="guide-page"><span>${tag}</span><h3>${title}</h3><p>${first}</p><p>${second}</p></article><div class="modal-actions">${pager(v,'helpPage')}<button class="large-button" data-act="close">탐험 계속하기 →</button></div>`),'help');
+ openModal(modalShell('소리를 다루는 탐험가','FIELD GUIDE · V6',`<article class="guide-page"><span>${tag}</span><h3>${title}</h3><p>${first}</p><p>${second}</p></article><div class="modal-actions">${pager(v,'helpPage')}<button class="large-button" data-act="close">탐험 계속하기 →</button></div>`),'help');
 }
 function showDeck(pile='all',page=0){
  const labels={all:'전체 풀',deck:'대기 중',discard:'다음 순환',played:'이번 추출'};
@@ -188,28 +231,45 @@ function showLog(page=0){
  openModal(modalShell('어둠 속에 남긴 발자국','EXPEDITION JOURNAL',`<p class="modal-sub">탐험 코드 ${state.seed.toString(36).toUpperCase()} · 최근 행동부터</p><div class="log-list">${v.items.map(x=>`<div class="log-row ${x.tone}"><small>T${String(x.turn).padStart(2,'0')}</small><span>${esc(x.message)}</span></div>`).join('')}</div>${pager(v,'logPage')}`),'log');
 }
 function act(action){
- if(poolReveal.active||action.type==='move'&&performance.now()<travelUntil)return false;
- const beforeHP=state.hp,wasRelic=!!state.relic,enemyHP=state.rooms[state.pos].enemy?.hp||0;
+ if(poolReveal.active||noiseMoment.active||actionBusy||action.type==='move'&&performance.now()<travelUntil)return false;
+ if(tutorial&&(!tutorialAllows(tutorial.index,action)||(tutorial.index===4&&action.type==='move'&&state.mode!=='rush'))){toast(TUTORIAL_STEPS[tutorial.index]?.text||'연습을 마치고 탐험으로 돌아가세요.');return false;}
+ const beforeHP=state.hp,wasRelic=!!state.relic,enemyHP=state.rooms[state.pos].enemy?.hp||0,previousNoise=state.noise,previousSeq=state.soundSeq,previousGold=state.gold;
+ const impact=action.type==='end'?turnImpact(state):null;
  const result=apply(state,action);if(!result.ok){toast(result.message,true);beep('bad');return false;}
  if(action.type==='move'){travelUntil=performance.now()+450;renderer.setHover(-1);}
  if(action.type==='end'){handPage=0;enemyPage=0;lureMode=false;}if(action.type==='lure')lureMode=false;
  save();render();
  if(action.type==='attack')renderer.burst('attack',`−${enemyHP-(state.rooms[state.pos].enemy?.hp||0)}`);
- if(action.type==='interact'||action.type==='reward')renderer.burst('reward');if(state.hp<beforeHP)renderer.burst('bad');
- if(!['mode','end'].includes(action.type))beep(action.type==='end'?'turn':action.type==='buy'||action.type==='reward'?'buy':action.type==='move'?'move':action.type==='attack'?'attack':action.type==='lure'?'lure':!wasRelic&&state.relic?'relic':'card');
- if(!['mode','end'].includes(action.type))toast(result.message);
- if(state.pending){
-  if(action.type==='attack'&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const attackedRun=state;setTimeout(()=>{if(state===attackedRun&&state.pending)pendingModal();},600);}
-  else pendingModal();
- }else if(state.phase!=='playing'){showResult();beep(state.phase==='won'?'win':'bad');}else if(['reward','skipReward','purge','cancelPurge'].includes(action.type)){$('#modal').close();dialogMode='';}
- if(action.type==='end'&&state.phase==='playing'&&!state.pending)poolReveal.start(state,{fast:fastDraw,beforeHp:beforeHP});
+ const rewardText=state.gold>previousGold?`+${state.gold-previousGold} G`:state.hp>beforeHP?`+${state.hp-beforeHP} HP`:action.type==='interact'&&state.relic&&!wasRelic?'유물 회수':'';
+ if(rewardText)renderer.burst('reward',rewardText);if(state.hp<beforeHP)renderer.burst('bad');
+ const tense=tensionNeeded(state,action,previousSeq,previousNoise),actionRun=state;
+ const finish=()=>{
+  if(state!==actionRun)return;actionBusy=false;advanceTutorial(action);if(rewardText)renderer.burst('reward',rewardText);
+  if(!['mode','end'].includes(action.type))toast(soundNotice(state,previousSeq,result.message));
+  if(state.pending)pendingModal();
+  else if(state.phase!=='playing'){showResult();beep(state.phase==='won'?'win':'bad');}
+  else if(['reward','skipReward','purge','cancelPurge'].includes(action.type)){$('#modal').close();dialogMode='';}
+  if(action.type==='end'&&state.phase==='playing'&&!state.pending)poolReveal.start(state,{fast:tutorial?false:fastDraw,holdNoise:!!tutorial,beforeHp:beforeHP});
+  document.body.classList.remove('turn-impact');
+ };
+ if(impact?.raw){actionBusy=true;document.body.classList.add('turn-impact');noiseMoment.dragon(impact,previousNoise,finish,{hold:!!tutorial});}
+ else if(tense){actionBusy=true;if(action.type==='attack')setTimeout(()=>{if(state===actionRun)noiseMoment.start(state,previousNoise,finish,{hold:!!tutorial});},580);else noiseMoment.start(state,previousNoise,finish,{hold:!!tutorial});}
+ else{
+  if(!['mode','end'].includes(action.type))beep(action.type==='buy'||action.type==='reward'?'buy':action.type==='move'?'move':action.type==='attack'?'attack':action.type==='lure'?'lure':!wasRelic&&state.relic?'relic':'card');
+  if(action.type==='attack'&&state.pending){actionBusy=true;setTimeout(finish,600);}else finish();
+ }
  return true;
 }
 document.addEventListener('click',ev=>{
  const b=ev.target.closest('button[data-act]');if(!b||b.disabled)return;const a=b.dataset.act;
- if(poolReveal.active)return;
+ if(poolReveal.active||noiseMoment.active||actionBusy)return;
  if(a==='travel')return travelTo(Number(b.dataset.id));
- if(a==='panel')return selectPanel(b.dataset.id);
+ if(a==='panel'){selectPanel(b.dataset.id);advanceTutorial({type:'panel',id:b.dataset.id});return;}
+ if(a==='tutorialIntro')return showTutorialIntro();
+ if(a==='tutorialStart')return startTutorial();
+ if(a==='tutorialExit')return exitTutorial();
+ if(a==='tutorialSkip'){markTutorial('seen');closeModal();if(!loadedRun)poolReveal.start(state,{fast:fastDraw});loadedRun=true;return;}
+ if(a==='sceneInteract'){const target=roomInteraction(state);if(!target.enabled){toast(target.reason||target.text,true);return;}return act({type:target.act});}
  if(a==='handPage'){handPage=Number(b.dataset.page);render();return;}
  if(a==='enemyPage'){enemyPage=Number(b.dataset.page);render();return;}
  if(a==='lureMode'){lureMode=!lureMode;render();return;}
@@ -221,29 +281,29 @@ document.addEventListener('click',ev=>{
  if(a==='fullscreen')return fullscreen();
  if(a==='speed'){fastDraw=!fastDraw;try{localStorage.setItem('ember-vault-fast-draw',fastDraw?'on':'off');}catch{}return showMenu();}
  if(a==='close')return closeModal();if(a==='help')return showHelp();if(a==='new')return showNew();if(a==='role'){selectedRole=b.dataset.id;return renderNew();}
- if(a==='start'){travelUntil=0;state=newRun({role:selectedRole});handPage=0;enemyPage=0;lureMode=false;renderer.reset();save();$('#modal').close();dialogMode='';selectPanel('routes');render();poolReveal.start(state,{fast:fastDraw});window.scrollTo({top:0,behavior:'instant'});return;}
+ if(a==='start'){if(tutorial)exitTutorial();travelUntil=0;state=newRun({role:selectedRole});handPage=0;enemyPage=0;lureMode=false;renderer.reset();save();$('#modal').close();dialogMode='';selectPanel('routes');render();poolReveal.start(state,{fast:fastDraw});window.scrollTo({top:0,behavior:'instant'});return;}
  if(a==='deck')return showDeck(b.dataset.pile||'all');if(a==='log')return showLog();if(a==='result')return showResult();
  if(a==='zoom')return selectPanel($('.game-sidebar').dataset.panel==='sound'?'routes':'sound');
  if(a==='sound'){toggleSound();if(dialogMode==='menu')showMenu();return;}
  if(a==='buy')return act({type:a,index:Number(b.dataset.index)});if(['move','lure'].includes(a))return act({type:a,id:Number(b.dataset.id)});if(['reward','purge','mode'].includes(a))return act({type:a,id:b.dataset.id});if(a)act({type:a});
 });
 document.addEventListener('pointerover',ev=>{const b=ev.target.closest('.door[data-id],.scene-exit[data-id]');renderer.setHover(b?Number(b.dataset.id):-1);});
-$('#minimap').addEventListener('click',ev=>{if(poolReveal.active||$('#modal').open||state.phase!=='playing')return;const id=renderer.hitMini(ev.clientX,ev.clientY);if(id>=0&&id!==state.pos)travelTo(id);});
+$('#minimap').addEventListener('click',ev=>{if(poolReveal.active||noiseMoment.active||actionBusy||$('#modal').open||state.phase!=='playing')return;const id=renderer.hitMini(ev.clientX,ev.clientY);if(id>=0&&id!==state.pos)travelTo(id);});
 $('#dungeon').addEventListener('pointermove',ev=>{const id=renderer.hit(ev.clientX,ev.clientY);renderer.setHover(id);$('#dungeon').style.cursor=id>=0?'pointer':'default';});
 $('#dungeon').addEventListener('pointerleave',()=>renderer.setHover(-1));
-$('#dungeon').addEventListener('click',ev=>{if(poolReveal.active||$('#modal').open||state.phase!=='playing')return;const id=renderer.hit(ev.clientX,ev.clientY);if(id>=0&&id!==state.pos)travelTo(id);});
+$('#dungeon').addEventListener('click',ev=>{if(poolReveal.active||noiseMoment.active||actionBusy||$('#modal').open||state.phase!=='playing')return;const id=renderer.hit(ev.clientX,ev.clientY);if(id>=0&&id!==state.pos)travelTo(id);});
 document.addEventListener('keydown',ev=>{
- if(poolReveal.active||$('#modal').open||ev.ctrlKey||ev.metaKey||ev.altKey||['INPUT','TEXTAREA','SELECT'].includes(ev.target.tagName)||state.phase!=='playing')return;
+ if(poolReveal.active||noiseMoment.active||actionBusy||$('#modal').open||ev.ctrlKey||ev.metaKey||ev.altKey||['INPUT','TEXTAREA','SELECT'].includes(ev.target.tagName)||state.phase!=='playing')return;
  if(ev.target.matches('.landscape-tabs button')&&['ArrowLeft','ArrowRight','Home','End'].includes(ev.key)){
   ev.preventDefault();const ids=['routes','sound','market'],at=ids.indexOf(ev.target.dataset.id),next=ev.key==='Home'?0:ev.key==='End'?2:(at+(ev.key==='ArrowRight'?1:2))%3;
-  selectPanel(ids[next]);$(`.landscape-tabs [data-id="${ids[next]}"]`).focus();return;
+  selectPanel(ids[next]);advanceTutorial({type:'panel',id:ids[next]});$(`.landscape-tabs [data-id="${ids[next]}"]`).focus();return;
  }
  if(['1','2','3'].includes(ev.key)){ev.preventDefault();act({type:'mode',id:{1:'walk',2:'sneak',3:'rush'}[ev.key]});}
  if(ev.code==='Space'&&ev.target.tagName!=='BUTTON'){ev.preventDefault();act({type:'end'});}
- if(ev.key.toLowerCase()==='a'){ev.preventDefault();act({type:'attack'});}if(ev.key.toLowerCase()==='c'){ev.preventDefault();act({type:'hide'});}if(ev.key.toLowerCase()==='e'){const a=roomAction(state.rooms[state.pos]);if(a.act&&a.enabled){ev.preventDefault();act({type:a.act});}}
+ if(ev.key.toLowerCase()==='a'){ev.preventDefault();act({type:'attack'});}if(ev.key.toLowerCase()==='c'){ev.preventDefault();act({type:'hide'});}if(ev.key.toLowerCase()==='e'){const a=roomInteraction(state);if(a.act&&a.enabled){ev.preventDefault();act({type:a.act});}}
  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(ev.key)){ev.preventDefault();const dir={ArrowUp:-4,ArrowDown:4,ArrowLeft:-1,ArrowRight:1}[ev.key],id=state.pos+dir;if(neighbours(state).includes(id))act({type:'move',id});else toast('그 방향에는 연결된 통로가 없습니다.',true);}
 });
 $('#modal').addEventListener('cancel',ev=>{if(state.pending)ev.preventDefault();else dialogMode='';});
 $('#modal').addEventListener('click',ev=>{if(ev.target===$('#modal')&&!state.pending){const q=$('#modal').getBoundingClientRect();if(ev.clientX<q.left||ev.clientX>q.right||ev.clientY<q.top||ev.clientY>q.bottom)closeModal();}});
 save();selectPanel('routes');render();if(migrated)toast('기존 탐험을 이어갑니다. 남은 손패가 자동 합산되었습니다.');
-if(state.pending)pendingModal();else if(state.phase!=='playing')showResult();else if(!loadedRun)poolReveal.start(state,{fast:fastDraw});
+if(state.pending)pendingModal();else if(state.phase!=='playing')showResult();else if(!tutorialSeen)showTutorialIntro();else if(!loadedRun)poolReveal.start(state,{fast:fastDraw});

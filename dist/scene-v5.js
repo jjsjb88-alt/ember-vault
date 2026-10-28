@@ -4,11 +4,14 @@ import {travelVector,walkFrame,projectMap,exitAnchor,hitExit} from './scene-layo
 import {WALK_FRAMES} from './rogue-frames.js';
 import {ATTACK_FRAMES} from './rogue-attack-frames.js';
 import {prepareFrames} from './sprite-atlas.js';
+import {roomEnvironment} from './encounter.js';
 
 export function makeRenderer(canvas,getState,minimap){
  const c=canvas.getContext('2d'),mc=minimap.getContext('2d');
  const image=src=>{const i=new Image();i.src=src;return i;};
  const background=image('./assets/library-stage-v5.png');
+ const backgrounds={library:background};
+ function backdrop(room){const key=roomEnvironment(room);return backgrounds[key]??=(image(key==='refuge'?'./assets/ember-refuge-v6.png':'./assets/lunar-vault-v6.png'));}
  const atlas=image('./assets/rogue-walk-v5.png');
  const attackAtlas=image('./assets/rogue-attack-v5.png');
  let attackFrames=null;
@@ -18,6 +21,7 @@ export function makeRenderer(canvas,getState,minimap){
  let W=1200,H=650,alive=true,zoom=false,lastPos=-1,lastSound=-1,entered=-10000,sounded=-10000;
  let hitAt=-10000,damageAt=-10000,hover=-1,label='',lastTime=0,vector={x:1,y:-.5,direction:7};
  let recentEnemy=null,recentEnemyPos=-1;
+ let rewardAt=-10000,rewardLabel='';
  const observer=new ResizeObserver(([entry])=>{if(entry.contentRect.width>0&&entry.contentRect.height>0){
   H=Math.round(W*entry.contentRect.height/entry.contentRect.width);canvas.width=W;canvas.height=H;
  }});observer.observe(canvas);
@@ -43,12 +47,14 @@ export function makeRenderer(canvas,getState,minimap){
   c.restore();
  }
  function drawProp(r,x,y,height,ms){
-  if(r.enemy?.hp>0||r.used)return;
+  if(r.enemy?.hp>0)return;
   if(r.type==='merchant'){legacyActor('mage',x,y,height*.92,ms,true);return;}
   const id={chest:0,camp:1,shrine:2,relic:2}[r.type];
   if(id===undefined||!objects.complete||!objects.naturalWidth)return;
   const size=height*(r.type==='chest'?.8:.9);shadow(x,y,size*.3);
-  c.drawImage(objects,id*512,544,512,480,x-size/2,y-size*.92,size,size*480/512);
+  c.save();if(r.used)c.globalAlpha=.4;
+  c.drawImage(objects,id*512,544,512,480,x-size/2,y-size*.92,size,size*480/512);c.restore();
+  if(r.used){c.fillStyle='#a7c0b9';c.font='14px system-ui';c.textAlign='center';c.fillText('사용 완료',x,y+15);return;}
   glow(c,x,y-size*.25,size*.7,r.type==='camp'?'#ffa93620':'#e5c06a12');
  }
  function routeTrail(x,y,ms){
@@ -74,9 +80,10 @@ export function makeRenderer(canvas,getState,minimap){
   const hy=baseY-(walking?(1-p)*vector.y*W*.12:0)-Math.sin(attack*Math.PI)*H*.085;
   const ex=W*.66,ey=H*.59;
   c.save();if(!reduced&&ms-damageAt<240)c.translate(Math.sin(ms*.09)*4,0);
-  if(background.complete&&background.naturalWidth){
-   const scale=Math.max(W/background.naturalWidth,H/background.naturalHeight),dw=background.naturalWidth*scale,dh=background.naturalHeight*scale;
-   c.drawImage(background,(W-dw)*.5,(H-dh)*.6,dw,dh);
+  const selected=backdrop(r),bg=selected.complete&&selected.naturalWidth?selected:background;
+  if(bg.complete&&bg.naturalWidth){
+   const scale=Math.max(W/bg.naturalWidth,H/bg.naturalHeight),dw=bg.naturalWidth*scale,dh=bg.naturalHeight*scale;
+   c.drawImage(bg,(W-dw)*.5,(H-dh)*.6,dw,dh);
   }else{c.fillStyle='#102539';c.fillRect(0,0,W,H);}
   c.fillStyle=r.row===3?'#180a1424':r.terrain==='water'?'#00455c12':'#07102005';c.fillRect(0,0,W,H);
   const flicker=reduced?1:1+Math.sin(ms*.0037)*.08+Math.sin(ms*.0103)*.025;
@@ -93,13 +100,15 @@ export function makeRenderer(canvas,getState,minimap){
   const fading=!(r.enemy?.hp>0)&&attack>0&&recentEnemy;
   const foe=r.enemy?.hp>0?r.enemy:fading?recentEnemy:null;
   if(foe){if(fading)c.globalAlpha=Math.max(0,1-attack*1.2);
-   legacyActor(foe.kind,ex,ey,heroH*(foe.kind==='dragon'?1.35:1.04),ms,true);c.globalAlpha=1;
+   const recoil=attack&&!reduced?Math.sin(Math.min(1,attack*2)*Math.PI)*heroH*.14:0;
+   legacyActor(foe.kind,ex+recoil,ey-recoil*.3,heroH*(foe.kind==='dragon'?1.35:1.04),ms,true);c.globalAlpha=1;
    if(!fading&&foe.mode!=='idle'){c.font=`bold ${Math.round(heroH*.24)}px serif`;c.textAlign='center';c.fillStyle=foe.mode==='hunt'?'#ff7667':'#ffc85a';c.shadowColor=c.fillStyle;c.shadowBlur=14;c.fillText(foe.mode==='hunt'?'!':'?',ex,ey-heroH*1.1);c.shadowBlur=0;}
   }
   glow(c,hx+heroH*.15,hy-heroH*.31,heroH*.75,'#ffc44c28');
   if(s.hidden)c.globalAlpha=.62;hero(hx,hy,heroH,ms,walking,attack);c.globalAlpha=1;
   if(attack>0){c.save();c.globalAlpha=Math.sin(attack*Math.PI);c.strokeStyle='#ffebb8';c.lineWidth=4;c.shadowColor='#ffbd4d';c.shadowBlur=20;c.beginPath();c.ellipse(ex-20,ey-heroH*.4,heroH*.55,heroH*.14,-.7,-2.7,.5);c.stroke();c.restore();}
   if(ms-hitAt<850&&label){c.fillStyle='#ffe7c3';c.font='bold 30px monospace';c.textAlign='center';c.fillText(label,ex,ey-heroH*.9-(ms-hitAt)/42);}
+  if(ms-rewardAt<1700&&rewardLabel){const age=(ms-rewardAt)/1700;c.save();c.globalAlpha=1-age;c.fillStyle='#ffe6a0';c.font='bold 30px Georgia';c.textAlign='center';c.fillText(rewardLabel,ex,ey-heroH*.8-(reduced?0:age*60));if(!reduced)for(let i=0;i<16;i++){const a=i*2.4,x=ex+Math.cos(a)*age*100,y=ey-heroH*.4+Math.sin(a)*age*65-age*30;c.fillRect(x,y,4,4);}c.restore();}
   for(let i=0;i<26;i++){const x=(i*97+31)%W,y=(i*71+(reduced?0:ms*.003))%H;c.globalAlpha=.12+(Math.sin(ms*.001+i)+1)*.09;c.fillStyle=i%3?'#a5dfe7':'#ffd07b';c.fillRect(x,y,2,i%4===0?3:1);}c.globalAlpha=1;
   const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#03081425');g.addColorStop(.2,'#0000');g.addColorStop(.75,'#0000');g.addColorStop(1,'#02091388');c.fillStyle=g;c.fillRect(0,0,W,H);c.restore();
  }
@@ -127,7 +136,7 @@ export function makeRenderer(canvas,getState,minimap){
   if(s.lastSound?.strength>0&&ms-sounded<2800&&!reduced){const p=projectMap(s.lastSound.origin,w,h),age=(ms-sounded)/2800;ctx.globalAlpha=1-age;ctx.strokeStyle='#ffc45e';ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,8+age*s.lastSound.strength*12,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;}
  }
  function frame(ms){if(!alive)return;const s=getState();
-  if(lastPos!==s.pos){if(lastPos>=0)vector=travelVector(lastPos,s.pos);lastPos=s.pos;entered=ms;}
+  if(lastPos!==s.pos){if(lastPos>=0)vector=travelVector(lastPos,s.pos);lastPos=s.pos;entered=ms;for(const id of [s.pos,...neighbours(s)])backdrop(s.rooms[id]);}
   if(lastSound!==s.soundSeq){lastSound=s.soundSeq;sounded=ms;}
   if(!document.hidden&&ms-lastTime>(reduced?120:16)){drawStage(ms);drawMap(mc,minimap.width,minimap.height,ms);lastTime=ms;}requestAnimationFrame(frame);
  }requestAnimationFrame(frame);
@@ -135,5 +144,5 @@ export function makeRenderer(canvas,getState,minimap){
  return {setHover(id){hover=id;},setZoom(on){zoom=!!on;return zoom;},hit(x,y){
   if(zoom)return hitMap(canvas,x,y);
   const q=canvas.getBoundingClientRect(),s=getState();return hitExit(s.pos,neighbours(s),(x-q.left)/q.width,(y-q.top)/q.height);
- },hitMini(x,y){return hitMap(minimap,x,y);},burst(type='attack',text=''){if(type==='attack'){hitAt=performance.now();label=text;}if(type==='bad')damageAt=performance.now();},reset(){lastPos=-1;lastSound=-1;},stop(){alive=false;observer.disconnect();}};
+ },hitMini(x,y){return hitMap(minimap,x,y);},burst(type='attack',text=''){if(type==='attack'){hitAt=performance.now();label=text;}if(type==='bad')damageAt=performance.now();if(type==='reward'){rewardAt=performance.now();rewardLabel=text;}},reset(){lastPos=-1;lastSound=-1;recentEnemy=null;recentEnemyPos=-1;rewardAt=-10000;hitAt=-10000;},stop(){alive=false;observer.disconnect();}};
 }
