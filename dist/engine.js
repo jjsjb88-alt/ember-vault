@@ -145,6 +145,19 @@ export function enemyTurn(s){
   }
  }
 }
+// Shared by room markers, the map, and the actual move action.
+export function moveStatus(s,id){
+ const cost=neighbours(s).includes(id)?moveCost(s,id):0;
+ const retreat=s.rooms[s.pos].enemy?.hp>0&&id===s.from;
+ let reason='';
+ if(s.phase!=='playing')reason='탐험이 끝났습니다. 새 탐험을 시작해 주세요.';
+ else if(s.pending)reason='먼저 보상을 선택해 주세요.';
+ else if(!neighbours(s).includes(id))reason='연결된 방으로만 이동할 수 있습니다.';
+ else if(s.rooms[s.pos].enemy?.hp>0&&!retreat)reason='적을 쓰러뜨리거나 들어온 방으로 후퇴하세요.';
+ else if(s.resource.move<cost)reason=`이동 ${cost} 필요 · 풀 뽑기로 이동력을 얻으세요.`;
+ return {allowed:!reason,cost,retreat:!!retreat,reason};
+}
+
 export function apply(s,action){
  if(s.phase!=='playing')return fail(s,'탐험이 끝났습니다. 새 탐험을 시작해 주세요.');
  if(s.pending&&!['reward','skipReward','purge','cancelPurge'].includes(action.type))return fail(s,'먼저 보상을 선택해 주세요.');
@@ -153,9 +166,8 @@ export function apply(s,action){
  case 'mode':if(!MODES[action.id])return fail(s,'알 수 없는 이동 방식입니다.');s.mode=action.id;return ok(s,MODES[s.mode].name+'로 이동합니다.');
  case 'play':return fail(s,'추출된 능력은 이미 자동으로 합산되었습니다.');
  case 'move':{
-  const id=action.id;if(!neighbours(s).includes(id))return fail(s,'연결된 방으로만 이동할 수 있습니다.');
-  if(r.enemy?.hp>0&&id!==s.from)return fail(s,'적을 쓰러뜨리거나 들어온 방으로 후퇴하세요.');
-  const cost=moveCost(s,id);if(s.resource.move<cost)return fail(s,`이동 ${cost} 필요 · 다음 턴에 새 능력을 추출하세요.`);
+  const id=action.id,status=moveStatus(s,id);if(!status.allowed)return fail(s,status.reason);
+  const cost=status.cost;
   const noise=moveNoise(s,id);s.resource.move-=cost;s.from=s.pos;s.pos=id;s.steps++;s.hidden=false;s.rooms[id].visited=true;
   for(const n of [id,...neighbours(s)])s.rooms[n].seen=true;
   emitNoise(s,id,noise,`${MODES[s.mode].name} · ${TERRAINS[s.rooms[id].terrain].name}`);

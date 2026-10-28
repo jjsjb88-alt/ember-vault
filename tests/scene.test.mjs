@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {newRun} from '../dist/engine.js';
-import {travelVector,directionIndex} from '../dist/scene-layout.js';
+import {newRun,apply,moveStatus,neighbours} from '../dist/engine.js';
+import {travelVector,directionIndex,exitAnchor,hitExit} from '../dist/scene-layout.js';
 import {WALK_FRAMES} from '../dist/rogue-frames.js';
 import {ATTACK_FRAMES} from '../dist/rogue-attack-frames.js';
 import {keepSilhouette} from '../dist/sprite-atlas.js';
@@ -36,4 +36,26 @@ test('atlas extraction keeps the actor and removes overlapping neighbour fragmen
  keepSilhouette(data,7,5);
  for(const p of body){assert.equal(data[p*4+3],255);assert.equal(data[p*4],180);}
  for(const p of neighbour)assert.equal(data[p*4+3],0);
+});
+
+test('visible room targets hit only connected exits, leaving the floor non-navigable',()=>{
+ const s=newRun({seed:1});
+ for(let pos=0;pos<16;pos++){
+  s.pos=pos;const ids=neighbours(s);
+  for(const id of ids){const p=exitAnchor(pos,id);assert.ok(p);assert.equal(hitExit(pos,ids,p.x,p.y),id);}
+  assert.equal(hitExit(pos,ids,.4,.85),-1,'tapping below the heroine must not choose a random room');
+ }
+ assert.equal(hitExit(0,[1],.81,.66),-1,'a decorative door without a connection is not a target');
+});
+
+test('room target availability respects movement cost, combat retreat, and pending rewards',()=>{
+ const s=newRun({seed:1});
+ assert.equal(moveStatus(s,1).allowed,true);
+ assert.equal(moveStatus(s,15).allowed,false);
+ assert.equal(apply(s,{type:'move',id:4}).ok,true);
+ assert.equal(moveStatus(s,0).retreat,true);assert.equal(moveStatus(s,0).allowed,true);
+ assert.equal(moveStatus(s,5).allowed,false);
+ const before=JSON.stringify(s);assert.equal(apply(s,{type:'move',id:5}).ok,false);assert.equal(JSON.stringify(s),before);
+ s.resource.move=0;assert.equal(moveStatus(s,0).allowed,false);assert.match(moveStatus(s,0).reason,/풀 뽑기/);
+ s.resource.move=5;s.pending={type:'reward',options:['step']};assert.equal(moveStatus(s,0).allowed,false);
 });

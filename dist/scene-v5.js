@@ -1,6 +1,6 @@
-import {neighbours} from './engine.js';
+import {neighbours,moveStatus} from './engine.js';
 import {icon,sprite} from './art.js';
-import {travelVector,walkFrame,projectMap} from './scene-layout.js';
+import {travelVector,walkFrame,projectMap,exitAnchor,hitExit} from './scene-layout.js';
 import {WALK_FRAMES} from './rogue-frames.js';
 import {ATTACK_FRAMES} from './rogue-attack-frames.js';
 import {prepareFrames} from './sprite-atlas.js';
@@ -52,14 +52,15 @@ export function makeRenderer(canvas,getState,minimap){
   glow(c,x,y-size*.25,size*.7,r.type==='camp'?'#ffa93620':'#e5c06a12');
  }
  function routeTrail(x,y,ms){
-  const s=getState(),target=hover>=0?hover:neighbours(s).find(id=>id!==s.from);
-  if(target===undefined||target<0||s.rooms[s.pos].enemy?.hp>0)return;
-  const v=travelVector(s.pos,target),length=Math.min(W*.17,H*.3);
-  c.save();c.strokeStyle='#ffce76';c.lineWidth=3;c.globalAlpha=hover>=0?.85:.45;
-  c.setLineDash([4,10]);c.lineDashOffset=reduced?0:-ms*.022;
-  c.beginPath();c.moveTo(x+v.x*30,y+v.y*30);c.lineTo(x+v.x*length,y+v.y*length);c.stroke();c.setLineDash([]);
-  c.translate(x+v.x*length,y+v.y*length);c.rotate(Math.atan2(v.y,v.x));c.fillStyle='#ffe0a1';
-  c.beginPath();c.moveTo(12,0);c.lineTo(-7,-7);c.lineTo(-3,0);c.lineTo(-7,7);c.closePath();c.fill();c.restore();
+  const s=getState();if(s.phase!=='playing'||s.pending)return;
+  for(const id of neighbours(s)){
+   if(!moveStatus(s,id).allowed)continue;
+   const p=exitAnchor(s.pos,id),tx=p.x*W,ty=p.y*H+20;
+   c.save();c.strokeStyle='#ffce76';c.lineWidth=hover===id?3:2;c.globalAlpha=hover===id?.8:.3;
+   c.setLineDash([4,12]);c.lineDashOffset=reduced?0:-ms*.018;
+   c.beginPath();c.moveTo(x,y);c.quadraticCurveTo((x+tx)/2,y,tx,ty);c.stroke();c.setLineDash([]);
+   c.globalAlpha=hover===id?.8:.4;c.beginPath();c.ellipse(tx,ty,46,14,0,0,Math.PI*2);c.stroke();c.restore();
+  }
  }
  function drawStage(ms){
   c.imageSmoothingEnabled=false;c.clearRect(0,0,W,H);
@@ -104,18 +105,21 @@ export function makeRenderer(canvas,getState,minimap){
  }
  function drawMap(ctx,w,h,ms,large=false){
   const s=getState(),box=large?Math.min(38,h*.1):21;
+  const available=new Set(neighbours(s).filter(id=>moveStatus(s,id).allowed));
   ctx.clearRect(0,0,w,h);ctx.fillStyle=large?'#06111af5':'#08121ace';ctx.fillRect(0,0,w,h);
   for(const[a,b]of s.edges){const A=projectMap(a,w,h),B=projectMap(b,w,h),seen=s.rooms[a].seen&&s.rooms[b].seen;
-   ctx.strokeStyle=seen?'#768597':'#2a3845';ctx.lineWidth=seen?3:1;ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke();
+   const next=(a===s.pos&&available.has(b))||(b===s.pos&&available.has(a));
+   ctx.strokeStyle=next?'#f3c978':seen?'#768597':'#2a3845';ctx.lineWidth=next?4:seen?3:1;ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke();
   }
   for(const r of s.rooms){const p=projectMap(r.id,w,h),here=r.id===s.pos,heard=s.lastSound?.turn===s.turn&&s.lastSound.field.find(x=>x.id===r.id);
    if(heard)glow(ctx,p.x,p.y,box*1.8,`rgba(255,173,66,${.12+heard.level*.035})`);
    ctx.fillStyle=here?'#e6c478':r.seen?'#718292':'#263743';ctx.fillRect(p.x-box/2-1,p.y-box/2-1,box+2,box+2);
    ctx.fillStyle=here?'#6c5734':r.seen?'#233b4c':'#0f1c27';ctx.fillRect(p.x-box/2,p.y-box/2,box,box);
+   if(available.has(r.id)){ctx.strokeStyle='#ffe09a';ctx.lineWidth=large?3:2;ctx.strokeRect(p.x-box/2-4,p.y-box/2-4,box+8,box+8);}
    if(here){ctx.fillStyle='#ffe090';ctx.beginPath();ctx.moveTo(p.x,p.y-box*.4);ctx.lineTo(p.x+box*.34,p.y+box*.32);ctx.lineTo(p.x-box*.34,p.y+box*.32);ctx.closePath();ctx.fill();}
    else if(r.seen&&r.enemy?.hp>0){ctx.fillStyle='#662a33';ctx.fillRect(p.x-box*.5,p.y-box*.5,box,box);icon(ctx,'skull',p.x-box*.4,p.y-box*.4,box*.8);}
    else if(r.seen&&!r.used){const symbol={entry:'door',chest:'chest',camp:'camp',merchant:'merchant',shrine:'shrine',relic:r.relic?.icon}[r.type];if(symbol)icon(ctx,symbol,p.x-box*.4,p.y-box*.4,box*.8);}
-   if(large){ctx.font=`${Math.min(19,h*.035)}px system-ui`;ctx.textAlign='center';ctx.fillStyle=r.seen?'#cfd6db':'#5f7382';ctx.fillText(r.seen?r.name:'미탐험',p.x,p.y+box*.5+23);}
+   if(large){ctx.font=`${Math.min(19,h*.035)}px system-ui`;ctx.textAlign='center';ctx.fillStyle=available.has(r.id)?'#ffe09a':r.seen?'#cfd6db':'#5f7382';ctx.fillText((r.seen?r.name:'미탐험')+(available.has(r.id)?' →':''),p.x,p.y+box*.5+23);}
    if(r.enemy?.hp>0&&r.enemy.target!==null&&r.seen&&r.enemy.mode!=='idle'){
     const target=projectMap(r.enemy.target,w,h);ctx.strokeStyle='#fa8d5370';ctx.setLineDash([3,6]);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(target.x,target.y);ctx.stroke();ctx.setLineDash([]);
    }
@@ -128,5 +132,8 @@ export function makeRenderer(canvas,getState,minimap){
   if(!document.hidden&&ms-lastTime>(reduced?120:16)){drawStage(ms);drawMap(mc,minimap.width,minimap.height,ms);lastTime=ms;}requestAnimationFrame(frame);
  }requestAnimationFrame(frame);
  function hitMap(el,x,y){const q=el.getBoundingClientRect(),xx=(x-q.left)/q.width*el.width,yy=(y-q.top)/q.height*el.height;for(let id=0;id<16;id++){const p=projectMap(id,el.width,el.height);if(Math.abs(xx-p.x)<el.width*.09&&Math.abs(yy-p.y)<el.height*.10)return id;}return-1;}
- return {setHover(id){hover=id;},setZoom(on){zoom=!!on;return zoom;},hit(x,y){return zoom?hitMap(canvas,x,y):-1;},hitMini(x,y){return hitMap(minimap,x,y);},burst(type='attack',text=''){if(type==='attack'){hitAt=performance.now();label=text;}if(type==='bad')damageAt=performance.now();},reset(){lastPos=-1;lastSound=-1;},stop(){alive=false;observer.disconnect();}};
+ return {setHover(id){hover=id;},setZoom(on){zoom=!!on;return zoom;},hit(x,y){
+  if(zoom)return hitMap(canvas,x,y);
+  const q=canvas.getBoundingClientRect(),s=getState();return hitExit(s.pos,neighbours(s),(x-q.left)/q.width,(y-q.top)/q.height);
+ },hitMini(x,y){return hitMap(minimap,x,y);},burst(type='attack',text=''){if(type==='attack'){hitAt=performance.now();label=text;}if(type==='bad')damageAt=performance.now();},reset(){lastPos=-1;lastSound=-1;},stop(){alive=false;observer.disconnect();}};
 }
