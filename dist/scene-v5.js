@@ -18,12 +18,13 @@ export function makeRenderer(canvas,getState,minimap){
  attackAtlas.onload=()=>{attackFrames=prepareFrames(attackAtlas,ATTACK_FRAMES);};
  const heroes=image('./assets/heroines-v4.png'),objects=image('./assets/creatures-props-v4.png');
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
- let W=1200,H=650,alive=true,zoom=false,lastPos=-1,lastSound=-1,entered=-10000,sounded=-10000;
+ let W=1200,H=650,cssWidth=1200,cssHeight=650,alive=true,zoom=false,lastPos=-1,lastSound=-1,entered=-10000,sounded=-10000;
  let hitAt=-10000,damageAt=-10000,hover=-1,label='',lastTime=0,vector={x:1,y:-.5,direction:7};
  let recentEnemy=null,recentEnemyPos=-1;
  let rewardAt=-10000,rewardLabel='';
  const observer=new ResizeObserver(([entry])=>{if(entry.contentRect.width>0&&entry.contentRect.height>0){
-  H=Math.round(W*entry.contentRect.height/entry.contentRect.width);canvas.width=W;canvas.height=H;
+  cssWidth=entry.contentRect.width;cssHeight=entry.contentRect.height;
+  H=Math.round(W*cssHeight/cssWidth);canvas.width=W;canvas.height=H;
  }});observer.observe(canvas);
  function glow(ctx,x,y,r,color){const g=ctx.createRadialGradient(x,y,1,x,y,r);g.addColorStop(0,color);g.addColorStop(1,'#0000');ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2);}
  function shadow(x,y,w){c.fillStyle='#0107128c';c.beginPath();c.ellipse(x,y,w,w*.24,0,0,Math.PI*2);c.fill();}
@@ -113,7 +114,9 @@ export function makeRenderer(canvas,getState,minimap){
   const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#03081425');g.addColorStop(.2,'#0000');g.addColorStop(.75,'#0000');g.addColorStop(1,'#02091388');c.fillStyle=g;c.fillRect(0,0,W,H);c.restore();
  }
  function drawMap(ctx,w,h,ms,large=false){
-  const s=getState(),box=large?Math.min(38,h*.1):21;
+  const s=getState(),pixel=large?w/cssWidth:1;
+  const box=large?Math.min(26,Math.max(14,cssHeight*.095))*pixel:21;
+  const labelSize=(cssWidth>800?12:11)*pixel;
   const available=new Set(neighbours(s).filter(id=>moveStatus(s,id).allowed));
   ctx.clearRect(0,0,w,h);ctx.fillStyle=large?'#06111af5':'#08121ace';ctx.fillRect(0,0,w,h);
   for(const[a,b]of s.edges){const A=projectMap(a,w,h),B=projectMap(b,w,h),seen=s.rooms[a].seen&&s.rooms[b].seen;
@@ -128,7 +131,7 @@ export function makeRenderer(canvas,getState,minimap){
    if(here){ctx.fillStyle='#ffe090';ctx.beginPath();ctx.moveTo(p.x,p.y-box*.4);ctx.lineTo(p.x+box*.34,p.y+box*.32);ctx.lineTo(p.x-box*.34,p.y+box*.32);ctx.closePath();ctx.fill();}
    else if(r.seen&&r.enemy?.hp>0){ctx.fillStyle='#662a33';ctx.fillRect(p.x-box*.5,p.y-box*.5,box,box);icon(ctx,'skull',p.x-box*.4,p.y-box*.4,box*.8);}
    else if(r.seen&&!r.used){const symbol={entry:'door',chest:'chest',camp:'camp',merchant:'merchant',shrine:'shrine',relic:r.relic?.icon}[r.type];if(symbol)icon(ctx,symbol,p.x-box*.4,p.y-box*.4,box*.8);}
-   if(large){ctx.font=`${Math.min(19,h*.035)}px system-ui`;ctx.textAlign='center';ctx.fillStyle=available.has(r.id)?'#ffe09a':r.seen?'#cfd6db':'#5f7382';ctx.fillText((r.seen?r.name:'미탐험')+(available.has(r.id)?' →':''),p.x,p.y+box*.5+23);}
+   if(large){ctx.font=`${labelSize}px system-ui`;ctx.textAlign='center';ctx.fillStyle=available.has(r.id)?'#ffe09a':r.seen?'#cfd6db':'#5f7382';ctx.fillText((r.seen?r.name:'미탐험')+(available.has(r.id)?' →':''),p.x,p.y+box*.5+labelSize+2*pixel);}
    if(r.enemy?.hp>0&&r.enemy.target!==null&&r.seen&&r.enemy.mode!=='idle'){
     const target=projectMap(r.enemy.target,w,h);ctx.strokeStyle='#fa8d5370';ctx.setLineDash([3,6]);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(target.x,target.y);ctx.stroke();ctx.setLineDash([]);
    }
