@@ -1,16 +1,17 @@
 import {soundWavePlan} from './encounter.js';
+import {makeFxLayer,FX} from './fx-layer.js';
 
 export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSound=()=>{}}={}){
- let active=false,timers=[],frame=0,callback=null,previousFocus=null;
+ let active=false,timers=[],frame=0,fxFrame=0,callback=null,previousFocus=null;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
  const q=s=>dialog.querySelector(s);
  const later=(fn,ms)=>timers.push(setTimeout(()=>{if(active)fn();},ms));
- function clear(){timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(frame);}
+ function clear(){timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(frame);cancelAnimationFrame(fxFrame);}
  function close(){if(!active)return;clear();active=false;dialog.close();document.body.classList.remove('listening');cue('stop');const done=callback;callback=null;previousFocus?.isConnected&&previousFocus.focus({preventScroll:true});done?.();}
  function shell(mode,done){
   if(active)close();active=true;callback=done;previousFocus=document.activeElement;
   dialog.dataset.mode=mode;dialog.dataset.phase='hush';
-  dialog.innerHTML=`<div class="noise-eye" aria-hidden="true"></div><div class="noise-shell"><div class="noise-top"><span id="noiseKicker">EVERY SOUND LEAVES A TRACE</span><button data-noise="sound">♪ ${getSound()?'켜짐':'소리 켜기'}</button></div><div class="noise-body"><div class="noise-visual"><canvas id="noiseTrace" width="480" height="240" aria-label="연결된 통로를 따라 퍼지는 소리"></canvas><img class="noise-emblem" src="./assets/noise-seal-v6.png" alt=""></div><div class="noise-copy"><span id="noiseSource"></span><h2 id="noiseTitle">숨을 죽이세요.</h2><p id="noiseDetail" aria-live="polite"></p><strong id="noiseValue"></strong></div></div><div class="noise-footer"><div class="noise-rage"><div><span>용의 경계</span><strong id="noiseRageValue"></strong><small>8 이상 · 턴 끝에 용의 공격</small></div><div class="noise-rage-track">${Array.from({length:8},(_,i)=>`<i data-pip="${i}"></i>`).join('')}</div></div><button data-noise="skip">계속 →</button></div></div>`;
+  dialog.innerHTML=`<div class="noise-eye" aria-hidden="true"></div><canvas class="noise-fx" aria-hidden="true"></canvas><div class="noise-shell"><div class="noise-top"><span id="noiseKicker">모든 소리는 남는다</span><button data-noise="sound">♪ ${getSound()?'켜짐':'소리 켜기'}</button></div><div class="noise-body"><div class="noise-visual"><canvas id="noiseTrace" width="480" height="240" aria-label="연결된 통로를 따라 퍼지는 소리"></canvas><img class="noise-emblem" src="./assets/noise-seal-v6.png" alt=""></div><div class="noise-copy"><span id="noiseSource"></span><h2 id="noiseTitle">숨을 죽이세요.</h2><p id="noiseDetail" aria-live="polite"></p><strong id="noiseValue"></strong></div></div><div class="noise-footer"><div class="noise-rage"><div><span>용의 경계</span><strong id="noiseRageValue"></strong><small>8 이상 · 턴 끝에 용의 공격</small></div><div class="noise-rage-track">${Array.from({length:8},(_,i)=>`<i data-pip="${i}"></i>`).join('')}</div></div><button data-noise="skip">계속 →</button></div></div>`;
   document.body.classList.add('listening');dialog.showModal();q('[data-noise="skip"]').focus({preventScroll:true});
  }
  function gauge(value){q('#noiseRageValue').textContent=`${value} / 8`;q('.noise-rage').classList.toggle('danger',value>=8);dialog.querySelectorAll('[data-pip]').forEach(e=>e.classList.toggle('lit',Number(e.dataset.pip)<value));}
@@ -32,9 +33,20 @@ export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSoun
   if(hold)q('[data-noise="skip"]').textContent='확인했어요 →';else later(close,reduced?1500:rage?4600:3400);
  }
  function dragon(impact,noise,done,{hold=false}={}){
-  shell('dragon',done);q('#noiseKicker').textContent='THE VAULT HAS AWAKENED';q('#noiseSource').textContent='턴 종료 · 용의 분노';q('#noiseTitle').textContent='피할 곳이 없다.';q('#noiseDetail').textContent='어둠 너머에서, 숨을 들이마신다.';q('#noiseValue').textContent='';gauge(noise);cue('rage');
+  shell('dragon',done);q('#noiseKicker').textContent='금고가 깨어났다';q('#noiseSource').textContent='턴 종료 · 용의 분노';q('#noiseTitle').textContent='피할 곳이 없다.';q('#noiseDetail').textContent='어둠 너머에서, 숨을 들이마신다.';q('#noiseValue').textContent='';gauge(noise);cue('rage');
+  if(!reduced)later(breathe,820);
   later(()=>{dialog.dataset.phase='impact';q('#noiseTitle').textContent='용의 숨결';q('#noiseDetail').textContent=`공격 ${impact.raw} · 방어 ${impact.blocked} · 체력 ${impact.beforeHp} → ${impact.afterHp}`;q('#noiseValue').textContent=impact.taken?`−${impact.taken} HP`:'완전 방어';cue('impact');},reduced?100:900);
   if(hold)q('[data-noise="skip"]').textContent='다음 단계 →';else later(close,reduced?1500:3500);
+ }
+ // the dragon's breath: a pixelfx fire stream rolling in from the dark at the left
+ function breathe(){
+  const cv=q('.noise-fx');if(!cv)return;
+  const w=Math.max(1,cv.clientWidth),h=Math.max(1,cv.clientHeight),px=Math.max(3,Math.round(w/220));
+  cv.width=w;cv.height=h;const ctx=cv.getContext('2d'),layer=makeFxLayer(px);
+  const portrait=h>w;
+  layer.add(FX.fireBreath,{x:-px*4,y:h*(portrait?.42:.6),angle:portrait?.32:-.04,light:1.1},{until:performance.now()+2500});
+  const tick=now=>{if(!active)return;ctx.clearRect(0,0,w,h);layer.render(ctx,w,h,now);if(layer.active)fxFrame=requestAnimationFrame(tick);};
+  fxFrame=requestAnimationFrame(tick);
  }
  dialog.addEventListener('click',ev=>{const type=ev.target.closest('[data-noise]')?.dataset.noise;if(type==='skip')close();if(type==='sound'){toggleSound();q('[data-noise="sound"]').textContent=`♪ ${getSound()?'켜짐':'소리 켜기'}`;}});
  dialog.addEventListener('cancel',ev=>{ev.preventDefault();close();});

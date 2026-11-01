@@ -81,3 +81,11 @@ main.play-surface{display:block;position:relative;min-height:0;width:100%;height
 #market.market-offers{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:none;gap:8px}
 .market-offers .price:after{display:none}
 @media(max-width:559px){#market.market-offers{grid-template-columns:1fr}.market-offers .market-card{min-height:75px}}
+/* V7.1 · 교역 부족 표시, 경계 게이지 통일 */
+.market-offers .price:after{display:none}
+.market-offers .market-card:disabled{opacity:.9}
+.market-offers .market-card:disabled strong{color:#c9d2d9}
+.market-offers .price.short{color:#ff9a7a}
+.hud-noise-pips i{border-radius:0;background:#2c333d;border:1px solid #514940;box-shadow:none}
+.hud-noise-pips i.lit{background:#e8b454;border-color:#ffdc91;box-shadow:none}
+.hud-noise.hot .hud-noise-pips i.lit{background:#d84b2c;border-color:#ffb06d;box-shadow:0 0 8px #bd2e2055}
