@@ -1,6 +1,15 @@
-# 잿불 금고 · Ember Vault V7
+# 잿불 금고 · Ember Vault V7.2
 
 한국어 싱글플레이 2D 풀빌딩 던전 크롤러. `dist/`의 정적 파일로 작동하며, 능력을 뽑으면 자원이 자동 합산됩니다.
+
+## V7.2 — 픽셀 이펙트 3종 (pixelfx)
+
+- **소리 잔물결:** 행동으로 소리가 나면 발밑에 픽셀 물결이 퍼집니다. 조용한 소리는 청록, 소리 5 이상은 주황입니다.
+- **용의 숨결:** 턴 끝 용의 공격 때 왼쪽 어둠에서 픽셀 화염이 밀려옵니다.
+- **적 처치:** 쓰러진 적의 실루엣 그대로 푸른 영혼이 빠져나가 사라집니다. 소음 연출이나 보상 창이 열려 있으면 창이 닫힌 뒤에 시작합니다.
+- 효과 1픽셀 = 무대 4픽셀로 그려 배경의 픽셀 크기에 맞췄습니다. 모션 감소 설정에서는 기존 연출을 그대로 씁니다.
+- 효과 코드는 [pixelfx](https://github.com/patch-gg/pixelfx)(MIT)의 core와 효과 3개만 `dist/vendor/pixelfx/`에 넣었습니다(약 240KB). 라이선스와 출처는 그 폴더의 `LICENSE`, `NOTICE.md`에 있습니다.
+- 실행 화면: [잔물결](docs/visual/implemented/v72-sound-ripple-crop.jpg), [용의 숨결](docs/visual/implemented/v72-dragon-breath-932.jpg), [영혼](docs/visual/implemented/v72-soul-rise-932.jpg).
 
 ## V7.1 — 읽히는 화면 정리
 

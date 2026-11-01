@@ -5,6 +5,6 @@
   "type": "module",
   "scripts": {
     "test": "node --test tests/*.test.mjs",
-    "check": "node --check dist/app.js && node --check dist/art.js && node --check dist/engine.js && node --check dist/pages.js && node --check dist/pool-reveal.js && node --check dist/rogue-attack-frames.js && node --check dist/rogue-frames.js && node --check dist/scene-layout.js && node --check dist/scene-v5.js && node --check dist/sprite-atlas.js && node --check dist/encounter.js && node --check dist/noise-moment.js && node --check dist/tutorial.js"
+    "check": "node --check dist/app.js && node --check dist/art.js && node --check dist/engine.js && node --check dist/pages.js && node --check dist/pool-reveal.js && node --check dist/rogue-attack-frames.js && node --check dist/rogue-frames.js && node --check dist/scene-layout.js && node --check dist/scene-v5.js && node --check dist/sprite-atlas.js && node --check dist/encounter.js && node --check dist/noise-moment.js && node --check dist/tutorial.js && node --check dist/fx-layer.js"
   }
 }
