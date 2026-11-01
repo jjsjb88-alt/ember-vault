@@ -1,7 +1,7 @@
 // The flame-puff, smoke and spark recipe is adapted from Sprite Fusion's open-source explosion
 // (https://www.spritefusion.com/pixel-art-vfx/explosion), MIT License, Copyright (c) 2026 Hugo Duprez.
 import { fit, mix, hex, clamp, WHITE } from "../../core/index.js";
-import { noiseFor, hotFirst, flameBlade, flameTongue, firePuff, smokePuff, spark, ember, drift, looped, LAYERS, BACK_LAYERS } from "./_lib.js";
+import { noiseFor, hotFirst, flameBlade, flameTongue, firePuff, smokePuff, spark, ember, drift, looped, LAYERS, BACK_LAYERS } from "./lib.js";
 
 export const meta = {
   name: "Fire breath",

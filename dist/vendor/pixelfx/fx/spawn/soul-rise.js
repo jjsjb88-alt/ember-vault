@@ -1,7 +1,7 @@
 // The pale ghost of the body and the motes it sheds follow Sprite Fusion's open-source movement and heal
 // (https://www.spritefusion.com/pixel-art-vfx/movement), MIT License, Copyright (c) 2026 Hugo Duprez.
 import { Particles, Lights, P, Rng, fit, band, clamp, smooth, ease, rand, WHITE, hex, luma, READY } from "../../core/index.js";
-import { bodyOf, rimOf } from "./_lib.js";
+import { bodyOf, rimOf } from "./lib.js";
 
 export const meta = {
   name: "Soul rise",

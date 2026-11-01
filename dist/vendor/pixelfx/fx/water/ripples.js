@@ -1,5 +1,5 @@
 import { fit, cycle, clamp, smooth, ease, TAU, WHITE } from "../../core/index.js";
-import { WATER, ring } from "./_lib.js";
+import { WATER, ring } from "./lib.js";
 
 export const meta = {
   name: "Ripples",
