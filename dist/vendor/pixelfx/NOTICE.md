@@ -9,3 +9,4 @@ https://github.com/rehan-remade/hollow-crown, Copyright (c) 2026 rehan-remade, M
 
 
 Vendored from https://github.com/patch-gg/pixelfx at commit a841596 (MIT). Only src/core and three effects are included.
+Files under dist/vendor/pixelfx/fx/*/lib.js were renamed from _lib.js so GitHub Pages (Jekyll) publishes them.
