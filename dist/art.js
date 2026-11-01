@@ -120,7 +120,7 @@ export function makeRenderer(canvas,getState,minimap){
     else if(!r.used){const ri={entry:'door',chest:'chest',camp:'camp',merchant:'merchant',shrine:'shrine',relic:r.relic?.icon};if(ri[r.type])icon(ctx,ri[r.type],p.x-box*.38,p.y-box*.38,box*.76);}
     else rect(ctx,p.x-2,p.y-2,4,4,'#93ada9');
    }
-   if(large){ctx.fillStyle=r.seen?'#d2d4bf':'#647b8b';ctx.font='24px system-ui';ctx.textAlign='center';ctx.fillText(r.seen?r.name:'미탐험',p.x,p.y+box/2+25);}
+   if(large){ctx.fillStyle=r.seen?'#d2d4bf':'#647b8b';ctx.font='24px system-ui';ctx.textAlign='center';if(r.seen)ctx.fillText(r.name,p.x,p.y+box/2+25);}
    if(r.enemy?.hp>0&&r.enemy.target!==null&&r.seen&&r.enemy.mode!=='idle'){const target=point(r.enemy.target,w,h);ctx.strokeStyle='#d68f5c77';ctx.setLineDash([3,5]);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(target.x,target.y);ctx.stroke();ctx.setLineDash([]);}
   }
   if(s.lastSound?.strength>0&&ms-sounded<2200&&!reduced){const p=point(s.lastSound.origin,w,h),age=(ms-sounded)/2200;ctx.globalAlpha=1-age;ctx.strokeStyle='#f6c077';ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,8+age*s.lastSound.strength*15,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;}

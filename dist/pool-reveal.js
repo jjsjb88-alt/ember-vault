@@ -63,7 +63,7 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   if(!active||complete)return;
   clear();complete=true;noiseHeld=false;index=plan.steps.length-1;visibleSlots=plan.steps.length;
   dialog.dataset.phase='complete';dialog.dataset.family='gold';
-  q('#revealTitle').textContent='이번 턴의 힘';q('.reveal-kicker').textContent=`TURN ${String(run.turn).padStart(2,'0')} · POOL REVEALED`;
+  q('#revealTitle').textContent='이번 턴의 힘';q('.reveal-kicker').textContent=`${String(run.turn).padStart(2,'0')}턴 · 추출 완료`;
   q('.reveal-orb-core').innerHTML=glyph('heartgem',100);
   q('.reveal-name').textContent=`${plan.steps.length}개의 능력이 깨어났다`;
   q('.reveal-effect').textContent='이제, 당신의 발걸음이 금고를 바꿉니다.';
@@ -77,7 +77,7 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   const step=plan.steps[index+1];if(!step)return summary();
   dialog.dataset.phase=step.last?'last':'charging';dialog.dataset.family='gold';
   q('#revealTitle').textContent=step.last?'마지막 하나.':'어둠 속에서, 하나씩';
-  q('.reveal-kicker').textContent=step.last?'ONE LAST BREATH':'THE POOL AWAKENS';
+  q('.reveal-kicker').textContent=step.last?'마지막 봉인':'봉인이 열린다';
   q('.reveal-orb-core').innerHTML='<span class="sealed-mark">✧</span>';
   q('.reveal-name').textContent=step.last?'숨을 죽이세요':'봉인이 흔들린다';
   q('.reveal-effect').textContent=step.last?'이번 턴을 바꿀 마지막 힘':'아직, 무엇이 나올지 알 수 없습니다.';
@@ -112,7 +112,7 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   if(active)close();run=state;plan=buildRevealPlan(state);index=-1;visibleSlots=plan.initialSlots;complete=false;active=true;holdNoise=hold;noiseHeld=false;
   previousFocus=document.activeElement;
   const stakes=revealStakes(state,plan.base);
-  root.innerHTML=`<div class="reveal-grain" aria-hidden="true"></div><div class="reveal-top"><div><span class="reveal-kicker">THE MOMENT BEFORE</span><h2 id="revealTitle">금고가 숨을 죽인다</h2></div><button data-reveal="sound" type="button"></button></div><p id="revealStakes">${stakes}</p><div class="reveal-slots" aria-label="추출 진행"></div><div class="reveal-stage"><div class="reveal-orb" aria-hidden="true"><div class="orb-ring outer"></div><div class="orb-ring inner"></div><div class="orb-rays"></div><div class="reveal-orb-core"><span class="sealed-mark">✧</span></div>${Array.from({length:12},(_,i)=>`<i class="orb-mote" style="--n:${i}"></i>`).join('')}</div><div class="reveal-identity"><span class="reveal-count">봉인된 능력 ${visibleSlots}개</span><h3 class="reveal-name">능력을 불러오는 중</h3><p class="reveal-effect">작은 힘 하나가, 탈출을 결정합니다.</p></div></div><div class="reveal-bottom"><div class="reveal-totals">${VALUES.map(([key,name])=>`<div class="reveal-stat ${key}" data-total="${key}"><span>${name}</span><strong>0</strong><em></em></div>`).join('')}</div><div class="reveal-traits"></div><button class="reveal-skip" data-reveal="skip" type="button">결과 바로 보기 →</button></div><p class="reveal-announcement sr-only" aria-live="polite" aria-atomic="true"></p>`;
+  root.innerHTML=`<div class="reveal-grain" aria-hidden="true"></div><div class="reveal-top"><div><span class="reveal-kicker">추출 직전</span><h2 id="revealTitle">금고가 숨을 죽인다</h2></div><button data-reveal="sound" type="button"></button></div><p id="revealStakes">${stakes}</p><div class="reveal-slots" aria-label="추출 진행"></div><div class="reveal-stage"><div class="reveal-orb" aria-hidden="true"><div class="orb-ring outer"></div><div class="orb-ring inner"></div><div class="orb-rays"></div><div class="reveal-orb-core"><span class="sealed-mark">✧</span></div>${Array.from({length:12},(_,i)=>`<i class="orb-mote" style="--n:${i}"></i>`).join('')}</div><div class="reveal-identity"><span class="reveal-count">봉인된 능력 ${visibleSlots}개</span><h3 class="reveal-name">능력을 불러오는 중</h3><p class="reveal-effect">작은 힘 하나가, 탈출을 결정합니다.</p></div></div><div class="reveal-bottom"><div class="reveal-totals">${VALUES.map(([key,name])=>`<div class="reveal-stat ${key}" data-total="${key}"><span>${name}</span><strong>0</strong><em></em></div>`).join('')}</div><div class="reveal-traits"></div><button class="reveal-skip" data-reveal="skip" type="button">결과 바로 보기 →</button></div><p class="reveal-announcement sr-only" aria-live="polite" aria-atomic="true"></p>`;
   dialog.dataset.phase='gather';dialog.dataset.family='gold';soundButton();totals(plan.base);strip();
   document.body.classList.add('drawing-pool');dialog.showModal();q('[data-reveal="skip"]').focus({preventScroll:true});cue('gather');
   if(fast||matchMedia('(prefers-reduced-motion: reduce)').matches||!plan.steps.length)summary();else later(anticipate,520);

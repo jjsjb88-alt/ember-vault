@@ -131,7 +131,7 @@ export function makeRenderer(canvas,getState,minimap){
    if(here){ctx.fillStyle='#ffe090';ctx.beginPath();ctx.moveTo(p.x,p.y-box*.4);ctx.lineTo(p.x+box*.34,p.y+box*.32);ctx.lineTo(p.x-box*.34,p.y+box*.32);ctx.closePath();ctx.fill();}
    else if(r.seen&&r.enemy?.hp>0){ctx.fillStyle='#662a33';ctx.fillRect(p.x-box*.5,p.y-box*.5,box,box);icon(ctx,'skull',p.x-box*.4,p.y-box*.4,box*.8);}
    else if(r.seen&&!r.used){const symbol={entry:'door',chest:'chest',camp:'camp',merchant:'merchant',shrine:'shrine',relic:r.relic?.icon}[r.type];if(symbol)icon(ctx,symbol,p.x-box*.4,p.y-box*.4,box*.8);}
-   if(large){ctx.font=`${labelSize}px system-ui`;ctx.textAlign='center';ctx.fillStyle=available.has(r.id)?'#ffe09a':r.seen?'#cfd6db':'#5f7382';ctx.fillText((r.seen?r.name:'미탐험')+(available.has(r.id)?' →':''),p.x,p.y+box*.5+labelSize+2*pixel);}
+   if(large){ctx.font=`${labelSize}px system-ui`;ctx.textAlign='center';ctx.fillStyle=available.has(r.id)?'#ffe09a':r.seen?'#cfd6db':'#5f7382';if(r.seen||available.has(r.id))ctx.fillText((r.seen?r.name:'미탐험')+(available.has(r.id)?' →':''),p.x,p.y+box*.5+labelSize+2*pixel);}
    if(r.enemy?.hp>0&&r.enemy.target!==null&&r.seen&&r.enemy.mode!=='idle'){
     const target=projectMap(r.enemy.target,w,h);ctx.strokeStyle='#fa8d5370';ctx.setLineDash([3,6]);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(target.x,target.y);ctx.stroke();ctx.setLineDash([]);
    }
