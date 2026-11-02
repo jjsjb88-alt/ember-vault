@@ -28,7 +28,7 @@ export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSoun
    frame=requestAnimationFrame(draw);
   }frame=requestAnimationFrame(draw);
   later(()=>{dialog.dataset.phase='travel';q('#noiseTitle').textContent='소리가 번진다.';q('#noiseDetail').textContent=`통로를 따라 ${sound.field.length}개 방에 닿습니다.`;cue('noise');},reduced?50:500);
-  later(()=>{dialog.dataset.phase='heard';gauge(s.noise);const known=plan.heard.filter(e=>e.known);q('#noiseTitle').textContent=plan.heard.length?'누군가 들었다.':'아직, 들키지 않았다.';q('#noiseDetail').textContent=plan.heard.length?`${known.slice(0,2).map(e=>e.name).join(' · ')}${plan.heard.length>known.length?' · 어둠 속 기척':''} — 적 ${plan.heard.length}명 반응`:'주변에서 당신을 들은 적이 없습니다.';if(plan.heard.length)cue('heard');},reduced?100:1250);
+  later(()=>{dialog.dataset.phase='heard';gauge(s.noise);q('#noiseValue').textContent=s.noise>previousNoise?`소리 ${sound.strength} → 경계 ${previousNoise} → ${s.noise}`:`소리 ${sound.strength}`;const known=plan.heard.filter(e=>e.known);q('#noiseTitle').textContent=plan.heard.length?'누군가 들었다.':'아직, 들키지 않았다.';q('#noiseDetail').textContent=plan.heard.length?`${known.slice(0,2).map(e=>e.name).join(' · ')}${plan.heard.length>known.length?' · 어둠 속 기척':''} — 적 ${plan.heard.length}명 반응`:'주변에서 당신을 들은 적이 없습니다.';if(plan.heard.length)cue('heard');},reduced?100:1250);
   if(rage)later(()=>{dialog.dataset.phase='rage';q('#noiseTitle').textContent=previousNoise<8?'용이 눈을 떴다.':'분노가 사그라들지 않는다.';q('#noiseDetail').textContent='경계가 8 이상인 채 턴을 마치면 용의 숨결이 덮칩니다.';q('#noiseValue').textContent=`경계 ${s.noise} · 위험`;cue('rage');},reduced?150:1950);
   if(hold)q('[data-noise="skip"]').textContent='확인했어요 →';else later(close,reduced?1500:rage?4600:3400);
  }

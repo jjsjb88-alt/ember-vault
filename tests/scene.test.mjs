@@ -56,6 +56,6 @@ test('room target availability respects movement cost, combat retreat, and pendi
  assert.equal(moveStatus(s,0).retreat,true);assert.equal(moveStatus(s,0).allowed,true);
  assert.equal(moveStatus(s,5).allowed,false);
  const before=JSON.stringify(s);assert.equal(apply(s,{type:'move',id:5}).ok,false);assert.equal(JSON.stringify(s),before);
- s.resource.move=0;assert.equal(moveStatus(s,0).allowed,false);assert.match(moveStatus(s,0).reason,/풀 뽑기/);
+ s.resource.move=0;assert.equal(moveStatus(s,0).allowed,false);assert.match(moveStatus(s,0).reason,/다음 턴/);
  s.resource.move=5;s.pending={type:'reward',options:['step']};assert.equal(moveStatus(s,0).allowed,false);
 });
