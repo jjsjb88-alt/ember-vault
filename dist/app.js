@@ -75,7 +75,7 @@ function renderInteraction(ra){
 function markTutorial(value){tutorialSeen=true;try{localStorage.setItem('ember-vault-tutorial-v1',value);}catch{}}
 function showTutorialIntro(){
  if(tutorial)return;
- openModal(modalShell('소리가 금고를 깨웁니다','직접 해보며 배우기',`<div class="tutorial-intro"><img src="./assets/noise-seal-v6.png" alt="갈라진 소음의 봉인"><div><p>방을 누르고, 상자를 열고, 소리를 따라오는 적을 만나세요.</p><p><b>8단계 연습</b>에서 용의 분노와 전투까지 직접 경험합니다. 현재 탐험은 유지됩니다.</p><label><input id="tutorialAudio" type="checkbox" checked> 효과음과 함께 연습</label></div></div><div class="modal-actions"><button class="subtle-button" data-act="tutorialSkip">바로 탐험하기</button><button class="large-button" data-act="tutorialStart">직접 배워보기 →</button></div>`),'tutorialIntro');
+ openModal(modalShell('금고는 발소리를 기억한다','직접 해보며 배우기',`<div class="tutorial-intro"><img src="./assets/noise-seal-v6.png" alt="갈라진 소음의 봉인"><div><p>멸망한 왕국의 기억이 잠든 금고. 당신의 목표는 <b>유물 하나를 품고 입구로 살아 돌아오는 것</b>입니다.</p><p>매 턴 봉인 메달 5개가 열려 <b>공격력·이동력·기술·방어</b>가 모입니다. 그 힘으로 움직이되, 모든 행동은 소리를 냅니다. 소리가 쌓여 <b>경계 8</b>이 되면 용이 숨을 내쉽니다.</p><p><b>8단계 연습</b>에서 직접 해봅니다. 지금 탐험은 그대로 남습니다.</p><label><input id="tutorialAudio" type="checkbox" checked> 효과음과 함께 연습</label></div></div><div class="modal-actions"><button class="subtle-button" data-act="tutorialSkip">바로 탐험하기</button><button class="large-button" data-act="tutorialStart">직접 배워보기 →</button></div>`),'tutorialIntro');
 }
 function startTutorial(){
  const withAudio=$('#tutorialAudio')?.checked;
@@ -92,8 +92,9 @@ function renderTutorial(){
  const coach=$('#tutorialCoach');document.querySelectorAll('.coach-target').forEach(e=>e.classList.remove('coach-target'));
  coach.hidden=!tutorial;if(!tutorial)return;
  const step=TUTORIAL_STEPS[tutorial.index];
- if(!step){coach.innerHTML='<span>연습 완료</span><strong>이제 유물을 찾아, 입구로 돌아오세요.</strong><button data-act="tutorialExit">탐험으로 →</button>';return;}
- coach.innerHTML=`<span>연습 ${tutorial.index+1} / ${TUTORIAL_STEPS.length}</span><strong>${step.title}</strong><p>${step.text}</p><button class="tutorial-leave" data-act="tutorialExit" aria-label="연습 끝내고 원래 탐험으로">×</button>`;
+ const dots=TUTORIAL_STEPS.map((_,i)=>`<i class="${i<tutorial.index?'done':i===tutorial.index?'now':''}"></i>`).join('');
+ if(!step){coach.innerHTML=`<div class="coach-head"><span>연습 완료</span><span class="coach-dots" aria-hidden="true">${dots}</span></div><strong>이제 진짜 금고로 내려갑니다</strong><em class="coach-story">기억은 지상에 닿아야 비로소 남습니다.</em><p>유물 하나를 찾아 입구로 돌아오면 승리. 유물을 들면 14턴 안에 나가야 하고, 경계 8은 넘기지 마세요.</p><button data-act="tutorialExit">탐험으로 →</button>`;return;}
+ coach.innerHTML=`<div class="coach-head"><span>연습 ${tutorial.index+1} / ${TUTORIAL_STEPS.length}</span><span class="coach-dots" aria-hidden="true">${dots}</span></div><strong>${step.title}</strong>${step.story?`<em class="coach-story">${step.story}</em>`:''}<p>${step.text}</p><button class="tutorial-leave" data-act="tutorialExit" aria-label="연습 끝내고 원래 탐험으로">×</button>`;
  let target=step.target;
  if(tutorial.index===3)target=mapOpen?'#mapToggle':!lureMode?'#lureToggle':'.scene-exit[data-id="5"]';
  if(tutorial.index===4)target=state.mode!=='rush'?(modeOpen?'[data-act="mode"][data-id="rush"]':'#stanceToggle'):'.scene-exit[data-id="2"]';
@@ -109,7 +110,7 @@ function selectPanel(id){
  renderTutorial();
 }
 function setStanceMenu(open){
- modeOpen=open;$('#stanceMenu').hidden=!open;$('#stanceToggle').setAttribute('aria-expanded',String(open));renderTutorial();
+ modeOpen=open;document.body.classList.toggle('mode-open',open);$('#stanceMenu').hidden=!open;$('#stanceToggle').setAttribute('aria-expanded',String(open));renderTutorial();
  if(open)$('#stanceMenu button[aria-pressed="true"]')?.focus({preventScroll:true});
 }
 function showMarket(){
