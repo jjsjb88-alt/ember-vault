@@ -123,3 +123,11 @@ body.mode-open .tutorial-coach{visibility:hidden}
 }
 @media(orientation:landscape) and (max-height:290px){.role-option .select-portrait{height:44px}.role-option>span:not(.portrait){display:none}}
 .modal-inner{overflow-y:auto}
+/* 플레이테스트 반영: 안내창이 장면 오른쪽의 상자·적 버튼을 가리지 않게 */
+@media(orientation:landscape){.tutorial-coach{width:min(440px,calc(52vw - 12px))}}
+.noise-copy h2{word-break:keep-all}
+.briefing{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin:8px 0}
+.briefing>div{border:1px solid #3c5164;background:#0f2130;padding:8px 10px}
+.briefing strong{display:block;color:#f4d394;font-size:12px}
+.briefing p{margin:3px 0 0;font-size:11px;line-height:1.45;color:#cdd7de;word-break:keep-all}
+@media(max-height:340px){.briefing{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.briefing>div{padding:5px 7px}.briefing p{font-size:10px;line-height:1.35}}

@@ -65,7 +65,7 @@ export function moveNoise(s,id,mode=s.mode){return Math.max(0,MODES[mode].noise+
 export function previewNoise(s,raw){return Math.max(0,raw+s.resource.rattle-s.resource.quiet);}
 function resources(s){return {move:1,sword:0,skill:s.role==='mage'?1:0,block:s.role==='knight'?1:0,quiet:0,rattle:0};}
 function take(s){
- if(!s.deck.length){if(!s.discard.length)return null;s.deck=shuffle(s,s.discard.splice(0));log(s,'사용한 능력을 섞어 새로운 풀을 만들었습니다.');}
+ if(!s.deck.length){if(!s.discard.length)return null;s.deck=shuffle(s,s.discard.splice(0));log(s,'사용한 메달을 섞어 주머니를 다시 채웠습니다.');}
  return s.deck.pop();
 }
 // Resolve each physical token once. The current reveal never returns to the draw pile.
@@ -122,7 +122,7 @@ export function newRun({seed=Date.now(),role='rogue'}={}){
 export function migrateSave(old){
  if(old?.version!==1||!Array.isArray(old.rooms)||old.rooms.length!==16)return null;
  const s=JSON.parse(JSON.stringify(old));s.version=VERSION;freshFields(s);s.rooms.forEach(decorateRoom);s.resource.quiet=0;s.resource.rattle=0;
- const unplayed=s.hand.splice(0);resolvePool(s,unplayed);log(s,'탐험을 이어갑니다. 남은 손패는 자동으로 자원 풀에 합산되었습니다.','good');return s;
+ const unplayed=s.hand.splice(0);resolvePool(s,unplayed);log(s,'탐험을 이어갑니다. 남은 손패는 자동으로 합산되었습니다.','good');return s;
 }
 function ok(s,message){return {ok:true,state:s,message};}
 function fail(s,message){return {ok:false,state:s,message};}
@@ -154,7 +154,7 @@ export function moveStatus(s,id){
  else if(s.pending)reason='먼저 보상을 선택해 주세요.';
  else if(!neighbours(s).includes(id))reason='연결된 방으로만 이동할 수 있습니다.';
  else if(s.rooms[s.pos].enemy?.hp>0&&!retreat)reason='적을 쓰러뜨리거나 들어온 방으로 후퇴하세요.';
- else if(s.resource.move<cost)reason=`이동 ${cost} 필요 · 풀 뽑기로 이동력을 얻으세요.`;
+ else if(s.resource.move<cost)reason=`이동 ${cost} 필요 · 「다음 턴」으로 이동력을 얻으세요.`;
  return {allowed:!reason,cost,retreat:!!retreat,reason};
 }
 
@@ -201,7 +201,7 @@ export function apply(s,action){
   if(r.used)return fail(s,'이 방의 보상은 이미 받았습니다.');
   if(r.type==='chest'){const gold=r.row===3?10:5+Math.floor(next(s)*3);s.gold+=gold;r.used=true;emitNoise(s,s.pos,r.row===3?7:3,r.row===3?'상자의 경보 장치':'낡은 경첩');log(s,`보물 상자 · 금화 +${gold}`,'good');return ok(s,`금화 +${gold}`);}
   if(r.type==='camp'){if(s.hp===s.maxHp&&s.noise===0)return fail(s,'아직 쉬어 갈 필요가 없습니다.');const healed=Math.min(6,s.maxHp-s.hp);s.hp+=healed;s.noise=Math.max(0,s.noise-3);r.used=true;log(s,`불가에서 휴식 · 체력 +${healed}, 경계 −3`,'good');return ok(s,'따뜻한 휴식');}
-  if(r.type==='shrine'){const total=[...s.deck,...s.discard,...s.played];if(total.length<=5)return fail(s,'최소 5개의 능력은 남겨 두어야 합니다.');s.pending={type:'purge',options:[...new Set(total)]};return ok(s,'풀에서 지울 능력을 선택하세요.');}
+  if(r.type==='shrine'){const total=[...s.deck,...s.discard,...s.played];if(total.length<=5)return fail(s,'최소 5개의 능력은 남겨 두어야 합니다.');s.pending={type:'purge',options:[...new Set(total)]};return ok(s,'주머니에서 지울 능력을 선택하세요.');}
   if(r.type==='relic'){if(s.relic&&s.relic.value>=r.relic.value)return fail(s,'이미 더 값진 유물을 가지고 있습니다.');s.relic={...r.relic};r.used=true;if(s.countdown===null)s.countdown=14;emitNoise(s,s.pos,8,'유물 봉인 파괴');log(s,`${r.relic.name} 획득! ${s.countdown}턴 이내에 입구로 탈출하세요.`,'good');return ok(s,'유물 획득 · 용이 깨어났습니다!');}
   return fail(s,'상인에게 물약을 구매할 수 있습니다.');
  }
@@ -211,15 +211,15 @@ export function apply(s,action){
  }
  case 'buy':{
   const i=action.index,id=s.market[i],c=CARDS[id];if(!c)return fail(s,'능력을 찾을 수 없습니다.');if(s.resource.skill<c.cost)return fail(s,`기술 ${c.cost}이 필요합니다.`);
-  s.resource.skill-=c.cost;s.discard.push(id);s.purchases++;s.market[i]=sample(s,MARKET_IDS.filter(x=>!s.market.includes(x)));log(s,`${c.name} 영입 · 다음 순환의 풀에 추가`,'good');return ok(s,`${c.name} 획득`);
+  s.resource.skill-=c.cost;s.discard.push(id);s.purchases++;s.market[i]=sample(s,MARKET_IDS.filter(x=>!s.market.includes(x)));log(s,`${c.name} 영입 · 다음 턴부터 주머니에서 나옴`,'good');return ok(s,`${c.name} 획득`);
  }
  case 'refresh':if(s.refreshTurn===s.turn)return fail(s,'교역소는 턴당 한 번 교체할 수 있습니다.');if(s.gold<2)return fail(s,'금화 2가 필요합니다.');s.gold-=2;s.market=shuffle(s,[...MARKET_IDS]).slice(0,4);s.refreshTurn=s.turn;return ok(s,'교역소 능력이 바뀌었습니다.');
- case 'reward':if(s.pending?.type!=='reward'||!s.pending.options.includes(action.id))return fail(s,'선택할 수 없는 보상입니다.');s.discard.push(action.id);s.pending=null;log(s,`전투 보상 · ${CARDS[action.id].name}`,'good');return ok(s,'새 능력을 풀에 추가했습니다.');
+ case 'reward':if(s.pending?.type!=='reward'||!s.pending.options.includes(action.id))return fail(s,'선택할 수 없는 보상입니다.');s.discard.push(action.id);s.pending=null;log(s,`전투 보상 · ${CARDS[action.id].name}`,'good');return ok(s,'새 능력을 메달 주머니에 넣었습니다.');
  case 'skipReward':if(s.pending?.type!=='reward')return fail(s,'선택할 보상이 없습니다.');s.pending=null;return ok(s,'보상을 받지 않았습니다.');
  case 'purge':{
   if(s.pending?.type!=='purge'||!s.pending.options.includes(action.id))return fail(s,'지울 능력을 선택하세요.');
   for(const pile of [s.discard,s.deck,s.played]){const i=pile.indexOf(action.id);if(i!==-1){pile.splice(i,1);break;}}
-  s.pending=null;r.used=true;log(s,`망각의 제단 · ${CARDS[action.id].name} 1개 제거`,'good');return ok(s,'추출 풀이 가벼워졌습니다.');
+  s.pending=null;r.used=true;log(s,`망각의 제단 · ${CARDS[action.id].name} 1개 제거`,'good');return ok(s,'메달 주머니가 가벼워졌습니다.');
  }
  case 'cancelPurge':if(s.pending?.type!=='purge')return fail(s,'진행 중인 의식이 없습니다.');s.pending=null;return ok(s,'의식을 미뤘습니다.');
  case 'end':{
@@ -229,7 +229,7 @@ export function apply(s,action){
   if(s.hp<=0){finish(s,false,'용의 숨결이 금고를 삼켰습니다.');return ok(s,'탐험 종료');}
   if(s.countdown!==null){s.countdown--;if(s.countdown<=0){finish(s,false,'금고가 무너졌습니다. 유물을 얻으면 입구로 돌아가세요.');return ok(s,'탐험 종료');}}
   s.discard.push(...s.played);s.played=[];s.turn++;s.resource=resources(s);s.hidden=false;s.noise=Math.max(0,s.noise-2-(s.role==='rogue'?1:0));
-  resolvePool(s);return ok(s,'새로운 능력 풀이 준비되었습니다.');
+  resolvePool(s);return ok(s,'새 메달 5개가 열렸습니다.');
  }
  default:return fail(s,'알 수 없는 행동입니다.');
  }
