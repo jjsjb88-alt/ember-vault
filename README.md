@@ -104,12 +104,13 @@ V6는 브라우저에서 튜토리얼 8단계와 일반 탐험의 수호자 처�
 
 `engine.js`: 규칙. `scene-v5.js`: 무대·캐릭터·소음·지도. `app.js`: UI·저장·효과음. `pool-reveal.js`: 추출. `encounter.js`: 상호작용·피해 예측·음향 경로. `noise-moment.js`: 소음·용의 연출. `tutorial.js`: 실습 진행. `play-surface.css`: V7 통합 플레이 화면. `vault-v5.css` / `encounter.css`: 기존 시각 스타일·연출. 승인 기준은 [아트 디렉션](docs/visual/ART-DIRECTION.md), 신규 에셋과 제작 프롬프트는 [V6 에셋](docs/visual/ASSETS-V6.json), [V6 제작 기록](docs/visual/PROMPTS-V6.md)을 참고하세요.
 
-## V7.4 용의 판정 (시간 정지)
+## V7.4 용의 공격: 용 주머니 (클랭크 방식, 시간 정지 연출)
 
-UNREASON X의 「Judgment — Time stopped」 연출에서 가져온 긴장 장치.
+원작 클랭크!의 용 주머니 규칙을 그대로 따르고, 연출은 UNREASON X의 「Judgment — Time stopped」에서 가져옴.
 
-- 경계 8 이상으로 턴을 마치면 시간이 멈추고 용의 눈 둘레에 세 자리(몸 · 금화 주머니 · 등불)가 뜸.
-- 한 곳에 **방패**를 놓음. 빛이 원을 돌다 점점 느려져 한 곳에 멈춤(각 1/3, 시드 고정 난수).
-  - 방패 자리 → 버팀(피해 없음). 몸 → 체력 피해(방어 적용). 금화 → 금화 −공격×2. 등불 → 이번 턴 경계가 내려가지 않음(다음 턴도 판정).
-- 「턴으로 돌아가기」로 취소하고 경계를 먼저 낮출 수 있음. 튜토리얼은 기존 고정 숨결 유지.
-- 코드: `engine.js` `end` 행동의 `guard`, `noise-moment.js` `judge/spin`, `encounter.css` V7.4.
+- 소리를 낼 때마다 경계가 오른 만큼 **내 큐브**가 대기 칸(클랭크 영역)에 쌓임. HUD `◆ N`.
+- 용의 공격(경계 8 이상으로 턴 종료, 또는 유물을 든 채 3턴마다): 대기 큐브가 주머니로 들어감(시작 시 검은 큐브 12개) → 분노(3, 유물 +1, 10턴마다 +1)만큼 뽑음.
+- 뽑힌 내 큐브 1개 = 피해 1(방어로 막음). 검은 큐브는 버림. 안 뽑힌 큐브는 주머니에 남아 다음 공격을 더 위험하게 만듦.
+- 연출: 시간 정지 → 「뽑는다」 → 큐브를 하나씩 흔들다 공개(뒤로 갈수록 느려짐). 「턴으로 돌아가기」로 취소할 수 있음.
+- 튜토리얼과 이전 세이브는 기존 고정 숨결을 유지함.
+- 코드: `engine.js`의 `dragonDue/dragonRage`와 `s.bag/s.clank/s.attack`, `noise-moment.js`의 `judge/spin`, `encounter.css`의 V7.4 블록.
