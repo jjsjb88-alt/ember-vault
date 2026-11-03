@@ -8,5 +8,5 @@ straw target), from
 https://github.com/rehan-remade/hollow-crown, Copyright (c) 2026 rehan-remade, MIT License.
 
 
-Vendored from https://github.com/patch-gg/pixelfx at commit a841596 (MIT). Only src/core and three effects are included.
+Vendored from https://github.com/patch-gg/pixelfx at commit a841596 (MIT). Only src/core and six effects are included (fire-breath, ripples, soul-rise, hit-spark, crit-hit, impact-frame).
 Files under dist/vendor/pixelfx/fx/*/lib.js were renamed from _lib.js so GitHub Pages (Jekyll) publishes them.

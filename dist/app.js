@@ -233,15 +233,15 @@ function showLog(page=0){
 function act(action){
  if(poolReveal.active||noiseMoment.active||actionBusy||action.type==='move'&&performance.now()<travelUntil)return false;
  if(tutorial&&(!tutorialAllows(tutorial.index,action)||(tutorial.index===4&&action.type==='move'&&state.mode!=='rush'))){toast(TUTORIAL_STEPS[tutorial.index]?.text||'연습을 마치고 탐험으로 돌아가세요.');return false;}
- const beforeHP=state.hp,wasRelic=!!state.relic,enemyHP=state.rooms[state.pos].enemy?.hp||0,previousNoise=state.noise,previousSeq=state.soundSeq,previousGold=state.gold;
+ const beforeHP=state.hp,wasRelic=!!state.relic,enemyHP=state.rooms[state.pos].enemy?.hp||0,enemyMax=state.rooms[state.pos].enemy?.maxHp||0,previousNoise=state.noise,previousSeq=state.soundSeq,previousGold=state.gold;
  const impact=action.type==='end'?turnImpact(state):null;
  const result=apply(state,action);if(!result.ok){toast(result.message,true);beep('bad');return false;}
  if(action.type==='move'){travelUntil=performance.now()+450;renderer.setHover(-1);}
  if(action.type==='end'){handPage=0;enemyPage=0;lureMode=false;}if(action.type==='lure')lureMode=false;
  save();render();
- if(action.type==='attack')renderer.burst('attack',`−${enemyHP-(state.rooms[state.pos].enemy?.hp||0)}`);
+ let swingMs=580;if(action.type==='attack'){const foeAfter=state.rooms[state.pos].enemy,dealt=enemyHP-(foeAfter?.hp||0);swingMs=renderer.burst('attack',`−${dealt}`,{dmg:dealt,kill:enemyHP>0&&!(foeAfter?.hp>0),maxHp:foeAfter?.maxHp||enemyMax})||580;}
  const rewardText=state.gold>previousGold?`+${state.gold-previousGold} G`:state.hp>beforeHP?`+${state.hp-beforeHP} HP`:action.type==='interact'&&state.relic&&!wasRelic?'유물 회수':'';
- if(rewardText)renderer.burst('reward',rewardText);if(state.hp<beforeHP)renderer.burst('bad');
+ if(rewardText&&action.type!=='attack')renderer.burst('reward',rewardText);if(state.hp<beforeHP)renderer.burst('bad');
  const tense=tensionNeeded(state,action,previousSeq,previousNoise),actionRun=state;
  const finish=()=>{
   if(state!==actionRun)return;actionBusy=false;advanceTutorial(action);if(rewardText)renderer.burst('reward',rewardText);
@@ -253,10 +253,10 @@ function act(action){
   document.body.classList.remove('turn-impact');
  };
  if(impact?.raw){actionBusy=true;document.body.classList.add('turn-impact');noiseMoment.dragon(impact,previousNoise,finish,{hold:!!tutorial});}
- else if(tense){actionBusy=true;if(action.type==='attack')setTimeout(()=>{if(state===actionRun)noiseMoment.start(state,previousNoise,finish,{hold:!!tutorial});},580);else noiseMoment.start(state,previousNoise,finish,{hold:!!tutorial});}
+ else if(tense){actionBusy=true;if(action.type==='attack')setTimeout(()=>{if(state===actionRun)noiseMoment.start(state,previousNoise,finish,{hold:!!tutorial});},swingMs);else noiseMoment.start(state,previousNoise,finish,{hold:!!tutorial});}
  else{
   if(!['mode','end'].includes(action.type))beep(action.type==='buy'||action.type==='reward'?'buy':action.type==='move'?'move':action.type==='attack'?'attack':action.type==='lure'?'lure':!wasRelic&&state.relic?'relic':'card');
-  if(action.type==='attack'&&state.pending){actionBusy=true;setTimeout(finish,600);}else finish();
+  if(action.type==='attack'&&state.pending){actionBusy=true;setTimeout(finish,swingMs+20);}else finish();
  }
  return true;
 }
