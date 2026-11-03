@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {newRun,apply,CARDS,ROLES,validSave,neighbours,resolvePool,emitNoise,soundField,enemyTurn,moveNoise,moveCost,previewNoise,migrateSave} from '../dist/engine.js';
+import {newRun,apply,CARDS,ROLES,validSave,neighbours,resolvePool,emitNoise,soundField,enemyTurn,moveNoise,moveCost,previewNoise,migrateSave,dragonRage,RAGE_TRACK} from '../dist/engine.js';
 const doAction=(s,a)=>{const r=apply(s,a);assert.equal(r.ok,true,r.message);return r;};
 const total=s=>s.hand.length+s.deck.length+s.discard.length+s.played.length;
 test('all roles automatically resolve a complete starting pool, with deterministic save round trip',()=>{
@@ -93,5 +93,13 @@ test('dragon bag (Clank!): noise drops cubes, an attack draws rage-many, only yo
  let seen=new Set();for(let seed=1;seed<80;seed++){const t=newRun({seed});t.pos=0;t.clank=6;t.noise=8;doAction(t,{type:'end'});seen.add(t.attack.drawn.filter(x=>x==='mine').length);}
  assert.ok(seen.has(0)&&seen.size>=3,'luck matters');
  const q=newRun({seed:3});q.pos=0;q.noise=4;q.clank=4;doAction(q,{type:'end'});assert.equal(q.attack,null);assert.equal(q.clank,4,'cubes wait in the clank area');
- const r=newRun({seed:4});r.pos=0;r.relic={name:'x',value:1};r.countdown=9;r.turn=3;r.clank=2;doAction(r,{type:'end'});assert.equal(r.attack.cause,'relic');assert.equal(r.attack.rage,4);
+ const r=newRun({seed:4});r.pos=0;r.relic={name:'x',value:1};r.rageStep=1;r.countdown=9;r.turn=3;r.clank=2;doAction(r,{type:'end'});assert.equal(r.attack.cause,'relic');assert.equal(r.attack.rage,4);
+});
+test('rage track (Clank!): each relic lifted moves the dragon one space and it draws more cubes',()=>{
+ const s=newRun({seed:6});assert.equal(s.rageStep,0);assert.equal(dragonRage(s),3);
+ s.pos=10;s.rooms[10].enemy.hp=0;const r1=doAction(s,{type:'interact'});assert.equal(s.rageStep,1);assert.equal(dragonRage(s),4);assert.match(r1.message,/분노 3 → 4/);
+ s.pos=15;s.rooms[15].enemy.hp=0;doAction(s,{type:'interact'});assert.equal(s.rageStep,2);
+ s.rageStep=99;assert.equal(dragonRage(s),RAGE_TRACK.at(-1));
+ const legacy=newRun({seed:6});delete legacy.rageStep;legacy.relic={name:'x',value:1};assert.equal(dragonRage(legacy),4,'saves from before the track read the relic as one step');
+ const t=newRun({seed:8});t.pos=0;t.noise=8;t.clank=5;t.rageStep=3;doAction(t,{type:'end'});assert.equal(t.attack.rage,5);
 });

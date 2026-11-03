@@ -39,7 +39,10 @@ const EDGES=[[0,1],[0,4],[1,2],[1,5],[2,3],[2,6],[3,7],[4,5],[4,8],[5,9],[6,7],[
 // Clank!-style dragon bag: every noise you make drops cubes into the clank area; when the dragon attacks they
 // join the bag with the black cubes and the dragon draws as many as its rage. Each of yours is 1 damage.
 export const BAG_BLACK=12;
-export function dragonRage(s){return 3+(s.relic?1:0)+Math.floor(s.turn/10);}
+// Clank!'s rage track: every relic you lift moves the marker one space, and the dragon draws more cubes.
+export const RAGE_TRACK=[3,4,4,5,5,6];
+export function rageStep(s){return Math.min(RAGE_TRACK.length-1,s.rageStep??(s.relic?1:0));}
+export function dragonRage(s){return RAGE_TRACK[rageStep(s)];}
 export function dragonDue(s){return s.noise>=8?'noise':s.relic&&s.turn%3===0?'relic':null;}
 function next(s){let x=s.rng|0;x^=x<<13;x^=x>>>17;x^=x<<5;s.rng=x>>>0;return s.rng/4294967296;}
 function shuffle(s,a){for(let i=a.length-1;i>0;i--){const j=Math.floor(next(s)*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
@@ -118,7 +121,7 @@ function freshFields(s){Object.assign(s,{mode:'walk',soundSeq:0,lastSound:null,n
 export function newRun({seed=Date.now(),role='rogue'}={}){
  if(!ROLES[role])role='rogue';seed=Number(seed)>>>0||135792468;
  const s={version:VERSION,seed,rng:seed,role,turn:1,pos:0,from:null,hp:ROLES[role].hp,maxHp:ROLES[role].hp,gold:0,noise:0,resource:null,hand:[],deck:[],discard:[],played:[],edges:EDGES.map(e=>[...e]),rooms:[],market:[],log:[],relic:null,countdown:null,phase:'playing',pending:null,kills:0,purchases:0,refreshTurn:0,steps:0};
- freshFields(s);s.bag={black:BAG_BLACK,mine:0};s.clank=0;s.resource=resources(s);s.rooms=generateRooms(s);
+ freshFields(s);s.bag={black:BAG_BLACK,mine:0};s.clank=0;s.rageStep=0;s.resource=resources(s);s.rooms=generateRooms(s);
  s.deck=shuffle(s,['scout','step','slash','focus','guard']);
  s.market=['step',...shuffle(s,MARKET_IDS.filter(x=>x!=='step')).slice(0,3)];
  resolvePool(s,['scout','step',role==='mage'?'spark':'slash','focus',role==='rogue'?'sneak':'guard']);
@@ -207,7 +210,7 @@ export function apply(s,action){
   if(r.type==='chest'){const gold=r.row===3?10:5+Math.floor(next(s)*3);s.gold+=gold;r.used=true;emitNoise(s,s.pos,r.row===3?7:3,r.row===3?'상자의 경보 장치':'낡은 경첩');log(s,`보물 상자 · 금화 +${gold}`,'good');return ok(s,`금화 +${gold}`);}
   if(r.type==='camp'){if(s.hp===s.maxHp&&s.noise===0)return fail(s,'아직 쉬어 갈 필요가 없습니다.');const healed=Math.min(6,s.maxHp-s.hp);s.hp+=healed;s.noise=Math.max(0,s.noise-3);r.used=true;log(s,`불가에서 휴식 · 체력 +${healed}, 경계 −3`,'good');return ok(s,'따뜻한 휴식');}
   if(r.type==='shrine'){const total=[...s.deck,...s.discard,...s.played];if(total.length<=5)return fail(s,'최소 5개의 능력은 남겨 두어야 합니다.');s.pending={type:'purge',options:[...new Set(total)]};return ok(s,'주머니에서 지울 능력을 선택하세요.');}
-  if(r.type==='relic'){if(s.relic&&s.relic.value>=r.relic.value)return fail(s,'이미 더 값진 유물을 가지고 있습니다.');s.relic={...r.relic};r.used=true;if(s.countdown===null)s.countdown=14;emitNoise(s,s.pos,8,'유물 봉인 파괴');log(s,`${r.relic.name} 획득! ${s.countdown}턴 이내에 입구로 탈출하세요.`,'good');return ok(s,'유물 획득 · 용이 깨어났습니다!');}
+  if(r.type==='relic'){if(s.relic&&s.relic.value>=r.relic.value)return fail(s,'이미 더 값진 유물을 가지고 있습니다.');s.relic={...r.relic};r.used=true;if(s.countdown===null)s.countdown=14;emitNoise(s,s.pos,8,'유물 봉인 파괴');log(s,`${r.relic.name} 획득! ${s.countdown}턴 이내에 입구로 탈출하세요.`,'good');if(s.bag){const was=dragonRage(s);s.rageStep=Math.min(RAGE_TRACK.length-1,(s.rageStep??0)+1);log(s,`용의 분노 ${was} → ${dragonRage(s)} · 공격마다 ${dragonRage(s)}개를 뽑습니다`,'bad');return ok(s,`유물 획득 · 분노 ${was} → ${dragonRage(s)}`);}return ok(s,'유물 획득 · 용이 깨어났습니다!');}
   return fail(s,'상인에게 물약을 구매할 수 있습니다.');
  }
  case 'merchant':{

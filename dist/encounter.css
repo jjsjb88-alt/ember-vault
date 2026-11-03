@@ -68,3 +68,7 @@ dialog.noise-moment{position:fixed;inset:0;margin:0;max-width:none;max-height:no
 @media(orientation:portrait) and (max-width:559px){.judge-copy h2{font-size:28px}.judge-copy{min-height:7.5em}.judge-ring{max-height:min(62vw,300px)}}
 @media(prefers-reduced-motion:reduce){.cube.shake,.cube.mine,.noise-moment[data-phase=hit] .judge-shell,.noise-moment[data-phase=spin] .judge-eye{animation:none}}
 .hud-bag{margin-left:6px;padding:1px 5px;border:1px solid #ff9a5c66;color:#ffb27a;font-size:10px;white-space:nowrap}
+.rage-track{display:flex;align-items:center;gap:3px;margin-left:auto;color:#d9a77a;letter-spacing:0}.rage-track i{font-style:normal;min-width:15px;padding:2px 3px;text-align:center;border:1px solid #4a3b2c;color:#7d6c5a;font-size:10px}.rage-track i.past{border-color:#8a4a2c;color:#c98a64}.rage-track i.now{border-color:#ff8a5c;background:#5a1f0e;color:#ffe0c8;box-shadow:0 0 10px #ff5a2e77}
+.rage-track+small{margin-left:10px}.hud-bag small{color:#ff8a5c}
+.judge-top{flex-wrap:wrap;row-gap:6px}.judge-top>span,.judge-top>small{white-space:nowrap}.rage-track{white-space:nowrap}
+@media(orientation:portrait) and (max-width:559px){.rage-track{order:3;margin-left:0}.judge-top>small{margin-left:auto}}

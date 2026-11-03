@@ -1,4 +1,4 @@
-import {newRun} from './engine.js?v=20261103d';
+import {newRun} from './engine.js?v=20261104a';
 
 // 연습은 그림자 도적의 첫 금고 털이. 등불 속 불씨 '깜부기'가 옆에서 떠든다.
 // talk = 이 행동을 하는 이유(대사), text = 무엇을 누르고 무엇이 일어나는가. 한 단계의 사고가 다음 단계의 이유가 된다.

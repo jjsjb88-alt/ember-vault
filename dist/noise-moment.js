@@ -1,5 +1,5 @@
-import {soundWavePlan} from './encounter.js?v=20261103d';
-import {makeFxLayer,FX} from './fx-layer.js?v=20261103d';
+import {soundWavePlan} from './encounter.js?v=20261104a';
+import {makeFxLayer,FX} from './fx-layer.js?v=20261104a';
 
 export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSound=()=>{}}={}){
  let active=false,timers=[],frame=0,fxFrame=0,callback=null,previousFocus=null;
@@ -58,7 +58,7 @@ export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSoun
   if(active)close();active=true;callback=null;previousFocus=document.activeElement;pickFn=onPick;cancelFn=onCancel;
   dialog.dataset.mode='judge';dialog.dataset.phase='choose';
   const mine=f.mine+f.added,total=f.black+mine,n=Math.min(f.rage,total);
-  dialog.innerHTML=`<div class="noise-eye" aria-hidden="true"></div><div class="judge-shell"><div class="judge-top"><span>✦ 용의 공격 — 시간 정지</span><i class="judge-steps" aria-hidden="true"><b class="on"></b><b></b><b></b></i><small>${f.cause==='relic'?'유물의 냄새':'경계 '+f.noise}</small></div>
+  dialog.innerHTML=`<div class="noise-eye" aria-hidden="true"></div><div class="judge-shell"><div class="judge-top"><span>✦ 용의 공격 — 시간 정지</span><i class="judge-steps" aria-hidden="true"><b class="on"></b><b></b><b></b></i><span class="rage-track" title="용의 분노 · 유물을 들 때마다 한 칸">분노 ${(f.track||[]).map((v,i)=>`<i class="${i===f.step?'now':i<f.step?'past':''}">${v}</i>`).join('')}</span><small>${f.cause==='relic'?'유물의 냄새':'경계 '+f.noise}</small></div>
   <div class="judge-stage"><div class="judge-ring" aria-hidden="true"><div class="judge-eye"></div></div>
   <div class="bag-panel"><div class="bag-count" id="bagCount">${bagLine(f.black,f.mine,f.added)}</div><div class="bag-row" aria-label="뽑을 큐브 ${n}개">${Array.from({length:n},(_,i)=>`<i class="cube" data-cube="${i}"></i>`).join('')}</div></div></div>
   <div class="judge-copy"><h2 id="judgeTitle">용이 주머니에 손을 넣는다.</h2><p id="judgeDetail">${f.added?`방금까지 낸 소리가 <b>내 큐브 ${f.added}개</b>로 주머니에 들어갑니다. `:''}${n}개를 뽑습니다 · 하나가 내 큐브일 확률 <b>${pct(mine,total)}%</b> · 내 큐브 1개 = 피해 1${f.block?` · 방어 ${f.block}`:''}</p></div>
