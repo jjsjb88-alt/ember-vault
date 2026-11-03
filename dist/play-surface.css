@@ -131,3 +131,10 @@ body.mode-open .tutorial-coach{visibility:hidden}
 .briefing strong{display:block;color:#f4d394;font-size:12px}
 .briefing p{margin:3px 0 0;font-size:11px;line-height:1.45;color:#cdd7de;word-break:keep-all}
 @media(max-height:340px){.briefing{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.briefing>div{padding:5px 7px}.briefing p{font-size:10px;line-height:1.35}}
+/* 연습: 깜부기(등불 불씨)와 도적의 대사 */
+.coach-talk{display:flex;flex-direction:column;gap:1px;margin-top:3px;font-family:inherit;font-size:11.5px;line-height:1.38;word-break:keep-all;overflow-wrap:anywhere}
+.tutorial-coach .coach-talk .talk-line{display:block;font-family:inherit;font-size:12px;letter-spacing:normal;text-transform:none;color:#e8dcc0}
+.tutorial-coach .coach-talk .talk-line b{font:inherit;font-weight:700;letter-spacing:normal}.talk-line b{font-weight:700;margin-right:3px}
+.talk-line.tutor b{color:#ffb24a;text-shadow:0 0 8px #ff8a2a66}.talk-line.hero b{color:#86c6aa}
+.reveal-talk .talk-line{display:inline}
+@media(max-height:350px){.tutorial-coach .coach-talk .talk-line{font-size:10.8px;line-height:1.32}}
