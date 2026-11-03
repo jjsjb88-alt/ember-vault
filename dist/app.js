@@ -6,7 +6,7 @@ import {pageOf,pager} from './pages.js';
 import {exitAnchor} from './scene-layout.js';
 import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js';
 import {makeNoiseMoment} from './noise-moment.js';
-import {TUTORIAL_STEPS,createTutorialRun,tutorialAllows,tutorialAdvance} from './tutorial.js';
+import {TUTORIAL_STEPS,TUTORIAL_REVEALS,createTutorialRun,tutorialAllows,tutorialAdvance} from './tutorial.js';
 const $=s=>document.querySelector(s),SAVE_KEY='ember-vault-save-v2',BEST_KEY='ember-vault-best-v1';
 let state,storageOK=true,best=0,sound=false,selectedRole='rogue',dialogMode='',lastFocus=null,toastTimer,audio,migrated=false,loadedRun=false,fastDraw=false;
 try{let saved=JSON.parse(localStorage.getItem(SAVE_KEY));if(!validSave(saved)){const prior=JSON.parse(localStorage.getItem('ember-vault-save-v1'));if(prior){saved=migrateSave(prior);migrated=!!saved;}}loadedRun=validSave(saved);state=loadedRun?saved:newRun();best=Number(localStorage.getItem(BEST_KEY))||0;sound=localStorage.getItem('ember-vault-sound')==='on';fastDraw=localStorage.getItem('ember-vault-fast-draw')==='on';}catch{state=newRun();storageOK=false;}
@@ -75,13 +75,13 @@ function renderInteraction(ra){
 function markTutorial(value){tutorialSeen=true;try{localStorage.setItem('ember-vault-tutorial-v1',value);}catch{}}
 function showTutorialIntro(){
  if(tutorial)return;
- openModal(modalShell('금고는 발소리를 기억한다','직접 해보며 배우기',`<div class="tutorial-intro"><img src="./assets/noise-seal-v6.png" alt="갈라진 소음의 봉인"><div><p>멸망한 왕국의 기억이 잠든 금고. 당신의 목표는 <b>유물 하나를 품고 입구로 살아 돌아오는 것</b>입니다.</p><p>매 턴 봉인 메달 5개가 열려 <b>공격력·이동력·기술·방어</b>가 모입니다. 그 힘으로 움직이되, 모든 행동은 소리를 냅니다. 소리가 쌓여 <b>경계 8</b>이 되면 용이 숨을 내쉽니다.</p><p><b>8단계 연습</b>에서 직접 해봅니다. 지금 탐험은 그대로 남습니다.</p><label><input id="tutorialAudio" type="checkbox" checked> 효과음과 함께 연습</label></div></div><div class="modal-actions"><button class="subtle-button" data-act="tutorialSkip">바로 탐험하기</button><button class="large-button" data-act="tutorialStart">직접 배워보기 →</button></div>`),'tutorialIntro');
+ openModal(modalShell('금고는 발소리를 기억한다','직접 해보며 배우기',`<div class="tutorial-intro"><img src="./assets/noise-seal-v6.png" alt="갈라진 소음의 봉인"><div><p>멸망한 왕국의 기억이 잠든 금고. 당신의 목표는 <b>유물 하나를 품고 입구로 살아 돌아오는 것</b>입니다.</p><p>매 턴 봉인 메달 5개가 열려 <b>공격력·이동력·기술·방어</b>가 모입니다. 그 힘으로 움직이되, 모든 행동은 소리를 냅니다. 소리가 쌓여 <b>경계 8</b>이 되면 용이 숨을 내쉽니다.</p><p><b>8단계 연습</b>은 당신이 처음 금고에 숨어든 밤의 회상입니다. 그 밤에 한 일을 하나씩, 이유와 함께 다시 해봅니다. 지금 탐험은 그대로 남습니다.</p><label><input id="tutorialAudio" type="checkbox" checked> 효과음과 함께 연습</label></div></div><div class="modal-actions"><button class="subtle-button" data-act="tutorialSkip">바로 탐험하기</button><button class="large-button" data-act="tutorialStart">직접 배워보기 →</button></div>`),'tutorialIntro');
 }
 function startTutorial(){
  const withAudio=$('#tutorialAudio')?.checked;
  if(withAudio&&!sound)toggleSound();
  tutorial={saved:state,index:0};state=createTutorialRun();handPage=0;enemyPage=0;lureMode=false;travelUntil=0;renderer.reset();
- $('#modal').close();dialogMode='';document.body.classList.add('tutorial-mode');selectPanel('routes');render();poolReveal.start(state,{fast:false,holdNoise:true});
+ $('#modal').close();dialogMode='';document.body.classList.add('tutorial-mode');selectPanel('routes');render();poolReveal.start(state,{fast:false,holdNoise:true,story:TUTORIAL_REVEALS.first});
 }
 function exitTutorial(){
  if(!tutorial)return;const completed=tutorial.index>=TUTORIAL_STEPS.length;state=tutorial.saved;tutorial=null;
@@ -97,7 +97,7 @@ function renderTutorial(){
  coach.hidden=!tutorial;if(!tutorial)return;
  const step=TUTORIAL_STEPS[tutorial.index];
  const dots=TUTORIAL_STEPS.map((_,i)=>`<i class="${i<tutorial.index?'done':i===tutorial.index?'now':''}"></i>`).join('');
- if(!step){coach.innerHTML=`<div class="coach-head"><span>연습 완료</span><span class="coach-dots" aria-hidden="true">${dots}</span></div><strong>이제 진짜 금고로 내려갑니다</strong><em class="coach-story">기억은 지상에 닿아야 비로소 남습니다.</em><p>실전 전에 알아둘 것을 한 장으로 정리했습니다.</p><button data-act="tutorialExit">실전 준비 →</button>`;return;}
+ if(!step){coach.innerHTML=`<div class="coach-head"><span>연습 완료</span><span class="coach-dots" aria-hidden="true">${dots}</span></div><strong>이제 진짜 금고로 내려갑니다</strong><em class="coach-story">회상은 여기까지. 그 밤 당신은 유물에 닿지 못했습니다. 기억은 지상에 닿아야 비로소 남습니다.</em><p>실전 전에 알아둘 것을 한 장으로 정리했습니다.</p><button data-act="tutorialExit">실전 준비 →</button>`;return;}
  coach.innerHTML=`<div class="coach-head"><span>연습 ${tutorial.index+1} / ${TUTORIAL_STEPS.length}</span><span class="coach-dots" aria-hidden="true">${dots}</span></div><strong>${step.title}</strong>${step.story?`<em class="coach-story">${step.story}</em>`:''}<p>${step.text}</p><button class="tutorial-leave" data-act="tutorialExit" aria-label="연습 끝내고 원래 탐험으로">×</button>`;
  let target=step.target;
  if(tutorial.index===3)target=mapOpen?'#mapToggle':!lureMode?'#lureToggle':'.scene-exit[data-id="5"]';
@@ -249,7 +249,7 @@ function act(action){
   if(state.pending)pendingModal();
   else if(state.phase!=='playing'){showResult();beep(state.phase==='won'?'win':'bad');}
   else if(['reward','skipReward','purge','cancelPurge'].includes(action.type)){$('#modal').close();dialogMode='';}
-  if(action.type==='end'&&state.phase==='playing'&&!state.pending)poolReveal.start(state,{fast:tutorial?false:fastDraw,holdNoise:!!tutorial,beforeHp:beforeHP});
+  if(action.type==='end'&&state.phase==='playing'&&!state.pending)poolReveal.start(state,{fast:tutorial?false:fastDraw,holdNoise:!!tutorial,beforeHp:beforeHP,story:tutorial?TUTORIAL_REVEALS.turn:''});
   document.body.classList.remove('turn-impact');
  };
  if(impact?.raw){actionBusy=true;document.body.classList.add('turn-impact');noiseMoment.dragon(impact,previousNoise,finish,{hold:!!tutorial});}
