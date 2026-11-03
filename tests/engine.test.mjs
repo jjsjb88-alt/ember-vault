@@ -48,7 +48,7 @@ test('combat spends attack pool, partial damage persists, and rewards are chosen
  const id=s.pending.options[0];doAction(s,{type:'reward',id});assert.equal(total(s),11);assert.equal(apply(s,{type:'reward',id}).ok,false);
 });
 test('armor, dragon alarm, natural decay, and collapse resolve in order',()=>{
- const s=newRun({seed:5});s.pos=4;s.resource.block=2;s.noise=8;const hp=s.hp;doAction(s,{type:'end'});assert.equal(s.hp,hp-3);assert.equal(s.noise,0);
+ const s=newRun({seed:5});s.bag=null;s.pos=4;s.resource.block=2;s.noise=8;const hp=s.hp;doAction(s,{type:'end'});assert.equal(s.hp,hp-3);assert.equal(s.noise,0);
  s.hp=1;s.resource.block=0;s.noise=8;doAction(s,{type:'end'});assert.equal(s.phase,'lost');
  const t=newRun();t.relic={name:'달의 눈물',value:18};t.countdown=1;doAction(t,{type:'end'});assert.equal(t.phase,'lost');assert.match(t.reason,/무너/);
 });
@@ -82,4 +82,16 @@ function journey(seed,role,target=10){
 test('180 complete seeded journeys remain bounded and each role can escape both depths',()=>{
  const results={};for(const role of Object.keys(ROLES))for(const target of [10,15]){let wins=0;for(let seed=1;seed<=30;seed++){const s=journey(seed,role,target);assert.ok(['won','lost'].includes(s.phase));if(s.phase==='won'){wins++;assert.equal(s.relic.value,target===10?18:42);}}results[role+'_'+target]=wins;assert.ok(wins>0,'each role/depth must be winnable');}
  console.log('Route wins / 30 (no shop, no stealth):',JSON.stringify(results));
+});
+test('dragon bag (Clank!): noise drops cubes, an attack draws rage-many, only your cubes hurt and the rest stay',()=>{
+ const s=newRun({seed:21});assert.deepEqual(s.bag,{black:12,mine:0});assert.equal(s.clank,0);
+ emitNoise(s,s.pos,6,'test');assert.equal(s.clank,3);emitNoise(s,s.pos,10,'test');assert.equal(s.clank,8);assert.equal(s.noise,8);
+ s.pos=0;s.resource.block=0;const hp=s.hp;doAction(s,{type:'end'});
+ const a=s.attack;assert.ok(a);assert.equal(a.cause,'noise');assert.equal(a.added,8);assert.equal(a.rage,3);assert.equal(a.drawn.length,3);
+ const hits=a.drawn.filter(x=>x==='mine').length;assert.equal(s.hp,hp-hits);assert.equal(s.clank,0);
+ assert.equal(s.bag.mine,8-hits);assert.equal(s.bag.black,12-(3-hits));
+ let seen=new Set();for(let seed=1;seed<80;seed++){const t=newRun({seed});t.pos=0;t.clank=6;t.noise=8;doAction(t,{type:'end'});seen.add(t.attack.drawn.filter(x=>x==='mine').length);}
+ assert.ok(seen.has(0)&&seen.size>=3,'luck matters');
+ const q=newRun({seed:3});q.pos=0;q.noise=4;q.clank=4;doAction(q,{type:'end'});assert.equal(q.attack,null);assert.equal(q.clank,4,'cubes wait in the clank area');
+ const r=newRun({seed:4});r.pos=0;r.relic={name:'x',value:1};r.countdown=9;r.turn=3;r.clank=2;doAction(r,{type:'end'});assert.equal(r.attack.cause,'relic');assert.equal(r.attack.rage,4);
 });

@@ -38,3 +38,33 @@ dialog.noise-moment{position:fixed;inset:0;margin:0;max-width:none;max-height:no
 @media(prefers-reduced-motion:reduce){.noise-moment *,.pool-reveal[data-phase=noise] *{animation:none!important;transition:none!important}}
 .noise-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:pixelated;display:none}
 .noise-moment[data-mode=dragon] .noise-fx{display:block}
+/* V7.4 Dragon attack — time stopped. Clank!'s bag draw, one cube at a time. */
+.noise-moment[data-mode=judge] .noise-eye{opacity:.35;filter:saturate(.6)}
+.noise-moment[data-mode=judge][data-phase=hit] .noise-eye{opacity:.8;filter:none}
+.judge-shell{position:relative;height:100%;width:min(100%,1000px);margin:auto;padding:clamp(10px,3vh,28px) clamp(16px,4vw,48px);display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;gap:clamp(6px,1.6vh,14px);color:#efe5d2}
+.judge-top{display:flex;align-items:center;gap:12px;border-bottom:1px solid #3a3530;padding-bottom:6px;font:600 11px/1 ui-monospace,monospace;letter-spacing:1px;color:#e7c98f}.judge-top small{margin-left:auto;color:#ff9f7a;letter-spacing:0}
+.judge-steps{display:flex;gap:5px}.judge-steps b{width:7px;height:7px;transform:rotate(45deg);border:1px solid #b99a62}.judge-steps b.on{background:#f0c674;border-color:#f0c674}
+.judge-stage{position:relative;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) auto;place-items:center;gap:clamp(6px,2vh,16px)}
+.judge-ring{position:relative;height:100%;max-height:300px;min-height:0;aspect-ratio:1;border-radius:50%;border:1px solid #6d5a40;box-shadow:inset 0 0 0 6px #0b0a0d,inset 0 0 0 7px #3a3024,0 0 60px #000}
+.judge-eye{position:absolute;inset:9%;border-radius:50%;background:radial-gradient(circle,#0000 45%,#050508 72%),url('./assets/dragon-eye-v6.png') 60% center/cover;filter:brightness(.55) saturate(.8);transition:filter .4s}
+.noise-moment[data-phase=spin] .judge-eye{filter:brightness(.8);animation:eyeBreath 1.6s ease-in-out infinite}
+.noise-moment[data-phase=hit] .judge-eye{filter:brightness(1.15) saturate(1.3) hue-rotate(-10deg)}
+@keyframes eyeBreath{50%{filter:brightness(1)}}
+.bag-panel{display:grid;justify-items:center;gap:8px}
+.bag-count{display:flex;gap:14px;font-size:12px;color:#b9ab95}.bag-count b{font:16px Georgia,serif;color:#efe5d2}.bag-mine b{color:#ffab6b}.bag-count em{font-style:normal;color:#ff8a5c;margin-left:3px;font-weight:700}
+.bag-row{display:flex;gap:clamp(8px,1.6vw,14px)}
+.cube{width:clamp(30px,6vh,44px);aspect-ratio:1;display:grid;place-items:center;border:1px dashed #6d5a40;background:#0d0c10cc;font:700 11px/1 system-ui;font-style:normal;color:#fff}
+.cube.shake{border-style:solid;border-color:#ffd27a;box-shadow:0 0 16px #ffb34766;animation:cubeShake .12s linear infinite}
+.cube.black{border:1px solid #2b2b33;background:linear-gradient(145deg,#2a2a31,#09090c);box-shadow:inset 0 1px 0 #44444f}
+.cube.mine{border:1px solid #ffb06d;background:linear-gradient(145deg,#ff7a3c,#a3260f);box-shadow:0 0 22px #ff5a2e99;animation:cubePop .35s ease-out 1}
+.cube.mine.saved{border-color:#9be6b6;background:linear-gradient(145deg,#4fae7c,#1d5a3b);box-shadow:0 0 18px #5be09a77}
+@keyframes cubeShake{0%,100%{transform:translate(0)}25%{transform:translate(-2px,1px)}75%{transform:translate(2px,-1px)}}
+@keyframes cubePop{0%{transform:scale(1.35)}100%{transform:none}}
+.noise-moment[data-phase=hit] .judge-shell{animation:noiseBreak .5s ease-out 1}
+.judge-copy{text-align:center}.judge-copy h2{margin:0;word-break:keep-all;font:clamp(22px,5vh,38px) Georgia,serif;color:#f6e3bd}.noise-moment[data-phase=hit] .judge-copy h2{color:#ffab88}.noise-moment[data-phase=held] .judge-copy h2{color:#a9f0c4}
+.judge-copy p{margin:4px 0 0;min-height:1.5em;font-size:clamp(11px,2vh,14px);color:#c9bba5;word-break:keep-all}.judge-copy b{color:#ffc58f;font-weight:600}
+.judge-foot{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.judge-foot button{background:none;border:1px solid #5c4d3a;color:#d9c9ac;padding:7px 16px;font:inherit;font-size:12px;cursor:pointer}.judge-foot .primary{border-color:#e0a65a;color:#ffe2b0;background:#2a1a0c}
+@media(min-aspect-ratio:4/3) and (max-height:560px){.judge-shell{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;column-gap:24px}.judge-top{grid-column:1/-1}.judge-stage{grid-row:2/4}.judge-copy{align-self:end;text-align:left}.judge-foot{justify-content:flex-start;align-self:start}}
+@media(orientation:portrait) and (max-width:559px){.judge-copy h2{font-size:28px}.judge-copy{min-height:7.5em}.judge-ring{max-height:min(62vw,300px)}}
+@media(prefers-reduced-motion:reduce){.cube.shake,.cube.mine,.noise-moment[data-phase=hit] .judge-shell,.noise-moment[data-phase=spin] .judge-eye{animation:none}}
+.hud-bag{margin-left:6px;padding:1px 5px;border:1px solid #ff9a5c66;color:#ffb27a;font-size:10px;white-space:nowrap}
