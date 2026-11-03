@@ -1,4 +1,4 @@
-import {enemyTurn,neighbours,previewNoise} from './engine.js?v=20261103d';
+import {enemyTurn,neighbours,previewNoise} from './engine.js?v=20261104b';
 
 export function roomEnvironment(room){return ['camp','merchant'].includes(room.type)?'refuge':['relic','shrine'].includes(room.type)?'vault':'library';}
 
@@ -21,7 +21,7 @@ export function roomInteraction(s){
 // Forecast only the enemy/dragon phase. Never draw cards or consume the live RNG.
 export function turnImpact(s){
  const copy=JSON.parse(JSON.stringify(s));enemyTurn(copy);
- const raw=copy.hp<=0||s.bag&&(s.noise>=8||s.relic&&s.turn%3===0)?0:s.noise>=8?3+Math.floor(s.turn/10):s.relic&&s.turn%3===0?2:0;
+ const raw=copy.hp<=0||s.echo&&(s.noise>=8||s.relic&&s.turn%3===0)?0:s.noise>=8?3+Math.floor(s.turn/10):s.relic&&s.turn%3===0?2:0;
  const blocked=Math.min(raw,copy.resource.block),taken=Math.min(copy.hp,raw-blocked);
  return {raw,lethal:copy.hp<=0,block:copy.resource.block,blocked,taken,beforeHp:copy.hp,afterHp:copy.hp-taken,enemyTaken:s.hp-copy.hp,pursuits:copy.pursuits};
 }

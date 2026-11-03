@@ -1,12 +1,12 @@
-import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,dragonRage} from './engine.js?v=20261103d';
+import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,breathPlan} from './engine.js?v=20261104b';
 import {paintIcons} from './art.js';
-import {makeRenderer} from './scene-v5.js?v=20261103d';
-import {makePoolReveal} from './pool-reveal.js?v=20261103d';
+import {makeRenderer} from './scene-v5.js?v=20261104b';
+import {makePoolReveal} from './pool-reveal.js?v=20261104b';
 import {pageOf,pager} from './pages.js';
 import {exitAnchor} from './scene-layout.js';
-import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261103d';
-import {makeNoiseMoment} from './noise-moment.js?v=20261103d';
-import {TUTORIAL_STEPS,TUTORIAL_REVEALS,TUTORIAL_DONE,talkHtml,createTutorialRun,tutorialAllows,tutorialAdvance} from './tutorial.js?v=20261103d';
+import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261104b';
+import {makeNoiseMoment} from './noise-moment.js?v=20261104b';
+import {TUTORIAL_STEPS,TUTORIAL_REVEALS,TUTORIAL_DONE,talkHtml,createTutorialRun,tutorialAllows,tutorialAdvance} from './tutorial.js?v=20261104b';
 const $=s=>document.querySelector(s),SAVE_KEY='ember-vault-save-v2',BEST_KEY='ember-vault-best-v1';
 let state,storageOK=true,best=0,sound=false,selectedRole='rogue',dialogMode='',lastFocus=null,toastTimer,audio,migrated=false,loadedRun=false,fastDraw=false;
 try{let saved=JSON.parse(localStorage.getItem(SAVE_KEY));if(!validSave(saved)){const prior=JSON.parse(localStorage.getItem('ember-vault-save-v1'));if(prior){saved=migrateSave(prior);migrated=!!saved;}}loadedRun=validSave(saved);state=loadedRun?saved:newRun();best=Number(localStorage.getItem(BEST_KEY))||0;sound=localStorage.getItem('ember-vault-sound')==='on';fastDraw=localStorage.getItem('ember-vault-fast-draw')==='on';}catch{state=newRun();storageOK=false;}
@@ -91,7 +91,7 @@ function exitTutorial(){
  $('#modal').close();dialogMode='';selectPanel('routes');render();save();if(completed)showBriefing();else toast('원래 탐험으로 돌아왔습니다.');
 }
 function showBriefing(){
- const tips=[['유물과 귀환','유물은 깊은 층(B3·B4)의 봉인실·무덤·심장에 있습니다. 하나를 들고 입구로 돌아오면 승리. 들면 14턴 안에 나가야 하고 3턴마다 용이 숨을 내쉽니다.'],['조용히 걷기','「이동 방식 → 은밀」은 이동이 1 더 들지만 소리가 거의 없습니다. 「숨죽이기」는 이동 1로 경계 −2, 은신 +2.'],['경계','소리의 절반만큼 오르고 새 턴마다 2씩 내려갑니다. 소리를 낼 때마다 「내 큐브」가 쌓입니다. 경계 8 이상(또는 유물을 든 채 3턴마다)으로 턴을 마치면 용이 주머니에서 큐브를 뽑고, 내 큐브 1개마다 피해 1. 뽑히지 않은 큐브는 주머니에 남습니다.'],['전투','적이 있는 방에서는 쓰러뜨리거나 왔던 길로만 나갈 수 있습니다. 쓰러뜨리면 보상 능력을 하나 고릅니다.'],['교역과 쉼터','기술로 능력을 사고, 금화는 목록 교체와 쉼터의 물약에 씁니다. 모닥불은 체력을 회복하고 경계를 낮춥니다.']];
+ const tips=[['유물과 귀환','유물은 깊은 층(B3·B4)의 봉인실·무덤·심장에 있습니다. 하나를 들고 입구로 돌아오면 승리. 들면 14턴 안에 나가야 하고 3턴마다 용이 숨을 내쉽니다.'],['조용히 걷기','「이동 방식 → 은밀」은 이동이 1 더 들지만 소리가 거의 없습니다. 「숨죽이기」는 이동 1로 경계 −2, 은신 +2.'],['경계','소리의 절반만큼 오르고 새 턴마다 2씩 내려갑니다. 소리를 낸 방에는 「메아리」가 남고 턴마다 1씩 옅어집니다. 경계 8 이상(또는 유물을 든 채 3턴마다)으로 턴을 마치면 용의 숨결이 가장 진한 메아리에서 시작해 이어진 메아리를 따라 번집니다. 메아리 없는 방에 서 있으면 닿지 않습니다.'],['전투','적이 있는 방에서는 쓰러뜨리거나 왔던 길로만 나갈 수 있습니다. 쓰러뜨리면 보상 능력을 하나 고릅니다.'],['교역과 쉼터','기술로 능력을 사고, 금화는 목록 교체와 쉼터의 물약에 씁니다. 모닥불은 체력을 회복하고 경계를 낮춥니다.']];
  openModal(modalShell('실전 전에 알아둘 것','연습 완료',`<div class="briefing">${tips.map(([t,d])=>`<div><strong>${t}</strong><p>${d}</p></div>`).join('')}</div><div class="modal-actions"><button class="subtle-button" data-act="close">지금 탐험 계속</button><button class="large-button" data-act="new">직업 고르고 시작 →</button></div>`),'briefing');
 }
 function renderTutorial(){
@@ -176,8 +176,8 @@ function render(){
  $('#stanceLabel').textContent=s.mode==='sneak'?'은밀':MODES[s.mode].name;$('#stanceToggle').disabled=!active||!!s.pending;
  $('#stanceMenu').innerHTML=`<span class="stance-heading">이동 방식 <small>현재 바닥 · ${TERRAINS[r.terrain].name}</small></span>${['walk','sneak','rush'].map(id=>`<button data-act="mode" data-id="${id}" aria-pressed="${s.mode===id}" class="${s.mode===id?'selected':''}"><strong>${id==='sneak'?'은밀':MODES[id].name}</strong><small>${id==='sneak'?'이동 +1 · 소리 감소':id==='rush'?'깊은 층 이동 −1 · 소리 5':'기본 이동 · 소리 2'}</small><span aria-hidden="true">${s.mode===id?'✓':''}</span></button>`).join('')}`;
  $('#lureToggle').disabled=!lureCan&&!lureMode;$('#lureToggle').setAttribute('aria-pressed',String(lureMode));$('#lureToggle strong').textContent=lureMode?'유인 취소':'유인';$('#hideAction').disabled=!hideCan;$('#marketToggle').disabled=!active||!!s.pending;
- $('#landscapeStatus').innerHTML=`<span class="hud-hero">${portrait(s.role)}</span><div class="hud-health" role="meter" aria-label="체력" aria-valuemin="0" aria-valuemax="${s.maxHp}" aria-valuenow="${s.hp}"><i style="width:${s.hp/s.maxHp*100}%"></i><b>${s.hp} / ${s.maxHp}</b></div><span class="hud-gold">${ico('coin',20)} ${s.gold}</span><div class="hud-location"><span>B${r.row+1} · ${r.name}</span><small>T${String(s.turn).padStart(2,'0')}${s.relic?' · 귀환 '+s.countdown+'턴':''}</small></div><div class="hud-noise ${danger?'hot':''}" role="meter" aria-label="용의 경계" aria-valuemin="0" aria-valuemax="12" aria-valuenow="${s.noise}"><span class="hud-noise-pips" aria-hidden="true">${Array.from({length:8},(_,i)=>`<i class="${i<s.noise?'lit':''}"></i>`).join('')}</span><span>경계 <strong>${s.noise}</strong><small> / 8</small></span>${s.bag?`<span class="hud-bag" title="용 주머니: 내 큐브 ${s.bag.mine} · 검은 큐브 ${s.bag.black} · 대기 ${s.clank||0}">◆ ${s.bag.mine+(s.clank||0)}</span>`:''}</div>`;
- const risks=[];if(enemy)risks.push(`반격 ${r.enemy.damage}`);if(s.bag){if(dragonDue(s))risks.push(`용의 공격 · ${dragonRage(s)}개 뽑기`);}else if(danger)risks.push(`용의 공격 ${3+Math.floor(s.turn/10)}`);else if(s.relic&&s.turn%3===0)risks.push('용의 공격 2');
+ $('#landscapeStatus').innerHTML=`<span class="hud-hero">${portrait(s.role)}</span><div class="hud-health" role="meter" aria-label="체력" aria-valuemin="0" aria-valuemax="${s.maxHp}" aria-valuenow="${s.hp}"><i style="width:${s.hp/s.maxHp*100}%"></i><b>${s.hp} / ${s.maxHp}</b></div><span class="hud-gold">${ico('coin',20)} ${s.gold}</span><div class="hud-location"><span>B${r.row+1} · ${r.name}</span><small>T${String(s.turn).padStart(2,'0')}${s.relic?' · 귀환 '+s.countdown+'턴':''}</small></div><div class="hud-noise ${danger?'hot':''}" role="meter" aria-label="용의 경계" aria-valuemin="0" aria-valuemax="12" aria-valuenow="${s.noise}"><span class="hud-noise-pips" aria-hidden="true">${Array.from({length:8},(_,i)=>`<i class="${i<s.noise?'lit':''}"></i>`).join('')}</span><span>경계 <strong>${s.noise}</strong><small> / 8</small></span>${s.echo?.[s.pos]?`<span class="hud-bag" title="이 방에 남은 메아리 · 용의 숨결이 따라옵니다">♨ ${s.echo[s.pos]}</span>`:''}</div>`;
+ const risks=[];if(enemy)risks.push(`반격 ${r.enemy.damage}`);if(s.echo){if(dragonDue(s))risks.push(s.echo[s.pos]?`용의 숨결 · 이 방 메아리 ${s.echo[s.pos]}`:'용의 숨결 · 이 방은 조용함');}else if(danger)risks.push(`용의 공격 ${3+Math.floor(s.turn/10)}`);else if(s.relic&&s.turn%3===0)risks.push('용의 공격 2');
  $('#turnRisk').textContent=active?(risks.length?risks.join(' · '):'남은 자원은 사라집니다'):'탐험 완료';$('#turnRisk').classList.toggle('hot',risks.length>0);
  $('#endTurn').disabled=!!s.pending;$('#endTurn').dataset.act=active?'end':'result';$('#endTurn>span').textContent=active?'다음 턴':'탐험 결과';$('#endTurn>small').textContent=active?'메달 5개 새로':'기록 보기';
  renderExits();renderInteraction(ra);renderTutorial();renderMarket();paintIcons();
@@ -213,7 +213,7 @@ const guide=[
  ['02 / 발소리','발밑을 살피세요','던전의 금빛 방 이름을 누르면 이동합니다. 미니맵은 소리 지도를 펼칩니다. 걷기: 이동 1 · 기본 소리 2. 살금살금: 이동 +1 · 기본 소리 0. 질주: 깊은 층 이동 −1 · 소리 5.','물웅덩이 소리 +1, 돌 파편 +2, 이끼 −1. 이동 버튼에는 최종 소리가 표시됩니다. 적이 있는 방에서는 전투하거나 들어온 방으로 후퇴하세요.'],
  ['03 / 청취','소리는 통로를 따라 퍼집니다','미니맵을 누르면 소리 지도가 열립니다. 소리는 통로를 건널 때 2, 이끼 방에서는 1이 더 줄어듭니다. 주황색은 도달 범위입니다.','들은 적은 청취 → 조사 → 추적으로 경계합니다. 턴 끝에 조사·추적 중인 적이 마지막 소리의 방으로 한 칸 이동합니다. 유물 수호자는 자리를 지킵니다.'],
  ['04 / 유인','소리로 길을 만드세요','돌멩이 유인을 켜고 연결된 방을 누르세요. 기술 1로 그 방에 소리 5를 내어 적의 목적지를 바꿉니다.','숨죽이기: 이동 1 · 경계 −2 · 은신 +2. 유인과 숨죽이기는 각각 턴당 한 번입니다. 은신과 첫 소음은 다음 개인 행동에 적용되며 돌멩이에는 적용되지 않습니다.'],
- ['05 / 위험','금고가 깨어나기 전에','소리 크기의 절반을 올림한 값이 경계에 누적됩니다. 경계 8 이상이면 턴 끝에 용이 주머니(검은 큐브 + 내 큐브)에서 큐브를 뽑습니다. 내 큐브 1개 = 피해 1. 소리를 낼수록 주머니 속 내 큐브가 늘어납니다. 새 턴에 경계 −2, 도적은 추가 −1.','같은 방의 적은 턴 끝에 반격합니다. 추적으로 도착한 적은 그 다음 턴부터 반격합니다. 방어로 피해를 줄이고, 캠프에서 체력을 회복하세요.'],
+ ['05 / 위험','금고가 깨어나기 전에','소리 크기의 절반을 올림한 값이 경계에 누적됩니다. 경계 8 이상이면 턴 끝에 용의 숨결이 메아리를 따라 번집니다. 소리를 낸 방마다 메아리가 남으니, 턴을 넘기기 전에 조용한 방으로 피하거나 돌멩이로 다른 곳에 메아리를 만들어 두세요. 새 턴에 경계 −2, 도적은 추가 −1.','같은 방의 적은 턴 끝에 반격합니다. 추적으로 도착한 적은 그 다음 턴부터 반격합니다. 방어로 피해를 줄이고, 캠프에서 체력을 회복하세요.'],
  ['06 / 탈출','유물을 들고 입구로','유물을 얻으면 14턴 안에 입구로 귀환해야 합니다. 3의 배수 턴에는 용의 주기 공격을 받습니다. 낮은 가치의 유물로도 탈출할 수 있습니다.','점수 = 유물 + 금화 + 방문 방 × 2 + 남은 체력 + 탈출 20.\n키보드: 방향키 이동 · 1/2/3 이동 방식 · A 공격 · E 상호작용 · C 숨죽이기 · Space 다음 턴.']
 ];
 function showHelp(page=0){
@@ -235,9 +235,9 @@ function showLog(page=0){
 function act(action,fromJudge=false){
  if(poolReveal.active||noiseMoment.active&&!fromJudge||actionBusy||action.type==='move'&&performance.now()<travelUntil)return false;
  if(tutorial&&(!tutorialAllows(tutorial.index,action)||(tutorial.index===4&&action.type==='move'&&state.mode!=='rush'))){toast(TUTORIAL_STEPS[tutorial.index]?.text||'연습을 마치고 탐험으로 돌아가세요.');return false;}
- if(action.type==='end'&&!action.drawn&&state.bag&&state.phase==='playing'&&!state.pending&&dragonDue(state)){
+ if(action.type==='end'&&!action.drawn&&state.echo&&state.phase==='playing'&&!state.pending&&dragonDue(state)){
   const f=turnImpact(state);
-  if(!f.lethal){noiseMoment.judge({cause:dragonDue(state),rage:dragonRage(state),black:state.bag.black,mine:state.bag.mine,added:state.clank||0,noise:state.noise,block:f.block},()=>act({...action,drawn:true},true),()=>{});return true;}
+  if(!f.lethal){noiseMoment.judge(state,breathPlan(state),f.block,()=>act({...action,drawn:true},true),()=>{});return true;}
  }
  const beforeHP=state.hp,wasRelic=!!state.relic,enemyHP=state.rooms[state.pos].enemy?.hp||0,enemyMax=state.rooms[state.pos].enemy?.maxHp||0,previousNoise=state.noise,previousSeq=state.soundSeq,previousGold=state.gold;
  const impact=action.type==='end'?turnImpact(state):null;
@@ -258,7 +258,7 @@ function act(action,fromJudge=false){
   if(action.type==='end'&&state.phase==='playing'&&!state.pending)poolReveal.start(state,{fast:tutorial?false:fastDraw,holdNoise:!!tutorial,beforeHp:beforeHP,story:tutorial?talkHtml(TUTORIAL_REVEALS.turn,'reveal-talk'):''});
   document.body.classList.remove('turn-impact');
  };
- if(fromJudge&&state.attack){actionBusy=true;document.body.classList.add('turn-impact');noiseMoment.spin(state.attack,finish);}
+ if(fromJudge&&state.attack){actionBusy=true;document.body.classList.add('turn-impact');noiseMoment.spin(state,state.attack,finish);}
  else if(fromJudge&&noiseMoment.active){noiseMoment.close();finish();}
  else if(impact?.raw){actionBusy=true;document.body.classList.add('turn-impact');noiseMoment.dragon(impact,previousNoise,finish,{hold:!!tutorial});}
  else if(tense){actionBusy=true;if(action.type==='attack')setTimeout(()=>{if(state===actionRun)noiseMoment.start(state,previousNoise,finish,{hold:!!tutorial});},swingMs);else noiseMoment.start(state,previousNoise,finish,{hold:!!tutorial});}
