@@ -83,3 +83,19 @@ test('180 complete seeded journeys remain bounded and each role can escape both 
  const results={};for(const role of Object.keys(ROLES))for(const target of [10,15]){let wins=0;for(let seed=1;seed<=30;seed++){const s=journey(seed,role,target);assert.ok(['won','lost'].includes(s.phase));if(s.phase==='won'){wins++;assert.equal(s.relic.value,target===10?18:42);}}results[role+'_'+target]=wins;assert.ok(wins>0,'each role/depth must be winnable');}
  console.log('Route wins / 30 (no shop, no stealth):',JSON.stringify(results));
 });
+test('dragon judgment: the shielded place holds, the others take body, gold or lamp',()=>{
+ const seen=new Set();
+ for(let seed=1;seed<60;seed++){
+  for(const guard of ['body','gold','lamp']){
+   const s=newRun({seed});s.pos=4;s.noise=9;s.gold=10;s.resource.block=0;doAction(s,{type:'end',guard});if(s.phase!=='playing')continue;
+   const j=s.judgment,hp=j.beforeHp;assert.ok(j&&['body','gold','lamp'].includes(j.slot));seen.add(j.slot);assert.equal(j.held,j.slot===guard);
+   if(j.held){assert.equal(s.hp,hp);assert.equal(s.gold,10);}
+   else if(j.slot==='body'){assert.equal(s.hp,hp-3);assert.equal(s.gold,10);}
+   else if(j.slot==='gold'){assert.equal(s.gold,4);assert.equal(s.hp,hp);}
+   else {assert.equal(s.noise,9,'lamp out: alert does not fall');assert.equal(s.hp,hp);}
+   if(j.slot!=='lamp'||j.held)assert.ok(s.noise<9);
+  }
+ }
+ assert.equal(seen.size,3);
+ const q=newRun({seed:3});q.pos=4;q.noise=4;doAction(q,{type:'end',guard:'body'});assert.equal(q.judgment,null,'no judgment under 8');
+});
