@@ -5,7 +5,8 @@ import {WALK_FRAMES} from './rogue-frames.js';
 import {ATTACK_FRAMES} from './rogue-attack-frames.js';
 import {prepareFrames} from './sprite-atlas.js';
 import {roomEnvironment} from './encounter.js';
-import {makeFxLayer,FX,PALETTES,actorFromSprite} from './fx-layer.js';
+import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js';
+import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js';
 
 export function makeRenderer(canvas,getState,minimap){
  const c=canvas.getContext('2d'),mc=minimap.getContext('2d');
@@ -23,7 +24,7 @@ export function makeRenderer(canvas,getState,minimap){
  let hitAt=-10000,damageAt=-10000,hover=-1,label='',lastTime=0,vector={x:1,y:-.5,direction:7};
  let recentEnemy=null,recentEnemyPos=-1;
  let rewardAt=-10000,rewardLabel='';
- const groundFx=makeFxLayer(),killFx=makeFxLayer();let killing=null;
+ const groundFx=makeFxLayer(),killFx=makeFxLayer(),hitFx=makeFxLayer();let frameFx=makeFxLayer();let killing=null,plan=null,landed=true;
  const observer=new ResizeObserver(([entry])=>{if(entry.contentRect.width>0&&entry.contentRect.height>0){
   cssWidth=entry.contentRect.width;cssHeight=entry.contentRect.height;
   H=Math.round(W*cssHeight/cssWidth);canvas.width=W;canvas.height=H;
@@ -77,12 +78,26 @@ export function makeRenderer(canvas,getState,minimap){
   const s=getState(),r=s.rooms[s.pos],walking=ms-entered<750&&!reduced,p=Math.min(1,(ms-entered)/750);
   if(recentEnemyPos!==s.pos){recentEnemy=null;recentEnemyPos=s.pos;killing=null;killFx.clear();}
   if(r.enemy?.hp>0)recentEnemy={...r.enemy};
-  const attack=!reduced&&ms-hitAt<580?(ms-hitAt)/580:0;
+  const since=ms-hitAt,attack=!reduced&&since<swingDuration(plan)?swingClock(since,plan)/SWING_MS:0,frozen=attack>0&&inHitStop(since,plan);
   const baseX=W*.4,baseY=H*.73,heroH=Math.min(H*.31,W*.18);
   const hx=baseX-(walking?(1-p)*vector.x*W*.12:0)+Math.sin(attack*Math.PI)*W*.17;
   const hy=baseY-(walking?(1-p)*vector.y*W*.12:0)-Math.sin(attack*Math.PI)*H*.085;
   const ex=W*.66,ey=H*.59;
+  // the blade lands: impact sparks, a finishing-blow frame and a buzz, once per swing
+  if(!landed&&attack>0&&since>=CONTACT_MS){landed=true;
+   const hx2=ex-heroH*.12,lift=heroH*.42/FX_PIXEL,seed=Math.round(hitAt)%997;
+   if(plan.fx==='crit')hitFx.add(FX.critHit,{x:hx2,y:ey,height:lift,palette:plan.kill?PALETTES.crit:PALETTES.strike,light:1.15,seed},{tag:'hit'});
+   else hitFx.add(FX.hitSpark,{x:hx2,y:ey,height:lift,palette:PALETTES.strike,light:1,seed},{tag:'hit'});
+   if(plan.heavy)hitFx.add(FX.hitSpark,{x:hx2,y:ey,height:lift*.8,palette:PALETTES.strike,aim:-.25,seed:seed+1},{tag:'hit'});
+   if(plan.frame){// the 320x180 impact frame must cover the whole stage: coarser pixels on big stages, centre kept near the hit
+    // (stages larger than the frame get its solid beats extended, see fullImpactFrame)
+    const px=Math.min(6,Math.max(FX_PIXEL,Math.ceil(Math.max(W/320,H/180)))),fw=320*px,fh=180*px;
+    const fx=W<=fw?Math.min(fw/2,Math.max(W-fw/2,hx2)):hx2,fy=H<=fh?Math.min(fh/2,Math.max(H-fh/2,ey-heroH*.42)):ey-heroH*.42;
+    frameFx=makeFxLayer(px);frameFx.add(FX.impactFrame,{x:fx,y:fy,palette:PALETTES.frame,lines:56,seed},{tag:'frame'});}
+   try{navigator.vibrate?.(vibration(plan));}catch{}
+  }
   c.save();if(!reduced&&ms-damageAt<240)c.translate(Math.sin(ms*.09)*4,0);
+  if(!reduced&&plan){const [sx,sy]=shakeOffset(since-CONTACT_MS,plan,hitAt);if(sx||sy)c.translate(sx,sy);}
   const selected=backdrop(r),bg=selected.complete&&selected.naturalWidth?selected:background;
   if(bg.complete&&bg.naturalWidth){
    const scale=Math.max(W/bg.naturalWidth,H/bg.naturalHeight),dw=bg.naturalWidth*scale,dh=bg.naturalHeight*scale;
@@ -104,7 +119,7 @@ export function makeRenderer(canvas,getState,minimap){
   drawProp(r,ex,ey,heroH,ms);
   if(!reduced&&recentEnemy&&!(r.enemy?.hp>0)&&attack>0&&killing?.ref!==recentEnemy)killing={ref:recentEnemy,seen:ms,at:null};
   // the soul rises once the hit has landed and no dialog (noise, reward) covers the stage
-  if(killing&&killing.at===null&&ms-killing.seen>620&&!document.querySelector('dialog[open]')){
+  if(killing&&killing.at===null&&ms-killing.seen>swingDuration(plan)+40&&!document.querySelector('dialog[open]')){
    killing.at=ms;const kind=killing.ref.kind,height=heroH*(kind==='dragon'?1.35:1.04);
    if(objects.complete&&objects.naturalWidth){const id=kind==='dragon'?2:kind==='sentinel'?1:0;
     killFx.add(FX.soulRise,{x:ex,y:ey,actor:actorFromSprite(objects,id*512,0,512,540,height*512/540,height,{flip:true}),palette:PALETTES.soul,height:34,seed:s.turn+s.pos},{tag:'kill'});}
@@ -114,17 +129,25 @@ export function makeRenderer(canvas,getState,minimap){
   const foe=r.enemy?.hp>0?r.enemy:fading?recentEnemy:null;
   if(foe){if(fading)c.globalAlpha=dying?(killing.at===null?1:Math.max(0,Math.min(1,1-(ms-killing.at-500)/1900)))*(attack>0?.75+.25*Math.cos(attack*Math.PI*6):1):Math.max(0,1-attack*1.2);
    const recoil=attack&&!reduced?Math.sin(Math.min(1,attack*2)*Math.PI)*heroH*.14:0;
-   legacyActor(foe.kind,ex+recoil,ey-recoil*.3,heroH*(foe.kind==='dragon'?1.35:1.04),ms,true);c.globalAlpha=1;
+   // on contact the struck creature flashes white for the first frames of the freeze
+   const flash=frozen&&since-CONTACT_MS<(plan?.heavy?70:45);if(flash)c.filter='brightness(2.6) saturate(.3)';
+   legacyActor(foe.kind,ex+recoil,ey-recoil*.3,heroH*(foe.kind==='dragon'?1.35:1.04),ms,true);c.globalAlpha=1;if(flash)c.filter='none';
    if(!fading&&foe.mode!=='idle'){c.font=`bold ${Math.round(heroH*.24)}px serif`;c.textAlign='center';c.fillStyle=foe.mode==='hunt'?'#ff7667':'#ffc85a';c.shadowColor=c.fillStyle;c.shadowBlur=14;c.fillText(foe.mode==='hunt'?'!':'?',ex,ey-heroH*1.1);c.shadowBlur=0;}
   }
   if(!reduced)killFx.render(c,W,H,ms);
   glow(c,hx+heroH*.15,hy-heroH*.31,heroH*.75,'#ffc44c28');
   if(s.hidden)c.globalAlpha=.62;hero(hx,hy,heroH,ms,walking,attack);c.globalAlpha=1;
+  if(!reduced)hitFx.render(c,W,H,ms);
   if(attack>0){c.save();c.globalAlpha=Math.sin(attack*Math.PI);c.strokeStyle='#ffebb8';c.lineWidth=4;c.shadowColor='#ffbd4d';c.shadowBlur=20;c.beginPath();c.ellipse(ex-20,ey-heroH*.4,heroH*.55,heroH*.14,-.7,-2.7,.5);c.stroke();c.restore();}
-  if(ms-hitAt<850&&label){c.fillStyle='#ffe7c3';c.font='bold 30px monospace';c.textAlign='center';c.fillText(label,ex,ey-heroH*.9-(ms-hitAt)/42);}
+  if(label&&(reduced?since<850:since>=CONTACT_MS&&since<CONTACT_MS+(plan?.stop||0)+700)){
+   const t=reduced?0:since-CONTACT_MS,k=reduced?1:popScale(t),rise=reduced?since/42:Math.max(0,t-(plan?.stop||0))/30;
+   c.save();c.translate(ex,ey-heroH*.9-rise);c.scale(k,k);c.globalAlpha=reduced?1:Math.min(1,Math.max(0,1-(t-(plan?.stop||0)-420)/280));
+   c.font=`bold ${plan?.heavy?40:32}px monospace`;c.textAlign='center';c.lineJoin='round';c.lineWidth=7;c.strokeStyle='#2a0c06';c.strokeText(label,0,0);
+   c.fillStyle=plan?.kill?'#ffd36a':'#ffe7c3';c.fillText(label,0,0);c.restore();}
   if(ms-rewardAt<1700&&rewardLabel){const age=(ms-rewardAt)/1700;c.save();c.globalAlpha=1-age;c.fillStyle='#ffe6a0';c.font='bold 30px Georgia';c.textAlign='center';c.fillText(rewardLabel,ex,ey-heroH*.8-(reduced?0:age*60));if(!reduced)for(let i=0;i<16;i++){const a=i*2.4,x=ex+Math.cos(a)*age*100,y=ey-heroH*.4+Math.sin(a)*age*65-age*30;c.fillRect(x,y,4,4);}c.restore();}
   for(let i=0;i<26;i++){const x=(i*97+31)%W,y=(i*71+(reduced?0:ms*.003))%H;c.globalAlpha=.12+(Math.sin(ms*.001+i)+1)*.09;c.fillStyle=i%3?'#a5dfe7':'#ffd07b';c.fillRect(x,y,2,i%4===0?3:1);}c.globalAlpha=1;
   const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#03081425');g.addColorStop(.2,'#0000');g.addColorStop(.75,'#0000');g.addColorStop(1,'#02091388');c.fillStyle=g;c.fillRect(0,0,W,H);c.restore();
+  if(!reduced)frameFx.render(c,W,H,ms);
  }
  function drawMap(ctx,w,h,ms,large=false){
   const s=getState(),pixel=large?w/cssWidth:1;
@@ -160,5 +183,5 @@ export function makeRenderer(canvas,getState,minimap){
  return {setHover(id){hover=id;},setZoom(on){zoom=!!on;return zoom;},hit(x,y){
   if(zoom)return hitMap(canvas,x,y);
   const q=canvas.getBoundingClientRect(),s=getState();return hitExit(s.pos,neighbours(s),(x-q.left)/q.width,(y-q.top)/q.height);
- },hitMini(x,y){return hitMap(minimap,x,y);},burst(type='attack',text=''){if(type==='attack'){hitAt=performance.now();label=text;}if(type==='bad')damageAt=performance.now();if(type==='reward'){rewardAt=performance.now();rewardLabel=text;}},reset(){groundFx.clear();killFx.clear();killing=null;lastPos=-1;lastSound=-1;recentEnemy=null;recentEnemyPos=-1;rewardAt=-10000;hitAt=-10000;},stop(){alive=false;observer.disconnect();}};
+ },hitMini(x,y){return hitMap(minimap,x,y);},burst(type='attack',text='',info={}){if(type==='attack'){hitAt=performance.now();label=text;plan=hitPlan(info.dmg||0,!!info.kill,info.maxHp||0);landed=!!reduced;return reduced?SWING_MS:swingDuration(plan);}if(type==='bad')damageAt=performance.now();if(type==='reward'){rewardAt=performance.now();rewardLabel=text;}},reset(){groundFx.clear();killFx.clear();hitFx.clear();frameFx.clear();plan=null;landed=true;killing=null;lastPos=-1;lastSound=-1;recentEnemy=null;recentEnemyPos=-1;rewardAt=-10000;hitAt=-10000;},stop(){alive=false;observer.disconnect();}};
 }

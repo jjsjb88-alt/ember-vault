@@ -1,11 +1,31 @@
 // Pixel effects from pixelfx (MIT, vendor/pixelfx) drawn on a low-resolution layer and scaled up,
 // so one effect pixel matches the chunky pixels of the painted stage.
-import {createFrame,clearFrame,createFx,composite} from './vendor/pixelfx/core/index.js';
+import {createFrame,clearFrame,createFx,composite,fit} from './vendor/pixelfx/core/index.js';
 import * as fireBreath from './vendor/pixelfx/fx/fire/fire-breath.js';
 import * as ripples from './vendor/pixelfx/fx/water/ripples.js';
 import * as soulRise from './vendor/pixelfx/fx/spawn/soul-rise.js';
+import * as hitSpark from './vendor/pixelfx/fx/impacts/hit-spark.js';
+import * as critHit from './vendor/pixelfx/fx/impacts/crit-hit.js';
+import * as impactFrame from './vendor/pixelfx/fx/impacts/impact-frame.js';
 
-export const FX = {fireBreath, ripples, soulRise};
+// The impact frame is 320x180 effect pixels; on taller or wider stages its first four solid beats
+// (paper, paper, ink, ink) are extended to the whole layer so no edge of the scene peeks through.
+const fullImpactFrame = {
+ meta: impactFrame.meta,
+ create(o){
+  const inner = impactFrame.create(o), C = fit(o.palette, 3), INK = C[0], PAPER = C[2];
+  return {
+   update(dt){inner.update(dt);},
+   draw(p, t, opts){
+    const f = Math.floor(t * 30 + 1e-6);
+    if(f < 4) p.shade(-2000, -2000, 2000, 2000, () => f < 2 ? PAPER : INK);
+    inner.draw(p, t, opts);
+   },
+  };
+ },
+};
+
+export const FX = {fireBreath, ripples, soulRise, hitSpark, critHit, impactFrame: fullImpactFrame};
 // One effect pixel = 4 stage pixels (the stage canvas is 1200 wide, about 300 effect pixels across).
 export const FX_PIXEL = 4;
 export const PALETTES = {
@@ -15,6 +35,12 @@ export const PALETTES = {
  loud: ['#160904','#331607','#5e260c','#9a3e16','#d86a24','#ffad48','#ffe2a6','#ffffff'],
  // a fallen guard: pale vault-blue soul
  soul: ['#0b1420','#1a3048','#2f5a7e','#5a92b8','#9cc9e2','#dcf2ff','#ffffff'],
+ // a blade landing: the vault's ember gold, hottest at the core
+ strike: ['#2a0c06','#6a1e0c','#b0401a','#e8722a','#ffb04a','#ffe08a','#fff6d8','#ffffff'],
+ // the finishing blow: deep ember crimson under gold
+ crit: ['#1e0508','#4e0c14','#94201e','#d8482a','#ff8a34','#ffc85a','#fff2b0','#ffffff'],
+ // the anime impact frame on a kill: soot ink on warm paper
+ frame: ['#120806','#5a2a14','#fff0d4'],
 };
 
 /** A layer of live effects for one canvas. Positions and sizes are given in canvas pixels. */
