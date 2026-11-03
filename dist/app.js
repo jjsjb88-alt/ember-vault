@@ -307,4 +307,6 @@ document.addEventListener('click',ev=>{if(modeOpen&&!ev.target.closest('#stanceM
 $('#modal').addEventListener('cancel',ev=>{if(state.pending)ev.preventDefault();else dialogMode='';});
 $('#modal').addEventListener('click',ev=>{if(ev.target===$('#modal')&&!state.pending){const q=$('#modal').getBoundingClientRect();if(ev.clientX<q.left||ev.clientX>q.right||ev.clientY<q.top||ev.clientY>q.bottom)closeModal();}});
 save();selectPanel('routes');render();if(migrated)toast('기존 탐험을 이어갑니다. 남은 손패가 자동 합산되었습니다.');
-if(state.pending)pendingModal();else if(state.phase!=='playing')showResult();else if(!tutorialSeen)showTutorialIntro();else if(!loadedRun)poolReveal.start(state,{fast:fastDraw});
+// ?tutorial=1: open the practice straight away (the saved run waits underneath, as with the menu's 튜토리얼)
+const askTutorial=(()=>{try{return new URLSearchParams(location.search).get('tutorial')==='1';}catch{return false;}})();
+if(askTutorial&&!state.pending)showTutorialIntro();else if(state.pending)pendingModal();else if(state.phase!=='playing')showResult();else if(!tutorialSeen)showTutorialIntro();else if(!loadedRun)poolReveal.start(state,{fast:fastDraw});
