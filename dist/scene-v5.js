@@ -1,12 +1,12 @@
-import {neighbours,moveStatus} from './engine.js?v=20261104c';
+import {neighbours,moveStatus} from './engine.js?v=20261104d';
 import {icon,sprite} from './art.js';
 import {travelVector,walkFrame,projectMap,exitAnchor,hitExit} from './scene-layout.js';
 import {WALK_FRAMES} from './rogue-frames.js';
 import {ATTACK_FRAMES} from './rogue-attack-frames.js';
 import {prepareFrames} from './sprite-atlas.js';
-import {roomEnvironment} from './encounter.js?v=20261104c';
-import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261104c';
-import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261104c';
+import {roomEnvironment} from './encounter.js?v=20261104d';
+import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261104d';
+import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261104d';
 
 export function makeRenderer(canvas,getState,minimap){
  const c=canvas.getContext('2d'),mc=minimap.getContext('2d');
