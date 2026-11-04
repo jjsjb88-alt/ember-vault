@@ -1,7 +1,7 @@
 // 연습 대사 컷신: 화면 위아래를 검은 띠로 가리고, 말하는 쪽의 초상과 이름, 한 글자씩 써지는 대사.
 // 화면 아무 곳이나 누르면(또는 Enter/Space) 글자를 다 보여 주고, 한 번 더 누르면 다음 대사.
 // 컷신은 줄을 서서 차례로 재생된다. 추출·소음 연출처럼 움직이는 창이 열려 있으면 그것이 닫힐 때까지 기다린다.
-import {makeFxLayer} from './fx-layer.js?v=20261104e';
+import {makeFxLayer} from './fx-layer.js?v=20261104f';
 import * as spiritFlame from './vendor/pixelfx/fx/fire/spirit-flame.js';
 
 // 깜부기: 등불 속 잿불. spirit-flame을 따뜻한 잿불 색으로.

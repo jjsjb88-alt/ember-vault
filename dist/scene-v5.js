@@ -1,12 +1,12 @@
-import {neighbours,moveStatus} from './engine.js?v=20261104e';
+import {neighbours,moveStatus} from './engine.js?v=20261104f';
 import {icon,sprite} from './art.js';
 import {travelVector,walkFrame,projectMap,exitAnchor,hitExit} from './scene-layout.js';
 import {WALK_FRAMES} from './rogue-frames.js';
 import {ATTACK_FRAMES} from './rogue-attack-frames.js';
 import {prepareFrames} from './sprite-atlas.js';
-import {roomEnvironment} from './encounter.js?v=20261104e';
-import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261104e';
-import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261104e';
+import {roomEnvironment} from './encounter.js?v=20261104f';
+import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261104f';
+import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261104f';
 
 export function makeRenderer(canvas,getState,minimap){
  const c=canvas.getContext('2d'),mc=minimap.getContext('2d');
@@ -163,6 +163,7 @@ export function makeRenderer(canvas,getState,minimap){
    if(heard)glow(ctx,p.x,p.y,box*1.8,`rgba(255,173,66,${.12+heard.level*.035})`);
    ctx.fillStyle=here?'#e6c478':r.seen?'#718292':'#263743';ctx.fillRect(p.x-box/2-1,p.y-box/2-1,box+2,box+2);
    ctx.fillStyle=here?'#6c5734':r.seen?'#233b4c':'#0f1c27';ctx.fillRect(p.x-box/2,p.y-box/2,box,box);
+   const echo=s.echo?.[r.id]||0;if(echo){const f=reduced?1:.7+.3*Math.sin(ms/260+r.id*1.7);glow(ctx,p.x,p.y,box*(.9+echo*.18),`rgba(255,140,50,${(.16+echo*.05)*f})`);ctx.fillStyle='#ffc477';ctx.font=`bold ${Math.round(box*.45)}px system-ui`;ctx.textAlign='center';ctx.fillText(echo,p.x+box*.62,p.y-box*.45);}
    if(available.has(r.id)){ctx.strokeStyle='#ffe09a';ctx.lineWidth=large?3:2;ctx.strokeRect(p.x-box/2-4,p.y-box/2-4,box+8,box+8);}
    if(here){ctx.fillStyle='#ffe090';ctx.beginPath();ctx.moveTo(p.x,p.y-box*.4);ctx.lineTo(p.x+box*.34,p.y+box*.32);ctx.lineTo(p.x-box*.34,p.y+box*.32);ctx.closePath();ctx.fill();}
    else if(r.seen&&r.enemy?.hp>0){ctx.fillStyle='#662a33';ctx.fillRect(p.x-box*.5,p.y-box*.5,box,box);icon(ctx,'skull',p.x-box*.4,p.y-box*.4,box*.8);}

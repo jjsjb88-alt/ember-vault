@@ -36,11 +36,28 @@ export const MODES={walk:{name:'걷기',short:'보통',noise:2,extra:0},sneak:{n
 export const TERRAINS={stone:{name:'돌바닥',noise:0,damp:0},water:{name:'물웅덩이',noise:1,damp:0},shards:{name:'돌 파편',noise:2,damp:0},moss:{name:'이끼',noise:-1,damp:1}};
 export const ALERTS={idle:'무경계',listen:'청취 중',investigate:'조사 중',hunt:'추적 중'};
 const EDGES=[[0,1],[0,4],[1,2],[1,5],[2,3],[2,6],[3,7],[4,5],[4,8],[5,9],[6,7],[6,10],[7,11],[8,9],[8,12],[9,10],[9,13],[10,11],[10,14],[11,15],[12,13],[13,14],[14,15]];
-// Clank!-style dragon bag: every noise you make drops cubes into the clank area; when the dragon attacks they
-// join the bag with the black cubes and the dragon draws as many as its rage. Each of yours is 1 damage.
-export const BAG_BLACK=12;
-export function dragonRage(s){return 3+(s.relic?1:0)+Math.floor(s.turn/10);}
+// Echoes: the vault remembers footsteps. Every sound leaves an echo in the room it came from; echoes fade each turn.
+// When the dragon attacks, its breath catches the strongest echo and crawls along the echoing passages toward you.
+export const ECHO_MAX=9,LAIR=15,MEMORY_MAX=3;
 export function dragonDue(s){return s.noise>=8?'noise':s.relic&&s.turn%3===0?'relic':null;}
+export function breathReach(s){return Math.min(6,3+Math.max(0,s.noise-8));}
+export function echoFadeEvery(s){return (s.memory||0)+1;}
+function distances(s,from){const d=Array(16).fill(99);d[from]=0;const q=[from];while(q.length){const id=q.shift();for(const n of neighbours(s,id))if(d[n]>d[id]+1){d[n]=d[id]+1;q.push(n);}}return d;}
+function upgradeEcho(s){if(s.bag!==undefined||s.clank!==undefined){if(s.bag&&!s.echo){s.echo=Array(16).fill(0);s.memory=s.rageStep??(s.relic?1:0);}delete s.bag;delete s.clank;delete s.rageStep;}}
+/** Where the breath will go if the dragon attacks now: start at the strongest echo, spread to echoing neighbours. */
+export function breathPlan(s){
+ const e=s.echo||[],reach=breathReach(s),lair=distances(s,LAIR),me=distances(s,s.pos);
+ const hot=e.map((v,id)=>id).filter(id=>e[id]>0);
+ if(!hot.length)return {start:null,path:[],reach,hit:false,damage:0,echo:0};
+ const rank=(a,b)=>e[b]-e[a]||a-b;
+ const start=[...hot].sort((a,b)=>e[b]-e[a]||lair[a]-lair[b]||a-b)[0],path=[start];
+ while(path.length<reach){
+  const frontier=[...new Set(path.flatMap(id=>neighbours(s,id)))].filter(id=>!path.includes(id)&&e[id]>0);
+  if(!frontier.length)break;path.push(frontier.sort((a,b)=>e[b]-e[a]||me[a]-me[b]||rank(a,b))[0]);
+ }
+ const hit=path.includes(s.pos);
+ return {start,path,reach,hit,damage:hit?2+Math.floor(e[s.pos]/3):0,echo:e[s.pos]};
+}
 function next(s){let x=s.rng|0;x^=x<<13;x^=x>>>17;x^=x<<5;s.rng=x>>>0;return s.rng/4294967296;}
 function shuffle(s,a){for(let i=a.length-1;i>0;i--){const j=Math.floor(next(s)*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function sample(s,a){return a[Math.floor(next(s)*a.length)];}
@@ -108,7 +125,7 @@ export function emitNoise(s,origin,raw,label,personal=true){
   heard.push({id,level,name:e.name});
  }
  s.soundSeq++;s.lastSound={seq:s.soundSeq,origin,strength,raw:raw+gear,gear,absorbed,label,field,heard,turn:s.turn};
- const rise=strength?Math.max(1,Math.ceil(strength/2)):0;s.noise=Math.min(12,s.noise+rise);if(s.bag)s.clank=(s.clank||0)+rise;
+ const rise=strength?Math.max(1,Math.ceil(strength/2)):0;s.noise=Math.min(12,s.noise+rise);upgradeEcho(s);if(s.echo&&rise)s.echo[origin]=Math.min(ECHO_MAX,s.echo[origin]+rise);
  s.noiseMade+=strength;
  if(strength)log(s,`${label} · 소리 ${strength}${absorbed?` (은신으로 ${absorbed} 흡수)`:''} · ${heard.length?`적 ${heard.length}명이 들었습니다`:'들킨 기척 없음'}`,heard.length?'bad':'normal');
  else log(s,`${label} · 소리 없이 움직였습니다${absorbed?` (은신 ${absorbed} 사용)`:''}`,'good');
@@ -118,7 +135,7 @@ function freshFields(s){Object.assign(s,{mode:'walk',soundSeq:0,lastSound:null,n
 export function newRun({seed=Date.now(),role='rogue'}={}){
  if(!ROLES[role])role='rogue';seed=Number(seed)>>>0||135792468;
  const s={version:VERSION,seed,rng:seed,role,turn:1,pos:0,from:null,hp:ROLES[role].hp,maxHp:ROLES[role].hp,gold:0,noise:0,resource:null,hand:[],deck:[],discard:[],played:[],edges:EDGES.map(e=>[...e]),rooms:[],market:[],log:[],relic:null,countdown:null,phase:'playing',pending:null,kills:0,purchases:0,refreshTurn:0,steps:0};
- freshFields(s);s.bag={black:BAG_BLACK,mine:0};s.clank=0;s.resource=resources(s);s.rooms=generateRooms(s);
+ freshFields(s);s.echo=Array(16).fill(0);s.memory=0;s.resource=resources(s);s.rooms=generateRooms(s);
  s.deck=shuffle(s,['scout','step','slash','focus','guard']);
  s.market=['step',...shuffle(s,MARKET_IDS.filter(x=>x!=='step')).slice(0,3)];
  resolvePool(s,['scout','step',role==='mage'?'spark':'slash','focus',role==='rogue'?'sneak':'guard']);
@@ -207,7 +224,7 @@ export function apply(s,action){
   if(r.type==='chest'){const gold=r.row===3?10:5+Math.floor(next(s)*3);s.gold+=gold;r.used=true;emitNoise(s,s.pos,r.row===3?7:3,r.row===3?'상자의 경보 장치':'낡은 경첩');log(s,`보물 상자 · 금화 +${gold}`,'good');return ok(s,`금화 +${gold}`);}
   if(r.type==='camp'){if(s.hp===s.maxHp&&s.noise===0)return fail(s,'아직 쉬어 갈 필요가 없습니다.');const healed=Math.min(6,s.maxHp-s.hp);s.hp+=healed;s.noise=Math.max(0,s.noise-3);r.used=true;log(s,`불가에서 휴식 · 체력 +${healed}, 경계 −3`,'good');return ok(s,'따뜻한 휴식');}
   if(r.type==='shrine'){const total=[...s.deck,...s.discard,...s.played];if(total.length<=5)return fail(s,'최소 5개의 능력은 남겨 두어야 합니다.');s.pending={type:'purge',options:[...new Set(total)]};return ok(s,'주머니에서 지울 능력을 선택하세요.');}
-  if(r.type==='relic'){if(s.relic&&s.relic.value>=r.relic.value)return fail(s,'이미 더 값진 유물을 가지고 있습니다.');s.relic={...r.relic};r.used=true;if(s.countdown===null)s.countdown=14;emitNoise(s,s.pos,8,'유물 봉인 파괴');log(s,`${r.relic.name} 획득! ${s.countdown}턴 이내에 입구로 탈출하세요.`,'good');return ok(s,'유물 획득 · 용이 깨어났습니다!');}
+  if(r.type==='relic'){if(s.relic&&s.relic.value>=r.relic.value)return fail(s,'이미 더 값진 유물을 가지고 있습니다.');s.relic={...r.relic};r.used=true;if(s.countdown===null)s.countdown=14;emitNoise(s,s.pos,8,'유물 봉인 파괴');log(s,`${r.relic.name} 획득! ${s.countdown}턴 이내에 입구로 탈출하세요.`,'good');if(s.echo){s.memory=Math.min(MEMORY_MAX,(s.memory||0)+1);log(s,`금고의 기억이 깊어진다 · 메아리가 ${echoFadeEvery(s)}턴마다 1씩 옅어짐`,'bad');return ok(s,`유물 획득 · 금고가 ${echoFadeEvery(s)}턴을 기억합니다`);}return ok(s,'유물 획득 · 용이 깨어났습니다!');}
   return fail(s,'상인에게 물약을 구매할 수 있습니다.');
  }
  case 'merchant':{
@@ -229,20 +246,19 @@ export function apply(s,action){
  case 'cancelPurge':if(s.pending?.type!=='purge')return fail(s,'진행 중인 의식이 없습니다.');s.pending=null;return ok(s,'의식을 미뤘습니다.');
  case 'end':{
   enemyTurn(s);if(s.hp<=0){finish(s,false,'어둠 속에서 쓰러졌습니다. 적의 추적 경로와 방어력을 살펴보세요.');return ok(s,'탐험 종료');}
-  s.attack=null;const due=dragonDue(s);
-  if(due&&s.bag){
-   const b=s.bag,added=s.clank||0;b.mine+=added;s.clank=0;
-   const a={cause:due,rage:dragonRage(s),added,black:b.black,mine:b.mine,drawn:[],beforeHp:s.hp,taken:0,blocked:0};
-   for(let i=0;i<a.rage&&b.black+b.mine>0;i++){const mine=next(s)*(b.black+b.mine)<b.mine;if(mine)b.mine--;else b.black--;a.drawn.push(mine?'mine':'black');}
-   const hits=a.drawn.filter(x=>x==='mine').length;a.blocked=Math.min(hits,s.resource.block);
-   if(hits)a.taken=damage(s,hits,`용의 공격 · 주머니에서 내 큐브 ${hits}개`);else log(s,`용의 공격 · ${a.drawn.length}개 모두 검은 큐브`,'good');
+  upgradeEcho(s);s.attack=null;const due=dragonDue(s);
+  if(due&&s.echo){
+   const plan=breathPlan(s),a={cause:due,...plan,echoes:[...s.echo],pos:s.pos,beforeHp:s.hp,taken:0,blocked:0};
+   if(plan.hit){a.blocked=Math.min(plan.damage,s.resource.block);a.taken=damage(s,plan.damage,`용의 숨결 · 메아리를 따라 이 방까지 (메아리 ${plan.echo})`);}
+   else log(s,plan.start===null?'용의 숨결 · 따라갈 메아리가 없었다':`용의 숨결 · 메아리 ${plan.path.length}곳을 태웠지만 닿지 않았다`,'good');
+   for(const id of plan.path)s.echo[id]=0;
    a.afterHp=s.hp;s.attack=a;if(due==='noise')s.noise=Math.max(0,s.noise-5);
   }
   else if(s.noise>=8){damage(s,3+Math.floor(s.turn/10),'소음을 들은 용의 숨결');s.noise=Math.max(0,s.noise-5);}
   else if(s.relic&&s.turn%3===0)damage(s,2,'깨어난 용의 숨결');
   if(s.hp<=0){finish(s,false,'용의 숨결이 금고를 삼켰습니다.');return ok(s,'탐험 종료');}
   if(s.countdown!==null){s.countdown--;if(s.countdown<=0){finish(s,false,'금고가 무너졌습니다. 유물을 얻으면 입구로 돌아가세요.');return ok(s,'탐험 종료');}}
-  s.discard.push(...s.played);s.played=[];s.turn++;s.resource=resources(s);s.hidden=false;s.noise=Math.max(0,s.noise-2-(s.role==='rogue'?1:0));
+  s.discard.push(...s.played);s.played=[];s.turn++;if(s.echo&&s.turn%echoFadeEvery(s)===0)s.echo=s.echo.map(v=>Math.max(0,v-1));s.resource=resources(s);s.hidden=false;s.noise=Math.max(0,s.noise-2-(s.role==='rogue'?1:0));
   resolvePool(s);return ok(s,'새 메달 5개가 열렸습니다.');
  }
  default:return fail(s,'알 수 없는 행동입니다.');

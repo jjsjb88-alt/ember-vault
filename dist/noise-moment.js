@@ -1,12 +1,12 @@
-import {soundWavePlan} from './encounter.js?v=20261104e';
-import {makeFxLayer,FX} from './fx-layer.js?v=20261104e';
+import {soundWavePlan} from './encounter.js?v=20261104f';
+import {makeFxLayer,FX} from './fx-layer.js?v=20261104f';
 
 export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSound=()=>{}}={}){
  let active=false,timers=[],frame=0,fxFrame=0,callback=null,previousFocus=null;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
  const q=s=>dialog.querySelector(s);
  const later=(fn,ms)=>timers.push(setTimeout(()=>{if(active)fn();},ms));
- function clear(){timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(frame);cancelAnimationFrame(fxFrame);}
+ function clear(){timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(frame);cancelAnimationFrame(fxFrame);cancelAnimationFrame(mapFrame);}
  function close(){if(!active)return;clear();active=false;dialog.close();document.body.classList.remove('listening');cue('stop');const done=callback;callback=null;previousFocus?.isConnected&&previousFocus.focus({preventScroll:true});done?.();}
  function shell(mode,done){
   if(active)close();active=true;callback=done;previousFocus=document.activeElement;
@@ -50,51 +50,67 @@ export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSoun
  }
 
 
- // ── Dragon attack, Clank!-style, staged like a judgment: time stops, then the dragon draws from the bag one cube at a time.
- let pickFn=null,cancelFn=null;
- const pct=(m,t)=>t?Math.round(m/t*100):0;
- function bagLine(black,mine,added=0){return `<span class="bag-black">검은 큐브 <b>${black}</b></span><span class="bag-mine">내 큐브 <b>${mine}</b>${added?`<em>+${added}</em>`:''}</span>`;}
- function judge(f,onPick,onCancel){
+
+ // ── Dragon breath that follows echoes. Time stops on the sound map; the breath catches the strongest echo
+ //    and crawls along echoing passages. Will it reach the room you stand in?
+ let pickFn=null,cancelFn=null,mapFrame=0;
+ const MAP_W=480,MAP_H=260,spot=id=>({x:60+(id%4)*120,y:36+Math.floor(id/4)*62}),LAIR_ID=15;
+ function drawBreathMap(cv,s,echo,{burned=[],lead=null,hit=false}={},now=performance.now()){
+  const ctx=cv.getContext('2d');ctx.clearRect(0,0,MAP_W,MAP_H);
+  for(const[a,b]of s.edges){const A=spot(a),B=spot(b),fire=burned.some(x=>x.id===a&&x.from===b||x.id===b&&x.from===a);ctx.strokeStyle=fire?'#ff7a3c':'#33414c';ctx.lineWidth=fire?4:2;ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke();}
+  if(lead){const A=spot(lead.from),B=spot(lead.to),p=lead.p;ctx.strokeStyle='#ffb05c';ctx.lineWidth=4;ctx.setLineDash(lead.from===LAIR_ID&&lead.lair?[6,6]:[]);ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(A.x+(B.x-A.x)*p,A.y+(B.y-A.y)*p);ctx.stroke();ctx.setLineDash([]);
+   const hx=A.x+(B.x-A.x)*p,hy=A.y+(B.y-A.y)*p,g=ctx.createRadialGradient(hx,hy,0,hx,hy,22);g.addColorStop(0,'#fff3c8');g.addColorStop(.4,'#ff9a3caa');g.addColorStop(1,'#ff4a1a00');ctx.fillStyle=g;ctx.beginPath();ctx.arc(hx,hy,22,0,Math.PI*2);ctx.fill();}
+  for(const r of s.rooms){const p=spot(r.id),e=echo[r.id],burn=burned.find(x=>x.id===r.id),me=r.id===s.pos;
+   if(burn){const f=.75+.25*Math.sin(now/90+r.id);const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,40);g.addColorStop(0,`rgba(255,170,70,${.85*f})`);g.addColorStop(.5,`rgba(220,70,20,${.5*f})`);g.addColorStop(1,'rgba(120,20,0,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,40,0,Math.PI*2);ctx.fill();}
+   else if(e>0){const f=.6+.4*Math.sin(now/260+r.id*1.7),rad=10+e*2.6;const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,rad);g.addColorStop(0,`rgba(255,190,90,${.55*f})`);g.addColorStop(1,'rgba(255,120,40,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,rad,0,Math.PI*2);ctx.fill();}
+   ctx.fillStyle=me?(hit?'#ff6b4a':'#e6c478'):burn?'#7a2a14':r.seen?'#2a3d4b':'#13212b';ctx.strokeStyle=me?'#fff0c0':r.id===LAIR_ID?'#c2412a':'#56636c';ctx.lineWidth=me?3:2;ctx.fillRect(p.x-12,p.y-12,24,24);ctx.strokeRect(p.x-12,p.y-12,24,24);
+   ctx.textAlign='center';ctx.font='bold 12px system-ui';
+   if(me){ctx.fillStyle='#2a1a08';ctx.fillText('나',p.x,p.y+4);}
+   else if(r.id===LAIR_ID){ctx.fillStyle='#ffb49a';ctx.fillText('용',p.x,p.y+4);}
+   if(e>0&&!burn){ctx.fillStyle='#ffd08a';ctx.font='bold 11px system-ui';ctx.fillText(e,p.x+17,p.y-12);}
+  }
+ }
+ function judge(s,plan,block,onPick,onCancel){
   if(active)close();active=true;callback=null;previousFocus=document.activeElement;pickFn=onPick;cancelFn=onCancel;
   dialog.dataset.mode='judge';dialog.dataset.phase='choose';
-  const mine=f.mine+f.added,total=f.black+mine,n=Math.min(f.rage,total);
-  dialog.innerHTML=`<div class="noise-eye" aria-hidden="true"></div><div class="judge-shell"><div class="judge-top"><span>✦ 용의 공격 — 시간 정지</span><i class="judge-steps" aria-hidden="true"><b class="on"></b><b></b><b></b></i><small>${f.cause==='relic'?'유물의 냄새':'경계 '+f.noise}</small></div>
-  <div class="judge-stage"><div class="judge-ring" aria-hidden="true"><div class="judge-eye"></div></div>
-  <div class="bag-panel"><div class="bag-count" id="bagCount">${bagLine(f.black,f.mine,f.added)}</div><div class="bag-row" aria-label="뽑을 큐브 ${n}개">${Array.from({length:n},(_,i)=>`<i class="cube" data-cube="${i}"></i>`).join('')}</div></div></div>
-  <div class="judge-copy"><h2 id="judgeTitle">용이 주머니에 손을 넣는다.</h2><p id="judgeDetail">${f.added?`방금까지 낸 소리가 <b>내 큐브 ${f.added}개</b>로 주머니에 들어갑니다. `:''}${n}개를 뽑습니다 · 하나가 내 큐브일 확률 <b>${pct(mine,total)}%</b> · 내 큐브 1개 = 피해 1${f.block?` · 방어 ${f.block}`:''}</p></div>
-  <div class="judge-foot"><button class="primary" data-judge="draw">뽑는다 →</button><button data-judge="back">← 턴으로 돌아가기</button></div></div>`;
+  const here=s.echo[s.pos],lingers=(s.memory||0)+1;
+  dialog.innerHTML=`<div class="noise-eye" aria-hidden="true"></div><div class="judge-shell"><div class="judge-top"><span>✦ 용의 숨결 — 시간 정지</span><i class="judge-steps" aria-hidden="true"><b class="on"></b><b></b><b></b></i><small>${s.relic?`금고의 기억 ${lingers}턴 · `:''}${plan.reach}개 방까지</small></div>
+  <div class="judge-stage"><canvas class="breath-map" width="${MAP_W}" height="${MAP_H}" aria-label="메아리가 남은 방과 용의 둥지가 표시된 소리 지도"></canvas></div>
+  <div class="judge-copy"><h2 id="judgeTitle">숨결이 메아리를 더듬는다.</h2><p id="judgeDetail">${plan.start===null?'금고에 남은 메아리가 없습니다.':`숨결은 가장 진한 메아리에서 시작해 이어진 메아리를 따라 최대 <b>${plan.reach}개 방</b>을 태웁니다. 지금 방의 메아리 <b>${here}</b>${here?'':' — 메아리 없는 방에는 닿지 않습니다'}${block?` · 방어 ${block}`:''}`}</p></div>
+  <div class="judge-foot"><button class="primary" data-judge="draw">숨결을 기다린다 →</button><button data-judge="back">← 턴으로 돌아가기</button></div></div>`;
   document.body.classList.add('listening');dialog.showModal();cue('heartbeat');
+  const cv=q('.breath-map'),idle=now=>{if(!active||dialog.dataset.phase!=='choose')return;drawBreathMap(cv,s,s.echo,{},now);mapFrame=requestAnimationFrame(idle);};mapFrame=requestAnimationFrame(idle);
   dialog.querySelector('[data-judge="draw"]').focus({preventScroll:true});
  }
- function spin(a,done){
+ function spin(s,a,done){
   if(!active||dialog.dataset.mode!=='judge'){done?.();return;}
-  callback=done;dialog.dataset.phase='spin';
-  const steps=dialog.querySelectorAll('.judge-steps b');steps[1].classList.add('on');
+  cancelAnimationFrame(mapFrame);callback=done;dialog.dataset.phase='spin';
+  dialog.querySelectorAll('.judge-steps b')[1].classList.add('on');
   dialog.querySelector('.judge-foot').innerHTML='<button data-noise="skip">계속 →</button>';
-  const row=q('.bag-row');row.innerHTML=a.drawn.map((_,i)=>`<i class="cube" data-cube="${i}"></i>`).join('');
-  q('#judgeTitle').textContent='하나.';q('#judgeDetail').textContent='숨을 참으세요.';
-  let black=a.black,mine=a.mine,hits=0;
-  const gaps=a.drawn.map((_,i)=>reduced?60:900+i*260+(i===a.drawn.length-1?500:0));let at=reduced?0:350;
-  a.drawn.forEach((kind,i)=>{
-   const cube=row.querySelector(`[data-cube="${i}"]`);
-   later(()=>{cube.classList.add('shake');cue('tick');},at);at+=gaps[i];
-   later(()=>{
-    cube.classList.remove('shake');
-    if(kind==='mine'){hits++;mine--;const saved=hits<=a.blocked;cube.classList.add('mine');if(saved)cube.classList.add('saved');cube.textContent=saved?'방어':'−1';
-     q('#judgeTitle').textContent=saved?'당신의 소리 — 방어가 받아냈다.':'당신의 소리다.';cue(saved?'hold':'impact');}
-    else{black--;cube.classList.add('black');q('#judgeTitle').textContent='…검은 큐브.';cue('hold');}
-    q('#bagCount').innerHTML=bagLine(black,mine);
-    q('#judgeDetail').textContent=i<a.drawn.length-1?`${['하나','둘','셋','넷','다섯','여섯'][i+1]||'다음'}.`:'';
-    if(i===a.drawn.length-1)later(()=>land(a),reduced?50:700);
-   },at);
+  const cv=q('.breath-map'),view={...s,pos:a.pos},echo=a.echoes,burned=[];let lead=null,hit=false;
+  const draw=now=>{if(!active)return;drawBreathMap(cv,view,echo,{burned,lead,hit},now);mapFrame=requestAnimationFrame(draw);};mapFrame=requestAnimationFrame(draw);
+  const name=id=>s.rooms[id].seen?s.rooms[id].name:'어둠 속 방';
+  if(a.start===null){q('#judgeTitle').textContent='숨결이 길을 잃었다.';q('#judgeDetail').textContent='따라갈 메아리가 없어 어둠만 태우고 사그라듭니다.';later(()=>land(s,a,false),reduced?50:1400);return;}
+  q('#judgeTitle').textContent='둥지에서 불길이 일어난다.';q('#judgeDetail').textContent=`가장 진한 메아리 — ${name(a.start)}`;
+  const steps=a.path.map((id,i)=>({id,from:i?a.path.slice(0,i).find(p=>s.edges.some(([x,y])=>x===id&&y===p||y===id&&x===p))??a.path[i-1]:LAIR_ID,lair:!i}));
+  let at=reduced?0:300;
+  steps.forEach((st,i)=>{
+   const toMe=st.id===a.pos,near=steps[i+1]?.id===a.pos,travel=reduced?0:st.lair?900:650,pause=reduced?40:toMe?1500:near?1100:500+i*120;
+   later(()=>{const t0=performance.now();lead={from:st.from,to:st.id,p:0,lair:st.lair};cue('tick');
+    const grow=now=>{if(!active||!lead)return;lead.p=travel?Math.min(1,(now-t0)/travel):1;if(lead.p<1)requestAnimationFrame(grow);};requestAnimationFrame(grow);
+    if(toMe){q('#judgeTitle').textContent='…이쪽으로 온다.';q('#judgeDetail').textContent='';}},at);
+   at+=travel+(toMe?pause:0);
+   later(()=>{lead=null;burned.push({id:st.id,from:st.lair?null:st.from});if(toMe)hit=true;cue(toMe?'impact':'noise');
+    if(toMe){q('#judgeTitle').textContent='불길이 방을 덮쳤다.';q('#judgeDetail').textContent='';}
+    else if(!hit){q('#judgeTitle').textContent=near?'숨결이 바로 옆 방까지 왔다.':`${name(st.id)}의 메아리가 탄다.`;q('#judgeDetail').textContent=`${i+1} / ${a.reach}`;}
+    if(i===steps.length-1)later(()=>land(s,a,toMe),reduced?50:700);},at);
+   at+=toMe?0:pause;
   });
-  if(!a.drawn.length)land(a);
  }
- function land(a){
-  const hits=a.drawn.filter(x=>x==='mine').length;
+ function land(s,a,reached){
   dialog.dataset.phase=a.taken?'hit':'held';dialog.querySelectorAll('.judge-steps b')[2].classList.add('on');
-  q('#judgeTitle').textContent=!hits?'용이 빈손으로 물러났다.':a.taken?'주머니 속 소리가 되돌아왔다.':'방어가 모두 받아냈다.';
-  q('#judgeDetail').textContent=`${a.drawn.length}개 중 내 큐브 ${hits}개${a.blocked?` · 방어 ${a.blocked}`:''} · 체력 ${a.beforeHp} → ${a.afterHp}${a.taken?` (−${a.taken})`:''} · 뽑히지 않은 큐브는 주머니에 남습니다`;
+  if(a.hit){q('#judgeTitle').textContent=a.taken?'숨결이 당신을 찾아냈다.':'숨결이 닿았지만, 방어가 버텼다.';q('#judgeDetail').textContent=`이 방의 메아리 ${a.echo} · 피해 ${a.damage}${a.blocked?` (방어 ${a.blocked})`:''} · 체력 ${a.beforeHp} → ${a.afterHp}`;}
+  else if(a.start!==null){q('#judgeTitle').textContent='숨결이 닿지 않았다.';q('#judgeDetail').textContent=`메아리 ${a.path.length}곳이 타서 사라졌습니다. 이 방은 조용했습니다.`;}
   if(a.taken)cue('impact');
   dialog.querySelector('[data-noise="skip"]')?.focus({preventScroll:true});
   later(close,reduced?1800:3400);

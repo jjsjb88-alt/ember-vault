@@ -1,4 +1,4 @@
-import {newRun} from './engine.js?v=20261104e';
+import {newRun} from './engine.js?v=20261104f';
 
 // 연습은 그림자 도적의 첫 금고 털이. 등불 속 불씨 '깜부기'가 옆에서 떠든다.
 // talk = 이 행동을 하는 이유(대사), text = 무엇을 누르고 무엇이 일어나는가. 한 단계의 사고가 다음 단계의 이유가 된다.
@@ -44,7 +44,7 @@ export function talkHtml(lines,cls='coach-talk'){
 }
 
 export function createTutorialRun(){
- const s=newRun({seed:42028,role:'rogue'}),r=s.rooms[2];s.bag=null;s.clank=0;// the lesson keeps the fixed breath
+ const s=newRun({seed:42028,role:'rogue'}),r=s.rooms[2];s.echo=null;// the lesson keeps the fixed breath
  r.name='파수병의 방';r.type='enemy';r.enemy={kind:'skeleton',name:'금고의 파수병',hp:2,maxHp:2,damage:1,gold:2,home:2,mode:'idle',target:null,memory:0,awareness:0,anchored:false};
  return s;
 }

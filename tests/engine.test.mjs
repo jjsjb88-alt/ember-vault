@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {newRun,apply,CARDS,ROLES,validSave,neighbours,resolvePool,emitNoise,soundField,enemyTurn,moveNoise,moveCost,previewNoise,migrateSave} from '../dist/engine.js';
+import {newRun,apply,CARDS,ROLES,validSave,neighbours,resolvePool,emitNoise,soundField,enemyTurn,moveNoise,moveCost,previewNoise,migrateSave,breathPlan,breathReach} from '../dist/engine.js';
 const doAction=(s,a)=>{const r=apply(s,a);assert.equal(r.ok,true,r.message);return r;};
 const total=s=>s.hand.length+s.deck.length+s.discard.length+s.played.length;
 test('all roles automatically resolve a complete starting pool, with deterministic save round trip',()=>{
@@ -48,7 +48,7 @@ test('combat spends attack pool, partial damage persists, and rewards are chosen
  const id=s.pending.options[0];doAction(s,{type:'reward',id});assert.equal(total(s),11);assert.equal(apply(s,{type:'reward',id}).ok,false);
 });
 test('armor, dragon alarm, natural decay, and collapse resolve in order',()=>{
- const s=newRun({seed:5});s.bag=null;s.pos=4;s.resource.block=2;s.noise=8;const hp=s.hp;doAction(s,{type:'end'});assert.equal(s.hp,hp-3);assert.equal(s.noise,0);
+ const s=newRun({seed:5});s.echo=null;s.pos=4;s.resource.block=2;s.noise=8;const hp=s.hp;doAction(s,{type:'end'});assert.equal(s.hp,hp-3);assert.equal(s.noise,0);
  s.hp=1;s.resource.block=0;s.noise=8;doAction(s,{type:'end'});assert.equal(s.phase,'lost');
  const t=newRun();t.relic={name:'달의 눈물',value:18};t.countdown=1;doAction(t,{type:'end'});assert.equal(t.phase,'lost');assert.match(t.reason,/무너/);
 });
@@ -83,15 +83,23 @@ test('180 complete seeded journeys remain bounded and each role can escape both 
  const results={};for(const role of Object.keys(ROLES))for(const target of [10,15]){let wins=0;for(let seed=1;seed<=30;seed++){const s=journey(seed,role,target);assert.ok(['won','lost'].includes(s.phase));if(s.phase==='won'){wins++;assert.equal(s.relic.value,target===10?18:42);}}results[role+'_'+target]=wins;assert.ok(wins>0,'each role/depth must be winnable');}
  console.log('Route wins / 30 (no shop, no stealth):',JSON.stringify(results));
 });
-test('dragon bag (Clank!): noise drops cubes, an attack draws rage-many, only your cubes hurt and the rest stay',()=>{
- const s=newRun({seed:21});assert.deepEqual(s.bag,{black:12,mine:0});assert.equal(s.clank,0);
- emitNoise(s,s.pos,6,'test');assert.equal(s.clank,3);emitNoise(s,s.pos,10,'test');assert.equal(s.clank,8);assert.equal(s.noise,8);
- s.pos=0;s.resource.block=0;const hp=s.hp;doAction(s,{type:'end'});
- const a=s.attack;assert.ok(a);assert.equal(a.cause,'noise');assert.equal(a.added,8);assert.equal(a.rage,3);assert.equal(a.drawn.length,3);
- const hits=a.drawn.filter(x=>x==='mine').length;assert.equal(s.hp,hp-hits);assert.equal(s.clank,0);
- assert.equal(s.bag.mine,8-hits);assert.equal(s.bag.black,12-(3-hits));
- let seen=new Set();for(let seed=1;seed<80;seed++){const t=newRun({seed});t.pos=0;t.clank=6;t.noise=8;doAction(t,{type:'end'});seen.add(t.attack.drawn.filter(x=>x==='mine').length);}
- assert.ok(seen.has(0)&&seen.size>=3,'luck matters');
- const q=newRun({seed:3});q.pos=0;q.noise=4;q.clank=4;doAction(q,{type:'end'});assert.equal(q.attack,null);assert.equal(q.clank,4,'cubes wait in the clank area');
- const r=newRun({seed:4});r.pos=0;r.relic={name:'x',value:1};r.countdown=9;r.turn=3;r.clank=2;doAction(r,{type:'end'});assert.equal(r.attack.cause,'relic');assert.equal(r.attack.rage,4);
+test('echoes: sounds leave echoes, they fade, and the breath follows them to you',()=>{
+ const s=newRun({seed:21});assert.equal(s.echo.length,16);assert.ok(s.echo.every(v=>v===0));assert.equal(s.memory,0);
+ emitNoise(s,5,6,'test');assert.equal(s.echo[5],3);emitNoise(s,5,6,'test');assert.equal(s.echo[5],6);
+ // no echo anywhere -> nothing to follow
+ const q=newRun({seed:3});q.pos=0;q.noise=8;doAction(q,{type:'end'});assert.equal(q.attack.start,null);assert.equal(q.attack.taken,0);
+ // you stand in an echoing room linked to the hot trail -> burned
+ const t=newRun({seed:4});t.pos=0;t.resource.block=0;const ring=neighbours(t,0);t.echo[0]=4;t.echo[ring[0]]=7;t.noise=8;
+ const plan=breathPlan(t);assert.equal(plan.start,ring[0]);assert.ok(plan.path.includes(0));assert.equal(plan.damage,2+1);
+ const hp=t.hp;doAction(t,{type:'end'});assert.equal(t.hp,hp-3);assert.equal(t.echo[0],0,'burned echoes are spent');assert.equal(t.echo[ring[0]],0);
+ // you stand in a silent room -> the breath never reaches you
+ const u=newRun({seed:4});u.pos=0;u.echo[ring[0]]=7;u.noise=8;const before=u.hp;doAction(u,{type:'end'});assert.equal(u.attack.hit,false);assert.equal(u.hp,before);
+ // louder alert reaches further; echoes fade by one each turn
+ const v=newRun({seed:4});v.noise=11;assert.equal(breathReach(v),6);v.noise=8;assert.equal(breathReach(v),3);
+ const w=newRun({seed:4});w.pos=0;w.echo[9]=3;doAction(w,{type:'end'});assert.equal(w.echo[9],2);
+});
+test('vault memory: each relic lifted makes echoes linger longer; legacy bag saves convert',()=>{
+ const s=newRun({seed:6});s.pos=10;s.rooms[10].enemy.hp=0;const r=doAction(s,{type:'interact'});assert.equal(s.memory,1);assert.match(r.message,/2턴/);
+ const t=newRun({seed:7});t.memory=1;t.echo[3]=5;t.pos=0;t.turn=1;doAction(t,{type:'end'});assert.equal(t.echo[3],4,'turn 2 is even: fades');doAction(t,{type:'end'});assert.equal(t.echo[3],4,'turn 3 is odd: lingers');
+ const old=newRun({seed:8});delete old.echo;delete old.memory;old.bag={black:12,mine:3};old.clank=2;old.relic={name:'x',value:1};emitNoise(old,0,4,'t');assert.equal(old.bag,undefined);assert.equal(old.memory,1);assert.equal(old.echo[0],2);
 });
