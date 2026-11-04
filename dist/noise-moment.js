@@ -1,5 +1,5 @@
-import {soundWavePlan} from './encounter.js?v=20261104f';
-import {makeFxLayer,FX} from './fx-layer.js?v=20261104f';
+import {soundWavePlan} from './encounter.js?v=20261104g';
+import {makeFxLayer,FX} from './fx-layer.js?v=20261104g';
 
 export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSound=()=>{}}={}){
  let active=false,timers=[],frame=0,fxFrame=0,callback=null,previousFocus=null;
