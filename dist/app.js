@@ -1,12 +1,13 @@
-import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,dragonRage} from './engine.js?v=20261103d';
+import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,dragonRage} from './engine.js?v=20261104a';
 import {paintIcons} from './art.js';
-import {makeRenderer} from './scene-v5.js?v=20261103d';
-import {makePoolReveal} from './pool-reveal.js?v=20261103d';
+import {makeRenderer} from './scene-v5.js?v=20261104a';
+import {makePoolReveal} from './pool-reveal.js?v=20261104a';
 import {pageOf,pager} from './pages.js';
 import {exitAnchor} from './scene-layout.js';
-import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261103d';
-import {makeNoiseMoment} from './noise-moment.js?v=20261103d';
-import {TUTORIAL_STEPS,TUTORIAL_REVEALS,TUTORIAL_DONE,talkHtml,createTutorialRun,tutorialAllows,tutorialAdvance} from './tutorial.js?v=20261103d';
+import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261104a';
+import {makeNoiseMoment} from './noise-moment.js?v=20261104a';
+import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,TUTORIAL_DONE,createTutorialRun,tutorialAllows,tutorialAdvance} from './tutorial.js?v=20261104a';
+import {makeCutscene} from './cutscene.js?v=20261104a';
 const $=s=>document.querySelector(s),SAVE_KEY='ember-vault-save-v2',BEST_KEY='ember-vault-best-v1';
 let state,storageOK=true,best=0,sound=false,selectedRole='rogue',dialogMode='',lastFocus=null,toastTimer,audio,migrated=false,loadedRun=false,fastDraw=false;
 try{let saved=JSON.parse(localStorage.getItem(SAVE_KEY));if(!validSave(saved)){const prior=JSON.parse(localStorage.getItem('ember-vault-save-v1'));if(prior){saved=migrateSave(prior);migrated=!!saved;}}loadedRun=validSave(saved);state=loadedRun?saved:newRun();best=Number(localStorage.getItem(BEST_KEY))||0;sound=localStorage.getItem('ember-vault-sound')==='on';fastDraw=localStorage.getItem('ember-vault-fast-draw')==='on';}catch{state=newRun();storageOK=false;}
@@ -14,6 +15,8 @@ let handPage=0,enemyPage=0,lureMode=false,travelUntil=0,actionBusy=false,tutoria
 try{tutorialSeen=!!localStorage.getItem('ember-vault-tutorial-v1');}catch{}
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const portrait=(role,cls='')=>`<span class="portrait ${role} ${cls}" role="img" aria-label="${ROLES[role].name} 초상화"></span>`;
+// 연습 대사는 컷신으로: 말하는 쪽 초상(깜부기 = 등불 속 잿불, 도적 = 연습 직업 초상)
+const cutscene=makeCutscene({reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,heroPortrait:()=>portrait(state.role||'rogue','cut-portrait-img')});let talkShown=-1;
 const ico=(name,n=32)=>`<canvas data-icon="${name}" width="${n}" height="${n}" aria-hidden="true"></canvas>`;
 const renderer=makeRenderer($('#dungeon'),()=>state,$('#minimap'));
 const poolReveal=makePoolReveal($('#poolReveal'),{cue:drawCue,getSound:()=>sound,toggleSound,onClose:()=>{$('.pool-panel').classList.remove('revealing');void $('.pool-panel').offsetWidth;$('.pool-panel').classList.add('revealing');renderTutorial();}});
@@ -77,16 +80,19 @@ function renderInteraction(ra){
 function markTutorial(value){tutorialSeen=true;try{localStorage.setItem('ember-vault-tutorial-v1',value);}catch{}}
 function showTutorialIntro(){
  if(tutorial)return;
- openModal(modalShell('금고는 발소리를 기억한다','직접 해보며 배우기',`<div class="tutorial-intro"><img src="./assets/noise-seal-v6.png" alt="갈라진 소음의 봉인"><div><p>멸망한 왕국의 기억이 잠든 금고. 당신의 목표는 <b>유물 하나를 품고 입구로 살아 돌아오는 것</b>입니다.</p><p>매 턴 봉인 메달 5개가 열려 <b>공격력·이동력·기술·방어</b>가 모입니다. 그 힘으로 움직이되, 모든 행동은 소리를 냅니다. 소리가 쌓여 <b>경계 8</b>이 되면 용이 숨을 내쉽니다.</p><p><b>8단계 연습</b>은 당신의 첫 금고 털이, 그 밤의 회상입니다. 등불 속 불씨 <b>깜부기</b>가 그때처럼 옆에서 잔소리를 합니다. 지금 탐험은 그대로 남습니다.</p><label><input id="tutorialAudio" type="checkbox" checked> 효과음과 함께 연습</label></div></div><div class="modal-actions"><button class="subtle-button" data-act="tutorialSkip">바로 탐험하기</button><button class="large-button" data-act="tutorialStart">직접 배워보기 →</button></div>`),'tutorialIntro');
+ openModal(modalShell('금고는 발소리를 기억한다','직접 해보며 배우기',`<div class="tutorial-intro"><img src="./assets/noise-seal-v6.png" alt="갈라진 소음의 봉인"><div><p>멸망한 왕국의 기억이 잠든 금고. 당신의 목표는 <b>유물 하나를 품고 입구로 살아 돌아오는 것</b>입니다.</p><p>금고 맨 아래에는 유물을 깔고 잠든 용이 있습니다. 용이 <b>숨을 한 번 쉴 때마다(한 턴)</b> 금고의 봉인이 들썩이며, 봉인에 박힌 왕국 사람들의 힘이 <b>봉인 메달 5개</b>로 떨어집니다. 메달은 <b>공격력·이동력·기술·방어</b>가 되고, 다음 숨이 오면 쓰지 않은 힘은 금고가 도로 삼킵니다. 그 힘으로 움직이되, 모든 행동은 소리를 냅니다. 소리가 쌓여 <b>경계 8</b>이 되면 용이 깨어 그 숨을 당신에게 뱉습니다.</p><p><b>8단계 연습</b>은 당신의 첫 금고 털이, 그 밤의 회상입니다. 등불 속 불씨 <b>깜부기</b>가 그때처럼 옆에서 잔소리를 합니다. 지금 탐험은 그대로 남습니다.</p><label><input id="tutorialAudio" type="checkbox" checked> 효과음과 함께 연습</label></div></div><div class="modal-actions"><button class="subtle-button" data-act="tutorialSkip">바로 탐험하기</button><button class="large-button" data-act="tutorialStart">직접 배워보기 →</button></div>`),'tutorialIntro');
 }
 function startTutorial(){
  const withAudio=$('#tutorialAudio')?.checked;
  if(withAudio&&!sound)toggleSound();
  tutorial={saved:state,index:0};state=createTutorialRun();handPage=0;enemyPage=0;lureMode=false;travelUntil=0;renderer.reset();
- $('#modal').close();dialogMode='';document.body.classList.add('tutorial-mode');selectPanel('routes');render();poolReveal.start(state,{fast:false,holdNoise:true,story:talkHtml(TUTORIAL_REVEALS.first,'reveal-talk')});
+ $('#modal').close();dialogMode='';document.body.classList.add('tutorial-mode');talkShown=-1;
+ // 프롤로그: 왜 메달이 열리는가 → 첫 추출 → 1단계 대사
+ cutscene.play(TUTORIAL_PROLOGUE,()=>{if(tutorial)poolReveal.start(state,{fast:false,holdNoise:true});});
+ selectPanel('routes');render();
 }
 function exitTutorial(){
- if(!tutorial)return;const completed=tutorial.index>=TUTORIAL_STEPS.length;state=tutorial.saved;tutorial=null;
+ if(!tutorial)return;cutscene.clear();talkShown=-1;const completed=tutorial.index>=TUTORIAL_STEPS.length;state=tutorial.saved;tutorial=null;
  document.body.classList.remove('tutorial-mode');markTutorial(completed?'completed':'seen');renderer.reset();lureMode=false;handPage=0;enemyPage=0;travelUntil=0;
  $('#modal').close();dialogMode='';selectPanel('routes');render();save();if(completed)showBriefing();else toast('원래 탐험으로 돌아왔습니다.');
 }
@@ -99,8 +105,9 @@ function renderTutorial(){
  coach.hidden=!tutorial;if(!tutorial)return;
  const step=TUTORIAL_STEPS[tutorial.index];
  const dots=TUTORIAL_STEPS.map((_,i)=>`<i class="${i<tutorial.index?'done':i===tutorial.index?'now':''}"></i>`).join('');
- if(!step){coach.innerHTML=`<div class="coach-head"><span>연습 완료</span><span class="coach-dots" aria-hidden="true">${dots}</span></div><strong>이제 진짜 금고로 내려갑니다</strong>${talkHtml(TUTORIAL_DONE)}<p>실전 전에 알아둘 것을 한 장으로 정리했습니다.</p><button data-act="tutorialExit">실전 준비 →</button>`;return;}
- coach.innerHTML=`<div class="coach-head"><span>연습 ${tutorial.index+1} / ${TUTORIAL_STEPS.length}</span><span class="coach-dots" aria-hidden="true">${dots}</span></div><strong>${step.title}</strong>${talkHtml(step.talk)}<p>${step.text}</p><button class="tutorial-leave" data-act="tutorialExit" aria-label="연습 끝내고 원래 탐험으로">×</button>`;
+ if(talkShown!==tutorial.index){talkShown=tutorial.index;const lines=step?step.talk:TUTORIAL_DONE;setTimeout(()=>{if(tutorial)cutscene.play(lines);},0);}
+ if(!step){coach.innerHTML=`<div class="coach-head"><span>연습 완료</span><span class="coach-dots" aria-hidden="true">${dots}</span></div><strong>이제 진짜 금고로 내려갑니다</strong><p>실전 전에 알아둘 것을 한 장으로 정리했습니다.</p><button data-act="tutorialExit">실전 준비 →</button>`;return;}
+ coach.innerHTML=`<div class="coach-head"><span>연습 ${tutorial.index+1} / ${TUTORIAL_STEPS.length}</span><span class="coach-dots" aria-hidden="true">${dots}</span></div><strong>${step.title}</strong><p>${step.text}</p><button class="coach-replay" data-act="tutorialReplay" aria-label="대화 다시 보기">💬 대화</button><button class="tutorial-leave" data-act="tutorialExit" aria-label="연습 끝내고 원래 탐험으로">×</button>`;
  let target=step.target;
  if(tutorial.index===3)target=mapOpen?'#mapToggle':!lureMode?'#lureToggle':'.scene-exit[data-id="5"]';
  if(tutorial.index===4)target=state.mode!=='rush'?(modeOpen?'[data-act="mode"][data-id="rush"]':'#stanceToggle'):'.scene-exit[data-id="2"]';
@@ -255,7 +262,7 @@ function act(action,fromJudge=false){
   if(state.pending)pendingModal();
   else if(state.phase!=='playing'){showResult();beep(state.phase==='won'?'win':'bad');}
   else if(['reward','skipReward','purge','cancelPurge'].includes(action.type)){$('#modal').close();dialogMode='';}
-  if(action.type==='end'&&state.phase==='playing'&&!state.pending)poolReveal.start(state,{fast:tutorial?false:fastDraw,holdNoise:!!tutorial,beforeHp:beforeHP,story:tutorial?talkHtml(TUTORIAL_REVEALS.turn,'reveal-talk'):''});
+  if(action.type==='end'&&state.phase==='playing'&&!state.pending){const draw=()=>poolReveal.start(state,{fast:tutorial?false:fastDraw,holdNoise:!!tutorial,beforeHp:beforeHP});if(tutorial)cutscene.play(TUTORIAL_TURN,draw);else draw();}
   document.body.classList.remove('turn-impact');
  };
  if(fromJudge&&state.attack){actionBusy=true;document.body.classList.add('turn-impact');noiseMoment.spin(state.attack,finish);}
@@ -276,6 +283,7 @@ document.addEventListener('click',ev=>{
  if(a==='market')return showMarket();
  if(a==='tutorialIntro')return showTutorialIntro();
  if(a==='tutorialStart')return startTutorial();
+ if(a==='tutorialReplay'){const st=TUTORIAL_STEPS[tutorial?.index];if(st)cutscene.play(st.talk);return;}
  if(a==='tutorialExit')return exitTutorial();
  if(a==='tutorialSkip'){markTutorial('seen');closeModal();if(!loadedRun)poolReveal.start(state,{fast:fastDraw});loadedRun=true;return;}
  if(a==='sceneInteract'){const target=roomInteraction(state);if(!target.enabled){toast(target.reason||target.text,true);return;}return act({type:target.act});}

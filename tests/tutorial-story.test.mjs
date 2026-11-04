@@ -1,19 +1,24 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {TUTORIAL_STEPS,TUTORIAL_REVEALS,TUTORIAL_DONE,talkHtml,TUTOR_NAME} from '../dist/tutorial.js';
+import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,TUTORIAL_DONE,TUTOR_NAME} from '../dist/tutorial.js';
+import {makeQueue,typeDuration} from '../dist/cutscene.js';
 
-const chars=talk=>talk.reduce((n,[who,line])=>n+who.length+line.length+1,0);
-test('every practice step has a reason told as dialogue, plus the control text',()=>{
+const ok=talk=>Array.isArray(talk)&&talk.length&&talk.every(([who,line])=>who&&line&&!/연습|튜토리얼/.test(line));
+test('every practice step has a reason told as dialogue and a control line',()=>{
  assert.equal(TUTORIAL_STEPS.length,8);
  for(const s of TUTORIAL_STEPS){
-  assert.ok(s.title&&s.text&&Array.isArray(s.talk)&&s.talk.length,s.title);
-  assert.ok(s.talk.some(([who])=>who===TUTOR_NAME),`${TUTOR_NAME} speaks in every step: ${s.title}`);
-  assert.ok(chars(s.talk)<=100,`dialogue fits the coach on a 320px-high screen: ${s.title} (${chars(s.talk)})`);
-  for(const [,line] of s.talk)assert.ok(!/연습|튜토리얼/.test(line),`dialogue stays in the world: ${s.title}`);
+  assert.ok(s.title&&s.text&&ok(s.talk),s.title);
+  assert.ok(s.talk.some(([who])=>who===TUTOR_NAME),`${TUTOR_NAME} speaks: ${s.title}`);
+  for(const [,line] of s.talk)assert.ok(line.length<=70,`one cutscene line stays short: ${line}`);
  }
 });
-test('medal draws and the ending are voiced too, and render as speaker lines',()=>{
- for(const t of [TUTORIAL_REVEALS.first,TUTORIAL_REVEALS.turn,TUTORIAL_DONE])assert.ok(t.length&&chars(t)<=100);
- const html=talkHtml([[TUTOR_NAME,'a'],['도적','b']]);
- assert.match(html,/talk-line tutor"><b>깜부기<\/b> a/);assert.match(html,/talk-line hero"><b>도적<\/b> b/);
+test('the prologue explains why five medals open every turn, in the world',()=>{
+ assert.ok(ok(TUTORIAL_PROLOGUE)&&ok(TUTORIAL_TURN)&&ok(TUTORIAL_DONE));
+ const all=TUTORIAL_PROLOGUE.map(x=>x[1]).join(' ');
+ for(const word of ['용','숨','봉인','메달 다섯','공격','이동','기술','방어','삼켜'])assert.ok(all.includes(word),word);
+ assert.ok(TUTORIAL_TURN.map(x=>x[1]).join(' ').includes('메달'));
+});
+test('cutscenes play in the order they were queued; typing time grows with the line',()=>{
+ const q=makeQueue();q.push('a');q.push('b');assert.equal(q.next(),'a');assert.equal(q.next(),'b');assert.equal(q.next(),null);
+ assert.ok(typeDuration('가나다라')>typeDuration('가'));assert.ok(typeDuration('x'.repeat(70))<2500,'a full line types in under 2.5 s');
 });
