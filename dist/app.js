@@ -1,13 +1,13 @@
-import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,dragonRage} from './engine.js?v=20261104a';
+import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,dragonRage} from './engine.js?v=20261104b';
 import {paintIcons} from './art.js';
-import {makeRenderer} from './scene-v5.js?v=20261104a';
-import {makePoolReveal} from './pool-reveal.js?v=20261104a';
+import {makeRenderer} from './scene-v5.js?v=20261104b';
+import {makePoolReveal} from './pool-reveal.js?v=20261104b';
 import {pageOf,pager} from './pages.js';
 import {exitAnchor} from './scene-layout.js';
-import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261104a';
-import {makeNoiseMoment} from './noise-moment.js?v=20261104a';
-import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,TUTORIAL_DONE,createTutorialRun,tutorialAllows,tutorialAdvance} from './tutorial.js?v=20261104a';
-import {makeCutscene} from './cutscene.js?v=20261104a';
+import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261104b';
+import {makeNoiseMoment} from './noise-moment.js?v=20261104b';
+import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,TUTORIAL_DONE,createTutorialRun,tutorialAllows,tutorialAdvance} from './tutorial.js?v=20261104b';
+import {makeCutscene} from './cutscene.js?v=20261104b';
 const $=s=>document.querySelector(s),SAVE_KEY='ember-vault-save-v2',BEST_KEY='ember-vault-best-v1';
 let state,storageOK=true,best=0,sound=false,selectedRole='rogue',dialogMode='',lastFocus=null,toastTimer,audio,migrated=false,loadedRun=false,fastDraw=false;
 try{let saved=JSON.parse(localStorage.getItem(SAVE_KEY));if(!validSave(saved)){const prior=JSON.parse(localStorage.getItem('ember-vault-save-v1'));if(prior){saved=migrateSave(prior);migrated=!!saved;}}loadedRun=validSave(saved);state=loadedRun?saved:newRun();best=Number(localStorage.getItem(BEST_KEY))||0;sound=localStorage.getItem('ember-vault-sound')==='on';fastDraw=localStorage.getItem('ember-vault-fast-draw')==='on';}catch{state=newRun();storageOK=false;}
@@ -80,7 +80,7 @@ function renderInteraction(ra){
 function markTutorial(value){tutorialSeen=true;try{localStorage.setItem('ember-vault-tutorial-v1',value);}catch{}}
 function showTutorialIntro(){
  if(tutorial)return;
- openModal(modalShell('금고는 발소리를 기억한다','직접 해보며 배우기',`<div class="tutorial-intro"><img src="./assets/noise-seal-v6.png" alt="갈라진 소음의 봉인"><div><p>멸망한 왕국의 기억이 잠든 금고. 당신의 목표는 <b>유물 하나를 품고 입구로 살아 돌아오는 것</b>입니다.</p><p>금고 맨 아래에는 유물을 깔고 잠든 용이 있습니다. 용이 <b>숨을 한 번 쉴 때마다(한 턴)</b> 금고의 봉인이 들썩이며, 봉인에 박힌 왕국 사람들의 힘이 <b>봉인 메달 5개</b>로 떨어집니다. 메달은 <b>공격력·이동력·기술·방어</b>가 되고, 다음 숨이 오면 쓰지 않은 힘은 금고가 도로 삼킵니다. 그 힘으로 움직이되, 모든 행동은 소리를 냅니다. 소리가 쌓여 <b>경계 8</b>이 되면 용이 깨어 그 숨을 당신에게 뱉습니다.</p><p><b>8단계 연습</b>은 당신의 첫 금고 털이, 그 밤의 회상입니다. 등불 속 불씨 <b>깜부기</b>가 그때처럼 옆에서 잔소리를 합니다. 지금 탐험은 그대로 남습니다.</p><label><input id="tutorialAudio" type="checkbox" checked> 효과음과 함께 연습</label></div></div><div class="modal-actions"><button class="subtle-button" data-act="tutorialSkip">바로 탐험하기</button><button class="large-button" data-act="tutorialStart">직접 배워보기 →</button></div>`),'tutorialIntro');
+ openModal(modalShell('금고는 발소리를 기억한다','직접 해보며 배우기',`<div class="tutorial-intro"><img src="./assets/noise-seal-v6.png" alt="갈라진 소음의 봉인"><div><p>멸망한 왕국의 기억이 잠든 금고. 당신의 목표는 <b>유물 하나를 품고 입구로 살아 돌아오는 것</b>입니다.</p><p>무너진 왕국은 사람들의 기억까지 이 금고에 묻었습니다. 맨 아래에선 유물을 깔고 잠든 무언가가 느리게 숨을 쉽니다. 그 숨이 지나갈 때마다 금고가 조금씩 무언가를 흘립니다.</p><p><b>8단계 연습</b>은 당신의 첫 금고 털이, 그 밤의 회상입니다. 등불 속 불씨 <b>깜부기</b>가 그때처럼 옆에서 잔소리를 합니다. 지금 탐험은 그대로 남습니다.</p><label><input id="tutorialAudio" type="checkbox" checked> 효과음과 함께 연습</label></div></div><div class="modal-actions"><button class="subtle-button" data-act="tutorialSkip">바로 탐험하기</button><button class="large-button" data-act="tutorialStart">직접 배워보기 →</button></div>`),'tutorialIntro');
 }
 function startTutorial(){
  const withAudio=$('#tutorialAudio')?.checked;
@@ -113,6 +113,18 @@ function renderTutorial(){
  if(tutorial.index===4)target=state.mode!=='rush'?(modeOpen?'[data-act="mode"][data-id="rush"]':'#stanceToggle'):'.scene-exit[data-id="2"]';
  if(target)document.querySelectorAll(target).forEach(e=>e.classList.add('coach-target'));
 }
+// 연습 스포트라이트: 지금 눌러야 할 곳만 밝히고 나머지는 어둡게. 클릭은 막지 않는다(틀린 행동은 안내로 돌려보냄).
+const coachSpot=document.createElement('div');coachSpot.className='coach-spot';coachSpot.hidden=true;coachSpot.setAttribute('aria-hidden','true');document.body.appendChild(coachSpot);
+(function spotLoop(){
+ let show=false;
+ if(tutorial&&!document.querySelector('dialog[open]')){
+  let l=Infinity,t=Infinity,r=-Infinity,b=-Infinity;
+  for(const e of document.querySelectorAll('.coach-target')){const q=e.getBoundingClientRect();if(!q.width||!q.height)continue;l=Math.min(l,q.left);t=Math.min(t,q.top);r=Math.max(r,q.right);b=Math.max(b,q.bottom);}
+  if(r>l){show=true;const pad=6;Object.assign(coachSpot.style,{left:(l-pad)+'px',top:(t-pad)+'px',width:(r-l+pad*2)+'px',height:(b-t+pad*2)+'px'});}
+ }
+ coachSpot.hidden=!show;document.body.classList.toggle('coach-spotlit',show);
+ requestAnimationFrame(spotLoop);
+})();
 function advanceTutorial(action){if(!tutorial)return;const before=tutorial.index;tutorial.index=tutorialAdvance(tutorial.index,action);if(before===4&&tutorial.index===5){state.mode='walk';render();}renderTutorial();}
 function selectPanel(id){
  mapOpen=id==='sound';setStanceMenu(false);
