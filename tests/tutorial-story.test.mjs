@@ -15,13 +15,14 @@ test('every practice step has a reason told as dialogue and a control line',()=>
 test('the prologue shows why medals fall each breath without lecturing',()=>{
  assert.ok(ok(TUTORIAL_PROLOGUE)&&ok(TUTORIAL_TURN)&&ok(TUTORIAL_DONE));
  const pro=TUTORIAL_PROLOGUE.map(x=>x[1]).join(' '),turn=TUTORIAL_TURN.map(x=>x[1]).join(' ');
- for(const w of ['숨','메달','따뜻','한 번 더 숨'])assert.ok(pro.includes(w),w);
- assert.ok(/떨어진다/.test(turn)&&/재/.test(turn),'the next breath drops new medals and turns the unused to ash');
+ for(const w of ['종','메달','따뜻','다음 종'])assert.ok(pro.includes(w),w);
+ assert.ok(/종/.test(turn)&&/떨어진다/.test(turn)&&/재/.test(turn),'the next breath drops new medals and turns the unused to ash');
  // 설명조 금지: 자원 이름을 나열하거나 규칙을 숫자로 말하지 않는다
  for(const [,line] of [...TUTORIAL_PROLOGUE,...TUTORIAL_TURN]){
   const named=['공격','이동','기술','방어'].filter(w=>line.includes(w)).length;
   assert.ok(named<2,`no resource list in dialogue: ${line}`);
   assert.ok(!/[0-9]|다섯 개|한 턴|매 턴/.test(line),`no rule numbers in dialogue: ${line}`);
+  assert.ok(!/숨|용/.test(line),`no breath or dragon: the final boss is left open: ${line}`);
  }
 });
 test('cutscenes play in the order they were queued; typing time grows with the line',()=>{
