@@ -138,3 +138,38 @@ body.mode-open .tutorial-coach{visibility:hidden}
 .talk-line.tutor b{color:#ffb24a;text-shadow:0 0 8px #ff8a2a66}.talk-line.hero b{color:#86c6aa}
 .reveal-talk .talk-line{display:inline}
 @media(max-height:350px){.tutorial-coach .coach-talk .talk-line{font-size:10.8px;line-height:1.32}}
+/* ── 연습 대사 컷신 ── */
+dialog.cutscene#cutscene{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;color:#efe4c8;overflow:hidden;z-index:40}
+.cutscene::backdrop{background:#02050a99;backdrop-filter:blur(1px)}
+.cutscene .cut-bar{position:absolute;left:0;right:0;height:9vh;min-height:22px;background:#000;animation:cut-bar-in .32s cubic-bezier(.2,.9,.3,1) both}
+.cutscene .cut-bar.top{top:0;transform-origin:top}.cutscene .cut-bar.bottom{bottom:0;transform-origin:bottom}
+@keyframes cut-bar-in{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.cutscene .cut-panel{position:absolute;left:50%;bottom:calc(9vh + 14px);transform:translateX(-50%);width:min(760px,calc(100% - 28px));display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:end;animation:cut-panel-in .3s .08s ease-out both}
+@keyframes cut-panel-in{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}
+.cutscene .cut-portrait{position:relative;width:120px;height:150px;border:2px solid #d4b06b;background:radial-gradient(ellipse at 50% 70%,#3a1a0c,#0b0705 70%);box-shadow:0 0 0 3px #0008,0 8px 30px #000a;image-rendering:pixelated;overflow:hidden}
+.cutscene .cut-flame{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;display:none}
+.cutscene .cut-hero{position:absolute;inset:0}.cutscene .cut-hero .portrait{width:100%!important;height:100%!important;border:0;background-size:300% 200%}
+.cutscene[data-speaker=tutor] .cut-flame{display:block}.cutscene[data-speaker=tutor] .cut-hero{display:none}
+.cutscene[data-speaker=hero] .cut-portrait{border-color:#86c6aa;background:#0b1514}
+.cutscene .cut-body{position:relative;min-height:112px;padding:14px 18px 22px;background:linear-gradient(#0d1320f2,#070b13f5);border:1px solid #d4b06b99;box-shadow:inset 0 0 0 1px #000,0 10px 30px #000b}
+.cutscene .cut-name{display:inline-block;font-size:15px;letter-spacing:.06em;margin-bottom:5px;padding:1px 10px;border:1px solid currentColor;background:#0008}
+.cutscene[data-speaker=tutor] .cut-name{color:#ffb24a;text-shadow:0 0 10px #ff8a2a88}.cutscene[data-speaker=hero] .cut-name{color:#86c6aa}
+.cutscene .cut-line{margin:0;font-size:17px;line-height:1.6;min-height:3.2em;word-break:keep-all;overflow-wrap:anywhere}
+.cutscene .cut-more{position:absolute;right:14px;bottom:6px;font-size:12px;color:#d4b06b;animation:cut-more 0.9s ease-in-out infinite}
+@keyframes cut-more{50%{transform:translateY(3px);opacity:.5}}
+.cutscene .cut-skip{position:absolute;top:calc(9vh + 10px);right:14px;font-size:12px;padding:6px 12px;background:#0009;color:#cbbd9a;border:1px solid #d4b06b66;border-radius:3px;cursor:pointer}
+.tutorial-coach .coach-replay{position:absolute;right:34px;top:4px;font-size:11px;padding:2px 8px;background:#0006;color:#ffcf86;border:1px solid #d4b06b66;border-radius:3px;cursor:pointer}
+@media(orientation:portrait) and (max-width:559px){
+ .cutscene .cut-panel{grid-template-columns:1fr;gap:0;bottom:calc(9vh + 10px)}
+ .cutscene .cut-portrait{width:96px;height:120px;margin-left:6px;margin-bottom:-2px;z-index:1}
+ .cutscene .cut-line{font-size:16px}
+}
+@media(max-height:420px) and (orientation:landscape){
+ .cutscene .cut-bar{height:7vh}
+ .cutscene .cut-panel{bottom:calc(7vh + 8px);gap:12px}
+ .cutscene .cut-portrait{width:88px;height:110px}
+ .cutscene .cut-body{min-height:88px;padding:10px 14px 18px}
+ .cutscene .cut-line{font-size:14.5px;line-height:1.5}
+ .cutscene .cut-skip{top:calc(7vh + 6px)}
+}
+@media(prefers-reduced-motion:reduce){.cutscene .cut-bar,.cutscene .cut-panel,.cutscene .cut-more{animation:none}}
