@@ -1,13 +1,13 @@
-import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,breathPlan} from './engine.js?v=20261104g';
+import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,breathPlan} from './engine.js?v=20261104h';
 import {paintIcons} from './art.js';
-import {makeRenderer} from './scene-v5.js?v=20261104g';
-import {makePoolReveal} from './pool-reveal.js?v=20261104g';
+import {makeRenderer} from './scene-v5.js?v=20261104h';
+import {makePoolReveal} from './pool-reveal.js?v=20261104h';
 import {pageOf,pager} from './pages.js';
 import {exitAnchor} from './scene-layout.js';
-import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261104g';
-import {makeNoiseMoment} from './noise-moment.js?v=20261104g';
-import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,TUTORIAL_DONE,createTutorialRun,tutorialAllows,tutorialAdvance} from './tutorial.js?v=20261104g';
-import {makeCutscene} from './cutscene.js?v=20261104g';
+import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261104h';
+import {makeNoiseMoment} from './noise-moment.js?v=20261104h';
+import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,TUTORIAL_DONE,createTutorialRun,tutorialAllows,tutorialAdvance} from './tutorial.js?v=20261104h';
+import {makeCutscene} from './cutscene.js?v=20261104h';
 const $=s=>document.querySelector(s),SAVE_KEY='ember-vault-save-v2',BEST_KEY='ember-vault-best-v1';
 let state,storageOK=true,best=0,sound=false,selectedRole='rogue',dialogMode='',lastFocus=null,toastTimer,audio,migrated=false,loadedRun=false,fastDraw=false;
 try{let saved=JSON.parse(localStorage.getItem(SAVE_KEY));if(!validSave(saved)){const prior=JSON.parse(localStorage.getItem('ember-vault-save-v1'));if(prior){saved=migrateSave(prior);migrated=!!saved;}}loadedRun=validSave(saved);state=loadedRun?saved:newRun();best=Number(localStorage.getItem(BEST_KEY))||0;sound=localStorage.getItem('ember-vault-sound')==='on';fastDraw=localStorage.getItem('ember-vault-fast-draw')==='on';}catch{state=newRun();storageOK=false;}
@@ -80,7 +80,7 @@ function renderInteraction(ra){
 function markTutorial(value){tutorialSeen=true;try{localStorage.setItem('ember-vault-tutorial-v1',value);}catch{}}
 function showTutorialIntro(){
  if(tutorial)return;
- openModal(modalShell('금고는 발소리를 기억한다','직접 해보며 배우기',`<div class="tutorial-intro"><img src="./assets/noise-seal-v6.png" alt="갈라진 소음의 봉인"><div><p>멸망한 왕국의 기억이 잠든 금고. 당신의 목표는 <b>유물 하나를 품고 입구로 살아 돌아오는 것</b>입니다.</p><p>무너진 왕국은 사람들의 기억까지 이 금고에 묻었습니다. 금고는 발소리를 기억하고, 맨 아래에는 그 메아리를 따라 올라오는 무언가가 유물을 깔고 잠들어 있습니다.</p><p><b>8단계 연습</b>은 당신의 첫 금고 털이, 그 밤의 회상입니다. 등불 속 불씨 <b>깜부기</b>가 그때처럼 옆에서 잔소리를 합니다. 지금 탐험은 그대로 남습니다.</p><label><input id="tutorialAudio" type="checkbox" checked> 효과음과 함께 연습</label></div></div><div class="modal-actions"><button class="subtle-button" data-act="tutorialSkip">바로 탐험하기</button><button class="large-button" data-act="tutorialStart">직접 배워보기 →</button></div>`),'tutorialIntro');
+ openModal(modalShell('금고는 발소리를 기억한다','직접 해보며 배우기',`<div class="tutorial-intro"><img src="./assets/noise-seal-v6.png" alt="갈라진 소음의 봉인"><div><p>멸망한 왕국의 기억이 잠든 금고. 당신의 목표는 <b>유물 하나를 품고 입구로 살아 돌아오는 것</b>입니다.</p><p>무너진 왕국은 사람들의 기억까지 이 금고에 묻었습니다. 금고는 발소리를 기억하고, 맨 아래에는 그 메아리를 따라 올라오는 무언가가 유물을 깔고 잠들어 있습니다.</p><p><b>10단계 연습</b>은 당신의 첫 금고 털이, 그 밤의 회상입니다. 등불 속 불씨 <b>깜부기</b>가 그때처럼 옆에서 잔소리를 합니다. 지금 탐험은 그대로 남습니다.</p><label><input id="tutorialAudio" type="checkbox" checked> 효과음과 함께 연습</label></div></div><div class="modal-actions"><button class="subtle-button" data-act="tutorialSkip">바로 탐험하기</button><button class="large-button" data-act="tutorialStart">직접 배워보기 →</button></div>`),'tutorialIntro');
 }
 function startTutorial(){
  const withAudio=$('#tutorialAudio')?.checked;
@@ -274,6 +274,7 @@ function act(action,fromJudge=false){
   if(state.pending)pendingModal();
   else if(state.phase!=='playing'){showResult();beep(state.phase==='won'?'win':'bad');}
   else if(['reward','skipReward','purge','cancelPurge'].includes(action.type)){$('#modal').close();dialogMode='';}
+  else if(tutorial&&action.type==='buy'&&dialogMode){$('#modal').close();dialogMode='';}
   if(action.type==='end'&&state.phase==='playing'&&!state.pending){const draw=()=>poolReveal.start(state,{fast:tutorial?false:fastDraw,holdNoise:!!tutorial,beforeHp:beforeHP});if(tutorial)cutscene.play(TUTORIAL_TURN,draw);else draw();}
   document.body.classList.remove('turn-impact');
  };

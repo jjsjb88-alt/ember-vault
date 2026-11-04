@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {apply,newRun,emitNoise} from '../dist/engine.js';
+import {apply,newRun,emitNoise,breathPlan,CARDS} from '../dist/engine.js';
 import {roomInteraction,soundWavePlan,turnImpact,tensionNeeded} from '../dist/encounter.js';
 import {createTutorialRun,tutorialAdvance,tutorialAllows,TUTORIAL_STEPS} from '../dist/tutorial.js';
 import {buildRevealPlan,noiseDrawState} from '../dist/pool-reveal.js';
@@ -12,14 +12,17 @@ test('the complete tutorial reaches dragon breath, a real victory reward, and a 
  perform({type:'interact'});assert.equal(s.noise,4);assert.ok(s.gold>=5);
  perform({type:'panel',id:'sound'});perform({type:'lure',id:5});assert.equal(s.noise,7);
  perform({type:'mode',id:'rush'});assert.equal(step,4);perform({type:'move',id:2});assert.equal(s.noise,10);
- const before=JSON.stringify(s),impact=turnImpact(s);assert.equal(JSON.stringify(s),before);assert.equal(impact.raw,3);assert.equal(impact.enemyTaken,1);assert.equal(impact.taken,3);
- perform({type:'end'});assert.equal(s.hp,18);assert.equal(s.resource.sword,2);
+ const plan=breathPlan(s);assert.equal(plan.start,1,'the breath starts where the chest creaked');assert.ok(plan.hit);assert.equal(plan.damage,3);
+ perform({type:'end'});assert.equal(s.attack.hit,true);assert.equal(s.hp,18);assert.equal(s.resource.sword,2);
  perform({type:'attack'});assert.equal(s.rooms[2].enemy.hp,0);assert.equal(s.pending.type,'reward');
- perform({type:'reward',id:s.pending.options[0]});assert.equal(step,TUTORIAL_STEPS.length);assert.equal(s.pending,null);assert.equal(s.phase,'playing');
+ perform({type:'reward',id:s.pending.options[0]});assert.equal(s.pending,null);
+ const i=s.market.findIndex(id=>CARDS[id].cost<=s.resource.skill);assert.ok(i>=0,'something is affordable');perform({type:'buy',index:i});
+ assert.ok(s.echo[2]>0,'the fight left an echo here');const n=s.noise;perform({type:'hide'});assert.equal(s.noise,Math.max(0,n-2));
+ assert.equal(step,TUTORIAL_STEPS.length);assert.equal(s.phase,'playing');
 });
 
 test('the dragon forecast accounts for armor spent on the enemy first and stops after a lethal enemy hit',()=>{
- const s=createTutorialRun();s.pos=2;s.noise=8;s.resource.block=3;
+ const s=createTutorialRun();s.echo=null;s.pos=2;s.noise=8;s.resource.block=3;
  let impact=turnImpact(s);assert.equal(impact.enemyTaken,0);assert.equal(impact.blocked,2);assert.equal(impact.taken,1);
  s.hp=1;s.resource.block=0;impact=turnImpact(s);assert.equal(impact.enemyTaken,1);assert.equal(impact.raw,0);
  s.hp=22;s.noise=7;assert.equal(turnImpact(s).raw,0);
