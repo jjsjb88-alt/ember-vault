@@ -1,4 +1,4 @@
-import {CARDS,neighbours,moveCost} from './engine.js?v=20261104g';
+import {CARDS,neighbours,moveCost} from './engine.js?v=20261104h';
 import {paintIcons} from './art.js';
 
 const KEYS=['sword','move','skill','block','quiet','rattle'];
