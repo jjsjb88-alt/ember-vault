@@ -1,13 +1,13 @@
-import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,dragonRage} from './engine.js?v=20261104c';
+import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,dragonRage} from './engine.js?v=20261104d';
 import {paintIcons} from './art.js';
-import {makeRenderer} from './scene-v5.js?v=20261104c';
-import {makePoolReveal} from './pool-reveal.js?v=20261104c';
+import {makeRenderer} from './scene-v5.js?v=20261104d';
+import {makePoolReveal} from './pool-reveal.js?v=20261104d';
 import {pageOf,pager} from './pages.js';
 import {exitAnchor} from './scene-layout.js';
-import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261104c';
-import {makeNoiseMoment} from './noise-moment.js?v=20261104c';
-import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,TUTORIAL_DONE,createTutorialRun,tutorialAllows,tutorialAdvance} from './tutorial.js?v=20261104c';
-import {makeCutscene} from './cutscene.js?v=20261104c';
+import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261104d';
+import {makeNoiseMoment} from './noise-moment.js?v=20261104d';
+import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,TUTORIAL_DONE,createTutorialRun,tutorialAllows,tutorialAdvance} from './tutorial.js?v=20261104d';
+import {makeCutscene} from './cutscene.js?v=20261104d';
 const $=s=>document.querySelector(s),SAVE_KEY='ember-vault-save-v2',BEST_KEY='ember-vault-best-v1';
 let state,storageOK=true,best=0,sound=false,selectedRole='rogue',dialogMode='',lastFocus=null,toastTimer,audio,migrated=false,loadedRun=false,fastDraw=false;
 try{let saved=JSON.parse(localStorage.getItem(SAVE_KEY));if(!validSave(saved)){const prior=JSON.parse(localStorage.getItem('ember-vault-save-v1'));if(prior){saved=migrateSave(prior);migrated=!!saved;}}loadedRun=validSave(saved);state=loadedRun?saved:newRun();best=Number(localStorage.getItem(BEST_KEY))||0;sound=localStorage.getItem('ember-vault-sound')==='on';fastDraw=localStorage.getItem('ember-vault-fast-draw')==='on';}catch{state=newRun();storageOK=false;}

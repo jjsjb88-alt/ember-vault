@@ -15,7 +15,7 @@ test('every practice step has a reason told as dialogue and a control line',()=>
 test('the prologue shows why medals fall each breath without lecturing',()=>{
  assert.ok(ok(TUTORIAL_PROLOGUE)&&ok(TUTORIAL_TURN)&&ok(TUTORIAL_DONE));
  const pro=TUTORIAL_PROLOGUE.map(x=>x[1]).join(' '),turn=TUTORIAL_TURN.map(x=>x[1]).join(' ');
- for(const w of ['숨','메달','따뜻','다음 숨'])assert.ok(pro.includes(w),w);
+ for(const w of ['숨','메달','따뜻','한 번 더 숨'])assert.ok(pro.includes(w),w);
  assert.ok(/떨어진다/.test(turn)&&/재/.test(turn),'the next breath drops new medals and turns the unused to ash');
  // 설명조 금지: 자원 이름을 나열하거나 규칙을 숫자로 말하지 않는다
  for(const [,line] of [...TUTORIAL_PROLOGUE,...TUTORIAL_TURN]){
