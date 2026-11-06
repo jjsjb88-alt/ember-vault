@@ -1,6 +1,6 @@
-import {CARDS} from './engine.js?v=20261106f';
-import {TOKEN_IDS,PROP_IDS,tokenMarkup,gradeLabel,itemMarkup,paintTokens,tokenInfo} from './token-art.js?v=20261106f';
-import {memoryLore} from './merchant-story.js?v=20261106f';
+import {CARDS} from './engine.js?v=20261107a';
+import {TOKEN_IDS,PROP_IDS,tokenMarkup,gradeLabel,itemMarkup,paintTokens,tokenInfo} from './token-art.js?v=20261107a';
+import {memoryLore} from './merchant-story.js?v=20261107a';
 const heroes=[['rogue','그림자 도적','발소리를 숨기고, 기억을 손안에 훔친다.'],['knight','잿빛 기사','낡은 맹세를 방패에 새긴 귀환의 수호자.'],['mage','불씨 마법사','금지된 서고에서 불씨가 된 기억을 읽는다.']];
 document.querySelector('#heroes').innerHTML=heroes.map(([id,name,lore])=>`<article class="hero"><img src="./assets/v95/heroes/${id}.webp" alt="${name}"><h3>${name}</h3><p>${lore}</p></article>`).join('');
 const names=['달의 눈물','잊힌 왕관','잿불의 심장','용의 기억','보급 상자','작은 모닥불','기억의 제단','귀환 윈치','귀환 열쇠','소음의 봉인','기억 등불','오래된 금화'];

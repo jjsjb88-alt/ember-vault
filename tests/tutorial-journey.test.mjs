@@ -79,7 +79,7 @@ function escape({route='quiet',chest=false,reward=0,mode='walk',extraTurns=0,pre
   if(route==='quiet'&&prepare&&id===7&&p.s.resource.move===0)p.perform({type:'end'});
   if(rest&&id===3&&p.can({type:'interact'}))p.perform({type:'interact'});
  }
- clearEnemy(p);assert.equal(p.key,'escape');assert.equal(p.s.phase,'playing');assert.equal(tutorialTargets(p.index,p.s),'#sceneTarget');
+ clearEnemy(p);assert.equal(p.key,'escape');assert.equal(p.s.phase,'playing');assert.equal(tutorialTargets(p.index,p.s),'');assert.equal(tutorialTargets(p.index,p.s,{returnHelp:true}),'#sceneTarget');
  p.perform({type:'interact'});assert.equal(p.index,TUTORIAL_STEPS.length);assert.equal(p.s.phase,'won');assert.ok(p.s.hp>0);assert.ok(p.s.countdown>0);
  return {p,before};
 }
@@ -99,7 +99,8 @@ test('the purchased attack is physically drawn, automatically adds power, and de
 
 test('the return forecast supports a damage-free prepared detour and a shorter fought route with real costs',()=>{
  const p=recover({reward:'skip'});assert.ok(breathPlan(p.s).hit);assert.equal(breathPlan(p.s).damage,4);
- assert.match(tutorialHint(p.index,p.s),/4칸.*6칸/);
+ assert.doesNotMatch(tutorialHint(p.index,p.s),/4칸|6칸|서고→|숨죽이기.*걷기/);
+ assert.match(tutorialHint(p.index,p.s,{returnHelp:true}),/4칸.*6칸/);
  p.perform({type:'hide'});p.move(11);p.move(7);assert.equal(p.s.echo[7],0);assert.equal(breathPlan(p.s).hit,false);
  p.perform({type:'end'});assert.equal(p.s.attack.hit,false);assert.equal(p.s.hp,22);
  const quiet=escape({route:'quiet',reward:'skip'}),short=escape({route:'short',reward:'skip'});
@@ -161,4 +162,42 @@ test('sound and forecast remain observable until explicit confirmation, and stal
   assert.equal(tutorialAdvance(p.index,confirm,p.s),p.index,'double activation must advance exactly once');
   assert.equal(JSON.stringify(p.s),before,'confirmation changes lesson progress, not the expedition');
  }
+});
+
+test('the independent return states the goal without selecting a path, while help remains available',()=>{
+ const p=recover({reward:'skip'}),before=JSON.stringify(p.s);
+ assert.equal(tutorialTargets(p.index,p.s),'');
+ assert.match(tutorialHint(p.index,p.s),/첫 불씨.*입구.*탈출.*14턴.*지도.*도움 보기/);
+ assert.doesNotMatch(tutorialHint(p.index,p.s),/4칸|6칸|서고→|숨죽이기.*걷기/);
+ assert.match(tutorialTargets(p.index,p.s,{returnHelp:true}),/data-id="6".*data-id="11"/);
+ assert.match(tutorialHint(p.index,p.s,{returnHelp:true}),/4칸.*6칸/);
+ assert.equal(JSON.stringify(p.s),before,'asking for goal or guidance cannot alter the expedition');
+ p.move(6);
+ assert.equal(tutorialTargets(p.index,p.s),'','combat does not silently restore the spotlight');
+ assert.match(tutorialHint(p.index,p.s),/공격|후퇴/,'the actual combat constraint remains explained');
+ assert.equal(tutorialTargets(p.index,p.s,{returnHelp:true}),'#endTurn');
+});
+
+test('a learned lure can be used again during return with real sound, pursuit and escape costs',()=>{
+ const p=recover({reward:'skip'}),skill=p.s.resource.skill;
+ const invalid={type:'lure',id:0};assert.equal(tutorialAllows(p.index,invalid,p.s),true);
+ assert.equal(apply(structuredClone(p.s),invalid).ok,false,'the engine still rejects a non-neighbour target');
+ p.perform({type:'lure',id:11});assert.equal(p.key,'escape');assert.equal(p.s.resource.skill,skill-1);
+ assert.equal(apply(structuredClone(p.s),{type:'lure',id:11}).ok,false,'the engine retains its once-per-turn lure limit');
+ p.perform({type:'end'});
+ assert.equal(p.s.rooms[6].enemy,null);assert.equal(p.s.rooms[7].enemy.home,6);
+ assert.equal(p.s.hp,18,'the new diversion still pays its actual breath damage');
+ for(const id of [6,2,1,0])p.move(id);
+ p.perform({type:'interact'});assert.equal(p.s.phase,'won');assert.equal(p.index,TUTORIAL_STEPS.length);
+ assert.equal(p.s.kills,1);assert.equal(p.s.countdown,13);
+});
+
+test('the optional chest states its real reward range and current sound cost before the choice',()=>{
+ const p=recruit();p.move(11);assert.equal(p.key,'guardian');
+ const before=JSON.stringify(p.s),normal=tutorialHint(p.index,p.s);
+ assert.match(normal,/금화 5~7·소리 3/);assert.match(normal,/닫아 두면 추가 소리가 남지 않습니다/);assert.ok(normal.length<100);
+ assert.equal(JSON.stringify(p.s),before);
+ p.perform({type:'hide'});assert.match(tutorialHint(p.index,p.s),/소리 1/);
+ p.perform({type:'interact'});assert.equal(p.s.lastSound.strength,1);assert.equal(p.key,'guardian');
+ assert.match(tutorialHint(p.index,p.s),/이미 열었습니다/);
 });

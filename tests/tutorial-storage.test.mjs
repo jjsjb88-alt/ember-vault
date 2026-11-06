@@ -105,7 +105,7 @@ test('bad phase/index, nested engine data, journal references and checkpoints ca
   p=>{p.journal.combats[0].bought=['unknown'];},p=>{p.journal.relicTurn=null;},
   p=>{p.journal.escaped={turn:3,hp:22,gold:10,score:90};},p=>{p.checkpoint=null;},
   p=>{p.checkpoint='{';},p=>{const cp=JSON.parse(p.checkpoint);cp.index=0;p.checkpoint=JSON.stringify(cp);},
-  p=>{p.paused='yes';},p=>{p.mapOpen=1;}
+  p=>{p.paused='yes';},p=>{p.mapOpen=1;},p=>{p.returnHelp='yes';},p=>{p.returnHelp=null;},p=>{p.returnHelpUsed='yes';},p=>{p.returnHelpUsed=null;}
  ];
  for(const mutate of cases){
   const candidate=structuredClone(base);mutate(candidate);assert.equal(validTutorialProgress(candidate),false);
@@ -138,4 +138,38 @@ test('storage denial and quota failures return status instead of interrupting th
  assert.deepEqual(saveTutorialProgress(undefined,run.p),{ok:false,reason:'unavailable'});
  const corruptButCannotRemove={getItem(){return '{';},removeItem(){throw Error('blocked');}};
  assert.deepEqual(loadTutorialProgress(corruptButCannotRemove),{status:'invalid',progress:null});
+});
+
+test('return guidance distinguishes legacy absence from new independent or requested-help saves',()=>{
+ const run=practice();run.recover();assert.equal(run.key(),'escape');
+ const legacy=loadTutorialProgress(run.storage);assert.equal(legacy.status,'loaded');
+ assert.equal(Object.hasOwn(legacy.progress,'returnHelp'),false,'an old guided return must not become an independent attempt');
+ assert.equal(Object.hasOwn(legacy.progress,'returnHelpUsed'),false);
+ const state=JSON.stringify(run.p.state),main=run.storage.getItem('ember-vault-save-v2');
+ for(const [returnHelp,returnHelpUsed]of [[false,false],[true,true],[false,true]]){
+  run.p.returnHelp=returnHelp;run.p.returnHelpUsed=returnHelpUsed;run.persist();const loaded=loadTutorialProgress(run.storage);
+  assert.equal(Object.hasOwn(loaded.progress,'returnHelp'),true);assert.equal(loaded.progress.returnHelp,returnHelp);
+  assert.equal(loaded.progress.returnHelpUsed,returnHelpUsed,'hiding help must not erase the fact that it was requested');
+  assert.equal(JSON.stringify(loaded.progress.state),state,'guidance changes no resource or RNG state');
+ }
+ for(const invalid of [undefined,null,0,1,'false',{}]){
+  const p={...run.p,returnHelp:invalid},before=run.storage.getItem(TUTORIAL_SAVE_KEY);
+  assert.equal(validTutorialProgress(p),false);assert.deepEqual(saveTutorialProgress(run.storage,p),{ok:false,reason:'invalid'});
+  assert.equal(run.storage.getItem(TUTORIAL_SAVE_KEY),before);
+  const invalidUsed={...run.p,returnHelpUsed:invalid};assert.equal(validTutorialProgress(invalidUsed),false);
+  assert.deepEqual(saveTutorialProgress(run.storage,invalidUsed),{ok:false,reason:'invalid'});
+  assert.equal(run.storage.getItem(TUTORIAL_SAVE_KEY),before);
+ }
+ delete run.p.returnHelp;delete run.p.returnHelpUsed;run.persist();assert.equal(Object.hasOwn(loadTutorialProgress(run.storage).progress,'returnHelp'),false);assert.equal(Object.hasOwn(loadTutorialProgress(run.storage).progress,'returnHelpUsed'),false);
+ assert.equal(run.storage.getItem('ember-vault-save-v2'),main);assert.equal(run.storage.getItem('ember-vault-best-v1'),'123');
+});
+
+test('a return diversion and its enemy movement resume without losing the selected help mode',()=>{
+ const run=practice();run.recover();run.p.returnHelp=false;run.persist();
+ run.step({type:'lure',id:11});assert.equal(loadTutorialProgress(run.storage).progress.returnHelp,false);
+ run.step({type:'end'});assert.equal(run.p.state.rooms[6].enemy,null);assert.equal(run.p.state.rooms[7].enemy.home,6);
+ assert.equal(run.p.state.hp,21,'the chosen reward blocks part of the actual breath');assert.equal(run.key(),'escape');
+ for(const id of [6,2,1,0])run.move(id);
+ run.step({type:'interact'});assert.equal(run.p.state.phase,'won');assert.equal(run.p.returnHelp,false);
+ assert.equal(loadTutorialProgress(run.storage).progress.state.score,run.p.state.score);
 });

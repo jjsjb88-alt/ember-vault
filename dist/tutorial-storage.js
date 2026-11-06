@@ -1,5 +1,5 @@
-import {CARDS,MODES,TERRAINS,validSave} from './engine.js?v=20261106f';
-import {TUTORIAL_STEPS} from './tutorial.js?v=20261106f';
+import {CARDS,MODES,TERRAINS,validSave} from './engine.js?v=20261107a';
+import {TUTORIAL_STEPS} from './tutorial.js?v=20261107a';
 
 // Separate from the real expedition and its best score. Bump the scenario when
 // a lesson change makes an old position/resource/checkpoint unsafe to resume.
@@ -101,14 +101,16 @@ function checkpointValue(checkpoint){
 /** Validate the committed state AND its already advanced lesson index. */
 export function validTutorialProgress(p){
  try{
-  if(!lessonState(p)||p.feedback!==undefined&&!text(p.feedback,500)||p.mapOpen!==undefined&&!bool(p.mapOpen)||p.paused!==undefined&&!bool(p.paused))return false;
+  if(!lessonState(p)||p.feedback!==undefined&&!text(p.feedback,500)||p.mapOpen!==undefined&&!bool(p.mapOpen)||p.paused!==undefined&&!bool(p.paused)||Object.hasOwn(p,'returnHelp')&&!bool(p.returnHelp)||Object.hasOwn(p,'returnHelpUsed')&&!bool(p.returnHelpUsed))return false;
   const cp=checkpointValue(p.checkpoint),firstCheckpoint=TUTORIAL_STEPS.findIndex(step=>step.checkpoint);
   if(!cp)return firstCheckpoint<0||p.index<firstCheckpoint;
   return lessonState(cp)&&TUTORIAL_STEPS[cp.index]?.checkpoint===true&&cp.state.phase==='playing'&&cp.index<=p.index&&cp.state.turn<=p.state.turn&&cp.journal.actionCount<=p.journal.actionCount;
  }catch{return false;}
 }
 function snapshot(p){
- return {state:p.state,index:p.index,journal:p.journal,checkpoint:p.checkpoint==null?null:typeof p.checkpoint==='string'?p.checkpoint:JSON.stringify(p.checkpoint),feedback:p.feedback||'',mapOpen:p.mapOpen??false,paused:p.paused??false};
+ // An absent flag identifies an older guided return. Do not silently turn it into
+ // a new independent attempt when loading a previously started expedition.
+ return {state:p.state,index:p.index,journal:p.journal,checkpoint:p.checkpoint==null?null:typeof p.checkpoint==='string'?p.checkpoint:JSON.stringify(p.checkpoint),feedback:p.feedback||'',mapOpen:p.mapOpen??false,paused:p.paused??false,...(Object.hasOwn(p,'returnHelp')?{returnHelp:p.returnHelp}:{}),...(Object.hasOwn(p,'returnHelpUsed')?{returnHelpUsed:p.returnHelpUsed}:{})};
 }
 export function clearTutorialProgress(storage){
  try{storage.removeItem(TUTORIAL_SAVE_KEY);return true;}catch{return false;}

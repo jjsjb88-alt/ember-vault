@@ -1,5 +1,5 @@
-import {CARDS} from './engine.js?v=20261106f';
-import {makeFxLayer} from './fx-layer.js?v=20261106f';
+import {CARDS} from './engine.js?v=20261107a';
+import {makeFxLayer} from './fx-layer.js?v=20261107a';
 import * as collectBurst from './vendor/pixelfx/fx/pickups/collect-burst.js';
 import * as runeCircle from './vendor/pixelfx/fx/arcane/rune-circle.js';
 

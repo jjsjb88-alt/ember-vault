@@ -1,4 +1,4 @@
-import {newRun,moveCost,resolvePool,breathPlan,dragonDue} from './engine.js?v=20261106f';
+import {newRun,moveCost,resolvePool,breathPlan,dragonDue,previewNoise} from './engine.js?v=20261107a';
 
 // 연습은 그림자 도적의 첫 금고 털이. 등불 속 불씨 '깜부기'가 옆에서 떠든다.
 // talk = 이 행동을 하는 이유(대사), text = 무엇을 누르고 무엇이 일어나는가. 한 단계의 사고가 다음 단계의 이유가 된다.
@@ -7,7 +7,7 @@ export const TUTORIAL_STEPS=[
  {key:'warehouse',chapter:'1 · 소리로 길 열기',title:'창고부터 털자',talk:[['깜부기','주머니가 비었네. 저 창고부터 보자. 돌아올 입구는 여기야.']],text:'금빛 「망각의 창고」를 누르세요. 이 회상에서는 기억 메달 5개로 시작합니다.',action:'move',id:1,target:'.scene-exit[data-id="1"]'},
  {key:'chest',title:'상자를 여세요',talk:[['깜부기','금화다! 경첩이 녹슬었으니까 천천히…'],['도적','이미 삐걱했어.']],text:'상자 위 「열기」를 누르세요. 금화와 함께 경계가 오르고 이 방에 메아리가 남습니다.',action:'interact',target:'#sceneTarget'},
  {key:'sound',observe:true,title:'소리가 남은 자리를 보세요',talk:[['깜부기','금화는 네 주머니에, 소리는 금고에 남았어. 어디까지 퍼졌는지 보자.']],text:'미니맵을 열어 주황빛과 방 옆 메아리 숫자를 보세요. 아직 멀리 있는 파수병은 듣지 못했습니다. 다 살펴본 뒤 「지도 확인 · 계속」을 누르세요.',action:'panel',id:'sound',target:'#mapToggle'},
- {key:'hush',title:'경계부터 낮추세요',talk:[['깜부기','더 소란을 피우기 전에 잠깐 가만히 있어. 다음엔 우리가 듣게 만들 차례야.']],text:'지도를 닫고 「숨죽이기」를 누르세요. 이동 1로 경계 −2, 은신 +2. 메아리 자체가 지워지지는 않습니다.',action:'hide',target:'#hideAction'},
+ {key:'hush',title:'경계부터 낮추세요',talk:[['깜부기','더 소란을 피우기 전에 잠깐 가만히 있어. 다음엔 우리가 듣게 만들 차례야.']],text:'「숨죽이기」를 누르세요. 이동 1로 경계 −2, 은신 +2. 메아리 자체가 지워지지는 않습니다.',action:'hide',target:'#hideAction'},
  {key:'lure',title:'돌멩이로 길을 여세요',talk:[['깜부기','파편 회랑의 파수병을 옆 무기고로 부르자. 그 사이를 지나가는 거야.']],text:'「유인」 → 「부서진 무기고」. 기술 1로 돌멩이를 던집니다. 적은 즉시 움직이지 않고 턴 끝에 소리를 따라갑니다.',action:'lure',id:5},
  {key:'wait-lure',title:'움직일 때까지 기다리세요',talk:[['도적','아직 거기 서 있는데?'],['깜부기','서두르지 마. 우리가 조용히 기다려야 저쪽 소리를 따라가지.']],text:'「다음 턴」을 누르세요. 파수병이 파편 회랑에서 무기고로 이동합니다. 쓰지 않은 힘은 사라지고 새 메달이 열립니다.',action:'end',target:'#endTurn'},
  {key:'pass-junction',title:'정말 길이 열렸어요',autoTalk:true,titleHint:'유인 성공',talk:[['깜부기','갔다! 지도에서 파편 회랑이 빈 것 보이지? 이제 갈림목으로 가자.']],text:'「돌의 갈림목」으로 이동하세요. 유인한 적이 떠난 동안 다음 통로로 접근합니다.',action:'move',id:2,mode:'walk',target:'.scene-exit[data-id="2"]'},
@@ -88,6 +88,7 @@ export function tutorialAllows(index,action,state){
   if(['mode','hide','end'].includes(action.type))return true;
   if(step.key==='guardian'&&action.type==='interact')return state?.pos===11;
   if(step.key==='escape'){
+   if(action.type==='lure')return true;
    if(action.type==='move')return RETURN_ROOMS.includes(action.id);
    if(action.type==='interact')return [0,3,11].includes(state?.pos);
    if(['attack','reward','skipReward'].includes(action.type))return true;
@@ -111,8 +112,9 @@ export function tutorialChapter(index){
  for(const step of TUTORIAL_STEPS.slice(0,index+1))if(step.chapter)chapter=step.chapter;
  return chapter;
 }
-export function tutorialTargets(index,s,{mapOpen=false}={}){
+export function tutorialTargets(index,s,{mapOpen=false,returnHelp=false}={}){
  const step=TUTORIAL_STEPS[index];if(!step)return '';
+ if(step.key==='escape'&&!returnHelp)return '';
  if(step.observe&&mapOpen)return `[data-act="tutorialContinue"][data-id="${step.key}"]`;
  const targets=ids=>ids.some(id=>s.resource.move>=moveCost(s,id))?ids.map(id=>`.scene-exit[data-id="${id}"]`).join(','):'#endTurn';
  if(step.free&&s.pending)return '.ability-choice';
@@ -138,12 +140,16 @@ export function tutorialActionReason(index,action,state){
  if(step.action==='buy')return '이번에는 불씨 화살을 영입해 다음 추출에서 공격이 늘어나는지 확인하세요.';
  return tutorialHint(index,state);
 }
-export function tutorialHint(index,s){
+export function tutorialHint(index,s,{returnHelp=false}={}){
  const step=TUTORIAL_STEPS[index];if(!step)return '';
  if(step.free&&s.pending)return '다가온 적의 보상을 고르거나 건너뛴 뒤 원래 목표를 계속하세요.';
  if(step.free&&step.key!=='escape'&&s.rooms[s.pos].enemy?.hp>0){
   const enemy=s.rooms[s.pos].enemy;
   return `현재 공격 ${s.resource.sword} · ${enemy.name} 체력 ${enemy.hp}. ${s.resource.sword>0?'공격해서 길을 여세요.':'다음 턴에 새 메달을 받을 수 있지만 적의 반격도 진행됩니다.'} 불씨 화살은 추출될 때 공격 +3을 더합니다.`;
+ }
+ if(step.key==='guardian'&&s.pos===11){
+  if(s.rooms[11].used)return '상자는 이미 열었습니다. 「회상의 봉인실」로 이동해 수호자를 만나세요.';
+  return `상자를 열면 금화 5~7·소리 ${previewNoise(s,3)}. 닫아 두면 추가 소리가 남지 않습니다. 선택한 뒤 「회상의 봉인실」로 이동하세요.`;
  }
  if(step.key==='forecast'){
   const plan=breathPlan(s),due=dragonDue(s),damage=Math.max(0,plan.damage-s.resource.block);
@@ -152,6 +158,8 @@ export function tutorialHint(index,s){
  if(step.key==='escape'){
   if(s.pending)return '전투 보상을 고르거나 건너뛴 뒤 귀환을 계속하세요.';
   if(s.rooms[s.pos].enemy?.hp>0)return s.resource.sword>0?'파수병이 길을 막았습니다. 「공격」으로 돌파하거나 들어온 방으로 후퇴하세요.':'공격이 소진되었습니다. 새 메달을 받으면 반격과 숨결도 진행됩니다. 위험하면 들어온 방으로 후퇴하세요.';
+  if(s.pos===0)return '입구에 돌아왔습니다. 「탈출」을 눌러 유물과 함께 탐험을 마치세요.';
+  if(!returnHelp)return `${s.relic?.name||'유물'}를 품고 입구로 돌아가 「탈출」하세요. 남은 ${s.countdown}턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.`;
   if(s.pos===10){
    const guard=s.rooms[6].enemy?.hp>0?'파수병이 있는':'적이 없는';
    return `${guard} 지름길은 4칸, 이끼 우회는 6칸. ${s.resource.move>=3?'「숨죽이기」와 걷기로 서고→이끼 회랑을 지나면 소리를 줄일 수 있어요. 방의 메아리도 확인하세요.':'남은 이동과 메아리를 보고 이동 방식·턴 종료를 고르세요.'}`;

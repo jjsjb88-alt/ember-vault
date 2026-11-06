@@ -1,0 +1,90 @@
+/* Keep the first trade a readable decision after the character's full cutscene. */
+@media(max-width:600px) and (orientation:portrait){
+ body.tutorial-mode #modal[data-mode=market] .nox-market{gap:10px}
+ body.tutorial-mode #modal[data-mode=market] .nox-hero{min-height:110px;height:110px}
+ body.tutorial-mode #modal[data-mode=market] .nox-hero>img{object-position:22% 29%}
+ body.tutorial-mode #modal[data-mode=market] .nox-hero:after{background:linear-gradient(90deg,transparent 25%,#071018c9 75%,#071018e8)}
+ body.tutorial-mode #modal[data-mode=market] .nox-identity{left:auto;right:14px;bottom:16px;max-width:48%;text-align:right}
+ body.tutorial-mode #modal[data-mode=market] .nox-identity span{font-size:9px}
+ body.tutorial-mode #modal[data-mode=market] .nox-identity strong{font-size:27px;margin-top:4px}
+ body.tutorial-mode #modal[data-mode=market] .nox-quote{display:none}
+ body.tutorial-mode #modal[data-mode=market] .nox-counter{gap:8px}
+ body.tutorial-mode #modal[data-mode=market] .nox-conversation{padding-bottom:8px;gap:8px}
+ body.tutorial-mode #modal[data-mode=market] .nox-conversation p{font-size:10px;line-height:1.45}
+ body.tutorial-mode #modal[data-mode=market] .nox-conversation button{padding:6px 8px}
+ body.tutorial-mode #modal[data-mode=market] .market-card{min-height:208px;padding:10px 9px;gap:7px}
+ body.tutorial-mode #modal[data-mode=market] .market-card>.memory-token{--token-size:72px!important}
+ body.tutorial-mode #modal[data-mode=market] .market-card .offer{gap:4px}
+ body.tutorial-mode #modal[data-mode=market] .market-card .offer strong{font-size:13px}
+ body.tutorial-mode #modal[data-mode=market] .market-card .offer small{font-size:12px;line-height:1.4}
+ body.tutorial-mode #modal[data-mode=market] .market-card .offer em{font-size:10px;line-height:1.4}
+ body.tutorial-mode #modal[data-mode=market] .market-card .price{font-size:12px;min-height:26px}
+
+ /* A reward's effect is the choice; give it the same prominence as its image. */
+ #modal[data-mode=reward] .modal-inner{padding:14px}
+ #modal[data-mode=reward] .modal-top{margin-bottom:10px}
+ #modal[data-mode=reward] .modal-cards{display:grid;grid-template-columns:minmax(0,1fr);gap:9px}
+ #modal[data-mode=reward] .ability-choice{display:grid;grid-template-columns:68px minmax(0,1fr);grid-template-rows:auto auto auto;column-gap:14px;row-gap:4px;align-items:center;padding:12px;text-align:left;min-width:0}
+ #modal[data-mode=reward] .ability-gem{grid-column:1;grid-row:1/4;width:68px;height:68px;margin:0}
+ #modal[data-mode=reward] .ability-gem .memory-token{--token-size:68px!important}
+ #modal[data-mode=reward] .ability-choice>small{grid-column:2;grid-row:1;font-size:11px;line-height:1.5}
+ #modal[data-mode=reward] .ability-choice>strong{grid-column:2;grid-row:2;font-size:15px;line-height:1.5;margin:0}
+ #modal[data-mode=reward] .ability-choice>p{grid-column:2;grid-row:3;font-size:13px;line-height:1.6;min-height:0;margin:0}
+ #modal[data-mode=reward] .choose-label{grid-column:1/-1;font-size:11px;padding-top:7px;margin-top:3px}
+ #modal[data-mode=reward] .modal-actions .subtle-button{min-height:44px;font-size:12px}
+}
+
+@media(max-height:430px) and (orientation:landscape){
+ body.tutorial-mode #modal[data-mode=market] .nox-market{position:relative;grid-template-columns:140px minmax(0,1fr);gap:12px}
+ body.tutorial-mode #modal[data-mode=market] .nox-hero{min-height:220px;height:220px}
+ body.tutorial-mode #modal[data-mode=market] .nox-quote{display:none}
+ body.tutorial-mode #modal[data-mode=market] .nox-identity{left:10px;right:10px;bottom:65px}
+ body.tutorial-mode #modal[data-mode=market] .nox-identity span{font-size:9px}
+ body.tutorial-mode #modal[data-mode=market] .nox-identity strong{font-size:25px}
+ body.tutorial-mode #modal[data-mode=market] .nox-counter{gap:7px}
+ body.tutorial-mode #modal[data-mode=market] .nox-conversation{position:absolute;left:0;top:174px;width:140px;padding:0;border:0;display:block}
+ body.tutorial-mode #modal[data-mode=market] .nox-conversation p{display:none}
+ body.tutorial-mode #modal[data-mode=market] .nox-conversation button{width:100%;min-height:44px;font-size:11px}
+ body.tutorial-mode #modal[data-mode=market] .nox-rule{font-size:11px;line-height:1.45}
+ body.tutorial-mode #modal[data-mode=market] .market-card{grid-template-columns:56px minmax(0,1fr);min-height:132px;padding:9px;gap:6px}
+ body.tutorial-mode #modal[data-mode=market] .market-card>.memory-token{--token-size:56px!important}
+ body.tutorial-mode #modal[data-mode=market] .market-card .offer{gap:3px}
+ body.tutorial-mode #modal[data-mode=market] .market-card .offer strong{font-size:13px}
+ body.tutorial-mode #modal[data-mode=market] .market-card .offer small{font-size:12px;line-height:1.4}
+ body.tutorial-mode #modal[data-mode=market] .market-card .offer em{font-size:10px;line-height:1.3}
+ body.tutorial-mode #modal[data-mode=market] .market-card .price{font-size:12px;min-height:25px}
+
+ #modal[data-mode=reward] .modal-inner{padding:12px}
+ #modal[data-mode=reward] .modal-top{margin-bottom:8px}
+ #modal[data-mode=reward] .modal-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ #modal[data-mode=reward] .ability-choice{display:grid;grid-template-columns:64px minmax(0,1fr);grid-template-rows:auto auto auto;column-gap:9px;row-gap:3px;align-items:center;padding:10px;text-align:left;min-width:0}
+ #modal[data-mode=reward] .ability-gem{grid-column:1;grid-row:1/4;width:64px;height:64px;margin:0}
+ #modal[data-mode=reward] .ability-gem .memory-token{--token-size:64px!important}
+ #modal[data-mode=reward] .ability-choice>small{grid-column:2;grid-row:1;font-size:10px;line-height:1.5}
+ #modal[data-mode=reward] .ability-choice>strong{grid-column:2;grid-row:2;font-size:13px;line-height:1.5;margin:0}
+ #modal[data-mode=reward] .ability-choice>p{grid-column:2;grid-row:3;font-size:13px;line-height:1.5;min-height:0;margin:0}
+ #modal[data-mode=reward] .choose-label{grid-column:1/-1;font-size:11px;padding-top:6px;margin-top:3px}
+ #modal[data-mode=reward] .modal-actions .subtle-button{min-height:44px;font-size:12px}
+}
+
+/* Choice support remains optional during the independent return. */
+.return-help{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin:7px 0 0;padding:6px 12px;border:1px solid #a58c58;background:#142c35;color:#e1ce9f;font:12px/1.5 system-ui;cursor:pointer}
+.return-help[aria-pressed=true]{background:#334439;color:#f4e6b8}
+.practice-transfer,.first-expedition-brief{padding:12px 14px;margin:12px 0;border:1px solid #796741;background:#122630;color:#dfd2af}
+.practice-transfer strong,.first-expedition-brief strong{font-size:14px}
+.practice-transfer p,.first-expedition-brief p{font-size:12px;line-height:1.7;margin:6px 0 0;color:#b6c8c6}
+#modal[data-mode=briefing] .modal-actions{margin:12px 0 18px}
+button[data-tutorial-blocked=true]{opacity:.45}
+
+/* The independent return must leave the low landscape field usable. The host
+   still places this panel around real exit rectangles; this only limits size. */
+@media(max-height:430px) and (orientation:landscape){
+ .tutorial-coach[data-step-key=escape]{display:grid;grid-template-columns:minmax(0,1fr) 132px;gap:6px;align-items:center;width:280px;max-width:calc(100vw - 24px);padding:3px 30px 3px 8px}
+ .tutorial-coach[data-step-key=escape] .coach-head,
+ .tutorial-coach[data-step-key=escape] .coach-feedback,
+ .tutorial-coach[data-step-key=escape]>strong,
+ .tutorial-coach[data-step-key=escape] .coach-replay{display:none}
+ .tutorial-coach[data-step-key=escape]>p{font-size:10.5px;line-height:15px;max-height:45px;overflow-y:auto;margin:0;overscroll-behavior:contain;touch-action:pan-y;scrollbar-width:thin}
+ .tutorial-coach[data-step-key=escape] .return-help{min-height:44px;height:44px;width:132px;max-width:100%;margin:0;padding:5px 8px;font-size:11px;line-height:15px}
+ .tutorial-coach[data-step-key=escape] .tutorial-leave{top:2px;right:3px}
+}

@@ -1,5 +1,5 @@
-import {CARDS} from './engine.js?v=20261106f';
-import {turnImpact} from './encounter.js?v=20261106f';
+import {CARDS} from './engine.js?v=20261107a';
+import {turnImpact} from './encounter.js?v=20261107a';
 
 const alive=enemy=>!!enemy&&enemy.hp>0;
 const roomInfo=room=>({id:room?.id,name:room?.name||'방',type:room?.type,route:room?.lessonRoute||null,returnRoute:room?.lessonReturn||null,optional:!!room?.lessonOptional});
@@ -153,6 +153,20 @@ function journeyHighlight(state,journal){
  if(!parts.length)parts.push('아직 유물을 회수해 돌아온 기록이 없어요.');
  return {title:choices.length>1?'귀환 중 길을 바꾼 선택':choice?'내가 고른 귀환길':'챙긴 것과 돌아온 길',text:parts.join(' · ')};
 }
+function returnLureHighlight(state,journal){
+ if(journal.relicTurn===null)return null;
+ for(let index=1;index<journal.lures.length;index++){
+  const lure=journal.lures[index];if(lure.turn<journal.relicTurn)continue;
+  for(const bypass of journal.bypasses){
+   if(bypass.lure!==index||bypass.turn<journal.relicTurn)continue;
+   const shift=lure.displacements.findLast(d=>d.clear&&d.from===bypass.room.id&&d.turn>=lure.turn&&d.turn<=bypass.turn);
+   if(!shift)continue;
+   const target=state.rooms[lure.target]?.name||'유인한 방',from=state.rooms[shift.from]?.name||bypass.room.name,to=state.rooms[shift.to]?.name||'다른 방';
+   return {title:'귀환에서 다시 쓴 유인',text:`귀환 중 ${target}에 유인해 ${shift.name}의 이동을 이끌었어요 (${from} → ${to}). 비워진 ${bypass.room.name}${objectParticle(bypass.room.name)} 통과했어요.`};
+  }
+ }
+ return null;
+}
 
 /** Short, factual recap; no engine mutation, randomness, storage or HTML. */
 export function tutorialRecap(state,journal){
@@ -166,10 +180,11 @@ export function tutorialRecap(state,journal){
  if(retry)reflection=won?`다시 ${retry}번 도전해서 돌아왔네. 이번 길은 기억해 두자.`:`다시 ${retry}번 도전했어. 아직 확인하지 못한 길도 남아 있어.`;
  else if(won&&choices.length>1)reflection='귀환 중 길을 바꿨네. 지나온 길과 남은 힘을 함께 기억하자.';
  else if(won&&choice)reflection=`${routeName(choice)}을 거쳐 돌아왔네. 지나온 길과 남은 힘을 기억하자.`;
+ const returnLure=returnLureHighlight(state,journal);
  return {
   title:won?`${relicName}${objectParticle(relicName)} 품고 돌아왔어요`:state.phase==='lost'?'이번 길을 돌아봐요':'지금까지의 선택',subtitle:subtitle.join(' · '),
   stats:[{label:'남은 체력',value:`${state.hp} / ${state.maxHp}`},{label:'금화',value:String(state.gold)},{label:'점수',value:won?String(state.score):'—'}],
-  highlights:[lureHighlight(journal),growthHighlight(journal),journeyHighlight(state,journal)],
+  highlights:[lureHighlight(journal),growthHighlight(journal),journeyHighlight(state,journal),...(returnLure?[returnLure]:[])],
   talk:[['깜부기',reflection],['도적',won?'다음에도 챙길 것과 돌아올 길을 같이 볼게.':'어디서 소리가 났는지부터 다시 볼게.']]
  };
 }

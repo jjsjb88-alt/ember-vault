@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {newRun,apply} from '../dist/engine.js';
 import {createTutorialJournal,recordTutorialAction,tutorialRecap} from '../dist/tutorial-journal.js';
+import {createTutorialRun} from '../dist/tutorial.js';
 
 const clone=value=>JSON.parse(JSON.stringify(value));
 function freeze(value){if(value&&typeof value==='object'){Object.values(value).forEach(freeze);Object.freeze(value);}return value;}
@@ -131,4 +132,49 @@ test('checkpoint restoration discards abandoned actions but preserves an explici
  const introState=fixture(),intro=tutorialRecap(introState,createTutorialJournal(introState));
  assert.equal(intro.title,'지금까지의 선택');assert.equal(intro.stats[2].value,'—');assert.match(intro.highlights[0].text,/기록이 없/);assert.doesNotMatch(JSON.stringify(intro),/5 피해|적 없이 통과했|탈출 T/);
  assert.equal(recap.stats.length,3);assert.equal(recap.highlights.length,3);assert.equal(recap.talk.length,2);
+});
+
+function reachRealReturn(){
+ const s=createTutorialRun(),j=createTutorialJournal(s);
+ for(const action of [
+  {type:'move',id:1},{type:'interact'},{type:'hide'},{type:'lure',id:5},{type:'end'},
+  ...[2,6,7].map(id=>({type:'move',id})),{type:'buy',index:0},{type:'end'},
+  {type:'move',id:11},{type:'interact'},{type:'move',id:10},{type:'attack'},{type:'skipReward'},{type:'interact'}
+ ])perform(s,j,action);
+ assert.equal(s.pos,10);assert.equal(j.lures.length,1);assert.equal(j.relicTurn,s.turn);
+ return {s,j};
+}
+
+test('a real return lure earns an additional factual recap only after displacement and empty-room traversal',()=>{
+ const {s,j}=reachRealReturn();
+ perform(s,j,{type:'lure',id:11});
+ assert.equal(j.lures[1].turn,j.relicTurn,'reuse can happen in the same turn as relic pickup');
+ assert.equal(tutorialRecap(s,j).highlights.length,3,'a throw alone is not a successful reuse');
+ perform(s,j,{type:'end'});
+ assert.deepEqual(s.pursuits,[{from:6,to:7}]);
+ assert.equal(tutorialRecap(s,j).highlights.length,3,'moving the guard alone is not a traversed return route');
+ for(const id of [6,2,1,0])perform(s,j,{type:'move',id});
+ perform(s,j,{type:'interact'});assert.equal(s.phase,'won');
+ assert.equal(j.bypasses.some(b=>b.lure===1&&b.room.id===6),true);
+ const before=JSON.stringify({s,j}),recap=tutorialRecap(freeze(clone(s)),freeze(clone(j)));
+ assert.equal(JSON.stringify({s,j}),before);
+ assert.equal(recap.highlights.length,4);assert.equal(recap.highlights[3].title,'귀환에서 다시 쓴 유인');
+ assert.match(recap.highlights[3].text,/이끼 서고.*금고의 파수병.*파편 회랑 → 이끼 회랑.*비워진 파편 회랑을 통과/);
+ assert.equal(recap.highlights[0].title,'돌멩이 뒤에 열린 길','the original opening lesson remains in its original slot');
+ const noReturnCredit=clone(j);noReturnCredit.lures[1].displacements=[];
+ assert.deepEqual(recap.highlights.slice(0,3),tutorialRecap(s,noReturnCredit).highlights,'all three previous highlights remain unchanged');
+ const beforeRelic=clone(j);beforeRelic.relicTurn=j.lures[1].turn+1;
+ assert.equal(tutorialRecap(s,beforeRelic).highlights.length,3,'a lure before relic pickup is not a return reuse');
+});
+
+test('a newer player sound does not turn a return throw into a credited lure bypass',()=>{
+ const {s,j}=reachRealReturn();
+ perform(s,j,{type:'lure',id:11});
+ perform(s,j,{type:'mode',id:'rush'});perform(s,j,{type:'move',id:11});
+ perform(s,j,{type:'move',id:10});
+ perform(s,j,{type:'end'});assert.deepEqual(s.pursuits,[{from:6,to:10}]);
+ assert.equal(j.lures[1].displacements.length,0,'the newer footsteps caused this pursuit');
+ perform(s,j,{type:'attack'});perform(s,j,{type:'skipReward'});perform(s,j,{type:'move',id:6});
+ assert.equal(j.bypasses.some(b=>b.lure===1),false);
+ assert.equal(tutorialRecap(s,j).highlights.length,3);
 });

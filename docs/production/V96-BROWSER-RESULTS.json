@@ -1,0 +1,2575 @@
+{
+  "date": "2026-11-07",
+  "timezone": "Asia/Seoul",
+  "base_commit": "eefb22e",
+  "version": "9.6.0",
+  "result": "PASS",
+  "scope": "Agent reviews and local Chromium interaction checks. Not human novice learning assessment or real-device certification.",
+  "checks": {
+    "runtime_modules": 24,
+    "unit_tests_passed": 101,
+    "mobile_report": "V96-MOBILE-RESULTS.json"
+  },
+  "core_resume": {
+    "case": "portrait-resume",
+    "viewport": [
+      390,
+      844
+    ],
+    "reduced_motion": false,
+    "touch": true,
+    "actions": [
+      {
+        "selector": "[data-act=\"tutorialStart\"]",
+        "ui": {
+          "step": "warehouse",
+          "location": "B1 · 무너진 입구\nT01",
+          "coach": "1 · 소리로 길 열기\n1/18\n창고부터 털자\n\n금빛 「망각의 창고」를 누르세요. 이 회상에서는 기억 메달 5개로 시작합니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n5\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"1\"]",
+        "ui": {
+          "step": "chest",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n2/18\n✓ 망각의 창고\n상자를 여세요\n\n상자 위 「열기」를 누르세요. 금화와 함께 경계가 오르고 이 방에 메아리가 남습니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "[data-act=\"tutorialRestart\"]",
+        "ui": {
+          "step": "warehouse",
+          "location": "B1 · 무너진 입구\nT01",
+          "coach": "1 · 소리로 길 열기\n1/18\n창고부터 털자\n\n금빛 「망각의 창고」를 누르세요. 이 회상에서는 기억 메달 5개로 시작합니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n5\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"1\"]",
+        "ui": {
+          "step": "chest",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n2/18\n✓ 망각의 창고\n상자를 여세요\n\n상자 위 「열기」를 누르세요. 금화와 함께 경계가 오르고 이 방에 메아리가 남습니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "[data-act=\"tutorialResume\"]",
+        "ui": {
+          "step": "sound",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n3/18\n✓ 금화 +7\n소리가 남은 자리를 보세요\n\n미니맵을 열어 주황빛과 방 옆 메아리 숫자를 보세요. 아직 멀리 있는 파수병은 듣지 못했습니다. 다 살펴본 뒤 「지도 확인 · 계속」을 누르세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#mapToggle",
+        "ui": {
+          "step": "sound",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기3/18✓ 금화 +7소리가 남은 자리를 보세요미니맵을 열어 주황빛과 방 옆 메아리 숫자를 보세요. 아직 멀리 있는 파수병은 듣지 못했습니다. 다 살펴본 뒤 「지도 확인 · 계속」을 누르세요.💬 대화×",
+          "enemy": "",
+          "map": "true",
+          "resources": "◆공격력2◆이동력4◆기술4◆방어0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#mapToggle",
+        "ui": {
+          "step": "sound",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n3/18\n✓ 금화 +7\n소리가 남은 자리를 보세요\n\n미니맵을 열어 주황빛과 방 옆 메아리 숫자를 보세요. 아직 멀리 있는 파수병은 듣지 못했습니다. 다 살펴본 뒤 「지도 확인 · 계속」을 누르세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#mapToggle",
+        "ui": {
+          "step": "sound",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기3/18✓ 금화 +7소리가 남은 자리를 보세요미니맵을 열어 주황빛과 방 옆 메아리 숫자를 보세요. 아직 멀리 있는 파수병은 듣지 못했습니다. 다 살펴본 뒤 「지도 확인 · 계속」을 누르세요.💬 대화×",
+          "enemy": "",
+          "map": "true",
+          "resources": "◆공격력2◆이동력4◆기술4◆방어0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "[data-act=\"tutorialResume\"]",
+        "ui": {
+          "step": "sound",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기3/18✓ 금화 +7소리가 남은 자리를 보세요미니맵을 열어 주황빛과 방 옆 메아리 숫자를 보세요. 아직 멀리 있는 파수병은 듣지 못했습니다. 다 살펴본 뒤 「지도 확인 · 계속」을 누르세요.💬 대화×",
+          "enemy": "",
+          "map": "true",
+          "resources": "◆공격력2◆이동력4◆기술4◆방어0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "[data-act=\"tutorialContinue\"][data-id=\"sound\"]",
+        "ui": {
+          "step": "hush",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n4/18\n✓ 지도와 예보를 확인했어요\n경계부터 낮추세요\n\n「숨죽이기」를 누르세요. 이동 1로 경계 −2, 은신 +2. 메아리 자체가 지워지지는 않습니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#hideAction",
+        "ui": {
+          "step": "lure",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n5/18\n✓ 숨죽이기 · 경계 −2 / 은신 +2\n돌멩이로 길을 여세요\n\n「유인」 → 「부서진 무기고」. 기술 1로 돌멩이를 던집니다. 적은 즉시 움직이지 않고 턴 끝에 소리를 따라갑니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#lureToggle",
+        "ui": {
+          "step": "lure",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n5/18\n✓ 숨죽이기 · 경계 −2 / 은신 +2\n돌멩이로 길을 여세요\n\n「유인」 → 「부서진 무기고」. 기술 1로 돌멩이를 던집니다. 적은 즉시 움직이지 않고 턴 끝에 소리를 따라갑니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"5\"]",
+        "ui": {
+          "step": "lure",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n5/18\n✓ 숨죽이기 · 경계 −2 / 은신 +2\n돌멩이로 길을 여세요\n\n「유인」 → 「부서진 무기고」. 기술 1로 돌멩이를 던집니다. 적은 즉시 움직이지 않고 턴 끝에 소리를 따라갑니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": [
+            {
+              "id": "modal",
+              "mode": "lurePreview",
+              "text": "유인 · 적의 다음 한 칸\n돌멩이를 던지기 전에\n×\n\n부서진 무기고 · 기술 1 · 소리 5\n\n보이는 적 1명이 턴 끝에 이동합니다.\n\n금고의 파수병\n\n파편 회랑 → 부서진 무기고\n\n이 유인 소리를 들음\n\n유인 후 추가 행동 없이 지금 위치에서 턴을 마칠 때의 예고입니다. 이후 움직이거나 다른 소리를 내면 추적 방향이 달라집니다.\n\n다른 방 선택\n이 방으로 유인 · 기술 1"
+            }
+          ]
+        }
+      },
+      {
+        "selector": "[data-act=\"lureCancel\"]",
+        "ui": {
+          "step": "lure",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n5/18\n✓ 숨죽이기 · 경계 −2 / 은신 +2\n돌멩이로 길을 여세요\n\n「유인」 → 「부서진 무기고」. 기술 1로 돌멩이를 던집니다. 적은 즉시 움직이지 않고 턴 끝에 소리를 따라갑니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"5\"]",
+        "ui": {
+          "step": "lure",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n5/18\n✓ 숨죽이기 · 경계 −2 / 은신 +2\n돌멩이로 길을 여세요\n\n「유인」 → 「부서진 무기고」. 기술 1로 돌멩이를 던집니다. 적은 즉시 움직이지 않고 턴 끝에 소리를 따라갑니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": [
+            {
+              "id": "modal",
+              "mode": "lurePreview",
+              "text": "유인 · 적의 다음 한 칸\n돌멩이를 던지기 전에\n×\n\n부서진 무기고 · 기술 1 · 소리 5\n\n보이는 적 1명이 턴 끝에 이동합니다.\n\n금고의 파수병\n\n파편 회랑 → 부서진 무기고\n\n이 유인 소리를 들음\n\n유인 후 추가 행동 없이 지금 위치에서 턴을 마칠 때의 예고입니다. 이후 움직이거나 다른 소리를 내면 추적 방향이 달라집니다.\n\n다른 방 선택\n이 방으로 유인 · 기술 1"
+            }
+          ]
+        }
+      },
+      {
+        "selector": "[data-act=\"lureConfirm\"]",
+        "ui": {
+          "step": "wait-lure",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n6/18\n✓ 그 방에 돌멩이를 던졌습니다. 적은 턴 끝에 조사합니다.\n움직일 때까지 기다리세요\n\n「다음 턴」을 누르세요. 파수병이 파편 회랑에서 무기고로 이동합니다. 쓰지 않은 힘은 사라지고 새 메달이 열립니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n3\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#endTurn",
+        "ui": {
+          "step": "pass-junction",
+          "location": "B1 · 망각의 창고\nT02",
+          "coach": "1 · 소리로 길 열기\n7/18\n✓ 금고의 파수병 파편 회랑 → 부서진 무기고 · 원래 방이 비었어요\n정말 길이 열렸어요\n\n「돌의 갈림목」으로 이동하세요. 유인한 적이 떠난 동안 다음 통로로 접근합니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n5\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"2\"]",
+        "ui": {
+          "step": "pass-guard",
+          "location": "B1 · 돌의 갈림목\nT02",
+          "coach": "1 · 소리로 길 열기\n8/18\n✓ 돌의 갈림목\n비어 있는 회랑을 통과하세요\n\n「파편 회랑」으로 이동하세요. 적은 무기고에 있습니다. 파편을 밟는 소리는 다시 들을 수 있으니 여기서 멈추지 마세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"6\"]",
+        "ui": {
+          "step": "refuge",
+          "location": "B2 · 파편 회랑\nT02",
+          "coach": "1 · 소리로 길 열기\n9/18\n✓ 파편 회랑을 지키던 적 없이 통과했어요\n추적하기 전에 한 방 더\n\n「이끼 회랑」으로 이동하세요. 적의 추적은 다음 턴에 일어납니다. 지금 열린 길을 끝까지 통과해 두세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"7\"]",
+        "ui": {
+          "step": "recruit",
+          "location": "B2 · 이끼 회랑\nT02",
+          "coach": "2 · 새 능력으로 돌파\n10/18\n✓ 이끼 회랑\n녹스에게 불씨를 건네받으세요\n\n「교역」에서 녹스를 만나 「불씨 화살」을 깨우세요. 기술 3을 쓰며 공격 +3 메달이 버린 주머니에 들어갑니다. 지금 공격력은 아직 2입니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n2\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#endTurn",
+        "ui": {
+          "step": "approach",
+          "location": "B2 · 이끼 회랑\nT03",
+          "coach": "2 · 새 능력으로 돌파\n12/18\n✓ 불씨 화살 추출 · 공격 +3 합산\n새 힘을 들고 봉인실로\n\n공격 5를 확인하고 「이끼 서고」로 이동하세요. 새 메달은 버튼을 다시 누르지 않아도 자원에 합산됩니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n5\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"11\"]",
+        "ui": {
+          "step": "guardian",
+          "location": "B3 · 이끼 서고\nT03",
+          "coach": "2 · 새 능력으로 돌파\n13/18\n✓ 이끼 서고\n금화와 귀환 길을 함께 보세요\n\n상자를 열면 금화 5~7·소리 3. 닫아 두면 추가 소리가 남지 않습니다. 선택한 뒤 「회상의 봉인실」로 이동하세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"10\"]",
+        "ui": {
+          "step": "attack",
+          "location": "B3 · 회상의 봉인실\nT03",
+          "coach": "2 · 새 능력으로 돌파\n14/18\n✓ 회상의 봉인실\n영입한 힘으로 돌파하세요\n\n현재 공격 5 · 봉인의 수호자 체력 5. 공격해서 길을 여세요. 불씨 화살은 추출될 때 공격 +3을 더합니다.\n\n💬 대화\n×",
+          "enemy": "추적 중 · 자리 수호\n봉인의 수호자\nHP 5 / 5 · 반격 1",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "[data-act=\"tutorialResume\"]",
+        "ui": {
+          "step": "reward",
+          "location": "B3 · 회상의 봉인실\nT03",
+          "coach": "2 · 새 능력으로 돌파\n15/18\n✓ 봉인의 수호자에게 5 피해 · 이번 턴 불씨 화살도 추출\n쓰러진 적의 기억\n\n보상 능력 하나를 고르거나 건너뛰세요. 보상도 실제 주머니에 들어갑니다. 회상에서 얻은 것은 기존 탐험에 섞이지 않습니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": [
+            {
+              "id": "modal",
+              "mode": "reward",
+              "text": "보상 선택\n승리의 전리품\n\n새 능력 하나를 메달 주머니에 넣으세요. 주머니를 다시 섞을 때부터 나올 수 있습니다.\n\n◆◆◆\n희귀기술\n금지된 서고\n\n기술 +3 · 1개 추가 추출\n\n주머니에 넣기 +\n◆◆◆◆\n영웅기술 / 이동\n별의 지도\n\n기술 +2 · 이동 +2\n\n주머니에 넣기 +\n◆◆\n고급탐험\n길잡이\n\n이동 +1 · 기술 +1\n\n주머니에 넣기 +\n연습 보상은 실전에 이어지지 않습니다.\n받지 않고 계속 →"
+            }
+          ]
+        }
+      },
+      {
+        "selector": "[data-act=\"skipReward\"]",
+        "ui": {
+          "step": "relic",
+          "location": "B3 · 회상의 봉인실\nT03",
+          "coach": "3 · 예보를 보고 귀환\n16/18\n✓ 보상을 받지 않았습니다.\n유물을 들면 귀환이 시작돼요\n\n「봉인 해제」로 첫 불씨를 회수하세요. 실제 14턴 귀환이 시작됩니다. 메아리는 더 오래 남고 3의 배수 턴에도 숨결이 옵니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#sceneTarget",
+        "ui": {
+          "step": "forecast",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n17/18\n✓ 유물 획득 · 금고가 2턴을 기억합니다\n위험을 먼저 보고 고르세요\n\n미니맵을 여세요. 지금 턴을 마치면 이 방에 숨결 피해 4 예상. 예보를 읽고 「지도 확인 · 계속」을 누르세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#mapToggle",
+        "ui": {
+          "step": "forecast",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환17/18✓ 유물 획득 · 금고가 2턴을 기억합니다위험을 먼저 보고 고르세요미니맵을 여세요. 지금 턴을 마치면 이 방에 숨결 피해 4 예상. 예보를 읽고 「지도 확인 · 계속」을 누르세요.💬 대화×",
+          "enemy": "",
+          "map": "true",
+          "resources": "◆공격력0◆이동력3◆기술4◆방어0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#mapToggle",
+        "ui": {
+          "step": "forecast",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n17/18\n✓ 유물 획득 · 금고가 2턴을 기억합니다\n위험을 먼저 보고 고르세요\n\n미니맵을 여세요. 지금 턴을 마치면 이 방에 숨결 피해 4 예상. 예보를 읽고 「지도 확인 · 계속」을 누르세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#mapToggle",
+        "ui": {
+          "step": "forecast",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환17/18✓ 유물 획득 · 금고가 2턴을 기억합니다위험을 먼저 보고 고르세요미니맵을 여세요. 지금 턴을 마치면 이 방에 숨결 피해 4 예상. 예보를 읽고 「지도 확인 · 계속」을 누르세요.💬 대화×",
+          "enemy": "",
+          "map": "true",
+          "resources": "◆공격력0◆이동력3◆기술4◆방어0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "[data-act=\"tutorialResume\"]",
+        "ui": {
+          "step": "forecast",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환17/18✓ 유물 획득 · 금고가 2턴을 기억합니다위험을 먼저 보고 고르세요미니맵을 여세요. 지금 턴을 마치면 이 방에 숨결 피해 4 예상. 예보를 읽고 「지도 확인 · 계속」을 누르세요.💬 대화×",
+          "enemy": "",
+          "map": "true",
+          "resources": "◆공격력0◆이동력3◆기술4◆방어0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "[data-act=\"tutorialContinue\"][data-id=\"forecast\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 지도와 예보를 확인했어요\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 14턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "[data-act=\"tutorialResume\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 지도와 예보를 확인했어요\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 14턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "[data-act=\"tutorialResume\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 지도와 예보를 확인했어요\n이번 귀환은 당신의 선택\n\n파수병이 있는 지름길은 4칸, 이끼 우회는 6칸. 「숨죽이기」와 걷기로 서고→이끼 회랑을 지나면 소리를 줄일 수 있어요. 방의 메아리도 확인하세요.\n\n길 안내 켜짐 · 목표만 보기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#hideAction",
+        "ui": {
+          "step": "escape",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 지도와 예보를 확인했어요\n이번 귀환은 당신의 선택\n\n파수병이 있는 지름길은 4칸, 이끼 우회는 6칸. 남은 이동과 메아리를 보고 이동 방식·턴 종료를 고르세요.\n\n길 안내 켜짐 · 목표만 보기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n2\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"11\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B3 · 이끼 서고\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 지도와 예보를 확인했어요\n이번 귀환은 당신의 선택\n\n현재 방은 숨결 경로 밖입니다. 「다음 턴」으로 새 힘을 받고 입구로 돌아가세요. 필요하면 이끼 쉼터에서 쉬어 갈 수 있습니다.\n\n길 안내 켜짐 · 목표만 보기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n1\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"7\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B2 · 이끼 회랑\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 지도와 예보를 확인했어요\n이번 귀환은 당신의 선택\n\n현재 방은 숨결 경로 밖입니다. 「다음 턴」으로 새 힘을 받고 입구로 돌아가세요. 필요하면 이끼 쉼터에서 쉬어 갈 수 있습니다.\n\n길 안내 켜짐 · 목표만 보기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n0\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#endTurn",
+        "ui": {
+          "step": "escape",
+          "location": "B2 · 이끼 회랑\nT04 · 귀환 13턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 새 메달 6개가 열렸습니다.\n이번 귀환은 당신의 선택\n\n파편 회랑 지름길은 4칸, 이끼 우회로는 6칸입니다. 이동 방식·숨죽이기·전투·휴식을 골라 입구에서 「탈출」을 누르세요.\n\n길 안내 켜짐 · 목표만 보기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n5\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"3\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B1 · 이끼 쉼터\nT04 · 귀환 13턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 새 메달 6개가 열렸습니다.\n이번 귀환은 당신의 선택\n\n파편 회랑 지름길은 4칸, 이끼 우회로는 6칸입니다. 이동 방식·숨죽이기·전투·휴식을 골라 입구에서 「탈출」을 누르세요.\n\n길 안내 켜짐 · 목표만 보기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"2\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B1 · 돌의 갈림목\nT04 · 귀환 13턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 새 메달 6개가 열렸습니다.\n이번 귀환은 당신의 선택\n\n파편 회랑 지름길은 4칸, 이끼 우회로는 6칸입니다. 이동 방식·숨죽이기·전투·휴식을 골라 입구에서 「탈출」을 누르세요.\n\n길 안내 켜짐 · 목표만 보기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"1\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B1 · 망각의 창고\nT04 · 귀환 13턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 새 메달 6개가 열렸습니다.\n이번 귀환은 당신의 선택\n\n파편 회랑 지름길은 4칸, 이끼 우회로는 6칸입니다. 이동 방식·숨죽이기·전투·휴식을 골라 입구에서 「탈출」을 누르세요.\n\n길 안내 켜짐 · 목표만 보기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n2\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"0\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B1 · 무너진 입구\nT04 · 귀환 13턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 새 메달 6개가 열렸습니다.\n이번 귀환은 당신의 선택\n\n입구에 돌아왔습니다. 「탈출」을 눌러 유물과 함께 탐험을 마치세요.\n\n길 안내 켜짐 · 목표만 보기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n1\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#sceneTarget",
+        "ui": {
+          "step": "complete",
+          "location": "B1 · 무너진 입구\nT04 · 귀환 13턴",
+          "coach": "첫 금고 털이 성공\n첫 불씨를 품고 돌아왔어요\n\nT1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0\n\n내 탐험 결산 →",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n1\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "[data-act=\"tutorialResume\"]",
+        "ui": {
+          "step": "complete",
+          "location": "B1 · 무너진 입구\nT04 · 귀환 13턴",
+          "coach": "첫 금고 털이 성공\n첫 불씨를 품고 돌아왔어요\n\nT1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0\n\n내 탐험 결산 →",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n1\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#tutorialCoach [data-act=\"tutorialExit\"]",
+        "ui": {
+          "step": "complete",
+          "location": "B1 · 무너진 입구\nT01",
+          "coach": "첫 금고 털이 성공첫 불씨를 품고 돌아왔어요T1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0내 탐험 결산 →",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n5\n기술\n3\n방어\n0",
+          "dialogs": [
+            {
+              "id": "modal",
+              "mode": "briefing",
+              "text": "첫 탐험 결산\n첫 불씨를 품고 돌아왔어요\n×\n\nT1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0\n\n첫 실전 목표 · 유물 하나와 함께 귀환\n\nB3의 달의 눈물부터 살펴보세요. 유물을 회수한 뒤에는 입구로 돌아와 「탈출」하면 됩니다.\n\n기존 탐험 계속\n첫 실전 준비하기 →\n22 / 22\n남은 체력\n10\n금화\n86\n점수\n돌멩이 뒤에 열린 길\n\n금고의 파수병이 자리를 옮긴 뒤, 파편 회랑을 적 없이 통과했어요.\n\n추출된 불씨 화살\n\n공격 +3 합산. 같은 턴 봉인의 수호자에게 5 피해를 줬어요.\n\n내가 고른 귀환길\n\n조용한 귀환길 · 이끼 서고 상자는 열지 않음 · 유물 회수 T3 → 탈출 T4, 귀환 6칸\n\n도움과 함께 확인한 귀환\n\n길 안내를 보며 유물을 입구까지 가져왔어요. 다음 탐험에서도 지도와 남은 힘을 함께 살펴보세요.\n\n이번 회상은 기존 탐험과 최고 기록에 반영되지 않습니다. 첫 실전의 직업 선택에서 시작을 누르기 전까지 기존 탐험을 유지합니다."
+            }
+          ]
+        }
+      },
+      {
+        "selector": "#modal .modal-actions [data-act=\"close\"]",
+        "ui": {
+          "step": "complete",
+          "location": "B1 · 무너진 입구\nT01",
+          "coach": "첫 금고 털이 성공첫 불씨를 품고 돌아왔어요T1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0내 탐험 결산 →",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n5\n기술\n3\n방어\n0",
+          "dialogs": []
+        }
+      }
+    ],
+    "checks": [
+      {
+        "name": "reload-restart-choice",
+        "evidence": {
+          "restart": true,
+          "index": 0,
+          "pos": 0,
+          "turn": 1,
+          "gold": 0,
+          "pending": null,
+          "rng_unchanged": true
+        }
+      },
+      {
+        "name": "chest-committed-before-reload",
+        "evidence": {
+          "step": "sound",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n3/18\n✓ 금화 +7\n소리가 남은 자리를 보세요\n\n미니맵을 열어 주황빛과 방 옆 메아리 숫자를 보세요. 아직 멀리 있는 파수병은 듣지 못했습니다. 다 살펴본 뒤 「지도 확인 · 계속」을 누르세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "name": "reload-chest-commit",
+        "evidence": {
+          "restart": false,
+          "index": 2,
+          "pos": 1,
+          "turn": 1,
+          "gold": 7,
+          "pending": null,
+          "rng_unchanged": true
+        }
+      },
+      {
+        "name": "sound-read-before-confirm",
+        "evidence": {
+          "layout": {
+            "reading": true,
+            "coachVisible": false,
+            "spotlightVisible": false,
+            "lesson": {
+              "x": 23,
+              "y": 768,
+              "w": 344,
+              "h": 53
+            },
+            "canvas": {
+              "x": 0,
+              "y": 96,
+              "w": 390,
+              "h": 403.265625
+            },
+            "report": {
+              "x": 12,
+              "y": 511.28125,
+              "w": 366,
+              "h": 320.71875
+            },
+            "w": 390,
+            "h": 844,
+            "scrollW": 390,
+            "scrollH": 844
+          },
+          "text": "소리와 메아리 읽기\n3/18\n\n주황빛은 퍼진 소리, 숫자는 남은 메아리예요.\n\n지도 확인 · 계속"
+        }
+      },
+      {
+        "name": "reload-sound-map",
+        "evidence": {
+          "restart": false,
+          "index": 2,
+          "pos": 1,
+          "turn": 1,
+          "gold": 7,
+          "pending": null,
+          "rng_unchanged": true
+        }
+      },
+      {
+        "name": "lure-cancel-pure",
+        "evidence": {
+          "normal": false,
+          "preview": "유인 · 적의 다음 한 칸\n돌멩이를 던지기 전에\n×\n\n부서진 무기고 · 기술 1 · 소리 5\n\n보이는 적 1명이 턴 끝에 이동합니다.\n\n금고의 파수병\n\n파편 회랑 → 부서진 무기고\n\n이 유인 소리를 들음\n\n유인 후 추가 행동 없이 지금 위치에서 턴을 마칠 때의 예고입니다. 이후 움직이거나 다른 소리를 내면 추적 방향이 달라집니다.\n\n다른 방 선택\n이 방으로 유인 · 기술 1"
+        }
+      },
+      {
+        "name": "lure-confirm-spent-once",
+        "evidence": {
+          "before_skill": 4,
+          "after_skill": 3,
+          "preview": "유인 · 적의 다음 한 칸\n돌멩이를 던지기 전에\n×\n\n부서진 무기고 · 기술 1 · 소리 5\n\n보이는 적 1명이 턴 끝에 이동합니다.\n\n금고의 파수병\n\n파편 회랑 → 부서진 무기고\n\n이 유인 소리를 들음\n\n유인 후 추가 행동 없이 지금 위치에서 턴을 마칠 때의 예고입니다. 이후 움직이거나 다른 소리를 내면 추적 방향이 달라집니다.\n\n다른 방 선택\n이 방으로 유인 · 기술 1"
+        }
+      },
+      {
+        "name": "empty-corridor",
+        "evidence": {
+          "exit_label": "↘\n빈 방 · 돌 파편\n파편 회랑\n이동 1 · 소리 4",
+          "ui": {
+            "step": "refuge",
+            "location": "B2 · 파편 회랑\nT02",
+            "coach": "1 · 소리로 길 열기\n9/18\n✓ 파편 회랑을 지키던 적 없이 통과했어요\n추적하기 전에 한 방 더\n\n「이끼 회랑」으로 이동하세요. 적의 추적은 다음 턴에 일어납니다. 지금 열린 길을 끝까지 통과해 두세요.\n\n💬 대화\n×",
+            "enemy": "",
+            "map": "false",
+            "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+            "dialogs": []
+          }
+        }
+      },
+      {
+        "name": "nox-meeting-and-workshop",
+        "evidence": {
+          "lines": [
+            {
+              "name": "깜부기",
+              "line": "뿔의 등불을 봐. 녹스야. 인사는 해도, 네 이름까지 주진 마."
+            },
+            {
+              "name": "녹스",
+              "line": "후후. 작은 불씨가 말을 참 야박하게 하네. 어서 와, 아직 끝나지 않은 이야기."
+            },
+            {
+              "name": "도적",
+              "line": "…지금 나를 먹을 것처럼 봤는데."
+            },
+            {
+              "name": "녹스",
+              "line": "잊힌 이야기만 먹어. 넌 아직 너무 따뜻해서, 뒷이야기가 궁금하거든."
+            },
+            {
+              "name": "녹스",
+              "line": "수호자에게 갈 테지? 이 불씨를 깨워 봐. 네 단검에 재미있는 결말을 달아 줄게."
+            }
+          ],
+          "resources_unchanged": true
+        }
+      },
+      {
+        "name": "nox-purchase-reload-once",
+        "evidence": {
+          "skill": 1,
+          "purchases": 1,
+          "main_unchanged": true
+        }
+      },
+      {
+        "name": "attack-animation-interrupted",
+        "evidence": {
+          "ui": {
+            "step": "attack",
+            "location": "B3 · 회상의 봉인실\nT03",
+            "coach": "2 · 새 능력으로 돌파\n14/18\n✓ 회상의 봉인실\n영입한 힘으로 돌파하세요\n\n다가온 적의 보상을 고르거나 건너뛴 뒤 원래 목표를 계속하세요.\n\n💬 대화\n×",
+            "enemy": "",
+            "map": "false",
+            "resources": "공격력\n0\n이동력\n3\n기술\n4\n방어\n0",
+            "dialogs": []
+          },
+          "committed_index": 14
+        }
+      },
+      {
+        "name": "reload-reward-animation",
+        "evidence": {
+          "restart": false,
+          "index": 14,
+          "pos": 10,
+          "turn": 3,
+          "gold": 10,
+          "pending": {
+            "type": "reward",
+            "options": [
+              "insight",
+              "wisdom",
+              "scout"
+            ]
+          },
+          "rng_unchanged": true
+        }
+      },
+      {
+        "name": "reward-resolved-once",
+        "evidence": {
+          "options": [
+            "insight",
+            "wisdom",
+            "scout"
+          ],
+          "kills": 1,
+          "gold": 10
+        }
+      },
+      {
+        "name": "forecast-panel-geometry",
+        "evidence": {
+          "panel": {
+            "top": 566.46875,
+            "bottom": 751.328125,
+            "scrollH": 185,
+            "clientH": 185
+          },
+          "forecast": {
+            "top": 605.859375,
+            "bottom": 643.296875
+          },
+          "visibleInitially": true
+        }
+      },
+      {
+        "name": "forecast-read-before-confirm",
+        "evidence": {
+          "layout": {
+            "reading": true,
+            "coachVisible": false,
+            "spotlightVisible": false,
+            "lesson": {
+              "x": 23,
+              "y": 759.328125,
+              "w": 344,
+              "h": 61.671875
+            },
+            "canvas": {
+              "x": 0,
+              "y": 96,
+              "w": 390,
+              "h": 403.265625
+            },
+            "report": {
+              "x": 12,
+              "y": 511.28125,
+              "w": 366,
+              "h": 320.71875
+            },
+            "w": 390,
+            "h": 844,
+            "scrollW": 390,
+            "scrollH": 844
+          },
+          "text": "귀환 전 숨결 예보\n17/18\n\n예보와 적 위치를 보고 돌아갈 길을 생각해 보세요.\n\n지도 확인 · 계속"
+        }
+      },
+      {
+        "name": "reload-forecast-map",
+        "evidence": {
+          "restart": false,
+          "index": 16,
+          "pos": 10,
+          "turn": 3,
+          "gold": 10,
+          "pending": null,
+          "rng_unchanged": true
+        }
+      },
+      {
+        "name": "keyboard-help-safe",
+        "evidence": {
+          "state_unchanged": true,
+          "focus_preserved": true,
+          "help_used_not_erased": true
+        }
+      },
+      {
+        "name": "reload-escape-18",
+        "evidence": {
+          "restart": false,
+          "index": 17,
+          "pos": 10,
+          "turn": 3,
+          "gold": 10,
+          "pending": null,
+          "rng_unchanged": true
+        }
+      },
+      {
+        "name": "reload-legacy-guided-return",
+        "evidence": {
+          "restart": false,
+          "index": 17,
+          "pos": 10,
+          "turn": 3,
+          "gold": 10,
+          "pending": null,
+          "rng_unchanged": true
+        }
+      },
+      {
+        "name": "legacy-guidance-preserved",
+        "evidence": {
+          "same_state": true,
+          "returnHelp": true,
+          "returnHelpUsed": true
+        }
+      },
+      {
+        "name": "reload-legacy-completed",
+        "evidence": {
+          "restart": false,
+          "index": 18,
+          "pos": 0,
+          "turn": 4,
+          "gold": 10,
+          "pending": null,
+          "rng_unchanged": true
+        }
+      },
+      {
+        "name": "completion-cleared-resume",
+        "evidence": {
+          "main_unchanged": true,
+          "best_unchanged": true
+        }
+      }
+    ],
+    "errors": [],
+    "request_failures": [],
+    "http_errors": [],
+    "result": "PASS",
+    "screenshots_generated_count": 18,
+    "retained_screenshots": []
+  },
+  "first_real_expedition_handoff": {
+    "case": "compact-map",
+    "viewport": [
+      360,
+      640
+    ],
+    "reduced_motion": true,
+    "touch": true,
+    "actions": [
+      {
+        "selector": "[data-act=\"tutorialStart\"]",
+        "ui": {
+          "step": "warehouse",
+          "location": "B1 · 무너진 입구\nT01",
+          "coach": "1 · 소리로 길 열기\n1/18\n창고부터 털자\n\n금빛 「망각의 창고」를 누르세요. 이 회상에서는 기억 메달 5개로 시작합니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n5\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"1\"]",
+        "ui": {
+          "step": "chest",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n2/18\n✓ 망각의 창고\n상자를 여세요\n\n상자 위 「열기」를 누르세요. 금화와 함께 경계가 오르고 이 방에 메아리가 남습니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#sceneTarget",
+        "ui": {
+          "step": "sound",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n3/18\n✓ 금화 +7\n소리가 남은 자리를 보세요\n\n미니맵을 열어 주황빛과 방 옆 메아리 숫자를 보세요. 아직 멀리 있는 파수병은 듣지 못했습니다. 다 살펴본 뒤 「지도 확인 · 계속」을 누르세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#mapToggle",
+        "ui": {
+          "step": "sound",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기3/18✓ 금화 +7소리가 남은 자리를 보세요미니맵을 열어 주황빛과 방 옆 메아리 숫자를 보세요. 아직 멀리 있는 파수병은 듣지 못했습니다. 다 살펴본 뒤 「지도 확인 · 계속」을 누르세요.💬 대화×",
+          "enemy": "",
+          "map": "true",
+          "resources": "◆공격력2◆이동력4◆기술4◆방어0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#mapToggle",
+        "ui": {
+          "step": "sound",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n3/18\n✓ 금화 +7\n소리가 남은 자리를 보세요\n\n미니맵을 열어 주황빛과 방 옆 메아리 숫자를 보세요. 아직 멀리 있는 파수병은 듣지 못했습니다. 다 살펴본 뒤 「지도 확인 · 계속」을 누르세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#mapToggle",
+        "ui": {
+          "step": "sound",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기3/18✓ 금화 +7소리가 남은 자리를 보세요미니맵을 열어 주황빛과 방 옆 메아리 숫자를 보세요. 아직 멀리 있는 파수병은 듣지 못했습니다. 다 살펴본 뒤 「지도 확인 · 계속」을 누르세요.💬 대화×",
+          "enemy": "",
+          "map": "true",
+          "resources": "◆공격력2◆이동력4◆기술4◆방어0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "[data-act=\"tutorialContinue\"][data-id=\"sound\"]",
+        "ui": {
+          "step": "hush",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n4/18\n✓ 지도와 예보를 확인했어요\n경계부터 낮추세요\n\n「숨죽이기」를 누르세요. 이동 1로 경계 −2, 은신 +2. 메아리 자체가 지워지지는 않습니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#hideAction",
+        "ui": {
+          "step": "lure",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n5/18\n✓ 숨죽이기 · 경계 −2 / 은신 +2\n돌멩이로 길을 여세요\n\n「유인」 → 「부서진 무기고」. 기술 1로 돌멩이를 던집니다. 적은 즉시 움직이지 않고 턴 끝에 소리를 따라갑니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#lureToggle",
+        "ui": {
+          "step": "lure",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n5/18\n✓ 숨죽이기 · 경계 −2 / 은신 +2\n돌멩이로 길을 여세요\n\n「유인」 → 「부서진 무기고」. 기술 1로 돌멩이를 던집니다. 적은 즉시 움직이지 않고 턴 끝에 소리를 따라갑니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"5\"]",
+        "ui": {
+          "step": "lure",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n5/18\n✓ 숨죽이기 · 경계 −2 / 은신 +2\n돌멩이로 길을 여세요\n\n「유인」 → 「부서진 무기고」. 기술 1로 돌멩이를 던집니다. 적은 즉시 움직이지 않고 턴 끝에 소리를 따라갑니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": [
+            {
+              "id": "modal",
+              "mode": "lurePreview",
+              "text": "유인 · 적의 다음 한 칸\n돌멩이를 던지기 전에\n×\n\n부서진 무기고 · 기술 1 · 소리 5\n\n보이는 적 1명이 턴 끝에 이동합니다.\n\n금고의 파수병\n\n파편 회랑 → 부서진 무기고\n\n이 유인 소리를 들음\n\n유인 후 추가 행동 없이 지금 위치에서 턴을 마칠 때의 예고입니다. 이후 움직이거나 다른 소리를 내면 추적 방향이 달라집니다.\n\n다른 방 선택\n이 방으로 유인 · 기술 1"
+            }
+          ]
+        }
+      },
+      {
+        "selector": "[data-act=\"lureCancel\"]",
+        "ui": {
+          "step": "lure",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n5/18\n✓ 숨죽이기 · 경계 −2 / 은신 +2\n돌멩이로 길을 여세요\n\n「유인」 → 「부서진 무기고」. 기술 1로 돌멩이를 던집니다. 적은 즉시 움직이지 않고 턴 끝에 소리를 따라갑니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"5\"]",
+        "ui": {
+          "step": "lure",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n5/18\n✓ 숨죽이기 · 경계 −2 / 은신 +2\n돌멩이로 길을 여세요\n\n「유인」 → 「부서진 무기고」. 기술 1로 돌멩이를 던집니다. 적은 즉시 움직이지 않고 턴 끝에 소리를 따라갑니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": [
+            {
+              "id": "modal",
+              "mode": "lurePreview",
+              "text": "유인 · 적의 다음 한 칸\n돌멩이를 던지기 전에\n×\n\n부서진 무기고 · 기술 1 · 소리 5\n\n보이는 적 1명이 턴 끝에 이동합니다.\n\n금고의 파수병\n\n파편 회랑 → 부서진 무기고\n\n이 유인 소리를 들음\n\n유인 후 추가 행동 없이 지금 위치에서 턴을 마칠 때의 예고입니다. 이후 움직이거나 다른 소리를 내면 추적 방향이 달라집니다.\n\n다른 방 선택\n이 방으로 유인 · 기술 1"
+            }
+          ]
+        }
+      },
+      {
+        "selector": "[data-act=\"lureConfirm\"]",
+        "ui": {
+          "step": "wait-lure",
+          "location": "B1 · 망각의 창고\nT01",
+          "coach": "1 · 소리로 길 열기\n6/18\n✓ 그 방에 돌멩이를 던졌습니다. 적은 턴 끝에 조사합니다.\n움직일 때까지 기다리세요\n\n「다음 턴」을 누르세요. 파수병이 파편 회랑에서 무기고로 이동합니다. 쓰지 않은 힘은 사라지고 새 메달이 열립니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n3\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#endTurn",
+        "ui": {
+          "step": "pass-junction",
+          "location": "B1 · 망각의 창고\nT02",
+          "coach": "1 · 소리로 길 열기\n7/18\n✓ 금고의 파수병 파편 회랑 → 부서진 무기고 · 원래 방이 비었어요\n정말 길이 열렸어요\n\n「돌의 갈림목」으로 이동하세요. 유인한 적이 떠난 동안 다음 통로로 접근합니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n5\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"2\"]",
+        "ui": {
+          "step": "pass-guard",
+          "location": "B1 · 돌의 갈림목\nT02",
+          "coach": "1 · 소리로 길 열기\n8/18\n✓ 돌의 갈림목\n비어 있는 회랑을 통과하세요\n\n「파편 회랑」으로 이동하세요. 적은 무기고에 있습니다. 파편을 밟는 소리는 다시 들을 수 있으니 여기서 멈추지 마세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"6\"]",
+        "ui": {
+          "step": "refuge",
+          "location": "B2 · 파편 회랑\nT02",
+          "coach": "1 · 소리로 길 열기\n9/18\n✓ 파편 회랑을 지키던 적 없이 통과했어요\n추적하기 전에 한 방 더\n\n「이끼 회랑」으로 이동하세요. 적의 추적은 다음 턴에 일어납니다. 지금 열린 길을 끝까지 통과해 두세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"7\"]",
+        "ui": {
+          "step": "recruit",
+          "location": "B2 · 이끼 회랑\nT02",
+          "coach": "2 · 새 능력으로 돌파\n10/18\n✓ 이끼 회랑\n녹스에게 불씨를 건네받으세요\n\n「교역」에서 녹스를 만나 「불씨 화살」을 깨우세요. 기술 3을 쓰며 공격 +3 메달이 버린 주머니에 들어갑니다. 지금 공격력은 아직 2입니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n2\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#endTurn",
+        "ui": {
+          "step": "approach",
+          "location": "B2 · 이끼 회랑\nT03",
+          "coach": "2 · 새 능력으로 돌파\n12/18\n✓ 불씨 화살 추출 · 공격 +3 합산\n새 힘을 들고 봉인실로\n\n공격 5를 확인하고 「이끼 서고」로 이동하세요. 새 메달은 버튼을 다시 누르지 않아도 자원에 합산됩니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n5\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"11\"]",
+        "ui": {
+          "step": "guardian",
+          "location": "B3 · 이끼 서고\nT03",
+          "coach": "2 · 새 능력으로 돌파\n13/18\n✓ 이끼 서고\n금화와 귀환 길을 함께 보세요\n\n상자를 열면 금화 5~7·소리 3. 닫아 두면 추가 소리가 남지 않습니다. 선택한 뒤 「회상의 봉인실」로 이동하세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"10\"]",
+        "ui": {
+          "step": "attack",
+          "location": "B3 · 회상의 봉인실\nT03",
+          "coach": "2 · 새 능력으로 돌파\n14/18\n✓ 회상의 봉인실\n영입한 힘으로 돌파하세요\n\n현재 공격 5 · 봉인의 수호자 체력 5. 공격해서 길을 여세요. 불씨 화살은 추출될 때 공격 +3을 더합니다.\n\n💬 대화\n×",
+          "enemy": "추적 중 · 자리 수호\n봉인의 수호자\nHP 5 / 5 · 반격 1",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#sceneTarget",
+        "ui": {
+          "step": "reward",
+          "location": "B3 · 회상의 봉인실\nT03",
+          "coach": "2 · 새 능력으로 돌파\n15/18\n✓ 봉인의 수호자에게 5 피해 · 이번 턴 불씨 화살도 추출\n쓰러진 적의 기억\n\n보상 능력 하나를 고르거나 건너뛰세요. 보상도 실제 주머니에 들어갑니다. 회상에서 얻은 것은 기존 탐험에 섞이지 않습니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": [
+            {
+              "id": "modal",
+              "mode": "reward",
+              "text": "보상 선택\n승리의 전리품\n\n새 능력 하나를 메달 주머니에 넣으세요. 주머니를 다시 섞을 때부터 나올 수 있습니다.\n\n◆◆◆\n희귀기술\n금지된 서고\n\n기술 +3 · 1개 추가 추출\n\n주머니에 넣기 +\n◆◆◆◆\n영웅기술 / 이동\n별의 지도\n\n기술 +2 · 이동 +2\n\n주머니에 넣기 +\n◆◆\n고급탐험\n길잡이\n\n이동 +1 · 기술 +1\n\n주머니에 넣기 +\n연습 보상은 실전에 이어지지 않습니다.\n받지 않고 계속 →"
+            }
+          ]
+        }
+      },
+      {
+        "selector": "[data-act=\"skipReward\"]",
+        "ui": {
+          "step": "relic",
+          "location": "B3 · 회상의 봉인실\nT03",
+          "coach": "3 · 예보를 보고 귀환\n16/18\n✓ 보상을 받지 않았습니다.\n유물을 들면 귀환이 시작돼요\n\n「봉인 해제」로 첫 불씨를 회수하세요. 실제 14턴 귀환이 시작됩니다. 메아리는 더 오래 남고 3의 배수 턴에도 숨결이 옵니다.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#sceneTarget",
+        "ui": {
+          "step": "forecast",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n17/18\n✓ 유물 획득 · 금고가 2턴을 기억합니다\n위험을 먼저 보고 고르세요\n\n미니맵을 여세요. 지금 턴을 마치면 이 방에 숨결 피해 4 예상. 예보를 읽고 「지도 확인 · 계속」을 누르세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#mapToggle",
+        "ui": {
+          "step": "forecast",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환17/18✓ 유물 획득 · 금고가 2턴을 기억합니다위험을 먼저 보고 고르세요미니맵을 여세요. 지금 턴을 마치면 이 방에 숨결 피해 4 예상. 예보를 읽고 「지도 확인 · 계속」을 누르세요.💬 대화×",
+          "enemy": "",
+          "map": "true",
+          "resources": "◆공격력0◆이동력3◆기술4◆방어0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#mapToggle",
+        "ui": {
+          "step": "forecast",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n17/18\n✓ 유물 획득 · 금고가 2턴을 기억합니다\n위험을 먼저 보고 고르세요\n\n미니맵을 여세요. 지금 턴을 마치면 이 방에 숨결 피해 4 예상. 예보를 읽고 「지도 확인 · 계속」을 누르세요.\n\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#mapToggle",
+        "ui": {
+          "step": "forecast",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환17/18✓ 유물 획득 · 금고가 2턴을 기억합니다위험을 먼저 보고 고르세요미니맵을 여세요. 지금 턴을 마치면 이 방에 숨결 피해 4 예상. 예보를 읽고 「지도 확인 · 계속」을 누르세요.💬 대화×",
+          "enemy": "",
+          "map": "true",
+          "resources": "◆공격력0◆이동력3◆기술4◆방어0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "[data-act=\"tutorialContinue\"][data-id=\"forecast\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 지도와 예보를 확인했어요\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 14턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#hideAction",
+        "ui": {
+          "step": "escape",
+          "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 지도와 예보를 확인했어요\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 14턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n2\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"11\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B3 · 이끼 서고\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 지도와 예보를 확인했어요\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 14턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n1\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"7\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B2 · 이끼 회랑\nT03 · 귀환 14턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 지도와 예보를 확인했어요\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 14턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n0\n이동력\n0\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#endTurn",
+        "ui": {
+          "step": "escape",
+          "location": "B2 · 이끼 회랑\nT04 · 귀환 13턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 새 메달 6개가 열렸습니다.\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 13턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n5\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"3\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B1 · 이끼 쉼터\nT04 · 귀환 13턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 새 메달 6개가 열렸습니다.\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 13턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n4\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"2\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B1 · 돌의 갈림목\nT04 · 귀환 13턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 새 메달 6개가 열렸습니다.\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 13턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n3\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"1\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B1 · 망각의 창고\nT04 · 귀환 13턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 새 메달 6개가 열렸습니다.\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 13턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n2\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": ".scene-exit[data-id=\"0\"]",
+        "ui": {
+          "step": "escape",
+          "location": "B1 · 무너진 입구\nT04 · 귀환 13턴",
+          "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 새 메달 6개가 열렸습니다.\n이번 귀환은 당신의 선택\n\n입구에 돌아왔습니다. 「탈출」을 눌러 유물과 함께 탐험을 마치세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n1\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#sceneTarget",
+        "ui": {
+          "step": "complete",
+          "location": "B1 · 무너진 입구\nT04 · 귀환 13턴",
+          "coach": "첫 금고 털이 성공\n첫 불씨를 품고 돌아왔어요\n\nT1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0\n\n내 탐험 결산 →",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n5\n이동력\n1\n기술\n4\n방어\n0",
+          "dialogs": []
+        }
+      },
+      {
+        "selector": "#tutorialCoach [data-act=\"tutorialExit\"]",
+        "ui": {
+          "step": "complete",
+          "location": "B1 · 무너진 입구\nT01",
+          "coach": "첫 금고 털이 성공첫 불씨를 품고 돌아왔어요T1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0내 탐험 결산 →",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n5\n기술\n3\n방어\n0",
+          "dialogs": [
+            {
+              "id": "modal",
+              "mode": "briefing",
+              "text": "첫 탐험 결산\n첫 불씨를 품고 돌아왔어요\n×\n\nT1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0\n\n첫 실전 목표 · 유물 하나와 함께 귀환\n\nB3의 달의 눈물부터 살펴보세요. 유물을 회수한 뒤에는 입구로 돌아와 「탈출」하면 됩니다.\n\n기존 탐험 계속\n첫 실전 준비하기 →\n22 / 22\n남은 체력\n10\n금화\n86\n점수\n돌멩이 뒤에 열린 길\n\n금고의 파수병이 자리를 옮긴 뒤, 파편 회랑을 적 없이 통과했어요.\n\n추출된 불씨 화살\n\n공격 +3 합산. 같은 턴 봉인의 수호자에게 5 피해를 줬어요.\n\n내가 고른 귀환길\n\n조용한 귀환길 · 이끼 서고 상자는 열지 않음 · 유물 회수 T3 → 탈출 T4, 귀환 6칸\n\n직접 선택해 완주한 귀환\n\n마지막 귀환에서는 다음 방을 가리키는 안내 없이 길을 골랐어요. 이번 행동 기록을 첫 실전에도 적용해 보세요.\n\n이번 회상은 기존 탐험과 최고 기록에 반영되지 않습니다. 첫 실전의 직업 선택에서 시작을 누르기 전까지 기존 탐험을 유지합니다."
+            }
+          ]
+        }
+      },
+      {
+        "selector": "[data-act=\"firstExpedition\"]",
+        "ui": {
+          "step": "complete",
+          "location": "B1 · 무너진 입구\nT01",
+          "coach": "첫 금고 털이 성공첫 불씨를 품고 돌아왔어요T1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0내 탐험 결산 →",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n5\n기술\n3\n방어\n0",
+          "dialogs": [
+            {
+              "id": "modal",
+              "mode": "new",
+              "text": "20개 방 · 다섯 깊이\n누가 금고로 내려갈까요?\n×\n\n첫 목표는 유물 하나를 회수해 입구에서 탈출하기입니다. B3의 달의 눈물부터 살펴보세요. 새 탐험을 시작하면 현재 진행은 초기화되고 최고 기록은 남습니다.\n\n그림자 도적\n가볍게 걷고, 조용히 훔칩니다.\n매 턴 소음 1 추가 감소\n잿빛 기사\n두꺼운 방패로 위험을 견딥니다.\n최대 체력 28 · 매 턴 방어 1\n불씨 마법사\n지식으로 더 강한 덱을 만듭니다.\n매 턴 기술 1 추가\n현재 탐험으로 돌아가기\n금고로 내려가기 →"
+            }
+          ]
+        }
+      },
+      {
+        "selector": "[data-act=\"role\"][data-id=\"knight\"]",
+        "ui": {
+          "step": "complete",
+          "location": "B1 · 무너진 입구\nT01",
+          "coach": "첫 금고 털이 성공첫 불씨를 품고 돌아왔어요T1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0내 탐험 결산 →",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n5\n기술\n3\n방어\n0",
+          "dialogs": [
+            {
+              "id": "modal",
+              "mode": "new",
+              "text": "20개 방 · 다섯 깊이\n누가 금고로 내려갈까요?\n×\n\n첫 목표는 유물 하나를 회수해 입구에서 탈출하기입니다. B3의 달의 눈물부터 살펴보세요. 새 탐험을 시작하면 현재 진행은 초기화되고 최고 기록은 남습니다.\n\n그림자 도적\n가볍게 걷고, 조용히 훔칩니다.\n매 턴 소음 1 추가 감소\n잿빛 기사\n두꺼운 방패로 위험을 견딥니다.\n최대 체력 28 · 매 턴 방어 1\n불씨 마법사\n지식으로 더 강한 덱을 만듭니다.\n매 턴 기술 1 추가\n현재 탐험으로 돌아가기\n금고로 내려가기 →"
+            }
+          ]
+        }
+      },
+      {
+        "selector": "#modal .modal-actions [data-act=\"close\"]",
+        "ui": {
+          "step": "complete",
+          "location": "B1 · 무너진 입구\nT01",
+          "coach": "첫 금고 털이 성공첫 불씨를 품고 돌아왔어요T1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0내 탐험 결산 →",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n5\n기술\n3\n방어\n0",
+          "dialogs": [
+            {
+              "id": "modal",
+              "mode": "briefing",
+              "text": "첫 탐험 결산\n첫 불씨를 품고 돌아왔어요\n×\n\nT1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0\n\n첫 실전 목표 · 유물 하나와 함께 귀환\n\nB3의 달의 눈물부터 살펴보세요. 유물을 회수한 뒤에는 입구로 돌아와 「탈출」하면 됩니다.\n\n기존 탐험 계속\n첫 실전 준비하기 →\n22 / 22\n남은 체력\n10\n금화\n86\n점수\n돌멩이 뒤에 열린 길\n\n금고의 파수병이 자리를 옮긴 뒤, 파편 회랑을 적 없이 통과했어요.\n\n추출된 불씨 화살\n\n공격 +3 합산. 같은 턴 봉인의 수호자에게 5 피해를 줬어요.\n\n내가 고른 귀환길\n\n조용한 귀환길 · 이끼 서고 상자는 열지 않음 · 유물 회수 T3 → 탈출 T4, 귀환 6칸\n\n직접 선택해 완주한 귀환\n\n마지막 귀환에서는 다음 방을 가리키는 안내 없이 길을 골랐어요. 이번 행동 기록을 첫 실전에도 적용해 보세요.\n\n이번 회상은 기존 탐험과 최고 기록에 반영되지 않습니다. 첫 실전의 직업 선택에서 시작을 누르기 전까지 기존 탐험을 유지합니다."
+            }
+          ]
+        }
+      },
+      {
+        "selector": "[data-act=\"firstExpedition\"]",
+        "ui": {
+          "step": "complete",
+          "location": "B1 · 무너진 입구\nT01",
+          "coach": "첫 금고 털이 성공첫 불씨를 품고 돌아왔어요T1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0내 탐험 결산 →",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n5\n기술\n3\n방어\n0",
+          "dialogs": [
+            {
+              "id": "modal",
+              "mode": "new",
+              "text": "20개 방 · 다섯 깊이\n누가 금고로 내려갈까요?\n×\n\n첫 목표는 유물 하나를 회수해 입구에서 탈출하기입니다. B3의 달의 눈물부터 살펴보세요. 새 탐험을 시작하면 현재 진행은 초기화되고 최고 기록은 남습니다.\n\n그림자 도적\n가볍게 걷고, 조용히 훔칩니다.\n매 턴 소음 1 추가 감소\n잿빛 기사\n두꺼운 방패로 위험을 견딥니다.\n최대 체력 28 · 매 턴 방어 1\n불씨 마법사\n지식으로 더 강한 덱을 만듭니다.\n매 턴 기술 1 추가\n현재 탐험으로 돌아가기\n금고로 내려가기 →"
+            }
+          ]
+        }
+      },
+      {
+        "selector": "[data-act=\"role\"][data-id=\"knight\"]",
+        "ui": {
+          "step": "complete",
+          "location": "B1 · 무너진 입구\nT01",
+          "coach": "첫 금고 털이 성공첫 불씨를 품고 돌아왔어요T1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0내 탐험 결산 →",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n5\n기술\n3\n방어\n0",
+          "dialogs": [
+            {
+              "id": "modal",
+              "mode": "new",
+              "text": "20개 방 · 다섯 깊이\n누가 금고로 내려갈까요?\n×\n\n첫 목표는 유물 하나를 회수해 입구에서 탈출하기입니다. B3의 달의 눈물부터 살펴보세요. 새 탐험을 시작하면 현재 진행은 초기화되고 최고 기록은 남습니다.\n\n그림자 도적\n가볍게 걷고, 조용히 훔칩니다.\n매 턴 소음 1 추가 감소\n잿빛 기사\n두꺼운 방패로 위험을 견딥니다.\n최대 체력 28 · 매 턴 방어 1\n불씨 마법사\n지식으로 더 강한 덱을 만듭니다.\n매 턴 기술 1 추가\n현재 탐험으로 돌아가기\n금고로 내려가기 →"
+            }
+          ]
+        }
+      },
+      {
+        "selector": "[data-act=\"start\"]",
+        "ui": {
+          "step": "complete",
+          "location": "B1 · 무너진 입구\nT01",
+          "coach": "첫 금고 털이 성공첫 불씨를 품고 돌아왔어요T1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0내 탐험 결산 →",
+          "enemy": "",
+          "map": "false",
+          "resources": "공격력\n2\n이동력\n4\n기술\n3\n방어\n4",
+          "dialogs": []
+        }
+      }
+    ],
+    "checks": [
+      {
+        "name": "sound-read-before-confirm",
+        "evidence": {
+          "layout": {
+            "reading": true,
+            "coachVisible": false,
+            "spotlightVisible": false,
+            "lesson": {
+              "x": 23,
+              "y": 555.328125,
+              "w": 314,
+              "h": 61.671875
+            },
+            "canvas": {
+              "x": 0,
+              "y": 96,
+              "w": 360,
+              "h": 270
+            },
+            "report": {
+              "x": 12,
+              "y": 378,
+              "w": 336,
+              "h": 250
+            },
+            "w": 360,
+            "h": 640,
+            "scrollW": 360,
+            "scrollH": 640
+          },
+          "text": "소리와 메아리 읽기\n3/18\n\n주황빛은 퍼진 소리, 숫자는 남은 메아리예요.\n\n지도 확인 · 계속"
+        }
+      },
+      {
+        "name": "lure-cancel-pure",
+        "evidence": {
+          "normal": false,
+          "preview": "유인 · 적의 다음 한 칸\n돌멩이를 던지기 전에\n×\n\n부서진 무기고 · 기술 1 · 소리 5\n\n보이는 적 1명이 턴 끝에 이동합니다.\n\n금고의 파수병\n\n파편 회랑 → 부서진 무기고\n\n이 유인 소리를 들음\n\n유인 후 추가 행동 없이 지금 위치에서 턴을 마칠 때의 예고입니다. 이후 움직이거나 다른 소리를 내면 추적 방향이 달라집니다.\n\n다른 방 선택\n이 방으로 유인 · 기술 1"
+        }
+      },
+      {
+        "name": "lure-confirm-spent-once",
+        "evidence": {
+          "before_skill": 4,
+          "after_skill": 3,
+          "preview": "유인 · 적의 다음 한 칸\n돌멩이를 던지기 전에\n×\n\n부서진 무기고 · 기술 1 · 소리 5\n\n보이는 적 1명이 턴 끝에 이동합니다.\n\n금고의 파수병\n\n파편 회랑 → 부서진 무기고\n\n이 유인 소리를 들음\n\n유인 후 추가 행동 없이 지금 위치에서 턴을 마칠 때의 예고입니다. 이후 움직이거나 다른 소리를 내면 추적 방향이 달라집니다.\n\n다른 방 선택\n이 방으로 유인 · 기술 1"
+        }
+      },
+      {
+        "name": "empty-corridor",
+        "evidence": {
+          "exit_label": "↘\n빈 방 · 돌 파편\n파편 회랑\n이동 1 · 소리 4",
+          "ui": {
+            "step": "refuge",
+            "location": "B2 · 파편 회랑\nT02",
+            "coach": "1 · 소리로 길 열기\n9/18\n✓ 파편 회랑을 지키던 적 없이 통과했어요\n추적하기 전에 한 방 더\n\n「이끼 회랑」으로 이동하세요. 적의 추적은 다음 턴에 일어납니다. 지금 열린 길을 끝까지 통과해 두세요.\n\n💬 대화\n×",
+            "enemy": "",
+            "map": "false",
+            "resources": "공격력\n2\n이동력\n3\n기술\n4\n방어\n0",
+            "dialogs": []
+          }
+        }
+      },
+      {
+        "name": "nox-meeting-and-workshop",
+        "evidence": {
+          "lines": [
+            {
+              "name": "깜부기",
+              "line": "뿔의 등불을 봐. 녹스야. 인사는 해도, 네 이름까지 주진 마."
+            },
+            {
+              "name": "녹스",
+              "line": "후후. 작은 불씨가 말을 참 야박하게 하네. 어서 와, 아직 끝나지 않은 이야기."
+            },
+            {
+              "name": "도적",
+              "line": "…지금 나를 먹을 것처럼 봤는데."
+            },
+            {
+              "name": "녹스",
+              "line": "잊힌 이야기만 먹어. 넌 아직 너무 따뜻해서, 뒷이야기가 궁금하거든."
+            },
+            {
+              "name": "녹스",
+              "line": "수호자에게 갈 테지? 이 불씨를 깨워 봐. 네 단검에 재미있는 결말을 달아 줄게."
+            }
+          ],
+          "resources_unchanged": true
+        }
+      },
+      {
+        "name": "nox-purchase-reload-once",
+        "evidence": {
+          "skill": 1,
+          "purchases": 1,
+          "main_unchanged": true
+        }
+      },
+      {
+        "name": "reward-resolved-once",
+        "evidence": {
+          "options": [
+            "insight",
+            "wisdom",
+            "scout"
+          ],
+          "kills": 1,
+          "gold": 10
+        }
+      },
+      {
+        "name": "forecast-panel-geometry",
+        "evidence": {
+          "panel": {
+            "top": 433.1875,
+            "bottom": 547.328125,
+            "scrollH": 114,
+            "clientH": 114
+          },
+          "forecast": {
+            "top": 472.578125,
+            "bottom": 510.015625
+          },
+          "visibleInitially": true
+        }
+      },
+      {
+        "name": "forecast-read-before-confirm",
+        "evidence": {
+          "layout": {
+            "reading": true,
+            "coachVisible": false,
+            "spotlightVisible": false,
+            "lesson": {
+              "x": 23,
+              "y": 555.328125,
+              "w": 314,
+              "h": 61.671875
+            },
+            "canvas": {
+              "x": 0,
+              "y": 96,
+              "w": 360,
+              "h": 270
+            },
+            "report": {
+              "x": 12,
+              "y": 378,
+              "w": 336,
+              "h": 250
+            },
+            "w": 360,
+            "h": 640,
+            "scrollW": 360,
+            "scrollH": 640
+          },
+          "text": "귀환 전 숨결 예보\n17/18\n\n예보와 적 위치를 보고 돌아갈 길을 생각해 보세요.\n\n지도 확인 · 계속"
+        }
+      },
+      {
+        "name": "first-expedition-brief-visible",
+        "evidence": {
+          "button": {
+            "x": 234.25,
+            "y": 216.78125,
+            "width": 104.75,
+            "height": 42
+          },
+          "text": "첫 탐험 결산\n첫 불씨를 품고 돌아왔어요\n×\n\nT1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0\n\n첫 실전 목표 · 유물 하나와 함께 귀환\n\nB3의 달의 눈물부터 살펴보세요. 유물을 회수한 뒤에는 입구로 돌아와 「탈출」하면 됩니다.\n\n기존 탐험 계속\n첫 실전 준비하기 →\n22 / 22\n남은 체력\n10\n금화\n86\n점수\n돌멩이 뒤에 열린 길\n\n금고의 파수병이 자리를 옮긴 뒤, 파편 회랑을 적 없이 통과했어요.\n\n추출된 불씨 화살\n\n공격 +3 합산. 같은 턴 봉인의 수호자에게 5 피해를 줬어요.\n\n내가 고른 귀환길\n\n조용한 귀환길 · 이끼 서고 상자는 열지 않음 · 유물 회수 T3 → 탈출 T4, 귀환 6칸\n\n직접 선택해 완주한 귀환\n\n마지막 귀환에서는 다음 방을 가리키는 안내 없이 길을 골랐어요. 이번 행동 기록을 첫 실전에도 적용해 보세요.\n\n이번 회상은 기존 탐험과 최고 기록에 반영되지 않습니다. 첫 실전의 직업 선택에서 시작을 누르기 전까지 기존 탐험을 유지합니다."
+        }
+      },
+      {
+        "name": "cancel-kept-main-save",
+        "evidence": {
+          "main_unchanged": true,
+          "best_unchanged": true,
+          "ui": {
+            "step": "complete",
+            "location": "B1 · 무너진 입구\nT01",
+            "coach": "첫 금고 털이 성공첫 불씨를 품고 돌아왔어요T1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0내 탐험 결산 →",
+            "enemy": "",
+            "map": "false",
+            "resources": "공격력\n2\n이동력\n5\n기술\n3\n방어\n0",
+            "dialogs": [
+              {
+                "id": "modal",
+                "mode": "briefing",
+                "text": "첫 탐험 결산\n첫 불씨를 품고 돌아왔어요\n×\n\nT1 → T4 · 받은 피해 0 · 숨결 비껴감 1 · 도달 0\n\n첫 실전 목표 · 유물 하나와 함께 귀환\n\nB3의 달의 눈물부터 살펴보세요. 유물을 회수한 뒤에는 입구로 돌아와 「탈출」하면 됩니다.\n\n기존 탐험 계속\n첫 실전 준비하기 →\n22 / 22\n남은 체력\n10\n금화\n86\n점수\n돌멩이 뒤에 열린 길\n\n금고의 파수병이 자리를 옮긴 뒤, 파편 회랑을 적 없이 통과했어요.\n\n추출된 불씨 화살\n\n공격 +3 합산. 같은 턴 봉인의 수호자에게 5 피해를 줬어요.\n\n내가 고른 귀환길\n\n조용한 귀환길 · 이끼 서고 상자는 열지 않음 · 유물 회수 T3 → 탈출 T4, 귀환 6칸\n\n직접 선택해 완주한 귀환\n\n마지막 귀환에서는 다음 방을 가리키는 안내 없이 길을 골랐어요. 이번 행동 기록을 첫 실전에도 적용해 보세요.\n\n이번 회상은 기존 탐험과 최고 기록에 반영되지 않습니다. 첫 실전의 직업 선택에서 시작을 누르기 전까지 기존 탐험을 유지합니다."
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "first-expedition-start-and-reload",
+        "evidence": {
+          "role": "knight",
+          "rooms": 20,
+          "flag": true,
+          "goal": "◇\n첫 목표 · 유물 하나와 함께 귀환\n길을 살피며 유물을 하나 찾으세요. B3의 달의 눈물도 첫 탈출에 충분합니다.\n더 깊이 내려갈 필요는 없습니다. 유물을 얻으면 입구로 돌아오세요."
+        }
+      }
+    ],
+    "errors": [],
+    "request_failures": [],
+    "http_errors": [],
+    "result": "PASS",
+    "screenshots_generated_count": 14,
+    "retained_screenshots": [
+      "../visual/implemented/v96/first-expedition-recap.png",
+      "../visual/implemented/v96/first-expedition-cancel-to-recap.png",
+      "../visual/implemented/v96/first-expedition-reloaded.png"
+    ]
+  },
+  "strategy": {
+    "result": "PASS",
+    "viewport": [
+      390,
+      844
+    ],
+    "state_or_rng_injected": false,
+    "return_help_used": false,
+    "outcome": {
+      "turn": 4,
+      "hp": 18,
+      "gold": 16,
+      "score": 86,
+      "countdown": 13
+    },
+    "actions": [
+      {
+        "step": "warehouse",
+        "coach": "1 · 소리로 길 열기\n1/18\n창고부터 털자\n\n금빛 「망각의 창고」를 누르세요. 이 회상에서는 기억 메달 5개로 시작합니다.\n\n💬 대화\n×",
+        "toast": "",
+        "location": "B1 · 무너진 입구\nT01",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "1",
+            "text": "↗\n보물 · 돌 파편\n망각의 창고\n이동 1 · 소리 3",
+            "disabled": "false"
+          }
+        ],
+        "label": "01-start",
+        "turn": 1,
+        "hp": 22,
+        "gold": 0,
+        "pos": 0,
+        "noise": 0,
+        "countdown": null,
+        "resource": {
+          "move": 5,
+          "sword": 2,
+          "skill": 4,
+          "block": 0,
+          "quiet": 2,
+          "rattle": 1
+        },
+        "pursuits": []
+      },
+      {
+        "step": "sound",
+        "coach": "1 · 소리로 길 열기3/18✓ 금화 +7소리가 남은 자리를 보세요미니맵을 열어 주황빛과 방 옆 메아리 숫자를 보세요. 아직 멀리 있는 파수병은 듣지 못했습니다. 다 살펴본 뒤 「지도 확인 · 계속」을 누르세요.💬 대화×",
+        "toast": "금화 +7 · 소리 3 → 경계 +2 · 들킨 기척 없음",
+        "location": "B1 · 망각의 창고\nT01",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "0",
+            "text": "↙귀환 · 돌바닥무너진 입구안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "2",
+            "text": "↗빈 방 · 돌바닥돌의 갈림목안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "5",
+            "text": "↘빈 방 · 돌 파편부서진 무기고안내 후 사용",
+            "disabled": "true"
+          }
+        ],
+        "label": "02-sound-map",
+        "turn": 1,
+        "hp": 22,
+        "gold": 7,
+        "pos": 1,
+        "noise": 4,
+        "countdown": null,
+        "resource": {
+          "move": 4,
+          "sword": 2,
+          "skill": 4,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": []
+      },
+      {
+        "step": "lure",
+        "coach": "1 · 소리로 길 열기\n5/18\n✓ 숨죽이기 · 경계 −2 / 은신 +2\n돌멩이로 길을 여세요\n\n「유인」 → 「부서진 무기고」. 기술 1로 돌멩이를 던집니다. 적은 즉시 움직이지 않고 턴 끝에 소리를 따라갑니다.\n\n💬 대화\n×",
+        "toast": "숨죽이기 · 경계 −2 / 은신 +2",
+        "location": "B1 · 망각의 창고\nT01",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "0",
+            "text": "↙\n귀환 · 돌바닥\n무너진 입구\n안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "2",
+            "text": "↗\n빈 방 · 돌바닥\n돌의 갈림목\n안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "5",
+            "text": "↘\n빈 방 · 돌 파편\n부서진 무기고\n안내 후 사용",
+            "disabled": "true"
+          }
+        ],
+        "label": "03-lure-before",
+        "turn": 1,
+        "hp": 22,
+        "gold": 7,
+        "pos": 1,
+        "noise": 2,
+        "countdown": null,
+        "resource": {
+          "move": 3,
+          "sword": 2,
+          "skill": 4,
+          "block": 0,
+          "quiet": 2,
+          "rattle": 0
+        },
+        "pursuits": []
+      },
+      {
+        "step": "lure",
+        "coach": "1 · 소리로 길 열기\n5/18\n✓ 숨죽이기 · 경계 −2 / 은신 +2\n돌멩이로 길을 여세요\n\n「유인」 → 「부서진 무기고」. 기술 1로 돌멩이를 던집니다. 적은 즉시 움직이지 않고 턴 끝에 소리를 따라갑니다.\n\n💬 대화\n×",
+        "toast": "숨죽이기 · 경계 −2 / 은신 +2",
+        "location": "B1 · 망각의 창고\nT01",
+        "dialogs": [
+          {
+            "id": "modal",
+            "mode": "lurePreview",
+            "text": "유인 · 적의 다음 한 칸\n돌멩이를 던지기 전에\n×\n\n부서진 무기고 · 기술 1 · 소리 5\n\n보이는 적 1명이 턴 끝에 이동합니다.\n\n금고의 파수병\n\n파편 회랑 → 부서진 무기고\n\n이 유인 소리를 들음\n\n유인 후 추가 행동 없이 지금 위치에서 턴을 마칠 때의 예고입니다. 이후 움직이거나 다른 소리를 내면 추적 방향이 달라집니다.\n\n다른 방 선택\n이 방으로 유인 · 기술 1"
+          }
+        ],
+        "exits": [
+          {
+            "id": "0",
+            "text": "↙\n귀환 · 돌바닥\n무너진 입구\n안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "2",
+            "text": "↗\n빈 방 · 돌바닥\n돌의 갈림목\n안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "5",
+            "text": "↘\n빈 방 · 돌 파편\n부서진 무기고\n기술 1 · 소리 5",
+            "disabled": "false"
+          }
+        ],
+        "label": "05-prescribed-bait-preview",
+        "turn": 1,
+        "hp": 22,
+        "gold": 7,
+        "pos": 1,
+        "noise": 2,
+        "countdown": null,
+        "resource": {
+          "move": 3,
+          "sword": 2,
+          "skill": 4,
+          "block": 0,
+          "quiet": 2,
+          "rattle": 0
+        },
+        "pursuits": []
+      },
+      {
+        "step": "pass-junction",
+        "coach": "1 · 소리로 길 열기\n7/18\n✓ 금고의 파수병 파편 회랑 → 부서진 무기고 · 원래 방이 비었어요\n정말 길이 열렸어요\n\n「돌의 갈림목」으로 이동하세요. 유인한 적이 떠난 동안 다음 통로로 접근합니다.\n\n💬 대화\n×",
+        "toast": "그 방에 돌멩이를 던졌습니다. 적은 턴 끝에 조사합니다. · 소리 5 → 경계 +3 · 적 2명 반응",
+        "location": "B1 · 망각의 창고\nT02",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "0",
+            "text": "↙\n귀환 · 돌바닥\n무너진 입구\n안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "2",
+            "text": "↗\n빈 방 · 돌바닥\n돌의 갈림목\n이동 1 · 소리 1",
+            "disabled": "false"
+          },
+          {
+            "id": "5",
+            "text": "↘\n전투 · 돌 파편\n부서진 무기고\n안내 후 사용",
+            "disabled": "true"
+          }
+        ],
+        "label": "06-lure-result",
+        "turn": 2,
+        "hp": 22,
+        "gold": 7,
+        "pos": 1,
+        "noise": 2,
+        "countdown": null,
+        "resource": {
+          "move": 5,
+          "sword": 2,
+          "skill": 4,
+          "block": 0,
+          "quiet": 2,
+          "rattle": 1
+        },
+        "pursuits": [
+          {
+            "from": 6,
+            "to": 5
+          }
+        ]
+      },
+      {
+        "step": "recruit",
+        "coach": "2 · 새 능력으로 돌파\n10/18\n✓ 이끼 회랑\n녹스에게 불씨를 건네받으세요\n\n「교역」에서 녹스를 만나 「불씨 화살」을 깨우세요. 기술 3을 쓰며 공격 +3 메달이 버린 주머니에 들어갑니다. 지금 공격력은 아직 2입니다.\n\n💬 대화\n×",
+        "toast": "이끼 회랑 · 소리 1 → 경계 +1 · 들킨 기척 없음",
+        "location": "B2 · 이끼 회랑\nT02",
+        "dialogs": [
+          {
+            "id": "modal",
+            "mode": "market",
+            "text": "만남 · 이끼 피난처 · 녹스의 둥지\n녹스의 기억 둥지\n×\n기억 등불의 여주인\n녹스\n\n뿔에 매달린 등불들이 고개를 든다. 은발 아래 황금빛 눈매가 당신을 향해 휘어진다.\n\n녹스의 이야기\n기술 4 · 금화 7\n다른 기억 보기 · 금화 2\n\n등급은 외형 구분입니다. 불씨 화살의 효과는 공격 +3, 영입 비용은 기술 3이에요.\n\n◆◆\n불씨 화살\n고급공격 +3\n꺼지기 직전, 누군가 끝까지 놓지 않았던 화살.\n기술 3 · 기억 깨우기\n◆\n잰걸음\n일반이동 +2\n쫓기는 이를 살려 냈던 마지막 두 걸음.\n기술 2 · 다음에\n◆◆◆\n달빛 쌍검\n희귀공격 +4\n돌아갈 이를 위해 끝까지 들었던 무기의 기억.\n기술 5 · 1 부족\n◆◆◆\n철벽\n희귀방어 +6\n등 뒤의 사람을 지켜 낸 한순간.\n기술 5 · 1 부족\n\n“다녀와. 결말은 돌아와서 들려줘. 등불 하나 비워 둘 테니.”"
+          }
+        ],
+        "exits": [
+          {
+            "id": "6",
+            "text": "↙\n빈 방 · 돌 파편\n파편 회랑\n안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "11",
+            "text": "↘\n보물 · 이끼\n이끼 서고\n안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "3",
+            "text": "↖\n회복 · 이끼\n이끼 쉼터\n안내 후 사용",
+            "disabled": "true"
+          }
+        ],
+        "label": "07-shop-before-buy",
+        "turn": 2,
+        "hp": 22,
+        "gold": 7,
+        "pos": 7,
+        "noise": 6,
+        "countdown": null,
+        "resource": {
+          "move": 2,
+          "sword": 2,
+          "skill": 4,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": [
+          {
+            "from": 6,
+            "to": 5
+          }
+        ]
+      },
+      {
+        "step": "draw-recruit",
+        "coach": "2 · 새 능력으로 돌파\n11/18\n✓ 불씨 화살 영입 · 다음 주머니 순환에 합류\n산 능력이 다시 나올 때\n\n「다음 턴」을 누르세요. 이 회상의 작은 주머니를 다시 섞습니다. 「금지된 서고」의 추가 추출까지 적용되어 불씨 화살을 실제로 뽑고, 단검과 합쳐 공격 5를 얻습니다.\n\n💬 대화\n×",
+        "toast": "불씨 화살 획득",
+        "location": "B2 · 이끼 회랑\nT02",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "6",
+            "text": "↙\n빈 방 · 돌 파편\n파편 회랑\n안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "11",
+            "text": "↘\n보물 · 이끼\n이끼 서고\n안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "3",
+            "text": "↖\n회복 · 이끼\n이끼 쉼터\n안내 후 사용",
+            "disabled": "true"
+          }
+        ],
+        "label": "08-purchased-not-drawn",
+        "turn": 2,
+        "hp": 22,
+        "gold": 7,
+        "pos": 7,
+        "noise": 6,
+        "countdown": null,
+        "resource": {
+          "move": 2,
+          "sword": 2,
+          "skill": 1,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": [
+          {
+            "from": 6,
+            "to": 5
+          }
+        ]
+      },
+      {
+        "step": "approach",
+        "coach": "2 · 새 능력으로 돌파\n12/18\n✓ 불씨 화살 추출 · 공격 +3 합산\n새 힘을 들고 봉인실로\n\n공격 5를 확인하고 「이끼 서고」로 이동하세요. 새 메달은 버튼을 다시 누르지 않아도 자원에 합산됩니다.\n\n💬 대화\n×",
+        "toast": "불씨 화살 획득",
+        "location": "B2 · 이끼 회랑\nT03",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "6",
+            "text": "↙\n전투 · 돌 파편\n파편 회랑\n안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "11",
+            "text": "↘\n보물 · 이끼\n이끼 서고\n이동 1 · 무음",
+            "disabled": "false"
+          },
+          {
+            "id": "3",
+            "text": "↖\n회복 · 이끼\n이끼 쉼터\n안내 후 사용",
+            "disabled": "true"
+          }
+        ],
+        "label": "09-new-draw",
+        "turn": 3,
+        "hp": 22,
+        "gold": 7,
+        "pos": 7,
+        "noise": 3,
+        "countdown": null,
+        "resource": {
+          "move": 5,
+          "sword": 5,
+          "skill": 4,
+          "block": 0,
+          "quiet": 2,
+          "rattle": 1
+        },
+        "pursuits": [
+          {
+            "from": 5,
+            "to": 6
+          }
+        ]
+      },
+      {
+        "step": "guardian",
+        "coach": "2 · 새 능력으로 돌파\n13/18\n✓ 이끼 서고\n금화와 귀환 길을 함께 보세요\n\n상자를 열면 금화 5~7·소리 3. 닫아 두면 추가 소리가 남지 않습니다. 선택한 뒤 「회상의 봉인실」로 이동하세요.\n\n💬 대화\n×",
+        "toast": "이끼 서고 · 무음",
+        "location": "B3 · 이끼 서고\nT03",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "7",
+            "text": "↖\n빈 방 · 이끼\n이끼 회랑\n안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "10",
+            "text": "↙\n전투 · 돌바닥\n회상의 봉인실\n이동 1 · 소리 2",
+            "disabled": "false"
+          }
+        ],
+        "label": "10-optional-chest-decision",
+        "turn": 3,
+        "hp": 22,
+        "gold": 7,
+        "pos": 11,
+        "noise": 3,
+        "countdown": null,
+        "resource": {
+          "move": 4,
+          "sword": 5,
+          "skill": 4,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": [
+          {
+            "from": 5,
+            "to": 6
+          }
+        ]
+      },
+      {
+        "step": "guardian",
+        "coach": "2 · 새 능력으로 돌파\n13/18\n✓ 이끼 서고\n금화와 귀환 길을 함께 보세요\n\n상자는 이미 열었습니다. 「회상의 봉인실」로 이동해 수호자를 만나세요.\n\n💬 대화\n×",
+        "toast": "금화 +6 · 소리 3 → 경계 +2 · 적 1명 반응",
+        "location": "B3 · 이끼 서고\nT03",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "7",
+            "text": "↖\n빈 방 · 이끼\n이끼 회랑\n안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "10",
+            "text": "↙\n전투 · 돌바닥\n회상의 봉인실\n이동 1 · 소리 2",
+            "disabled": "false"
+          }
+        ],
+        "label": "11-opened-optional-chest",
+        "turn": 3,
+        "hp": 22,
+        "gold": 13,
+        "pos": 11,
+        "noise": 5,
+        "countdown": null,
+        "resource": {
+          "move": 4,
+          "sword": 5,
+          "skill": 4,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": [
+          {
+            "from": 5,
+            "to": 6
+          }
+        ]
+      },
+      {
+        "step": "forecast",
+        "coach": "3 · 예보를 보고 귀환17/18✓ 유물 획득 · 금고가 2턴을 기억합니다위험을 먼저 보고 고르세요미니맵을 여세요. 지금 턴을 마치면 이 방에 숨결 피해 4 예상. 예보를 읽고 「지도 확인 · 계속」을 누르세요.💬 대화×",
+        "toast": "첫 불씨 회수 · 귀환 14턴",
+        "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "6",
+            "text": "↖전투 · 돌 파편파편 회랑안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "11",
+            "text": "↗회수 완료 · 이끼이끼 서고안내 후 사용",
+            "disabled": "true"
+          }
+        ],
+        "label": "12-return-forecast",
+        "turn": 3,
+        "hp": 22,
+        "gold": 16,
+        "pos": 10,
+        "noise": 12,
+        "countdown": 14,
+        "resource": {
+          "move": 3,
+          "sword": 0,
+          "skill": 4,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": [
+          {
+            "from": 5,
+            "to": 6
+          }
+        ]
+      },
+      {
+        "step": "escape",
+        "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 지도와 예보를 확인했어요\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 14턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+        "toast": "첫 불씨 회수 · 귀환 14턴",
+        "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "6",
+            "text": "↖\n전투 · 돌 파편\n파편 회랑\n이동 1 · 소리 4",
+            "disabled": "false"
+          },
+          {
+            "id": "11",
+            "text": "↗\n회수 완료 · 이끼\n이끼 서고\n이동 1 · 소리 1",
+            "disabled": "false"
+          }
+        ],
+        "label": "13-return-choice",
+        "turn": 3,
+        "hp": 22,
+        "gold": 16,
+        "pos": 10,
+        "noise": 12,
+        "countdown": 14,
+        "resource": {
+          "move": 3,
+          "sword": 0,
+          "skill": 4,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": [
+          {
+            "from": 5,
+            "to": 6
+          }
+        ]
+      },
+      {
+        "step": "escape",
+        "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 지도와 예보를 확인했어요\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 14턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+        "toast": "첫 불씨 회수 · 귀환 14턴",
+        "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+        "dialogs": [
+          {
+            "id": "modal",
+            "mode": "lurePreview",
+            "text": "유인 · 적의 다음 한 칸\n돌멩이를 던지기 전에\n×\n\n이끼 서고 · 기술 1 · 소리 5\n\n보이는 적 1명이 턴 끝에 이동합니다.\n\n금고의 파수병\n\n파편 회랑 → 이끼 회랑\n\n이 유인 소리를 들음\n\n유인 후 추가 행동 없이 지금 위치에서 턴을 마칠 때의 예고입니다. 이후 움직이거나 다른 소리를 내면 추적 방향이 달라집니다.\n\n다른 방 선택\n이 방으로 유인 · 기술 1"
+          }
+        ],
+        "exits": [
+          {
+            "id": "6",
+            "text": "↖\n전투 · 돌 파편\n파편 회랑\n기술 1 · 소리 5",
+            "disabled": "false"
+          },
+          {
+            "id": "11",
+            "text": "↗\n회수 완료 · 이끼\n이끼 서고\n기술 1 · 소리 5",
+            "disabled": "false"
+          }
+        ],
+        "label": "14-return-lure-preview",
+        "turn": 3,
+        "hp": 22,
+        "gold": 16,
+        "pos": 10,
+        "noise": 12,
+        "countdown": 14,
+        "resource": {
+          "move": 3,
+          "sword": 0,
+          "skill": 4,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": [
+          {
+            "from": 5,
+            "to": 6
+          }
+        ]
+      },
+      {
+        "step": "escape",
+        "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 지도와 예보를 확인했어요\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 14턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+        "toast": "그 방에 돌멩이를 던졌습니다. 적은 턴 끝에 조사합니다. · 소리 5 · 적 1명 반응",
+        "location": "B3 · 회상의 봉인실\nT03 · 귀환 14턴",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "6",
+            "text": "↖\n전투 · 돌 파편\n파편 회랑\n이동 1 · 소리 4",
+            "disabled": "false"
+          },
+          {
+            "id": "11",
+            "text": "↗\n회수 완료 · 이끼\n이끼 서고\n이동 1 · 소리 1",
+            "disabled": "false"
+          }
+        ],
+        "label": "15-lure-confirmed",
+        "turn": 3,
+        "hp": 22,
+        "gold": 16,
+        "pos": 10,
+        "noise": 12,
+        "countdown": 14,
+        "resource": {
+          "move": 3,
+          "sword": 0,
+          "skill": 3,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": [
+          {
+            "from": 5,
+            "to": 6
+          }
+        ]
+      },
+      {
+        "step": "escape",
+        "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 금고의 파수병 파편 회랑 → 이끼 회랑 · 원래 방이 비었어요\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 13턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+        "toast": "그 방에 돌멩이를 던졌습니다. 적은 턴 끝에 조사합니다. · 소리 5 · 적 1명 반응",
+        "location": "B3 · 회상의 봉인실\nT04 · 귀환 13턴",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "6",
+            "text": "↖\n빈 방 · 돌 파편\n파편 회랑\n이동 1 · 소리 3",
+            "disabled": "false"
+          },
+          {
+            "id": "11",
+            "text": "↗\n회수 완료 · 이끼\n이끼 서고\n이동 1 · 무음",
+            "disabled": "false"
+          }
+        ],
+        "label": "16-waited-guard-move",
+        "turn": 4,
+        "hp": 18,
+        "gold": 16,
+        "pos": 10,
+        "noise": 4,
+        "countdown": 13,
+        "resource": {
+          "move": 5,
+          "sword": 5,
+          "skill": 1,
+          "block": 0,
+          "quiet": 2,
+          "rattle": 1
+        },
+        "pursuits": [
+          {
+            "from": 6,
+            "to": 7
+          }
+        ]
+      },
+      {
+        "step": "escape",
+        "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 금고의 파수병 파편 회랑 → 이끼 회랑 · 원래 방이 비었어요\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 13턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+        "toast": "파편 회랑 · 소리 3 → 경계 +2 · 들킨 기척 없음",
+        "location": "B2 · 파편 회랑\nT04 · 귀환 13턴",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "5",
+            "text": "↙\n빈 방 · 돌 파편\n부서진 무기고\n안내 후 사용",
+            "disabled": "true"
+          },
+          {
+            "id": "2",
+            "text": "↖\n빈 방 · 돌바닥\n돌의 갈림목\n이동 1 · 소리 2",
+            "disabled": "false"
+          },
+          {
+            "id": "7",
+            "text": "↗\n전투 · 이끼\n이끼 회랑\n이동 1 · 소리 1",
+            "disabled": "false"
+          },
+          {
+            "id": "10",
+            "text": "↘\n유물 회수 완료 · 돌바닥\n회상의 봉인실\n이동 1 · 소리 2",
+            "disabled": "false"
+          }
+        ],
+        "label": "17-return-room-6",
+        "turn": 4,
+        "hp": 18,
+        "gold": 16,
+        "pos": 6,
+        "noise": 6,
+        "countdown": 13,
+        "resource": {
+          "move": 4,
+          "sword": 5,
+          "skill": 1,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": [
+          {
+            "from": 6,
+            "to": 7
+          }
+        ]
+      },
+      {
+        "step": "escape",
+        "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 금고의 파수병 파편 회랑 → 이끼 회랑 · 원래 방이 비었어요\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 13턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+        "toast": "돌의 갈림목 · 소리 2 → 경계 +1 · 들킨 기척 없음",
+        "location": "B1 · 돌의 갈림목\nT04 · 귀환 13턴",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "1",
+            "text": "↙\n회수 완료 · 돌 파편\n망각의 창고\n이동 1 · 소리 4",
+            "disabled": "false"
+          },
+          {
+            "id": "6",
+            "text": "↘\n빈 방 · 돌 파편\n파편 회랑\n이동 1 · 소리 4",
+            "disabled": "false"
+          },
+          {
+            "id": "3",
+            "text": "↗\n회복 · 이끼\n이끼 쉼터\n이동 1 · 소리 1",
+            "disabled": "false"
+          }
+        ],
+        "label": "17-return-room-2",
+        "turn": 4,
+        "hp": 18,
+        "gold": 16,
+        "pos": 2,
+        "noise": 7,
+        "countdown": 13,
+        "resource": {
+          "move": 3,
+          "sword": 5,
+          "skill": 1,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": [
+          {
+            "from": 6,
+            "to": 7
+          }
+        ]
+      },
+      {
+        "step": "escape",
+        "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 금고의 파수병 파편 회랑 → 이끼 회랑 · 원래 방이 비었어요\n이번 귀환은 당신의 선택\n\n첫 불씨를 품고 입구로 돌아가 「탈출」하세요. 남은 13턴. 위험은 소리 지도에서 살피고, 막히면 「도움 보기」를 누르세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+        "toast": "망각의 창고 · 소리 4 → 경계 +2 · 들킨 기척 없음",
+        "location": "B1 · 망각의 창고\nT04 · 귀환 13턴",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "0",
+            "text": "↙\n귀환 · 돌바닥\n무너진 입구\n이동 1 · 소리 2",
+            "disabled": "false"
+          },
+          {
+            "id": "2",
+            "text": "↗\n빈 방 · 돌바닥\n돌의 갈림목\n이동 1 · 소리 2",
+            "disabled": "false"
+          },
+          {
+            "id": "5",
+            "text": "↘\n빈 방 · 돌 파편\n부서진 무기고\n안내 후 사용",
+            "disabled": "true"
+          }
+        ],
+        "label": "17-return-room-1",
+        "turn": 4,
+        "hp": 18,
+        "gold": 16,
+        "pos": 1,
+        "noise": 9,
+        "countdown": 13,
+        "resource": {
+          "move": 2,
+          "sword": 5,
+          "skill": 1,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": [
+          {
+            "from": 6,
+            "to": 7
+          }
+        ]
+      },
+      {
+        "step": "escape",
+        "coach": "3 · 예보를 보고 귀환\n18/18\n✓ 금고의 파수병 파편 회랑 → 이끼 회랑 · 원래 방이 비었어요\n이번 귀환은 당신의 선택\n\n입구에 돌아왔습니다. 「탈출」을 눌러 유물과 함께 탐험을 마치세요.\n\n도움 보기 · 막힐 때 펼치기\n💬 대화\n×",
+        "toast": "무너진 입구 · 소리 2 → 경계 +1 · 들킨 기척 없음",
+        "location": "B1 · 무너진 입구\nT04 · 귀환 13턴",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "1",
+            "text": "↗\n회수 완료 · 돌 파편\n망각의 창고\n이동 1 · 소리 4",
+            "disabled": "false"
+          }
+        ],
+        "label": "17-return-room-0",
+        "turn": 4,
+        "hp": 18,
+        "gold": 16,
+        "pos": 0,
+        "noise": 10,
+        "countdown": 13,
+        "resource": {
+          "move": 1,
+          "sword": 5,
+          "skill": 1,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": [
+          {
+            "from": 6,
+            "to": 7
+          }
+        ]
+      },
+      {
+        "step": "complete",
+        "coach": "첫 금고 털이 성공\n첫 불씨를 품고 돌아왔어요\n\nT1 → T4 · 받은 피해 4 · 숨결 비껴감 0 · 도달 1\n\n내 탐험 결산 →",
+        "toast": "탈출 성공!",
+        "location": "B1 · 무너진 입구\nT04 · 귀환 13턴",
+        "dialogs": [],
+        "exits": [
+          {
+            "id": "1",
+            "text": "↗회수 완료 · 돌 파편망각의 창고안내 후 사용",
+            "disabled": "true"
+          }
+        ],
+        "label": "18-independent-lure-escape",
+        "turn": 4,
+        "hp": 18,
+        "gold": 16,
+        "pos": 0,
+        "noise": 10,
+        "countdown": 13,
+        "resource": {
+          "move": 1,
+          "sword": 5,
+          "skill": 1,
+          "block": 0,
+          "quiet": 0,
+          "rattle": 0
+        },
+        "pursuits": [
+          {
+            "from": 6,
+            "to": 7
+          }
+        ]
+      },
+      {
+        "label": "recap",
+        "text": "첫 탐험 결산\n첫 불씨를 품고 돌아왔어요\n×\n\nT1 → T4 · 받은 피해 4 · 숨결 비껴감 0 · 도달 1\n\n첫 실전 목표 · 유물 하나와 함께 귀환\n\nB3의 달의 눈물부터 살펴보세요. 유물을 회수한 뒤에는 입구로 돌아와 「탈출」하면 됩니다.\n\n기존 탐험 계속\n첫 실전 준비하기 →\n18 / 22\n남은 체력\n16\n금화\n86\n점수\n돌멩이 뒤에 열린 길\n\n금고의 파수병이 자리를 옮긴 뒤, 파편 회랑을 적 없이 통과했어요.\n\n추출된 불씨 화살\n\n공격 +3 합산. 같은 턴 봉인의 수호자에게 5 피해를 줬어요.\n\n내가 고른 귀환길\n\n짧은 귀환길 · 이끼 서고 금화 +6 · 유물 회수 T3 → 탈출 T4, 귀환 4칸\n\n직접 선택해 완주한 귀환\n\n마지막 귀환에서는 다음 방을 가리키는 안내 없이 길을 골랐어요. 이번 행동 기록을 첫 실전에도 적용해 보세요.\n\n이번 회상은 기존 탐험과 최고 기록에 반영되지 않습니다. 첫 실전의 직업 선택에서 시작을 누르기 전까지 기존 탐험을 유지합니다."
+      }
+    ],
+    "later_change_scope": "Fourth causal return-lure recap highlight added after this browser replay; verified by engine tests."
+  },
+  "explicit_recovery_fixture": {
+    "result": "PASS",
+    "scope": "Explicit recovery fixture, not a normal play or learning test",
+    "legacy_completed_guided": true,
+    "first_preparation_button_and_escape_cancel_return_to_recap": true,
+    "main_reward_restored": true,
+    "main_and_best_unchanged": true,
+    "errors": []
+  }
+}
