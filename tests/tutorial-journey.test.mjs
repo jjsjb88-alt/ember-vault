@@ -8,7 +8,7 @@ function practice(){
  const perform=action=>{
   assert.ok(actions++<180,'practice must not get stuck in an action loop');
   assert.ok(tutorialAllows(index,action,s),`${TUTORIAL_STEPS[index]?.key} must allow ${JSON.stringify(action)}`);
-  if(action.type!=='panel'){const result=apply(s,action);assert.ok(result.ok,`${TUTORIAL_STEPS[index]?.key}: ${result.message}`);}
+  if(!['panel','tutorialContinue'].includes(action.type)){const result=apply(s,action);assert.ok(result.ok,`${TUTORIAL_STEPS[index]?.key}: ${result.message}`);}
   index=tutorialAdvance(index,action,s);assert.ok(validSave(s));return s;
  };
  const can=action=>tutorialAllows(index,action,s)&&apply(JSON.parse(JSON.stringify(s)),action).ok;
@@ -30,7 +30,7 @@ function practice(){
 
 function recruit(){
  const p=practice();
- for(const action of [{type:'move',id:1},{type:'interact'},{type:'panel',id:'sound'},{type:'hide'},{type:'lure',id:5}])p.perform(action);
+ for(const action of [{type:'move',id:1},{type:'interact'},{type:'panel',id:'sound'},{type:'tutorialContinue',id:'sound'},{type:'hide'},{type:'lure',id:5}])p.perform(action);
  assert.equal(p.key,'wait-lure');assert.equal(p.s.rooms[6].enemy.target,5);assert.equal(p.s.rooms[5].enemy,null);
  p.perform({type:'end'});assert.equal(p.s.rooms[6].enemy,null);assert.equal(p.s.rooms[5].enemy.home,6);assert.equal(p.s.hp,22);
  for(const id of [2,6,7])p.move(id);
@@ -41,7 +41,7 @@ function recruit(){
  return p;
 }
 
-function recover({chest=false,reward=0,mode='walk',extraTurns=0}={}){
+function recover({chest=false,reward=0,mode='walk',extraTurns=0,confirmForecast=true}={}){
  const p=recruit();
  for(let i=0;i<extraTurns;i++)p.perform({type:'end'});
  p.perform({type:'mode',id:mode});p.move(11);
@@ -54,7 +54,8 @@ function recover({chest=false,reward=0,mode='walk',extraTurns=0}={}){
  }
  assert.equal(p.key,'reward');p.perform(reward==='skip'?{type:'skipReward'}:{type:'reward',id:p.s.pending.options[reward]});
  p.perform({type:'interact'});assert.equal(p.key,'forecast');assert.equal(p.s.relic.name,'첫 불씨');assert.equal(p.s.countdown,14);assert.equal(p.s.memory,1);
- p.perform({type:'panel',id:'sound'});assert.equal(p.key,'escape');
+ p.perform({type:'panel',id:'sound'});assert.equal(p.key,'forecast','opening the forecast leaves time to read');
+ if(confirmForecast){p.perform({type:'tutorialContinue',id:'forecast'});assert.equal(p.key,'escape');}
  return p;
 }
 
@@ -141,3 +142,23 @@ test('waiting before relic recovery can bring the patrol in without locking comb
  p.perform({type:'reward',id:p.s.pending.options[0]});assert.equal(p.key,'relic');p.perform({type:'interact'});assert.equal(p.key,'forecast');
 });
 
+
+test('sound and forecast remain observable until explicit confirmation, and stale confirmation cannot skip a lesson',()=>{
+ const sound=practice();sound.perform({type:'move',id:1});sound.perform({type:'interact'});
+ const forecast=recover({confirmForecast:false});
+ for(const p of [sound,forecast]){
+  const key=p.key,index=p.index,before=JSON.stringify(p.s);
+  assert.ok(['sound','forecast'].includes(key));assert.equal(TUTORIAL_STEPS[index].observe,true);
+  for(let opened=0;opened<3;opened++){
+   p.perform({type:'panel',id:'sound'});assert.equal(p.index,index);
+   assert.equal(tutorialAdvance(index,{type:'panel',id:'routes'},p.s),index,'closing the map is presentation only');
+  }
+  assert.equal(JSON.stringify(p.s),before,'reading or closing a map must not consume time or resources');
+  const wrong={type:'tutorialContinue',id:key==='sound'?'forecast':'sound'};
+  assert.equal(tutorialAllows(index,wrong,p.s),false);assert.equal(tutorialAdvance(index,wrong,p.s),index);
+  const confirm={type:'tutorialContinue',id:key};p.perform(confirm);assert.equal(p.index,index+1);
+  assert.equal(tutorialAllows(p.index,confirm,p.s),false,'an old map button is not a valid command for the next lesson');
+  assert.equal(tutorialAdvance(p.index,confirm,p.s),p.index,'double activation must advance exactly once');
+  assert.equal(JSON.stringify(p.s),before,'confirmation changes lesson progress, not the expedition');
+ }
+});

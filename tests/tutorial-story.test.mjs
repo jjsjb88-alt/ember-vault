@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,TUTORIAL_DONE,TUTOR_NAME} from '../dist/tutorial.js';
+import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,TUTORIAL_DONE,TUTOR_NAME,createTutorialRun,tutorialMapLesson,tutorialTargets,tutorialActionReason} from '../dist/tutorial.js';
 import {makeQueue,typeDuration} from '../dist/cutscene.js';
 
 const ok=talk=>Array.isArray(talk)&&talk.length&&talk.every(([who,line])=>who&&line&&!/연습|튜토리얼/.test(line));
@@ -30,4 +30,17 @@ test('the prologue shows why medals fall each breath without lecturing',()=>{
 test('cutscenes play in the order they were queued; typing time grows with the line',()=>{
  const q=makeQueue();q.push('a');q.push('b');assert.equal(q.next(),'a');assert.equal(q.next(),'b');assert.equal(q.next(),null);
  assert.ok(typeDuration('가나다라')>typeDuration('가'));assert.ok(typeDuration('x'.repeat(70))<2500,'a full line types in under 2.5 s');
+});
+test('map lessons have a short reading prompt and an explicit, stage-specific continue target',()=>{
+ const s=createTutorialRun();
+ assert.deepEqual(TUTORIAL_STEPS.filter(step=>step.observe).map(step=>step.key),['sound','forecast']);
+ for(const key of ['sound','forecast']){
+  const index=TUTORIAL_STEPS.findIndex(step=>step.key===key),lesson=tutorialMapLesson(index,s);
+  assert.equal(lesson.key,key);assert.equal(lesson.continueLabel,'지도 확인 · 계속');assert.ok(lesson.text.length<50);
+  assert.equal(tutorialTargets(index,s),'#mapToggle');assert.equal(tutorialTargets(index,s,{mapOpen:true}),`[data-act="tutorialContinue"][data-id="${key}"]`);
+ }
+ assert.equal(tutorialMapLesson(0,s),null);
+ const walk=TUTORIAL_STEPS.findIndex(step=>step.key==='pass-junction');
+ assert.match(tutorialActionReason(walk,{type:'mode',id:'rush'},s),/지금은 걷기/);
+ assert.equal(tutorialActionReason(walk,{type:'mode',id:'walk'},s),'');
 });

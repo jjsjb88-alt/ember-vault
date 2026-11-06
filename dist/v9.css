@@ -29,3 +29,55 @@ body:not(.tutorial-mode) .travel-hint{top:180px}
 @media(max-width:900px) and (orientation:landscape){.scene-exit{width:143px;min-height:56px}.route-tag{font-size:8px}.expedition-goal{top:73px;left:12px;padding:5px 8px;max-width:295px}.expedition-goal strong{font-size:10px}.expedition-goal small{font-size:9px}.expedition-goal em{font-size:8px}.tutorial-coach{padding-top:7px;padding-bottom:7px}.tutorial-coach>strong{font-size:13px}.tutorial-coach p{font-size:11px;line-height:1.4}.coach-feedback{font-size:9px;margin:2px 0}}
 @media(max-width:559px){.scene-exit{width:123px;min-height:61px;padding:5px 4px}.route-tag{font-size:8px}.exit-info strong{font-size:10px}.exit-info small{font-size:8px}.expedition-goal{left:10px;top:85px;width:calc(100% - 140px);padding:6px 7px;gap:5px}.objective-mark{font-size:19px}.expedition-goal strong{font-size:10px}.expedition-goal small{font-size:9px}.expedition-goal em{font-size:8px;line-height:1.5}.tutorial-coach>strong{font-size:14px}.tutorial-coach p{font-size:12px}.coach-count{font-size:10px}}
 @media(max-height:350px) and (orientation:landscape){.expedition-goal{top:58px;max-width:280px}.expedition-goal em{display:none}.scene-exit{min-height:50px}.route-tag{font-size:7px}.tutorial-coach{padding:5px 30px 6px 9px}.tutorial-coach .coach-head{gap:2px 7px;margin:0}.coach-feedback{display:none}.tutorial-coach>strong{font-size:12px}.tutorial-coach p{font-size:10px}.coach-dots i{height:2px}}
+
+/* Reading the map is a separate tutorial view: its information stays lit and its controls
+   sit beside the map, rather than covering rooms or competing with the action dock. */
+body.tutorial-map-reading .coach-spot,
+body.tutorial-map-reading #tutorialCoach,
+body.tutorial-map-reading .play-surface .combat-bar,
+body.tutorial-map-reading .play-dock{display:none!important}
+body.tutorial-map-reading .play-surface{--reading-report-width:clamp(250px,36vw,320px)}
+body.tutorial-map-reading .map-open #dungeon{position:absolute;left:0;top:48px;width:calc(100% - var(--reading-report-width) - 24px);height:calc(100% - 60px)}
+body.tutorial-map-reading .map-open .hud-minimap{top:8px;right:calc(var(--reading-report-width) + 24px);width:98px;height:34px;opacity:1}
+body.tutorial-map-reading .map-instructions{left:12px;top:13px;max-width:calc(100% - var(--reading-report-width) - 144px);font-size:11px;line-height:1.4}
+body.tutorial-map-reading .map-report{display:flex;flex-direction:column;top:8px;right:12px;bottom:12px;left:auto;width:var(--reading-report-width);height:auto;min-height:0;padding:10px;overflow:hidden;border:1px solid #6d7563;background:#0b1c27}
+body.tutorial-map-reading .map-report-title{flex:none;font-size:14px;line-height:1.4;margin:0}
+body.tutorial-map-reading .map-legend{position:static;display:flex;flex:none;flex-wrap:wrap;gap:3px 8px;margin:4px 0 8px;font-size:9px;line-height:1.4}
+body.tutorial-map-reading #dangerPanel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:none;grid-auto-rows:min-content;gap:6px 8px;align-content:start;flex:1;min-height:0;height:auto;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+body.tutorial-map-reading .map-report .last-sound{grid-column:1;grid-row:auto;border:0;margin:0;padding:0;font-size:11px;line-height:1.4;overflow-wrap:anywhere}
+body.tutorial-map-reading .map-report .last-sound small{font-size:10px;line-height:1.4}
+body.tutorial-map-reading .map-report .enemy-report{grid-column:2;grid-row:auto;align-items:start;padding:0;min-width:0}
+body.tutorial-map-reading .map-report .listening-enemies>div{gap:4px;padding:0;font-size:10px;line-height:1.4}
+body.tutorial-map-reading .map-report .listening-enemies small{font-size:9px;line-height:1.4}
+body.tutorial-map-reading .map-report .alert-eye{display:none}
+body.tutorial-map-reading .map-report .silence-note{padding:0;font-size:10px;line-height:1.4}
+body.tutorial-map-reading .map-report .enemy-next{font-size:9px;width:36px;height:28px;min-height:28px}
+body.tutorial-map-reading .map-report .breath-forecast,
+body.tutorial-map-reading .map-report .map-risk{grid-column:1/-1;width:auto;margin:0;padding:6px 0 0}
+body.tutorial-map-reading .breath-forecast strong{font-size:11px;line-height:1.45}
+body.tutorial-map-reading .breath-forecast small{font-size:10px;line-height:1.45}
+.tutorial-map-lesson{display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:4px 8px;flex:none;margin-top:8px;padding-top:8px;border-top:1px solid #b99b5d;color:#e6d9b6}
+.tutorial-map-lesson[hidden]{display:none}
+.map-lesson-head{display:flex;flex-wrap:wrap;gap:2px 6px;align-items:baseline;min-width:0}
+.map-lesson-head strong{font-size:11px;line-height:1.4;color:#f3d28d}
+.map-lesson-head span{font-size:9px;color:#a7bec2;white-space:nowrap}
+.map-lesson-copy{grid-column:1;margin:0;font-size:10px;line-height:1.45;word-break:keep-all;overflow-wrap:anywhere}
+.tutorial-map-lesson button{grid-column:2;grid-row:1/3;align-self:center;width:112px;min-height:44px;padding:6px;font-size:11px;line-height:1.4;color:#fff0c0;border:1px solid #c6a45e;background:#263b3d;touch-action:manipulation}
+.tutorial-map-lesson button:focus-visible{outline:2px solid #fff2b9;outline-offset:2px}
+@media(max-width:559px){
+ body.tutorial-map-reading .play-surface{--reading-report-height:clamp(250px,38vh,330px)}
+ body.tutorial-map-reading .map-open #dungeon{top:48px;left:0;width:100%;height:calc(100% - var(--reading-report-height) - 72px)}
+ body.tutorial-map-reading .map-open .hud-minimap{top:8px;right:12px;height:34px;width:98px}
+ body.tutorial-map-reading .map-instructions{left:12px;top:13px;max-width:calc(100% - 132px);font-size:11px}
+ body.tutorial-map-reading .map-report{left:12px;right:12px;top:auto;bottom:12px;width:auto;height:var(--reading-report-height);padding:10px}
+ body.tutorial-map-reading .map-legend{gap:3px 8px}
+ .map-lesson-head strong{font-size:12px}
+ .map-lesson-copy{font-size:11px}
+}
+.tutorial-storage-note{display:block;font-size:11px;line-height:1.55;color:#ffe0a5;border-left:2px solid #cfa65d;background:#33261666;margin:9px 0;padding:7px 10px;word-break:keep-all;overflow-wrap:anywhere}
+.lure-warning{padding:10px 12px;margin:12px 0;border:1px solid #aa713f;background:#3a2619;color:#ffd4a7;font-size:12px;line-height:1.6;word-break:keep-all;overflow-wrap:anywhere}
+.lure-forecast-list{list-style:none;margin:12px 0;padding:0;display:grid;gap:8px}
+.lure-forecast-list li{padding:10px 12px;border:1px solid #536e69;background:#0d252c;color:#ccdbd7;font-size:12px;line-height:1.55;word-break:keep-all;overflow-wrap:anywhere}
+.lure-forecast-list strong{display:block;color:#f0d394;font-size:12px;margin-bottom:3px}
+.lure-forecast-list p{margin:4px 0 0;color:#b4c8ca;font-size:11px;line-height:1.55}
+@media(max-width:559px){.lure-warning,.lure-forecast-list li{padding:8px 10px}.lure-forecast-list{gap:6px}}

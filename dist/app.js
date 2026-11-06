@@ -1,20 +1,24 @@
-import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,breathPlan} from './engine.js?v=20261106b';
-import {paintIcons} from './art.js?v=20261106b';
-import {makeRenderer} from './scene-v5.js?v=20261106b';
-import {makePoolReveal} from './pool-reveal.js?v=20261106b';
-import {pageOf,pager} from './pages.js?v=20261106b';
-import {exitAnchor} from './scene-layout.js?v=20261106b';
-import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261106b';
-import {makeNoiseMoment} from './noise-moment.js?v=20261106b';
-import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,createTutorialRun,tutorialAllows,tutorialAdvance,tutorialChapter,tutorialTargets,tutorialHint} from './tutorial.js?v=20261106b';
-import {makeCutscene} from './cutscene.js?v=20261106b';
-import {returnRoute,routeAdvice} from './strategy.js?v=20261106b';
-import {createTutorialJournal,recordTutorialAction,tutorialRecap} from './tutorial-journal.js?v=20261106b';
+import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,breathPlan} from './engine.js?v=20261106c';
+import {paintIcons} from './art.js?v=20261106c';
+import {makeRenderer} from './scene-v5.js?v=20261106c';
+import {makePoolReveal} from './pool-reveal.js?v=20261106c';
+import {pageOf,pager} from './pages.js?v=20261106c';
+import {exitAnchor} from './scene-layout.js?v=20261106c';
+import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261106c';
+import {makeNoiseMoment} from './noise-moment.js?v=20261106c';
+import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,createTutorialRun,tutorialAllows,tutorialAdvance,tutorialChapter,tutorialTargets,tutorialHint,tutorialMapLesson,tutorialActionReason} from './tutorial.js?v=20261106c';
+import {makeCutscene} from './cutscene.js?v=20261106c';
+import {returnRoute,routeAdvice,lureForecast} from './strategy.js?v=20261106c';
+import {createTutorialJournal,recordTutorialAction,tutorialRecap} from './tutorial-journal.js?v=20261106c';
+import {loadTutorialProgress,saveTutorialProgress,clearTutorialProgress} from './tutorial-storage.js?v=20261106c';
 const $=s=>document.querySelector(s),SAVE_KEY='ember-vault-save-v2',BEST_KEY='ember-vault-best-v1';
 let state,storageOK=true,best=0,sound=false,selectedRole='rogue',dialogMode='',lastFocus=null,toastTimer,audio,migrated=false,loadedRun=false,fastDraw=false;
 try{let saved=JSON.parse(localStorage.getItem(SAVE_KEY));if(!validSave(saved)){const prior=JSON.parse(localStorage.getItem('ember-vault-save-v1'));if(prior){saved=migrateSave(prior);migrated=!!saved;}}loadedRun=validSave(saved);state=loadedRun?saved:newRun();best=Number(localStorage.getItem(BEST_KEY))||0;sound=localStorage.getItem('ember-vault-sound')==='on';fastDraw=localStorage.getItem('ember-vault-fast-draw')==='on';}catch{state=newRun();storageOK=false;}
-let handPage=0,enemyPage=0,lureMode=false,travelUntil=0,actionBusy=false,tutorial=null,tutorialSeen=false,mapOpen=false,modeOpen=false;
+let handPage=0,enemyPage=0,lureMode=false,travelUntil=0,actionBusy=false,tutorial=null,tutorialSeen=false,mapOpen=false,modeOpen=false,lurePreviewTarget=null;
+let storedTutorial=null,tutorialStorageOK=true,tutorialRecoveryNotice='';
 try{tutorialSeen=!!localStorage.getItem('ember-vault-tutorial-v1');}catch{}
+try{const recovered=loadTutorialProgress(localStorage);storedTutorial=recovered.progress;tutorialStorageOK=recovered.status!=='unavailable';if(recovered.status==='invalid')tutorialRecoveryNotice='이전 연습 기록을 읽지 못했습니다. 본게임 저장은 유지되며 연습을 새로 시작할 수 있어요.';}catch{tutorialStorageOK=false;}
+if(!tutorialStorageOK)tutorialRecoveryNotice='이 브라우저에서는 연습 기록을 읽거나 저장할 수 없어요. 연습은 플레이할 수 있지만 새로고침하면 최근 진행을 잃을 수 있습니다.';
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const portrait=(role,cls='')=>`<span class="portrait ${role} ${cls}" role="img" aria-label="${ROLES[role].name} 초상화"></span>`;
 // 연습 대사는 컷신으로: 말하는 쪽 초상(깜부기 = 등불 속 잿불, 도적 = 연습 직업 초상)
@@ -80,9 +84,41 @@ function renderInteraction(ra){
  $('.hud-location')?.setAttribute('title',state.relic?`유물 회수 완료 · ${state.countdown}턴 안에 입구로`:'유물 하나를 회수하고 입구로 돌아오세요');
 }
 function markTutorial(value){tutorialSeen=true;try{localStorage.setItem('ember-vault-tutorial-v1',value);}catch{}}
+// Save the committed action immediately, before any animation finishes. A reload must not
+// repeat a purchase, battle reward, or relic collection that the engine has already applied.
+function persistTutorial({action=null,feedback,paused=false}={}){
+ if(!tutorial)return;
+ const index=action?tutorialAdvance(tutorial.index,action,state):tutorial.index;
+ const checkpoint=index!==tutorial.index&&TUTORIAL_STEPS[index]?.checkpoint?JSON.stringify({state,journal:tutorial.journal,index}):tutorial.checkpoint;
+ const progress={state,index,journal:tutorial.journal,checkpoint,feedback:feedback??tutorial.feedback,mapOpen,paused};
+ storedTutorial=structuredClone(progress);
+ try{tutorialStorageOK=saveTutorialProgress(localStorage,progress).ok;}catch{tutorialStorageOK=false;}
+}
+function clearTutorialRecord(){
+ storedTutorial=null;try{tutorialStorageOK=clearTutorialProgress(localStorage);}catch{tutorialStorageOK=false;}
+}
+function showTutorialResume(){
+ if(!storedTutorial)return showTutorialIntro();
+ const p=storedTutorial,step=TUTORIAL_STEPS[p.index],description=p.state.phase==='won'?'탈출 완료 · 탐험 결산을 확인할 수 있어요':p.state.phase==='lost'?'탐험 종료 · 저장한 선택 전 장면에서 다시 도전할 수 있어요':`${p.index+1}/${TUTORIAL_STEPS.length} · ${step?.title||'첫 금고 털이'} · ${p.state.rooms[p.state.pos].name}`;
+ openModal(modalShell('중단한 첫 탐험이 있어요','튜토리얼 이어하기',`<p class="modal-sub">${esc(description)}</p><p class="modal-sub">이어서 시작하면 남은 자원과 선택을 그대로 복원합니다. 「처음부터」는 이 연습만 새로 시작합니다. 본게임과 최고 기록은 유지됩니다.</p>${!tutorialStorageOK?'<p class="tutorial-storage-note">이 브라우저에서는 연습 저장이 되지 않습니다. 현재 페이지를 닫으면 최근 진행을 잃을 수 있어요.</p>':''}<div class="modal-actions"><button class="subtle-button" data-act="tutorialKeepMain">기존 탐험 계속</button><button class="subtle-button" data-act="tutorialRestart">처음부터 다시</button><button class="large-button" data-act="tutorialResume">이어서 플레이 →</button></div>`),'tutorialResume');
+}
+function resumeTutorial(){
+ if(!storedTutorial)return;
+ const p=structuredClone(storedTutorial);
+ cutscene.clear();tutorial={saved:state,index:p.index,feedback:p.feedback||'중단한 곳에서 이어갑니다',checkpoint:p.checkpoint,journal:p.journal};state=p.state;
+ handPage=0;enemyPage=0;lureMode=false;travelUntil=0;actionBusy=false;talkShown=p.index;renderer.reset();
+ $('#modal').close();dialogMode='';document.body.classList.add('tutorial-mode');selectPanel(p.mapOpen?'sound':'routes');render();persistTutorial();
+ if(state.pending)pendingModal();else if(state.phase==='lost')showTutorialLoss();
+}
+function keepMainExpedition(){
+ if(storedTutorial){storedTutorial.paused=true;try{tutorialStorageOK=saveTutorialProgress(localStorage,storedTutorial).ok;}catch{tutorialStorageOK=false;}}
+ markTutorial('seen');closeModal();
+ if(state.pending)pendingModal();else if(state.phase!=='playing')showResult();
+}
 function showTutorialIntro(){
  if(tutorial)return;
- openModal(modalShell('첫 불씨를 훔쳐 돌아오세요','깜부기와 첫 금고 털이',`<div class="tutorial-intro"><img src="./assets/noise-seal-v6.png" alt="갈라진 소음의 봉인"><div><p>목표는 하나. <b>유물을 품고 입구로 살아 돌아오는 것.</b></p><p>깜부기와 소리를 다루는 법을 익히고, 마지막 갈림길은 직접 고릅니다. 지금 탐험과 최고 기록은 그대로 남습니다.</p><ol class="practice-chapters"><li><b>힘과 소리</b><span>숨죽이고, 유인으로 길 열기</span></li><li><b>위기 다루기</b><span>새 능력을 뽑아 수호자 돌파</span></li><li><b>선택과 귀환</b><span>숨결을 예측하고 내 길로 귀환</span></li></ol><label><input id="tutorialAudio" type="checkbox" checked> 효과음과 함께 연습</label><small>${TUTORIAL_STEPS.length}단계 · 대화는 언제든 건너뛰거나 다시 볼 수 있어요</small></div></div><div class="modal-actions"><button class="subtle-button" data-act="tutorialSkip">바로 탐험하기</button><button class="large-button" data-act="tutorialStart">첫 금고 털이 시작 →</button></div>`),'tutorialIntro');
+ if(storedTutorial)return showTutorialResume();
+ openModal(modalShell('첫 불씨를 훔쳐 돌아오세요','깜부기와 첫 금고 털이',`<div class="tutorial-intro"><img src="./assets/noise-seal-v6.png" alt="갈라진 소음의 봉인"><div><p>목표는 하나. <b>유물을 품고 입구로 살아 돌아오는 것.</b></p><p>깜부기와 소리를 다루는 법을 익히고, 마지막 갈림길은 직접 고릅니다. 지금 탐험과 최고 기록은 그대로 남습니다.</p><ol class="practice-chapters"><li><b>힘과 소리</b><span>숨죽이고, 유인으로 길 열기</span></li><li><b>위기 다루기</b><span>새 능력을 뽑아 수호자 돌파</span></li><li><b>선택과 귀환</b><span>숨결을 예측하고 내 길로 귀환</span></li></ol><label><input id="tutorialAudio" type="checkbox" checked> 효과음과 함께 연습</label><small>${TUTORIAL_STEPS.length}단계 · ${tutorialStorageOK?'진행은 자동 저장되어 이어할 수 있어요':'이 브라우저에서는 저장할 수 없어 새로고침하면 처음부터 시작해요'}</small>${tutorialRecoveryNotice?`<p class="tutorial-storage-note">${esc(tutorialRecoveryNotice)}</p>`:''}</div></div><div class="modal-actions"><button class="subtle-button" data-act="tutorialSkip">바로 탐험하기</button><button class="large-button" data-act="tutorialStart">첫 금고 털이 시작 →</button></div>`),'tutorialIntro');
 }
 function startTutorial(){
  const withAudio=$('#tutorialAudio')?.checked;
@@ -91,36 +127,41 @@ function startTutorial(){
  $('#modal').close();dialogMode='';document.body.classList.add('tutorial-mode');talkShown=-1;
  // 프롤로그: 왜 메달이 열리는가 → 첫 추출 → 1단계 대사
  cutscene.play(TUTORIAL_PROLOGUE,()=>{if(tutorial)poolReveal.start(state,{fast:false,holdNoise:true});});
- selectPanel('routes');render();
+ selectPanel('routes');render();persistTutorial();
 }
 function exitTutorial(){
- if(!tutorial)return;cutscene.clear();talkShown=-1;const completed=tutorial.index>=TUTORIAL_STEPS.length,recap=completed?tutorialRecap(state,tutorial.journal):null;state=tutorial.saved;tutorial=null;
+ if(!tutorial)return;cutscene.clear();talkShown=-1;const completed=tutorial.index>=TUTORIAL_STEPS.length,recap=completed?tutorialRecap(state,tutorial.journal):null;if(completed)clearTutorialRecord();else persistTutorial({paused:true});state=tutorial.saved;tutorial=null;
  document.body.classList.remove('tutorial-mode');markTutorial(completed?'completed':'seen');renderer.reset();lureMode=false;handPage=0;enemyPage=0;travelUntil=0;
- $('#modal').close();dialogMode='';selectPanel('routes');render();save();if(completed)showBriefing(recap);else toast('원래 탐험으로 돌아왔습니다.');
+ $('#modal').close();dialogMode='';selectPanel('routes');render();save();if(completed)showBriefing(recap);else{if(state.pending)pendingModal();else if(state.phase!=='playing')showResult();toast(tutorialStorageOK?'연습을 저장했어요. 메뉴에서 이어갈 수 있습니다.':'현재 페이지에서는 이어할 수 있지만 새로고침하면 최근 연습을 잃을 수 있어요.');}
 }
 function showBriefing(recap){
  openModal(modalShell(esc(recap.title),'첫 탐험 결산',`<p class="modal-sub">${esc(recap.subtitle)}</p><div class="tutorial-results">${recap.stats.map(({label,value})=>`<div><strong>${esc(value)}</strong><small>${esc(label)}</small></div>`).join('')}</div><div class="briefing tutorial-reflection">${recap.highlights.map(({title,text})=>`<div><strong>${esc(title)}</strong><p>${esc(text)}</p></div>`).join('')}</div><p class="tutorial-next">다음 탐험은 20개 방. 얕은 유물부터 귀환하거나 B5의 56점 유물에 도전하세요. B5 윈치는 기술 2·소리 6으로 귀환길을 엽니다.</p><p class="recap-save-note">이번 회상은 기존 탐험과 최고 기록에 반영되지 않습니다.</p><div class="modal-actions"><button class="subtle-button" data-act="close">기존 탐험 계속</button><button class="large-button" data-act="new">20개 방으로 새 탐험 →</button></div>`),'briefing');
 }
 function renderTutorial(){
  const coach=$('#tutorialCoach');document.querySelectorAll('.coach-target').forEach(e=>e.classList.remove('coach-target'));
- coach.hidden=!tutorial;if(!tutorial)return;
+ const reading=!!tutorial&&mapOpen,lesson=reading?tutorialMapLesson(tutorial.index,state):null,lessonBox=$('#tutorialMapLesson');
+ document.body.classList.toggle('tutorial-map-reading',reading);coach.hidden=!tutorial||reading;
+ lessonBox.hidden=!lesson;
+ if(lesson)lessonBox.innerHTML=`<div class="map-lesson-head"><strong>${esc(lesson.title)}</strong><span>${esc(lesson.count)}</span></div><p class="map-lesson-copy">${esc(lesson.text)}</p><button data-act="tutorialContinue" data-id="${esc(lesson.key)}">${esc(lesson.continueLabel)}</button>`;
+ $('#mapInstructions').textContent=lesson?'소리·적·메아리를 살펴보세요. 아래에서 확인하면 계속합니다.':'연결된 금빛 방을 누르면 이동합니다.';
+ if(!tutorial)return;
  const step=TUTORIAL_STEPS[tutorial.index];coach.dataset.step=String(tutorial.index+1);coach.dataset.stepKey=step?.key||'complete';
  const dots=TUTORIAL_STEPS.map((_,i)=>`<i class="${i<tutorial.index?'done':i===tutorial.index?'now':''}"></i>`).join('');
  if(talkShown!==tutorial.index){talkShown=tutorial.index;const lines=step?step.talk:tutorialRecap(state,tutorial.journal).talk;if(!step||step.autoTalk)setTimeout(()=>{if(tutorial&&talkShown===tutorial.index)cutscene.play(lines);},0);}
  if(!step){const recap=tutorialRecap(state,tutorial.journal);coach.innerHTML=`<div class="coach-head"><span>첫 금고 털이 성공</span><span class="coach-dots" aria-hidden="true">${dots}</span></div><strong>${esc(recap.title)}</strong><p>${esc(recap.subtitle)}</p><button data-act="tutorialExit">내 탐험 결산 →</button>`;return;}
  const resourceHint=tutorialHint(tutorial.index,state);
- coach.innerHTML=`<div class="coach-head"><span>${tutorialChapter(tutorial.index)}</span><span class="coach-count">${tutorial.index+1}/${TUTORIAL_STEPS.length}</span><span class="coach-dots" role="progressbar" aria-label="연습 진행" aria-valuenow="${tutorial.index}" aria-valuemin="0" aria-valuemax="${TUTORIAL_STEPS.length}">${dots}</span></div>${tutorial.feedback?`<span class="coach-feedback">✓ ${esc(tutorial.feedback)}</span>`:''}<strong>${step.title}</strong><p>${resourceHint}</p><button class="coach-replay" data-act="tutorialReplay" aria-label="깜부기의 대화 보기">💬 대화</button><button class="tutorial-leave" data-act="tutorialExit" aria-label="연습 끝내고 원래 탐험으로">×</button>`;
- let target=tutorialTargets(tutorial.index,state);
+ coach.innerHTML=`<div class="coach-head"><span>${tutorialChapter(tutorial.index)}</span><span class="coach-count">${tutorial.index+1}/${TUTORIAL_STEPS.length}</span><span class="coach-dots" role="progressbar" aria-label="연습 진행" aria-valuenow="${tutorial.index}" aria-valuemin="0" aria-valuemax="${TUTORIAL_STEPS.length}">${dots}</span></div>${tutorial.feedback?`<span class="coach-feedback">✓ ${esc(tutorial.feedback)}</span>`:''}<strong>${step.title}</strong><p>${resourceHint}</p>${!tutorialStorageOK?'<small class="tutorial-storage-note">저장할 수 없어요. 새로고침하면 최근 진행을 잃을 수 있습니다.</small>':''}<button class="coach-replay" data-act="tutorialReplay" aria-label="깜부기의 대화 보기">💬 대화</button><button class="tutorial-leave" data-act="tutorialExit" aria-label="연습 저장하고 원래 탐험으로">×</button>`;
+ if(reading)return;
+ let target=tutorialTargets(tutorial.index,state,{mapOpen});
  if(step.action==='lure')target=mapOpen?'#mapToggle':!lureMode?'#lureToggle':`.scene-exit[data-id="${step.id}"]`;
  if(step.mode&&state.mode!==step.mode)target=modeOpen?`[data-act="mode"][data-id="${step.mode}"]`:'#stanceToggle';
- if(mapOpen&&step.action!=='panel')target='#mapToggle';
  if(target)document.querySelectorAll(target).forEach(e=>e.classList.add('coach-target'));
 }
 // 연습 스포트라이트: 지금 눌러야 할 곳만 밝히고 나머지는 어둡게. 클릭은 막지 않는다(틀린 행동은 안내로 돌려보냄).
 const coachSpot=document.createElement('div');coachSpot.className='coach-spot';coachSpot.hidden=true;coachSpot.setAttribute('aria-hidden','true');document.body.appendChild(coachSpot);let coachShift=0,coachShiftX=0;
 (function spotLoop(){
  let show=false;
- if(tutorial&&!document.querySelector('dialog[open]')){
+ if(tutorial&&!mapOpen&&!document.querySelector('dialog[open]')){
   let l=Infinity,t=Infinity,r=-Infinity,b=-Infinity;const boxes=[];
   for(const e of document.querySelectorAll('.coach-target')){const q=e.getBoundingClientRect();if(!q.width||!q.height)continue;boxes.push(q);l=Math.min(l,q.left);t=Math.min(t,q.top);r=Math.max(r,q.right);b=Math.max(b,q.bottom);}
   // Keep the entire guide out of the current controls, including its replay/close buttons.
@@ -143,11 +184,12 @@ function advanceTutorial(action,feedback='소리 지도를 확인했어요'){
  if(!tutorial)return;const before=tutorial.index;tutorial.index=tutorialAdvance(tutorial.index,action,state);
  if(before!==tutorial.index){tutorial.feedback=feedback;if(TUTORIAL_STEPS[tutorial.index]?.checkpoint)tutorial.checkpoint=JSON.stringify({state,journal:tutorial.journal,index:tutorial.index});}
  else if(feedback&&action.type==='end')tutorial.feedback=feedback;
- renderTutorial();
+ persistTutorial();renderTutorial();
 }
 function retryTutorialChoice(){
- if(!tutorial?.checkpoint)return;cutscene.clear();const retries=(tutorial.journal.retryCount||0)+1,checkpoint=JSON.parse(tutorial.checkpoint);state=checkpoint.state;tutorial.journal=checkpoint.journal;tutorial.journal.retryCount=retries;tutorial.index=checkpoint.index;tutorial.feedback='수호자에게 가기 전부터 다시 시작합니다';talkShown=-1;actionBusy=false;travelUntil=0;lureMode=false;renderer.reset();$('#modal').close();dialogMode='';selectPanel('routes');render();
+ if(!tutorial?.checkpoint)return;cutscene.clear();const retries=(tutorial.journal.retryCount||0)+1,checkpoint=JSON.parse(tutorial.checkpoint);state=checkpoint.state;tutorial.journal=checkpoint.journal;tutorial.journal.retryCount=retries;tutorial.index=checkpoint.index;tutorial.feedback='수호자에게 가기 전부터 다시 시작합니다';talkShown=-1;actionBusy=false;travelUntil=0;lureMode=false;renderer.reset();$('#modal').close();dialogMode='';selectPanel('routes');render();persistTutorial();
 }
+function showTutorialLoss(){openModal(modalShell('돌아오는 길에서 다시 배워요','회상의 한 장면',`<p class="modal-sub">${esc(state.reason)} 실제 탐험은 그대로입니다. 수호자에게 가기 전부터 다시 시도할 수 있어요.</p><div class="modal-actions"><button class="subtle-button" data-act="tutorialExit">원래 탐험으로</button><button class="large-button" data-act="tutorialRetry">선택 전부터 다시 →</button></div>`,false),'tutorialRetry');}
 function selectPanel(id){
  mapOpen=id==='sound';setStanceMenu(false);
  renderer.setZoom(mapOpen);$('.play-surface').classList.toggle('map-open',mapOpen);$('.canvas-wrap').classList.toggle('mapview',mapOpen);
@@ -170,7 +212,7 @@ function renderMarket(){
  $('#market').innerHTML=s.market.map((id,i)=>{const a=CARDS[id],allowed=!tutorial||tutorialAllows(tutorial.index,{type:'buy',index:i},s),can=active&&s.resource.skill>=a.cost&&allowed,short=Math.max(0,a.cost-s.resource.skill);return `<button class="market-card ${can?'affordable':''}" data-act="buy" data-index="${i}" data-card="${id}" aria-label="${a.name}, ${a.text}, 기술 ${a.cost}점으로 영입${short?', 기술 '+short+' 부족':''}${!allowed?', 지금 안내된 능력을 먼저 영입하세요':''}" ${!can?'disabled':''}>${ico(a.icon,46)}<span class="offer"><strong>${a.name}</strong><small>${a.text}</small></span><span class="price${short?' short':''}">기술 ${a.cost}${short?' · '+short+' 부족':''}</span></button>`;}).join('');
  $('[data-act="refresh"]').disabled=!!tutorial||!active||s.gold<2||s.refreshTurn===s.turn;paintIcons($('#modal'));
 }
-function showMenu(){openModal(modalShell('탐험 메뉴','잿불 금고 V9.1',`<p class="modal-sub">${state.relic?state.relic.name+' 회수 · 귀환 '+state.countdown+'턴':'유물을 찾아 입구로 돌아오세요'} · 최고 ${best}점${storageOK?'':' · 저장 불가'}</p><div class="game-menu"><button data-act="deck">나의 메달 주머니<small>가진 능력과 남은 메달 보기</small></button><button data-act="tutorialIntro">직접 배우는 튜토리얼<small>${TUTORIAL_STEPS.length}단계 · 유인 성공부터 성장과 귀환까지</small></button><button data-act="help">플레이 방법<small>추출 · 이동 · 소리 · 탈출</small></button><button data-act="sound" class="${sound?'selected':''}">효과음 ${sound?'켜짐':'꺼짐'}<small>추출의 심장 박동과 봉인 파열음</small></button><button data-act="speed" class="${fastDraw?'selected':''}">${fastDraw?'빠른 추출':'긴장감 있는 추출'}<small>${fastDraw?'합산 결과만 빠르게 표시':'하나씩 공개 · 마지막 능력까지 기다림'}</small></button><button data-act="log">탐험 일지<small>발소리와 전투 기록</small></button><button data-act="new">새 탐험<small>20개 방 · 캐릭터 선택 · 현재 탐험 초기화</small></button><button data-act="fullscreen">전체 화면<small>휴대폰 가로 화면으로 플레이</small></button></div>`),'menu');}
+function showMenu(){openModal(modalShell('탐험 메뉴','잿불 금고 V9.2',`<p class="modal-sub">${state.relic?state.relic.name+' 회수 · 귀환 '+state.countdown+'턴':'유물을 찾아 입구로 돌아오세요'} · 최고 ${best}점${storageOK?'':' · 저장 불가'}</p>${tutorialRecoveryNotice?`<p class="tutorial-storage-note">${esc(tutorialRecoveryNotice)}</p>`:''}<div class="game-menu"><button data-act="deck">나의 메달 주머니<small>가진 능력과 남은 메달 보기</small></button><button data-act="tutorialIntro">${storedTutorial?'튜토리얼 이어하기':'직접 배우는 튜토리얼'}<small>${storedTutorial?`${Math.min(storedTutorial.index+1,TUTORIAL_STEPS.length)}/${TUTORIAL_STEPS.length}단계에서 계속`:`${TUTORIAL_STEPS.length}단계 · 유인 성공부터 성장과 귀환까지`}</small></button><button data-act="help">플레이 방법<small>추출 · 이동 · 소리 · 탈출</small></button><button data-act="sound" class="${sound?'selected':''}">효과음 ${sound?'켜짐':'꺼짐'}<small>추출의 심장 박동과 봉인 파열음</small></button><button data-act="speed" class="${fastDraw?'selected':''}">${fastDraw?'빠른 추출':'긴장감 있는 추출'}<small>${fastDraw?'합산 결과만 빠르게 표시':'하나씩 공개 · 마지막 능력까지 기다림'}</small></button><button data-act="log">탐험 일지<small>발소리와 전투 기록</small></button><button data-act="new">새 탐험<small>20개 방 · 캐릭터 선택 · 현재 탐험 초기화</small></button><button data-act="fullscreen">전체 화면<small>휴대폰 가로 화면으로 플레이</small></button></div>`),'menu');}
 async function fullscreen(){
  try{if(document.fullscreenElement)await document.exitFullscreen();else if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else toast('이 브라우저에서는 가로 화면으로 바로 플레이하세요.');}
  catch{toast('전체 화면을 열지 못했습니다. 가로 화면으로 플레이할 수 있습니다.');}
@@ -223,7 +265,7 @@ function render(){
  if(tutorial&&s.relic){const plan=breathPlan(s),due=dragonDue(s),impact=turnImpact(s),taken=due?Math.max(0,plan.damage-impact.block):0;$('#dangerPanel').insertAdjacentHTML('beforeend',`<div class="breath-forecast ${due&&plan.hit?'hot':''}" role="status"><strong>${due?(plan.hit?`지금 턴을 마치면 숨결이 닿아요 · 방어 후 피해 ${taken}`:'지금 턴을 마치면 숨결이 이 방을 비켜 갑니다'):'이번 턴에는 숨결이 예고되지 않았어요'}</strong><small>현재 메아리 기준 · 이동하거나 소리를 내면 예보가 바뀝니다.</small></div>`);}
  const hideCan=active&&!s.pending&&!enemy&&s.hideTurn!==s.turn&&s.resource.move>=1,lureCan=active&&!s.pending&&s.lureTurn!==s.turn&&s.resource.skill>=1;
  $('#stanceLabel').textContent=s.mode==='sneak'?'은밀':MODES[s.mode].name;$('#stanceToggle').disabled=!active||!!s.pending;
- $('#stanceMenu').innerHTML=`<span class="stance-heading">이동 방식 <small>현재 바닥 · ${TERRAINS[r.terrain].name}</small></span>${['walk','sneak','rush'].map(id=>`<button data-act="mode" data-id="${id}" aria-pressed="${s.mode===id}" class="${s.mode===id?'selected':''}"><strong>${id==='sneak'?'은밀':MODES[id].name}</strong><small>${id==='sneak'?'이동 +1 · 소리 감소':id==='rush'?'깊은 층 이동 −1 · 소리 5':'기본 이동 · 소리 2'}</small><span aria-hidden="true">${s.mode===id?'✓':''}</span></button>`).join('')}`;
+ $('#stanceMenu').innerHTML=`<span class="stance-heading">이동 방식 <small>현재 바닥 · ${TERRAINS[r.terrain].name}</small></span>${['walk','sneak','rush'].map(id=>{const allowed=!tutorial||tutorialAllows(tutorial.index,{type:'mode',id},s);return `<button data-act="mode" data-id="${id}" aria-pressed="${s.mode===id}" class="${s.mode===id?'selected':''}" ${allowed?'':'disabled'} title="${allowed?'':esc(tutorialActionReason(tutorial.index,{type:'mode',id},s))}"><strong>${id==='sneak'?'은밀':MODES[id].name}</strong><small>${!allowed?'지금은 안내된 이동 사용':id==='sneak'?'이동 +1 · 소리 감소':id==='rush'?'깊은 층 이동 −1 · 소리 5':'기본 이동 · 소리 2'}</small><span aria-hidden="true">${s.mode===id?'✓':''}</span></button>`;}).join('')}`;
  $('#lureToggle').disabled=!lureCan&&!lureMode;$('#lureToggle').setAttribute('aria-pressed',String(lureMode));$('#lureToggle strong').textContent=lureMode?'유인 취소':'유인';$('#hideAction').disabled=!hideCan;$('#marketToggle').disabled=!active||!!s.pending;
  $('#landscapeStatus').innerHTML=`<span class="hud-hero">${portrait(s.role)}</span><div class="hud-health" role="meter" aria-label="체력" aria-valuemin="0" aria-valuemax="${s.maxHp}" aria-valuenow="${s.hp}"><i style="width:${s.hp/s.maxHp*100}%"></i><b>${s.hp} / ${s.maxHp}</b></div><span class="hud-gold">${ico('coin',20)} ${s.gold}</span><div class="hud-location"><span>B${r.row+1} · ${r.name}</span><small>T${String(s.turn).padStart(2,'0')}${s.relic?' · 귀환 '+s.countdown+'턴':''}</small></div><div class="hud-noise ${danger?'hot':''}" role="meter" aria-label="용의 경계" aria-valuemin="0" aria-valuemax="12" aria-valuenow="${s.noise}"><span class="hud-noise-pips" aria-hidden="true">${Array.from({length:8},(_,i)=>`<i class="${i<s.noise?'lit':''}"></i>`).join('')}</span><span>경계 <strong>${s.noise}</strong><small> / 8</small></span>${s.echo?.[s.pos]?`<span class="hud-bag" title="이 방에 남은 메아리 · 용의 숨결이 따라옵니다"><img src="./assets/v9/props/echo-marker.png" alt="메아리"> ${s.echo[s.pos]}</span>`:''}</div>`;
  const risks=[];if(enemy)risks.push(`반격 ${r.enemy.damage}`);if(s.echo){if(dragonDue(s))risks.push(s.echo[s.pos]?`용의 숨결 · 이 방 메아리 ${s.echo[s.pos]}`:'용의 숨결 · 이 방은 조용함');}else if(danger)risks.push(`용의 공격 ${3+Math.floor(s.turn/10)}`);else if(s.relic&&s.turn%3===0)risks.push('용의 공격 2');
@@ -238,7 +280,7 @@ function openModal(html,mode){
  const first=d.querySelector('button:not([disabled])');first?.focus({preventScroll:true});
 }
 const modalShell=(title,eyebrow,body,close=true)=>`<div class="modal-inner"><div class="modal-top"><div><span class="eyebrow">${eyebrow}</span><h2 id="modalTitle">${title}</h2></div>${close?'<button class="close-button" data-act="close" aria-label="닫기">×</button>':''}</div>${body}</div>`;
-function closeModal(){if(state.pending){toast('보상을 고르거나 건너뛰기를 눌러 주세요.');return;}$('#modal').close();dialogMode='';lastFocus?.focus({preventScroll:true});}
+function closeModal(){if(state.pending){if(['briefing','tutorialResume'].includes(dialogMode)){pendingModal();return;}toast('보상을 고르거나 건너뛰기를 눌러 주세요.');return;}$('#modal').close();dialogMode='';lastFocus?.focus({preventScroll:true});}
 function pendingModal(page=0){
  if(state.pending?.type==='reward')openModal(modalShell('승리의 전리품','보상 선택',`<p class="modal-sub">새 능력 하나를 메달 주머니에 넣으세요. 주머니를 다시 섞을 때부터 나올 수 있습니다.</p><div class="modal-cards">${state.pending.options.map((id,i)=>cardMarkup(id,i,'reward')).join('')}</div><div class="modal-actions"><span class="modal-sub" style="margin:0">${tutorial?'연습 보상은 실전에 이어지지 않습니다.':'주머니가 가벼우면 좋은 메달이 더 자주 나옵니다.'}</span><button class="subtle-button" data-act="skipReward">받지 않고 계속 →</button></div>`,false),'reward');
  else if(state.pending?.type==='purge'){
@@ -281,9 +323,18 @@ function showLog(page=0){
  const v=pageOf(state.log,page,3);
  openModal(modalShell('어둠 속에 남긴 발자국','탐험 기록',`<p class="modal-sub">탐험 코드 ${state.seed.toString(36).toUpperCase()} · 최근 행동부터</p><div class="log-list">${v.items.map(x=>`<div class="log-row ${x.tone}"><small>T${String(x.turn).padStart(2,'0')}</small><span>${esc(x.message)}</span></div>`).join('')}</div>${pager(v,'logPage')}`),'log');
 }
+function showLurePreview(id){
+ const forecast=lureForecast(state,id);if(!forecast.ok){toast(forecast.reason,true);return false;}
+ lurePreviewTarget=id;
+ const relevant=forecast.moves.filter(e=>e.heard||['move','counter'].includes(e.kind));
+ const detail=e=>e.kind==='move'?`${e.fromName} → ${e.toName}${e.entersPlayer?' · 내 방으로 들어옴':''}`:e.kind==='counter'?'현재 방에서 반격합니다':e.kind==='anchored'?'소리를 들어도 이 자리를 지킵니다':e.kind==='listen'?'소리를 듣지만 아직 이동하지 않습니다':e.kind==='at-target'?'소리가 난 방에 그대로 머뭅니다':'이번 턴에는 이동하지 않습니다';
+ openModal(modalShell('돌멩이를 던지기 전에','유인 · 적의 다음 한 칸',`<p class="modal-sub"><strong>${esc(state.rooms[id].name)}</strong> · 기술 ${forecast.cost} · 소리 ${forecast.noise}</p><p class="${forecast.entersPlayer?'lure-warning':'modal-sub'}">${esc(forecast.summary)}</p><ul class="lure-forecast-list">${relevant.map(e=>`<li><strong>${esc(e.name)}</strong><p>${esc(detail(e))}</p><small>${e.heard?'이 유인 소리를 들음':'이전에 들은 소리를 따라감'}</small></li>`).join('')||'<li>확인한 적의 반응이 없습니다. 보이지 않는 적은 예고에 표시되지 않습니다.</li>'}</ul><p class="modal-sub">${esc(forecast.assumption)}의 예고입니다. 이후 움직이거나 다른 소리를 내면 추적 방향이 달라집니다.</p><div class="modal-actions"><button class="subtle-button" data-act="lureCancel">다른 방 선택</button><button class="large-button" data-act="lureConfirm">이 방으로 유인 · 기술 1</button></div>`),'lurePreview');
+ return true;
+}
 function act(action,fromJudge=false){
  if(poolReveal.active||noiseMoment.active&&!fromJudge||actionBusy||action.type==='move'&&performance.now()<travelUntil)return false;
- if(tutorial&&!tutorialAllows(tutorial.index,action,state)){toast(TUTORIAL_STEPS[tutorial.index]?.text||'탐험 결산을 확인해 보세요.');return false;}
+ if(tutorial&&!tutorialAllows(tutorial.index,action,state)){toast(tutorialActionReason(tutorial.index,action,state)||'탐험 결산을 확인해 보세요.');return false;}
+ if(action.type==='lure'&&!action.confirmed)return showLurePreview(action.id);
  if(action.type==='end'&&!action.drawn&&state.echo&&state.phase==='playing'&&!state.pending&&dragonDue(state)){
   const f=turnImpact(state);
   if(!f.lethal){noiseMoment.judge(state,breathPlan(state),f.block,()=>act({...action,drawn:true},true),()=>{});return true;}
@@ -292,9 +343,9 @@ function act(action,fromJudge=false){
  const impact=action.type==='end'?turnImpact(state):null;
  const result=apply(state,action);if(!result.ok){if(fromJudge)noiseMoment.close();toast(result.message,true);beep('bad');return false;}
  const practiceFeedback=tutorial?recordTutorialAction(tutorial.journal,practiceBefore,action,state):'';
- if(action.type==='move'){travelUntil=performance.now()+450;renderer.setHover(-1);}
+ if(action.type==='move'){travelUntil=performance.now()+450;renderer.setHover(-1);if(mapOpen)selectPanel('routes');}
  if(action.type==='end'){handPage=0;enemyPage=0;lureMode=false;}if(action.type==='lure')lureMode=false;
- save();render();
+ persistTutorial({action,feedback:practiceFeedback||result.message});save();render();
  let swingMs=580;if(action.type==='attack'){const foeAfter=state.rooms[state.pos].enemy,dealt=enemyHP-(foeAfter?.hp||0);swingMs=renderer.burst('attack',`−${dealt}`,{dmg:dealt,kill:enemyHP>0&&!(foeAfter?.hp>0),maxHp:foeAfter?.maxHp||enemyMax})||580;}
  const specialFx=action.type==='interact'&&roomType==='mechanism'?'mechanism':action.type==='interact'&&(state.relic?.value||0)>priorRelic?'relic':'';
  const rewardText=state.gold>previousGold?`+${state.gold-previousGold} G`:state.hp>beforeHP?`+${state.hp-beforeHP} HP`:specialFx==='relic'?'유물 회수':specialFx==='mechanism'?'승강 통로 개방':'';
@@ -307,7 +358,7 @@ function act(action,fromJudge=false){
   if(state.pending)pendingModal();
   else if(state.phase!=='playing'){
    if(!tutorial)showResult();
-   else if(state.phase==='lost')openModal(modalShell('돌아오는 길에서 다시 배워요','회상의 한 장면',`<p class="modal-sub">${esc(state.reason)} 실제 탐험은 그대로입니다. 수호자에게 가기 전부터 다시 시도할 수 있어요.</p><div class="modal-actions"><button class="subtle-button" data-act="tutorialExit">원래 탐험으로</button><button class="large-button" data-act="tutorialRetry">선택 전부터 다시 →</button></div>`,false),'tutorialRetry');
+   else if(state.phase==='lost')showTutorialLoss();
    beep(state.phase==='won'?'win':'bad');
   }
   else if(['reward','skipReward','purge','cancelPurge'].includes(action.type)){$('#modal').close();dialogMode='';}
@@ -333,6 +384,18 @@ document.addEventListener('click',ev=>{
  if(a==='market')return showMarket();
  if(a==='tutorialIntro')return showTutorialIntro();
  if(a==='tutorialStart')return startTutorial();
+ if(a==='tutorialResume')return resumeTutorial();
+ if(a==='tutorialRestart'){clearTutorialRecord();return startTutorial();}
+ if(a==='tutorialKeepMain')return keepMainExpedition();
+ if(a==='tutorialContinue'){
+  const action={type:a,id:b.dataset.id};if(!tutorial||!mapOpen||!tutorialAllows(tutorial.index,action,state))return;
+  advanceTutorial(action,'지도와 예보를 확인했어요');selectPanel('routes');persistTutorial();return;
+ }
+ if(a==='lureCancel'){closeModal();return;}
+ if(a==='lureConfirm'){
+  if(dialogMode!=='lurePreview'||lurePreviewTarget===null)return;
+  const id=lurePreviewTarget;lurePreviewTarget=null;closeModal();return act({type:'lure',id,confirmed:true});
+ }
  if(a==='tutorialReplay'){const st=TUTORIAL_STEPS[tutorial?.index];if(st)cutscene.play(st.talk);return;}
  if(a==='tutorialExit')return exitTutorial();
  if(a==='tutorialRetry')return retryTutorialChoice();
@@ -351,7 +414,7 @@ document.addEventListener('click',ev=>{
  if(a==='close')return closeModal();if(a==='help')return showHelp();if(a==='new')return showNew();if(a==='role'){selectedRole=b.dataset.id;return renderNew();}
  if(a==='start'){if(tutorial)exitTutorial();travelUntil=0;state=newRun({role:selectedRole});handPage=0;enemyPage=0;lureMode=false;renderer.reset();save();$('#modal').close();dialogMode='';selectPanel('routes');render();poolReveal.start(state,{fast:fastDraw});window.scrollTo({top:0,behavior:'instant'});return;}
  if(a==='deck')return showDeck(b.dataset.pile||'all');if(a==='log')return showLog();if(a==='result')return showResult();
- if(a==='zoom'){selectPanel(mapOpen?'routes':'sound');if(mapOpen)advanceTutorial({type:'panel',id:'sound'});return;}
+ if(a==='zoom'){selectPanel(mapOpen?'routes':'sound');if(mapOpen)advanceTutorial({type:'panel',id:'sound'});else persistTutorial();return;}
  if(a==='sound'){toggleSound();if(dialogMode==='menu')showMenu();return;}
  if(a==='mode'){const ok=act({type:'mode',id:b.dataset.id});if(ok){setStanceMenu(false);$('#stanceToggle').focus({preventScroll:true});}return;}
  if(a==='buy')return act({type:a,index:Number(b.dataset.index)});if(['move','lure'].includes(a))return act({type:a,id:Number(b.dataset.id)});if(['reward','purge','mode'].includes(a))return act({type:a,id:b.dataset.id});if(a)act({type:a});
@@ -362,16 +425,16 @@ $('#dungeon').addEventListener('pointerleave',()=>renderer.setHover(-1));
 $('#dungeon').addEventListener('click',ev=>{if(poolReveal.active||noiseMoment.active||actionBusy||$('#modal').open||state.phase!=='playing')return;const id=renderer.hit(ev.clientX,ev.clientY);if(id>=0&&id!==state.pos)travelTo(id);});
 document.addEventListener('keydown',ev=>{
  if(ev.defaultPrevented||poolReveal.active||noiseMoment.active||actionBusy||document.querySelector('dialog[open]')||ev.ctrlKey||ev.metaKey||ev.altKey||['INPUT','TEXTAREA','SELECT'].includes(ev.target.tagName)||state.phase!=='playing')return;
- if(ev.key==='Escape'){if(modeOpen){setStanceMenu(false);$('#stanceToggle').focus();}else if(mapOpen)selectPanel('routes');return;}
- if(ev.key.toLowerCase()==='m'){ev.preventDefault();selectPanel(mapOpen?'routes':'sound');if(mapOpen)advanceTutorial({type:'panel',id:'sound'});return;}
- if(modeOpen&&ev.target.matches('[data-act="mode"]')&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(ev.key)){ev.preventDefault();const options=[...$('#stanceMenu').querySelectorAll('button')],i=options.indexOf(ev.target);options[(i+(['ArrowLeft','ArrowUp'].includes(ev.key)?2:1))%3].focus();return;}
+ if(ev.key==='Escape'){if(modeOpen){setStanceMenu(false);$('#stanceToggle').focus();}else if(mapOpen){selectPanel('routes');persistTutorial();}return;}
+ if(ev.key.toLowerCase()==='m'){ev.preventDefault();selectPanel(mapOpen?'routes':'sound');if(mapOpen)advanceTutorial({type:'panel',id:'sound'});else persistTutorial();return;}
+ if(modeOpen&&ev.target.matches('[data-act="mode"]')&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(ev.key)){ev.preventDefault();const options=[...$('#stanceMenu').querySelectorAll('button:not(:disabled)')],i=options.indexOf(ev.target);if(!options.length)return;options[(i+(['ArrowLeft','ArrowUp'].includes(ev.key)?options.length-1:1))%options.length].focus();return;}
  if(['1','2','3'].includes(ev.key)){ev.preventDefault();if(act({type:'mode',id:{1:'walk',2:'sneak',3:'rush'}[ev.key]}))setStanceMenu(false);}
  if(ev.code==='Space'&&ev.target.tagName!=='BUTTON'){ev.preventDefault();act({type:'end'});}
  if(ev.key.toLowerCase()==='a'){ev.preventDefault();act({type:'attack'});}if(ev.key.toLowerCase()==='c'){ev.preventDefault();act({type:'hide'});}if(ev.key.toLowerCase()==='e'){const a=roomInteraction(state);if(a.act&&a.enabled){ev.preventDefault();act({type:a.act});}}
  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(ev.key)){ev.preventDefault();const dir={ArrowUp:-4,ArrowDown:4,ArrowLeft:-1,ArrowRight:1}[ev.key],id=state.pos+dir;if(neighbours(state).includes(id))act({type:'move',id});else toast('그 방향에는 연결된 통로가 없습니다.',true);}
 });
 document.addEventListener('click',ev=>{if(modeOpen&&!ev.target.closest('#stanceMenu,#stanceToggle'))setStanceMenu(false);});
-$('#modal').addEventListener('cancel',ev=>{if(state.pending)ev.preventDefault();else dialogMode='';});
+$('#modal').addEventListener('cancel',ev=>{if(state.pending){ev.preventDefault();if(['briefing','tutorialResume'].includes(dialogMode))pendingModal();}else dialogMode='';});
 $('#modal').addEventListener('click',ev=>{if(ev.target===$('#modal')&&!state.pending){const q=$('#modal').getBoundingClientRect();if(ev.clientX<q.left||ev.clientX>q.right||ev.clientY<q.top||ev.clientY>q.bottom)closeModal();}});
 save();selectPanel('routes');render();if(migrated)toast('기존 탐험을 이어갑니다. 남은 손패가 자동 합산되었습니다.');
 // ?tutorial=1 is a one-time request. Consume it so reload does not reopen completed or skipped practice.
@@ -382,4 +445,5 @@ const askTutorial=(()=>{
   return requested;
  }catch{return false;}
 })();
-if(askTutorial&&!state.pending)showTutorialIntro();else if(state.pending)pendingModal();else if(state.phase!=='playing')showResult();else if(!tutorialSeen)showTutorialIntro();else if(!loadedRun)poolReveal.start(state,{fast:fastDraw});
+if(storedTutorial&&!storedTutorial.paused)showTutorialResume();else if(askTutorial&&!state.pending)showTutorialIntro();else if(state.pending)pendingModal();else if(state.phase!=='playing')showResult();else if(!tutorialSeen)showTutorialIntro();else if(!loadedRun)poolReveal.start(state,{fast:fastDraw});
+if(tutorialRecoveryNotice)toast(tutorialRecoveryNotice,true,true);

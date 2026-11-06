@@ -7,14 +7,14 @@ import {buildRevealPlan,noiseDrawState} from '../dist/pool-reveal.js';
 
 test('the revised tutorial introduces each rule through a successful real action',()=>{
  const s=createTutorialRun();let step=0;
- const perform=action=>{assert.ok(tutorialAllows(step,action,s));if(action.type!=='panel')assert.equal(apply(s,action).ok,true);step=tutorialAdvance(step,action,s);};
- for(const action of [{type:'move',id:1},{type:'interact'},{type:'panel',id:'sound'},{type:'hide'},{type:'lure',id:5},{type:'end'}])perform(action);
+ const perform=action=>{assert.ok(tutorialAllows(step,action,s));if(!['panel','tutorialContinue'].includes(action.type))assert.equal(apply(s,action).ok,true);step=tutorialAdvance(step,action,s);};
+ for(const action of [{type:'move',id:1},{type:'interact'},{type:'panel',id:'sound'},{type:'tutorialContinue',id:'sound'},{type:'hide'},{type:'lure',id:5},{type:'end'}])perform(action);
  assert.equal(s.hp,22);assert.equal(s.rooms[6].enemy,null);assert.equal(s.rooms[5].enemy.home,6);
  for(const id of [2,6,7])perform({type:'move',id});
  perform({type:'buy',index:0});assert.equal(s.resource.sword,2);perform({type:'end'});assert.equal(s.resource.sword,5);
  assert.ok(s.played.includes('spark'));assert.equal(s.rooms[6].enemy.home,6);assert.equal(s.hp,22);
  perform({type:'move',id:11});perform({type:'move',id:10});perform({type:'attack'});assert.equal(s.rooms[10].enemy.hp,0);
- perform({type:'skipReward'});perform({type:'interact'});perform({type:'panel',id:'sound'});
+ perform({type:'skipReward'});perform({type:'interact'});perform({type:'panel',id:'sound'});perform({type:'tutorialContinue',id:'forecast'});
  assert.equal(breathPlan(s).damage,4);perform({type:'hide'});perform({type:'move',id:11});perform({type:'move',id:7});perform({type:'end'});
  assert.equal(s.attack.hit,false);assert.equal(s.hp,22);
  for(const id of [3,2,1,0])perform({type:'move',id});perform({type:'interact'});

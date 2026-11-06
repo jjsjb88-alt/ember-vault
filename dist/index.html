@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#131c1c">
   <meta name="description" content="욕심은 소리를 낸다. 능력을 추출해 길을 열고, 용이 잠든 도트 던전에서 유물을 훔쳐 탈출하세요. 잿불 금고 — 싱글플레이 덱빌딩 던전 크롤러.">
-  <title>잿불 금고 V9.1 · EMBER VAULT</title>
+  <title>잿불 금고 V9.2 · EMBER VAULT</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23131c1c'/%3E%3Cpath d='M8 8h16l5 8-13 14L3 16Z' fill='%23e4b66e'/%3E%3Cpath d='m16 3 4 13-4 14-4-14Z' fill='%23f9dc9c'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="./style.css?v=20261106b">
-  <link rel="stylesheet" href="./landscape.css?v=20261106b">
-  <link rel="stylesheet" href="./pool-reveal.css?v=20261106b">
-  <link rel="stylesheet" href="./viewport.css?v=20261106b">
-  <link rel="stylesheet" href="./vault-v5.css?v=20261106b">
-  <link rel="stylesheet" href="./encounter.css?v=20261106b">
-  <link rel="stylesheet" href="./play-surface.css?v=20261106b">
-  <link rel="stylesheet" href="./v9.css?v=20261106b">
+  <link rel="stylesheet" href="./style.css?v=20261106c">
+  <link rel="stylesheet" href="./landscape.css?v=20261106c">
+  <link rel="stylesheet" href="./pool-reveal.css?v=20261106c">
+  <link rel="stylesheet" href="./viewport.css?v=20261106c">
+  <link rel="stylesheet" href="./vault-v5.css?v=20261106c">
+  <link rel="stylesheet" href="./encounter.css?v=20261106c">
+  <link rel="stylesheet" href="./play-surface.css?v=20261106c">
+  <link rel="stylesheet" href="./v9.css?v=20261106c">
 </head>
 <body>
   <div class="app-shell">
@@ -42,6 +42,7 @@
         <div class="map-report-title">소리의 흔적</div>
         <p class="map-legend"><span>◆ 현재 위치</span><span>주황 · 소리</span><span>빨강 · 적</span></p>
         <div id="dangerPanel"></div>
+        <div id="tutorialMapLesson" class="tutorial-map-lesson" hidden></div>
       </section>
       <div id="mapInstructions" class="map-instructions" hidden>연결된 금빛 방을 누르면 이동합니다.</div>
       <div class="play-dock">
@@ -68,6 +69,6 @@
   <dialog id="noiseMoment" class="noise-moment" aria-labelledby="noiseTitle"></dialog>
   <dialog id="modal" aria-labelledby="modalTitle"><div id="modalContent"></div></dialog>
   <dialog id="poolReveal" class="pool-reveal" aria-labelledby="revealTitle" aria-describedby="revealStakes"><div class="reveal-content"></div></dialog>
-  <script type="module" src="./app.js?v=20261106b"></script>
+  <script type="module" src="./app.js?v=20261106c"></script>
 </body>
 </html>

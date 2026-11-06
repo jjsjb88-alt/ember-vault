@@ -1,5 +1,5 @@
-import {CARDS} from './engine.js?v=20261106b';
-import {turnImpact} from './encounter.js?v=20261106b';
+import {CARDS} from './engine.js?v=20261106c';
+import {turnImpact} from './encounter.js?v=20261106c';
 
 const alive=enemy=>!!enemy&&enemy.hp>0;
 const roomInfo=room=>({id:room?.id,name:room?.name||'방',type:room?.type,route:room?.lessonRoute||null,returnRoute:room?.lessonReturn||null,optional:!!room?.lessonOptional});
@@ -165,7 +165,7 @@ export function tutorialRecap(state,journal){
  let reflection=won?'유물을 챙겨 입구로 돌아온 건 네 선택이었어.':'여기까지의 기록을 보고 다음 선택을 골라 보자.';
  if(retry)reflection=won?`다시 ${retry}번 도전해서 돌아왔네. 이번 길은 기억해 두자.`:`다시 ${retry}번 도전했어. 아직 확인하지 못한 길도 남아 있어.`;
  else if(won&&choices.length>1)reflection='귀환 중 길을 바꿨네. 지나온 길과 남은 힘을 함께 기억하자.';
- else if(won&&choice)reflection=`${routeName(choice)}를 거쳐 돌아왔네. 지나온 길과 남은 힘을 기억하자.`;
+ else if(won&&choice)reflection=`${routeName(choice)}을 거쳐 돌아왔네. 지나온 길과 남은 힘을 기억하자.`;
  return {
   title:won?`${relicName}${objectParticle(relicName)} 품고 돌아왔어요`:state.phase==='lost'?'이번 길을 돌아봐요':'지금까지의 선택',subtitle:subtitle.join(' · '),
   stats:[{label:'남은 체력',value:`${state.hp} / ${state.maxHp}`},{label:'금화',value:String(state.gold)},{label:'점수',value:won?String(state.score):'—'}],
