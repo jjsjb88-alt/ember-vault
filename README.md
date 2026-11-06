@@ -1,6 +1,12 @@
-# 잿불 금고 · Ember Vault V9.2
+# 잿불 금고 · Ember Vault V9.3
 
-한국어 싱글플레이 풀빌딩 던전 크롤러. [바로 플레이](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261106c) · [첫 금고 털이 연습](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261106c&tutorial=1)
+한국어 싱글플레이 풀빌딩 던전 크롤러. [바로 플레이](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261106d) · [첫 금고 털이 연습](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261106d&tutorial=1)
+
+## V9.3 — 기억장수 세라와의 만남
+
+- 교역을 세라의 작업대로 바꾸고 전용 캐릭터 원화와 컷신을 추가했습니다. 깜부기·도적·세라가 왜 기억을 거래하는지, 수호자를 넘기 위해 무엇을 가져갈지 대화합니다.
+- 물건에는 남겨진 기억의 사연이 붙고, 구매하면 세라가 메달을 주머니에 건네는 장면으로 이어집니다. 다른 방에서도 열리는 교역은 세라와 이어진 황동 기억함으로 설명합니다.
+- 첫 만남·구매는 저장되며 새로고침해도 비용과 메달이 중복 반영되지 않습니다. 자세한 범위와 실제 브라우저 검수는 [V9.3 교역 경험 기록](docs/production/V93-TRADE-EXPERIENCE.md)에 있습니다.
 
 ## V9.2 — 지도를 읽고, 유인을 고르고, 연습 이어하기
 
@@ -46,7 +52,7 @@ npm test
 python3 -m http.server 8000 --directory dist
 ```
 
-규칙·저장 호환·지름길·소리·숨결·좌표와 튜토리얼의 실제 행동 결과를 검사합니다. 현재 검증 범위·실행 결과·화면 증거는 [V9.2 검증 기록](docs/production/V92-VERIFICATION.md)을 기준으로 봅니다. 로컬 Chromium의 모바일 화면 검수, 실제 휴대폰 검수, GitHub Actions 배포 확인은 서로 구분합니다. 이번 작업 환경에서 공개 플레이 주소 직접 접속은 프록시 403으로 제한됐으며, 로컬 실행 성공을 공개 주소 접속 성공으로 표시하지 않습니다. 자동 탐험은 규칙과 경로를 확인하는 보조 수단이며 실제 사람의 난이도나 승률을 보장하지 않습니다. 이전 기록은 [V9.1](docs/production/V91-VERIFICATION.md)과 [V9](docs/production/V9-VERIFICATION.md)에 보존합니다.
+규칙·저장 호환·지름길·소리·숨결·좌표와 튜토리얼의 실제 행동 결과를 검사합니다. V9.3 교역의 실행 결과·화면 증거는 [교역 경험 기록](docs/production/V93-TRADE-EXPERIENCE.md), 지도·유인·저장 상세는 [V9.2 검증 기록](docs/production/V92-VERIFICATION.md)을 기준으로 봅니다. 로컬 Chromium의 모바일 화면 검수, 실제 휴대폰 검수, GitHub Actions 배포 확인은 서로 구분합니다. 이번 작업 환경에서 공개 플레이 주소 직접 접속은 프록시 403으로 제한됐으며, 로컬 실행 성공을 공개 주소 접속 성공으로 표시하지 않습니다. 자동 탐험은 규칙과 경로를 확인하는 보조 수단이며 실제 사람의 난이도나 승률을 보장하지 않습니다. 이전 기록은 [V9.1](docs/production/V91-VERIFICATION.md)과 [V9](docs/production/V9-VERIFICATION.md)에 보존합니다.
 
 ## 이전 버전 기록
 

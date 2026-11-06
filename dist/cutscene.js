@@ -1,7 +1,7 @@
 // 연습 대사 컷신: 화면 위아래를 검은 띠로 가리고, 말하는 쪽의 초상과 이름, 한 글자씩 써지는 대사.
 // 화면 아무 곳이나 누르면(또는 Enter/Space) 글자를 다 보여 주고, 한 번 더 누르면 다음 대사.
 // 컷신은 줄을 서서 차례로 재생된다. 추출·소음 연출처럼 움직이는 창이 열려 있으면 그것이 닫힐 때까지 기다린다.
-import {makeFxLayer} from './fx-layer.js?v=20261106c';
+import {makeFxLayer} from './fx-layer.js?v=20261106d';
 import * as spiritFlame from './vendor/pixelfx/fx/fire/spirit-flame.js';
 
 // 깜부기: 등불 속 잿불. spirit-flame을 따뜻한 잿불 색으로.
@@ -23,13 +23,13 @@ export function makeQueue(){
  };
 }
 
-export function makeCutscene({reduced = false, tutorName = '깜부기', heroPortrait = () => ''} = {}){
+export function makeCutscene({reduced = false, tutorName = '깜부기', heroPortrait = () => '', portraits = {}} = {}){
  const dialog = document.createElement('dialog');
- dialog.id = 'cutscene'; dialog.className = 'cutscene'; dialog.setAttribute('aria-label', '대화');
- dialog.innerHTML = `<div class="cut-bar top" aria-hidden="true"></div><div class="cut-bar bottom" aria-hidden="true"></div>
+ dialog.id = 'cutscene'; dialog.className = 'cutscene'; dialog.tabIndex=-1; dialog.setAttribute('aria-label', '대화');
+ dialog.innerHTML = `<div class="cut-stage" hidden><img alt=""><div class="cut-location"><small></small><p></p></div></div><div class="cut-bar top" aria-hidden="true"></div><div class="cut-bar bottom" aria-hidden="true"></div>
   <div class="cut-panel"><div class="cut-portrait" aria-hidden="true"><canvas class="cut-flame" width="180" height="180"></canvas><span class="cut-hero"></span></div>
   <div class="cut-body"><b class="cut-name"></b><p class="cut-line" aria-live="polite"></p><span class="cut-more" aria-hidden="true">▼</span></div></div>
-  <button type="button" class="cut-skip">건너뛰기 ≫</button>`;
+  <button type="button" class="cut-skip">건너뛰기 ≫</button><div class="cut-controls"><span class="cut-progress"></span><button type="button" class="cut-next">대화 계속 ›</button></div>`;
  document.body.appendChild(dialog);
  const $ = s => dialog.querySelector(s);
  const queue = makeQueue();
@@ -57,9 +57,10 @@ export function makeCutscene({reduced = false, tutorName = '깜부기', heroPort
  function show(){
   const [who, line] = current.lines[index];
   const tutor = who === tutorName;
-  dialog.dataset.speaker = tutor ? 'tutor' : 'hero';
+  dialog.dataset.speaker = tutor ? 'tutor' : Object.hasOwn(portraits,who) ? 'guest' : 'hero';
   $('.cut-name').textContent = who;
-  $('.cut-hero').innerHTML = tutor ? '' : heroPortrait();
+  $('.cut-hero').innerHTML = tutor ? '' : Object.hasOwn(portraits,who) ? portraits[who] : heroPortrait();
+  $('.cut-progress').textContent=`${index+1} / ${current.lines.length}`;
   typed = 0; $('.cut-line').textContent = ''; $('.cut-more').hidden = true;
   clearInterval(typeTimer);
   const chars = [...line];
@@ -93,16 +94,18 @@ export function makeCutscene({reduced = false, tutorName = '깜부기', heroPort
   current = queue.next(); index = 0;
   if(!current?.lines?.length){const d = current?.done; current = null; try{d?.();}catch{} return pump();}
   document.body.classList.add('cutscene-open');
-  dialog.showModal(); playing = true; raf = requestAnimationFrame(drawFlame); show();
+  const scene=current.scene;dialog.dataset.scene=scene?.key||'';$('.cut-stage').hidden=!scene;
+  if(scene){$('.cut-stage img').src=scene.art;$('.cut-location small').textContent=scene.title;$('.cut-location p').textContent=scene.text;}
+  dialog.showModal(); (scene?$('.cut-next'):dialog).focus({preventScroll:true}); playing = true; raf = requestAnimationFrame(drawFlame); show();
  }
 
  dialog.addEventListener('click', ev => {if(ev.target.closest('.cut-skip')) return finish(); advance();});
- dialog.addEventListener('keydown', ev => {if(ev.key === 'Enter' || ev.key === ' '){ev.preventDefault(); advance();}});
+ dialog.addEventListener('keydown', ev => {if(!ev.target.closest('button')&&(ev.key === 'Enter' || ev.key === ' ')){ev.preventDefault(); advance();}});
  dialog.addEventListener('cancel', ev => {ev.preventDefault(); finish();});
 
  return {
   /** lines: [[화자, 대사], ...]. done: 이 컷신이 끝난 뒤 할 일. */
-  play(lines, done){queue.push({lines, done}); pump();},
+  play(lines, done, scene=null){queue.push({lines, done, scene}); pump();},
   clear(){queue.clear(); if(current){current.done = null; finish();} clearTimeout(waiting); waiting = 0;},
   get active(){return !!current || queue.size > 0;},
  };

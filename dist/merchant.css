@@ -1,0 +1,90 @@
+/* Sera's workshop: a character encounter, with the workbench kept within reach. */
+#modal[data-mode=market]{width:min(1060px,calc(100vw - 20px));max-width:none;max-height:calc(100dvh - 20px);border-color:#a8854a;background:#09151d}
+#modal[data-mode=market] .modal-inner{padding:20px}
+#modal[data-mode=market] .modal-top{margin-bottom:16px}
+#modal[data-mode=market] .modal-top h2{font-size:25px;letter-spacing:.02em}
+#modal[data-mode=market] .modal-top .eyebrow{letter-spacing:.12em;font-size:10px}
+.sera-market{display:grid;grid-template-columns:minmax(240px,.85fr) minmax(0,1.15fr);gap:22px}
+.sera-hero{position:relative;min-height:410px;overflow:hidden;border:1px solid #8a714a;background:#111e22;isolation:isolate}
+.sera-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:25% center}
+.sera-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0710181a 35%,#071018d9 78%,#071018);z-index:0;pointer-events:none}
+.sera-identity{position:absolute;left:22px;right:18px;bottom:105px;z-index:1;text-shadow:0 2px 12px #000}
+.sera-identity span{display:block;color:#e9c78e;font-size:10px;letter-spacing:.12em}
+.sera-identity strong{display:block;margin-top:7px;color:#fff0d8;font-size:36px;font-weight:500;letter-spacing:.18em}
+.sera-quote{position:absolute;bottom:14px;left:22px;right:22px;margin:0;z-index:1;font-size:14px;line-height:1.85;color:#eee0c3;word-break:keep-all}
+.sera-counter{min-width:0;display:flex;flex-direction:column;gap:12px;padding:2px 0}
+.sera-conversation{display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid #7e6b403d}
+.sera-conversation p{flex:1;margin:0;color:#b0bfc0;font-size:12px;line-height:1.7;word-break:keep-all}
+.sera-conversation button{flex:none;min-height:44px;font-size:11px;padding:6px 10px}
+#modal[data-mode=market] .market-summary{margin:0;display:flex;gap:12px;align-items:center;justify-content:space-between;font-size:13px}
+#modal[data-mode=market] .market-summary b{font-size:21px;color:#edc678}
+#modal[data-mode=market] .refresh-button{width:auto;min-height:44px;font-size:10px;padding:6px 9px}
+.sera-rule{margin:0;color:#d7c49b;font-size:11px;line-height:1.7}
+#modal[data-mode=market] .market-offers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#modal[data-mode=market] .market-card{display:grid;grid-template-columns:40px minmax(0,1fr);align-items:start;text-align:left;min-height:154px;gap:10px;padding:13px;background:linear-gradient(145deg,#1b3038,#10232b);border:1px solid #60716b}
+#modal[data-mode=market] .market-card.affordable{border-color:#c39e5e;background:linear-gradient(145deg,#34413b,#152a2c);box-shadow:inset 0 0 0 2px #12232d,0 0 18px #cb923210}
+#modal[data-mode=market] .market-card:disabled{opacity:.65}
+#modal[data-mode=market] .market-card canvas{width:40px;height:40px}
+#modal[data-mode=market] .offer{padding:0;min-width:0;display:flex;flex-direction:column;gap:5px}
+#modal[data-mode=market] .offer strong{font-size:14px;color:#f1e4c9}
+#modal[data-mode=market] .offer small{font-size:11px;color:#d0ddcf;line-height:1.6}
+#modal[data-mode=market] .offer em{grid-column:1/-1;font-style:normal;font-size:10px;color:#a7b8b2;line-height:1.65;word-break:keep-all}
+#modal[data-mode=market] .price{grid-column:1/-1;width:auto;height:auto;min-height:25px;display:block;border-top:1px solid #89956d40;padding-top:8px;font-size:11px;color:#f1d89d;background:none;text-align:left}
+#modal[data-mode=market] .price.short{color:#e5a38a}
+.sera-sendoff{margin:auto 0 0;padding-top:8px;color:#aeaa97;font-size:11px;line-height:1.7;text-align:right}
+.sera-portrait{width:100%;height:100%;object-fit:cover;object-position:23% 36%;transform:scale(1.65);transform-origin:26% 32%}
+.cutscene[data-speaker=guest] .cut-portrait{border-color:#d2ab73;background:#152b2d}
+.cutscene[data-speaker=guest] .cut-name{color:#f2d19a}
+.cut-stage{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.cut-stage>img{width:100%;height:100%;object-fit:cover;object-position:28% center;animation:sera-arrive 8s ease-out both}
+.cut-stage:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#020a1160,transparent 30%,#020a1150 60%,#020a11ef)}
+.cut-location{position:absolute;z-index:1;top:12vh;right:5vw;width:min(40vw,430px);text-shadow:0 2px 10px #000}
+.cut-location small{color:#e7c38b;letter-spacing:.16em;font-size:12px}
+.cut-location p{max-width:400px;font-size:13px;line-height:1.8;color:#d2d2bf;word-break:keep-all}
+.cut-controls{display:none;z-index:3}
+.cutscene[data-scene=merchant] .cut-skip{z-index:3}
+.cutscene[data-scene=merchant] .cut-bar{height:4vh;min-height:10px}
+.cutscene[data-scene=merchant] .cut-panel{bottom:80px}
+.cutscene[data-scene=merchant] .cut-body{background:#09151bf0;border-color:#bb935b99}
+.cutscene[data-scene=merchant] .cut-controls{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);width:min(760px,calc(100% - 28px));display:flex;align-items:center;justify-content:flex-end;gap:16px;color:#d4b989;font-size:12px}
+.cut-controls button{min-height:44px;min-width:145px;background:#162a30;border:1px solid #9e8050;color:#f1d9af;font-size:13px;padding:8px 18px}
+.cutscene[data-scene=merchant] .cut-skip{top:20px;min-height:44px}
+@keyframes sera-arrive{from{transform:scale(1.035);filter:brightness(.6)}to{transform:scale(1);filter:brightness(1)}}
+@media(max-width:600px) and (orientation:portrait){
+ #modal[data-mode=market] .modal-inner{padding:14px}
+ #modal[data-mode=market] .modal-top h2{font-size:21px}
+ .sera-market{grid-template-columns:1fr;gap:14px}
+ .sera-hero{min-height:250px}
+ .sera-hero>img{object-position:22% 37%}
+ .sera-identity{left:16px;bottom:88px}
+ .sera-identity strong{font-size:29px}
+ .sera-quote{left:16px;right:16px;bottom:12px;font-size:13px}
+ .sera-conversation p{font-size:11px}
+ #modal[data-mode=market] .market-card{padding:10px;gap:8px;grid-template-columns:32px minmax(0,1fr);min-height:152px}
+ #modal[data-mode=market] .market-card canvas{width:32px;height:32px}
+ #modal[data-mode=market] .offer strong{font-size:12px}
+ #modal[data-mode=market] .offer em{font-size:9px}
+ .cutscene[data-scene=merchant] .cut-portrait{width:88px;height:88px}
+ .cutscene[data-scene=merchant] .cut-line{font-size:15px;line-height:1.8}
+ .cutscene[data-scene=merchant] .cut-body{min-height:150px;padding:14px 16px 22px}
+ .cutscene[data-scene=merchant] .cut-stage>img{object-position:28% 32%}
+ .cut-location{top:12vh;left:5vw;right:5vw;width:auto}
+ .cut-location p{display:none}
+}
+@media(max-height:430px) and (orientation:landscape){
+ #modal[data-mode=market] .modal-inner{padding:12px}
+ #modal[data-mode=market] .modal-top{margin-bottom:9px}
+ #modal[data-mode=market] .modal-top h2{font-size:19px}
+ .sera-market{gap:14px;grid-template-columns:minmax(180px,.7fr) minmax(0,1.3fr)}
+ .sera-hero{min-height:350px}
+ .cutscene[data-scene=merchant] .cut-panel{bottom:61px;width:min(760px,calc(100% - 28px))}
+ .cutscene[data-scene=merchant] .cut-controls{bottom:8px}
+ .cutscene[data-scene=merchant] .cut-skip{top:10px}
+ .cutscene[data-scene=merchant] .cut-portrait{width:84px;height:84px}
+ .cutscene[data-scene=merchant] .cut-body{min-height:92px;padding:8px 12px 16px}
+ .cutscene[data-scene=merchant] .cut-line{font-size:14px;min-height:2em}
+ .cutscene[data-scene=merchant] .cut-stage>img{object-position:28% 10%}
+ .cut-location{top:18px;right:120px}
+ .cut-location p{display:none}
+}
+@media(prefers-reduced-motion:reduce){.cut-stage>img{animation:none}}
