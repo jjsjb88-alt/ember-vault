@@ -18,6 +18,13 @@ body:not(.tutorial-mode) .travel-hint{top:180px}
 .hud-bag img{width:16px;height:16px;image-rendering:pixelated;vertical-align:-3px}
 .ability-choice,.market-card{border-color:#716342;box-shadow:inset 0 0 0 2px #12232d,inset 0 0 0 3px #a28a4c30}
 #toast.toast-above{top:58px;bottom:auto;max-width:calc(100vw - 24px)}
+.tutorial-results{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.tutorial-results>div{padding:10px 5px;text-align:center;background:#102831;border:1px solid #50655e}
+.tutorial-results strong,.tutorial-results small{display:block}.tutorial-results strong{font-size:21px;color:#efcf8e}.tutorial-results small{font-size:10px;color:#b8cbc6;margin-top:4px}
+.tutorial-reflection{gap:8px}.tutorial-reflection strong{color:#a7dfc4}.tutorial-reflection p{margin:4px 0;line-height:1.65}
+.tutorial-next{font-size:12px;line-height:1.7;padding:10px 12px;border-left:2px solid #cba86b;background:#221f1b66}
+.recap-save-note{font-size:10px;color:#a9b8bb;line-height:1.6}
+.breath-forecast{padding:7px 0;border-top:1px solid #607e77;margin-top:6px;color:#abe0be;line-height:1.5}.breath-forecast strong{font-size:10px;display:block}.breath-forecast small{font-size:9px;display:block;color:#bdcdca}.breath-forecast.hot{color:#ffc59c;border-color:#98745b}
 @media(max-width:559px){.scene-exit.route-shortcut{width:min(118px,calc(62vw - 125px))}}
 @media(max-width:900px) and (orientation:landscape){.scene-exit{width:143px;min-height:56px}.route-tag{font-size:8px}.expedition-goal{top:73px;left:12px;padding:5px 8px;max-width:295px}.expedition-goal strong{font-size:10px}.expedition-goal small{font-size:9px}.expedition-goal em{font-size:8px}.tutorial-coach{padding-top:7px;padding-bottom:7px}.tutorial-coach>strong{font-size:13px}.tutorial-coach p{font-size:11px;line-height:1.4}.coach-feedback{font-size:9px;margin:2px 0}}
 @media(max-width:559px){.scene-exit{width:123px;min-height:61px;padding:5px 4px}.route-tag{font-size:8px}.exit-info strong{font-size:10px}.exit-info small{font-size:8px}.expedition-goal{left:10px;top:85px;width:calc(100% - 140px);padding:6px 7px;gap:5px}.objective-mark{font-size:19px}.expedition-goal strong{font-size:10px}.expedition-goal small{font-size:9px}.expedition-goal em{font-size:8px;line-height:1.5}.tutorial-coach>strong{font-size:14px}.tutorial-coach p{font-size:12px}.coach-count{font-size:10px}}

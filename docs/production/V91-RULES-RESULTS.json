@@ -1,0 +1,9 @@
+{
+  "checks": 1224,
+  "won": 1224,
+  "expectedLosses": 0,
+  "firstLure": 1224,
+  "firstDraw": 1224,
+  "unexpectedFailures": 0,
+  "examples": []
+}

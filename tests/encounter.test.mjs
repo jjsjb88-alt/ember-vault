@@ -5,28 +5,24 @@ import {roomInteraction,soundWavePlan,turnImpact,tensionNeeded} from '../dist/en
 import {createTutorialRun,tutorialAdvance,tutorialAllows,TUTORIAL_STEPS} from '../dist/tutorial.js';
 import {buildRevealPlan,noiseDrawState} from '../dist/pool-reveal.js';
 
-test('the fourteen-step tutorial teaches danger, a route choice, relic recovery and a real escape',()=>{
+test('the revised tutorial introduces each rule through a successful real action',()=>{
  const s=createTutorialRun();let step=0;
- const perform=action=>{const before=step;assert.ok(tutorialAllows(step,action,s));if(action.type!=='panel')assert.equal(apply(s,action).ok,true);step=tutorialAdvance(step,action,s);if(before===4&&step===5)s.mode='walk';};
- perform({type:'move',id:1});assert.equal(s.noise,2);
- perform({type:'interact'});assert.equal(s.noise,4);assert.ok(s.gold>=5);
- perform({type:'panel',id:'sound'});perform({type:'lure',id:5});assert.equal(s.noise,7);
- perform({type:'mode',id:'rush'});assert.equal(step,4);perform({type:'move',id:2});assert.equal(s.noise,10);
- const plan=breathPlan(s);assert.equal(plan.start,1,'the breath starts where the chest creaked');assert.ok(plan.hit);assert.equal(plan.damage,3);
- perform({type:'end'});assert.equal(s.attack.hit,true);assert.equal(s.hp,18);assert.equal(s.resource.sword,2);
- perform({type:'attack'});assert.equal(s.rooms[2].enemy.hp,0);assert.equal(s.pending.type,'reward');
- perform({type:'reward',id:s.pending.options[0]});assert.equal(s.pending,null);
- const i=s.market.findIndex(id=>CARDS[id].cost<=s.resource.skill);assert.ok(i>=0,'something is affordable');perform({type:'buy',index:i});
- assert.ok(s.echo[2]>0,'the fight left an echo here');const n=s.noise;perform({type:'hide'});assert.equal(s.noise,Math.max(0,n-2));
- assert.equal(step,10);perform({type:'move',id:3});assert.equal(s.rooms[s.pos].type,'camp');perform({type:'interact'});assert.equal(step,11);
- perform({type:'move',id:7});perform({type:'interact'});assert.equal(s.relic.name,'첫 불씨');assert.equal(s.countdown,14);assert.equal(step,13);
- for(const id of [3,2,1,0]){let waits=0;while(s.resource.move<moveCost(s,id)){assert.ok(waits++<10,'new medals must permit the return');perform({type:'end'});}perform({type:'move',id});}
- assert.equal(step,13,'reaching the entrance alone does not complete the lesson');perform({type:'interact'});
+ const perform=action=>{assert.ok(tutorialAllows(step,action,s));if(action.type!=='panel')assert.equal(apply(s,action).ok,true);step=tutorialAdvance(step,action,s);};
+ for(const action of [{type:'move',id:1},{type:'interact'},{type:'panel',id:'sound'},{type:'hide'},{type:'lure',id:5},{type:'end'}])perform(action);
+ assert.equal(s.hp,22);assert.equal(s.rooms[6].enemy,null);assert.equal(s.rooms[5].enemy.home,6);
+ for(const id of [2,6,7])perform({type:'move',id});
+ perform({type:'buy',index:0});assert.equal(s.resource.sword,2);perform({type:'end'});assert.equal(s.resource.sword,5);
+ assert.ok(s.played.includes('spark'));assert.equal(s.rooms[6].enemy.home,6);assert.equal(s.hp,22);
+ perform({type:'move',id:11});perform({type:'move',id:10});perform({type:'attack'});assert.equal(s.rooms[10].enemy.hp,0);
+ perform({type:'skipReward'});perform({type:'interact'});perform({type:'panel',id:'sound'});
+ assert.equal(breathPlan(s).damage,4);perform({type:'hide'});perform({type:'move',id:11});perform({type:'move',id:7});perform({type:'end'});
+ assert.equal(s.attack.hit,false);assert.equal(s.hp,22);
+ for(const id of [3,2,1,0])perform({type:'move',id});perform({type:'interact'});
  assert.equal(step,TUTORIAL_STEPS.length);assert.equal(s.phase,'won');assert.ok(s.score>0);
 });
 
 test('the dragon forecast accounts for armor spent on the enemy first and stops after a lethal enemy hit',()=>{
- const s=createTutorialRun();s.echo=null;s.pos=2;s.noise=8;s.resource.block=3;
+ const s=createTutorialRun();s.rooms[2].enemy={name:'test guard',hp:2,damage:1};s.echo=null;s.pos=2;s.noise=8;s.resource.block=3;
  let impact=turnImpact(s);assert.equal(impact.enemyTaken,0);assert.equal(impact.blocked,2);assert.equal(impact.taken,1);
  s.hp=1;s.resource.block=0;impact=turnImpact(s);assert.equal(impact.enemyTaken,1);assert.equal(impact.raw,0);
  s.hp=22;s.noise=7;assert.equal(turnImpact(s).raw,0);

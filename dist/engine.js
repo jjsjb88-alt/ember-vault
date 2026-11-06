@@ -248,7 +248,7 @@ export function apply(s,action){
  }
  case 'buy':{
   const i=action.index,id=s.market[i],c=CARDS[id];if(!c)return fail(s,'능력을 찾을 수 없습니다.');if(s.resource.skill<c.cost)return fail(s,`기술 ${c.cost}이 필요합니다.`);
-  s.resource.skill-=c.cost;s.discard.push(id);s.purchases++;s.market[i]=sample(s,MARKET_IDS.filter(x=>!s.market.includes(x)));log(s,`${c.name} 영입 · 다음 턴부터 주머니에서 나옴`,'good');return ok(s,`${c.name} 획득`);
+  s.resource.skill-=c.cost;s.discard.push(id);s.purchases++;s.market[i]=sample(s,MARKET_IDS.filter(x=>!s.market.includes(x)));log(s,`${c.name} 영입 · 주머니를 다시 섞을 때부터 추출`,'good');return ok(s,`${c.name} 획득`);
  }
  case 'refresh':if(s.refreshTurn===s.turn)return fail(s,'교역소는 턴당 한 번 교체할 수 있습니다.');if(s.gold<2)return fail(s,'금화 2가 필요합니다.');s.gold-=2;s.market=shuffle(s,[...MARKET_IDS]).slice(0,4);s.refreshTurn=s.turn;return ok(s,'교역소 능력이 바뀌었습니다.');
  case 'reward':if(s.pending?.type!=='reward'||!s.pending.options.includes(action.id))return fail(s,'선택할 수 없는 보상입니다.');s.discard.push(action.id);s.pending=null;log(s,`전투 보상 · ${CARDS[action.id].name}`,'good');return ok(s,'새 능력을 메달 주머니에 넣었습니다.');
@@ -274,7 +274,7 @@ export function apply(s,action){
   if(s.hp<=0){finish(s,false,'용의 숨결이 금고를 삼켰습니다.');return ok(s,'탐험 종료');}
   if(s.countdown!==null){s.countdown--;if(s.countdown<=0){finish(s,false,'금고가 무너졌습니다. 유물을 얻으면 입구로 돌아가세요.');return ok(s,'탐험 종료');}}
   s.discard.push(...s.played);s.played=[];s.turn++;if(s.echo&&s.turn%echoFadeEvery(s)===0)s.echo=s.echo.map(v=>Math.max(0,v-1));s.resource=resources(s);s.hidden=false;s.noise=Math.max(0,s.noise-2-(s.role==='rogue'?1:0));
-  resolvePool(s);return ok(s,'새 메달 5개가 열렸습니다.');
+  resolvePool(s);return ok(s,`새 메달 ${s.played.length}개가 열렸습니다.`);
  }
  default:return fail(s,'알 수 없는 행동입니다.');
  }
