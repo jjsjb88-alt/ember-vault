@@ -1,0 +1,42 @@
+[
+  {
+    "tool": "2dimg2motion",
+    "source": "https://github.com/WU-HAOTIAN34/2dimg2motion.git",
+    "commit": "d4d73e243b6ff64b7cbb3879e45e951f972a7e62"
+  },
+  {
+    "tool": "sprite-gen",
+    "source": "https://github.com/aldegad/sprite-gen.git",
+    "commit": "4f5ccd55c7cf06685a41f954acc1e476b7772ece"
+  },
+  {
+    "tool": "pixelfx",
+    "source": "https://github.com/patch-gg/pixelfx.git",
+    "commit": "a84159688af3ca37a4be05a0d422b94451b2e24e"
+  },
+  {
+    "tool": "PixelOE",
+    "source": "https://github.com/KohakuBlueleaf/PixelOE.git",
+    "commit": "7ce444b36d3876a151d845d4493240e904454d89"
+  },
+  {
+    "tool": "agent-sprite-forge",
+    "source": "https://github.com/0x0funky/agent-sprite-forge.git",
+    "commit": "72fa5ad92d79b811acff464da32c8f3b1caa010f"
+  },
+  {
+    "tool": "codixel",
+    "source": "https://github.com/mankidev/codixel.git",
+    "commit": "604a9dcbcc4e386bc48188b5f7f49099f5d04db7"
+  },
+  {
+    "tool": "Pixelbolt",
+    "source": "https://github.com/skulitom/Pixelbolt.git",
+    "commit": "200c301780ae4f4ba1eb2e8563e1b5994e31974a"
+  },
+  {
+    "tool": "Sprite-Sheet-Diffusion",
+    "source": "https://github.com/chenganhsieh/Sprite-Sheet-Diffusion.git",
+    "commit": "382c2e7a3ae8d6e012963ec19c43415159e439c7"
+  }
+]

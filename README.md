@@ -1,6 +1,17 @@
-# 잿불 금고 · Ember Vault V9.4
+# 잿불 금고 · Ember Vault V9.5
 
-한국어 싱글플레이 풀빌딩 던전 크롤러. [바로 플레이](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261106e) · [첫 금고 털이 연습](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261106e&tutorial=1)
+한국어 싱글플레이 풀빌딩 던전 크롤러. [바로 플레이](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261106f) · [첫 금고 털이 연습](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261106f&tutorial=1)
+
+## V9.5 — 기억과 보물을 만질 수 있게
+
+[금고도감 열기](https://jjsjb88-alt.github.io/ember-vault/dist/artbook.html?v=20261106f)
+
+- 확정한 인외 여상인 녹스의 원화와 4개 키포즈, 플레이어 3직업 전신·초상, 적 3종을 공통 팔레트로 제작했습니다.
+- 기억 메달 24종을 각각 다른 고해상도 에셋으로 교체했습니다. 교역·주머니·추출·보상에서 같은 원화를 사용하며 일반·고급·희귀·영웅의 프레임과 픽셀FX로 구분합니다.
+- 유물 4종과 소품 8종을 새로 제작해 필드·도감·결산·소음 장면에 연결했습니다. 모바일에서는 인물을 키우고 스테이징을 조정했습니다.
+- 금고도감에서 모든 기억을 크게 보고 네 등급의 외형을 비교할 수 있습니다. 실제 능력과 거래 비용은 기존 규칙을 따릅니다.
+
+도구별 실제 수행·연구 한계·원본과 검수는 [V9.5 아트 제작 기록](docs/production/V95-ART-DIRECTION.md), [검증 기록](docs/production/V95-VERIFICATION.md)에 정리했습니다.
 
 ## V9.4 — 인외 상인 녹스
 
@@ -58,11 +69,11 @@ npm test
 python3 -m http.server 8000 --directory dist
 ```
 
-규칙·저장 호환·지름길·소리·숨결·좌표와 튜토리얼의 실제 행동 결과를 검사합니다. 현재 교역의 실행 결과·화면 증거는 [V9.4 녹스 기록](docs/production/V94-NOX.md), 지도·유인·저장 상세는 [V9.2 검증 기록](docs/production/V92-VERIFICATION.md)을 기준으로 봅니다. 로컬 Chromium의 모바일 화면 검수, 실제 휴대폰 검수, GitHub Actions 배포 확인은 서로 구분합니다. 이번 작업 환경에서 공개 플레이 주소 직접 접속은 프록시 403으로 제한됐으며, 로컬 실행 성공을 공개 주소 접속 성공으로 표시하지 않습니다. 자동 탐험은 규칙과 경로를 확인하는 보조 수단이며 실제 사람의 난이도나 승률을 보장하지 않습니다. 이전 기록은 [V9.1](docs/production/V91-VERIFICATION.md)과 [V9](docs/production/V9-VERIFICATION.md)에 보존합니다.
+규칙·저장 호환·지름길·소리·숨결·좌표와 튜토리얼의 실제 행동 결과를 검사합니다. 현재 아트와 교역의 실행 결과·화면 증거는 [V9.5 검수 기록](docs/production/V95-VERIFICATION.md), 지도·유인·저장 상세는 [V9.2 검증 기록](docs/production/V92-VERIFICATION.md)을 기준으로 봅니다. 로컬 Chromium의 모바일 화면 검수, 실제 휴대폰 검수, GitHub Actions 배포 확인은 서로 구분합니다. 이번 작업 환경에서 공개 플레이 주소 직접 접속은 프록시 403으로 제한됐으며, 로컬 실행 성공을 공개 주소 접속 성공으로 표시하지 않습니다. 자동 탐험은 규칙과 경로를 확인하는 보조 수단이며 실제 사람의 난이도나 승률을 보장하지 않습니다. 이전 기록은 [V9.1](docs/production/V91-VERIFICATION.md)과 [V9](docs/production/V9-VERIFICATION.md)에 보존합니다.
 
 ## 이전 버전 기록
 
-아래는 당시 구현을 설명하는 기록입니다. 방 수와 튜토리얼 단계·검증 범위 등 현재 동작은 위 V9.2 설명과 연결된 문서가 우선합니다.
+아래는 당시 구현을 설명하는 기록입니다. 방 수와 튜토리얼 단계·검증 범위 등 현재 동작은 위 V9.5 설명과 연결된 문서가 우선합니다.
 
 ## V7.6 — 컷신 대화 · 메달이 열리는 이유
 

@@ -1,4 +1,5 @@
-import {neighbours,moveCost,ALERTS,TERRAINS} from './engine.js?v=20261106e';
+import {neighbours,moveCost,ALERTS,TERRAINS} from './engine.js?v=20261106f';
+import {drawAssetIcon,paintTokens} from './token-art.js?v=20261106f';
 const C={ink:'#10191b',edge:'#243137',stone:'#3b4948',moss:'#58715b',green:'#8ac09e',light:'#d5efd1',gold:'#e5b567',sun:'#ffe3a1',copper:'#ad6d45',red:'#ce665a',darkred:'#743b3e',blue:'#7baec7',violet:'#aa91c6',cream:'#f0d8ac'};
 const sprites={
  hero:[
@@ -27,6 +28,7 @@ export function sprite(c,name,x,y,scale=1,t=0){
  a.forEach((row,j)=>[...row].forEach((p,i)=>{if(p!==' ')rect(c,x+i*scale,y+j*scale,scale,scale,palette[p]);}));
 }
 export function icon(c,name,x=0,y=0,size=32){
+ if(drawAssetIcon(c,name,x,y,size))return;
  c.save();c.translate(Math.round(x),Math.round(y));c.scale(size/32,size/32);const r=(a,b,w,h,col)=>rect(c,a,b,w,h,col);const p=(pts,col)=>poly(c,pts,col);
  const blade=()=>{p([[11,21],[22,3],[26,5],[16,24]],C.blue);p([[13,20],[24,4],[25,6],[15,22]],C.light);r(8,19,11,3,C.gold);r(9,22,4,7,C.copper);r(7,28,5,3,C.gold);};
  if(name in sprites){sprite(c,name,16,30,1.5);}
@@ -55,7 +57,7 @@ export function icon(c,name,x=0,y=0,size=32){
  else{r(14,7,4,13,C.gold);r(14,24,4,4,C.gold);}
  c.restore();
 }
-export function paintIcons(root=document){root.querySelectorAll('canvas[data-icon]').forEach(el=>{const c=el.getContext('2d');c.clearRect(0,0,el.width,el.height);c.imageSmoothingEnabled=false;icon(c,el.dataset.icon,0,0,el.width);});}
+export function paintIcons(root=document){root.querySelectorAll('canvas[data-icon]').forEach(el=>{const c=el.getContext('2d');c.clearRect(0,0,el.width,el.height);c.imageSmoothingEnabled=false;icon(c,el.dataset.icon,0,0,el.width);});paintTokens(root);}
 
 export function makeRenderer(canvas,getState,minimap){
  const c=canvas.getContext('2d'),mc=minimap.getContext('2d'),W=960;let H=540;

@@ -1,0 +1,12 @@
+const P=require('/tmp/ember-tools/codixel/core/pixel.js'),fs=require('fs');
+const ids=['rogue','knight','mage'];
+const cut=ids.map(id=>P.trim(P.removeBg(P.load(`/tmp/ember-v95-heroes-sliced/${id}.png`),{tol:16,flood:true}),0));
+const scale=Math.min(480/Math.max(...cut.map(b=>b.h)),480/Math.max(...cut.map(b=>b.w)));
+const heroes=cut.map((b,i)=>{const s=P.resize(b,Math.round(b.w*scale),Math.round(b.h*scale));const frame=new P.Buf(512,560);frame.sprite(s,Math.round((512-s.w)/2),530-s.h);P.save(frame,`dist/assets/v95/heroes/${ids[i]}.png`);return frame;});
+P.save(P.pack(heroes,{cols:3}),'dist/assets/v95/heroes-field.png');
+P.save(P.sheet(heroes.map((buf,i)=>({buf,label:ids[i]})),{cols:3,fit:280}),'/tmp/ember-v95-hero-contact.png');
+const enemies=['skeleton','sentinel','dragon'].map(id=>P.load(`/tmp/ember-v95-enemies-sliced/${id}.png`));
+const bottom=['chest','camp','shrine'].map(id=>P.load(`/tmp/ember-v95-enemies-sliced/${id}.png`));
+const atlas=new P.Buf(1536,1024);enemies.forEach((b,i)=>atlas.sprite(b,i*512,0));bottom.forEach((b,i)=>atlas.sprite(P.resize(b,512,480),i*512,544));P.save(atlas,'dist/assets/v95/creatures.png');
+P.save(P.sheet(enemies.map((buf,i)=>({buf,label:['skeleton','sentinel','dragon'][i]})),{cols:3,fit:280}),'/tmp/ember-v95-enemy-contact.png');
+console.log('Packed hero and creature atlases; shared hero scale',scale);

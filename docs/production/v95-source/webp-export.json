@@ -1,0 +1,486 @@
+{
+  "source_bytes": 13584136,
+  "runtime_bytes": 2450466,
+  "assets": [
+    {
+      "png": "dist/assets/v95/heroines.png",
+      "webp": "dist/assets/v95/heroines.webp",
+      "size": [
+        1536,
+        1024
+      ],
+      "source_bytes": 2891042,
+      "runtime_bytes": 461912
+    },
+    {
+      "png": "dist/assets/v95/creatures.png",
+      "webp": "dist/assets/v95/creatures.webp",
+      "size": [
+        1536,
+        1024
+      ],
+      "source_bytes": 2378223,
+      "runtime_bytes": 383042
+    },
+    {
+      "png": "dist/assets/v95/nox.png",
+      "webp": "dist/assets/v95/nox.webp",
+      "size": [
+        1536,
+        1024
+      ],
+      "source_bytes": 2865329,
+      "runtime_bytes": 518258
+    },
+    {
+      "png": "dist/assets/v95/field-shrine.png",
+      "webp": "dist/assets/v95/field-shrine.webp",
+      "size": [
+        96,
+        96
+      ],
+      "source_bytes": 16152,
+      "runtime_bytes": 5292
+    },
+    {
+      "png": "dist/assets/v95/heroes-field.png",
+      "webp": "dist/assets/v95/heroes-field.webp",
+      "size": [
+        1536,
+        560
+      ],
+      "source_bytes": 739019,
+      "runtime_bytes": 173446
+    },
+    {
+      "png": "dist/assets/v95/nox-poses/nox-3.png",
+      "webp": "dist/assets/v95/nox-poses/nox-3.webp",
+      "size": [
+        384,
+        560
+      ],
+      "source_bytes": 221399,
+      "runtime_bytes": 55986
+    },
+    {
+      "png": "dist/assets/v95/nox-poses/nox-2.png",
+      "webp": "dist/assets/v95/nox-poses/nox-2.webp",
+      "size": [
+        384,
+        560
+      ],
+      "source_bytes": 217995,
+      "runtime_bytes": 55762
+    },
+    {
+      "png": "dist/assets/v95/nox-poses/nox-0.png",
+      "webp": "dist/assets/v95/nox-poses/nox-0.webp",
+      "size": [
+        384,
+        560
+      ],
+      "source_bytes": 220845,
+      "runtime_bytes": 55756
+    },
+    {
+      "png": "dist/assets/v95/nox-poses/nox-1.png",
+      "webp": "dist/assets/v95/nox-poses/nox-1.webp",
+      "size": [
+        384,
+        560
+      ],
+      "source_bytes": 222556,
+      "runtime_bytes": 55848
+    },
+    {
+      "png": "dist/assets/v95/tokens/silence.png",
+      "webp": "dist/assets/v95/tokens/silence.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 98119,
+      "runtime_bytes": 13654
+    },
+    {
+      "png": "dist/assets/v95/tokens/greed.png",
+      "webp": "dist/assets/v95/tokens/greed.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 102995,
+      "runtime_bytes": 16404
+    },
+    {
+      "png": "dist/assets/v95/tokens/insight.png",
+      "webp": "dist/assets/v95/tokens/insight.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 129972,
+      "runtime_bytes": 20450
+    },
+    {
+      "png": "dist/assets/v95/tokens/echo.png",
+      "webp": "dist/assets/v95/tokens/echo.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 76024,
+      "runtime_bytes": 10472
+    },
+    {
+      "png": "dist/assets/v95/tokens/ghost.png",
+      "webp": "dist/assets/v95/tokens/ghost.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 73975,
+      "runtime_bytes": 10026
+    },
+    {
+      "png": "dist/assets/v95/tokens/guard.png",
+      "webp": "dist/assets/v95/tokens/guard.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 109340,
+      "runtime_bytes": 14528
+    },
+    {
+      "png": "dist/assets/v95/tokens/focus.png",
+      "webp": "dist/assets/v95/tokens/focus.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 89168,
+      "runtime_bytes": 11578
+    },
+    {
+      "png": "dist/assets/v95/tokens/rush.png",
+      "webp": "dist/assets/v95/tokens/rush.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 101893,
+      "runtime_bytes": 16288
+    },
+    {
+      "png": "dist/assets/v95/tokens/spark.png",
+      "webp": "dist/assets/v95/tokens/spark.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 63051,
+      "runtime_bytes": 11074
+    },
+    {
+      "png": "dist/assets/v95/tokens/treasure.png",
+      "webp": "dist/assets/v95/tokens/treasure.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 102869,
+      "runtime_bytes": 15752
+    },
+    {
+      "png": "dist/assets/v95/tokens/healing.png",
+      "webp": "dist/assets/v95/tokens/healing.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 73774,
+      "runtime_bytes": 9602
+    },
+    {
+      "png": "dist/assets/v95/tokens/bash.png",
+      "webp": "dist/assets/v95/tokens/bash.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 101752,
+      "runtime_bytes": 14268
+    },
+    {
+      "png": "dist/assets/v95/tokens/acrobat.png",
+      "webp": "dist/assets/v95/tokens/acrobat.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 86757,
+      "runtime_bytes": 13814
+    },
+    {
+      "png": "dist/assets/v95/tokens/potion.png",
+      "webp": "dist/assets/v95/tokens/potion.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 72288,
+      "runtime_bytes": 11708
+    },
+    {
+      "png": "dist/assets/v95/tokens/sentinel.png",
+      "webp": "dist/assets/v95/tokens/sentinel.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 83339,
+      "runtime_bytes": 12570
+    },
+    {
+      "png": "dist/assets/v95/tokens/sneak.png",
+      "webp": "dist/assets/v95/tokens/sneak.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 70900,
+      "runtime_bytes": 11994
+    },
+    {
+      "png": "dist/assets/v95/tokens/lantern.png",
+      "webp": "dist/assets/v95/tokens/lantern.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 68257,
+      "runtime_bytes": 11142
+    },
+    {
+      "png": "dist/assets/v95/tokens/wisdom.png",
+      "webp": "dist/assets/v95/tokens/wisdom.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 99570,
+      "runtime_bytes": 16886
+    },
+    {
+      "png": "dist/assets/v95/tokens/slash.png",
+      "webp": "dist/assets/v95/tokens/slash.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 44601,
+      "runtime_bytes": 8050
+    },
+    {
+      "png": "dist/assets/v95/tokens/blade.png",
+      "webp": "dist/assets/v95/tokens/blade.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 53588,
+      "runtime_bytes": 10886
+    },
+    {
+      "png": "dist/assets/v95/tokens/step.png",
+      "webp": "dist/assets/v95/tokens/step.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 82639,
+      "runtime_bytes": 12092
+    },
+    {
+      "png": "dist/assets/v95/tokens/ambush.png",
+      "webp": "dist/assets/v95/tokens/ambush.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 61374,
+      "runtime_bytes": 10072
+    },
+    {
+      "png": "dist/assets/v95/tokens/fury.png",
+      "webp": "dist/assets/v95/tokens/fury.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 84502,
+      "runtime_bytes": 15092
+    },
+    {
+      "png": "dist/assets/v95/tokens/scout.png",
+      "webp": "dist/assets/v95/tokens/scout.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 106683,
+      "runtime_bytes": 17820
+    },
+    {
+      "png": "dist/assets/v95/heroes/mage.png",
+      "webp": "dist/assets/v95/heroes/mage.webp",
+      "size": [
+        512,
+        560
+      ],
+      "source_bytes": 251862,
+      "runtime_bytes": 58588
+    },
+    {
+      "png": "dist/assets/v95/heroes/knight.png",
+      "webp": "dist/assets/v95/heroes/knight.webp",
+      "size": [
+        512,
+        560
+      ],
+      "source_bytes": 269734,
+      "runtime_bytes": 63378
+    },
+    {
+      "png": "dist/assets/v95/heroes/rogue.png",
+      "webp": "dist/assets/v95/heroes/rogue.webp",
+      "size": [
+        512,
+        560
+      ],
+      "source_bytes": 205235,
+      "runtime_bytes": 52234
+    },
+    {
+      "png": "dist/assets/v95/props/moon.png",
+      "webp": "dist/assets/v95/props/moon.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 67859,
+      "runtime_bytes": 13568
+    },
+    {
+      "png": "dist/assets/v95/props/mechanism.png",
+      "webp": "dist/assets/v95/props/mechanism.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 102038,
+      "runtime_bytes": 17966
+    },
+    {
+      "png": "dist/assets/v95/props/heart.png",
+      "webp": "dist/assets/v95/props/heart.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 84771,
+      "runtime_bytes": 15704
+    },
+    {
+      "png": "dist/assets/v95/props/camp.png",
+      "webp": "dist/assets/v95/props/camp.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 79642,
+      "runtime_bytes": 14270
+    },
+    {
+      "png": "dist/assets/v95/props/chest.png",
+      "webp": "dist/assets/v95/props/chest.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 108083,
+      "runtime_bytes": 19992
+    },
+    {
+      "png": "dist/assets/v95/props/dragon-memory.png",
+      "webp": "dist/assets/v95/props/dragon-memory.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 113589,
+      "runtime_bytes": 20348
+    },
+    {
+      "png": "dist/assets/v95/props/crown.png",
+      "webp": "dist/assets/v95/props/crown.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 79758,
+      "runtime_bytes": 16788
+    },
+    {
+      "png": "dist/assets/v95/props/seal.png",
+      "webp": "dist/assets/v95/props/seal.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 109007,
+      "runtime_bytes": 19148
+    },
+    {
+      "png": "dist/assets/v95/props/key.png",
+      "webp": "dist/assets/v95/props/key.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 37945,
+      "runtime_bytes": 9336
+    },
+    {
+      "png": "dist/assets/v95/props/lantern.png",
+      "webp": "dist/assets/v95/props/lantern.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 58211,
+      "runtime_bytes": 10316
+    },
+    {
+      "png": "dist/assets/v95/props/coin.png",
+      "webp": "dist/assets/v95/props/coin.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 103686,
+      "runtime_bytes": 18458
+    },
+    {
+      "png": "dist/assets/v95/props/shrine.png",
+      "webp": "dist/assets/v95/props/shrine.webp",
+      "size": [
+        256,
+        256
+      ],
+      "source_bytes": 102726,
+      "runtime_bytes": 18848
+    }
+  ]
+}

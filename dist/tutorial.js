@@ -1,4 +1,4 @@
-import {newRun,moveCost,resolvePool,breathPlan,dragonDue} from './engine.js?v=20261106e';
+import {newRun,moveCost,resolvePool,breathPlan,dragonDue} from './engine.js?v=20261106f';
 
 // 연습은 그림자 도적의 첫 금고 털이. 등불 속 불씨 '깜부기'가 옆에서 떠든다.
 // talk = 이 행동을 하는 이유(대사), text = 무엇을 누르고 무엇이 일어나는가. 한 단계의 사고가 다음 단계의 이유가 된다.
@@ -70,7 +70,7 @@ export function createTutorialRun(){
  Object.assign(s.rooms[2],{name:'돌의 갈림목',type:'enemy',terrain:'stone'});
  Object.assign(s.rooms[3],{name:'이끼 쉼터',type:'camp',terrain:'moss',used:false,lessonOptional:true});
  Object.assign(s.rooms[6],{name:'파편 회랑',type:'enemy',terrain:'shards',lessonReturn:'short',enemy:{kind:'skeleton',name:'금고의 파수병',hp:2,maxHp:2,damage:1,gold:2,home:6,mode:'idle',target:null,memory:0,awareness:0,anchored:false}});
- Object.assign(s.rooms[7],{name:'이끼 회랑',type:'enemy',terrain:'moss'});
+ Object.assign(s.rooms[7],{name:'이끼 회랑',type:'enemy',terrain:'moss',host:'nox'});
  Object.assign(s.rooms[11],{name:'이끼 서고',type:'chest',terrain:'moss',used:false,lessonReturn:'quiet',lessonOptional:true});
  Object.assign(s.rooms[10],{name:'회상의 봉인실',type:'relic',terrain:'stone',used:false,relic:{name:'첫 불씨',value:18,icon:'crystal'},enemy:{kind:'sentinel',name:'봉인의 수호자',hp:5,maxHp:5,damage:1,gold:3,home:10,mode:'idle',target:null,memory:0,awareness:0,anchored:true}});
  return s;

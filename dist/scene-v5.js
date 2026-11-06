@@ -1,13 +1,13 @@
-import {neighbours,moveStatus} from './engine.js?v=20261106e';
-import {icon,sprite} from './art.js?v=20261106e';
-import {DIRECTIONS,travelVector,walkFrame,motionFrame,mapLayout,projectMap,mapPassage,hitMapRoom,exitAnchor,hitExit} from './scene-layout.js?v=20261106e';
-import {WALK_FRAMES} from './rogue-frames.js?v=20261106e';
-import {ATTACK_FRAMES} from './rogue-attack-frames.js?v=20261106e';
-import {RELIC_MOTION} from './rogue-relic-frames.js?v=20261106e';
-import {prepareFrames} from './sprite-atlas.js?v=20261106e';
-import {roomEnvironment} from './encounter.js?v=20261106e';
-import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261106e';
-import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261106e';
+import {neighbours,moveStatus} from './engine.js?v=20261106f';
+import {icon,sprite} from './art.js?v=20261106f';
+import {DIRECTIONS,travelVector,walkFrame,motionFrame,mapLayout,projectMap,mapPassage,hitMapRoom,exitAnchor,hitExit} from './scene-layout.js?v=20261106f';
+import {WALK_FRAMES} from './rogue-frames.js?v=20261106f';
+import {ATTACK_FRAMES} from './rogue-attack-frames.js?v=20261106f';
+import {RELIC_MOTION} from './rogue-relic-frames.js?v=20261106f';
+import {prepareFrames} from './sprite-atlas.js?v=20261106f';
+import {roomEnvironment} from './encounter.js?v=20261106f';
+import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261106f';
+import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261106f';
 
 export function makeRenderer(canvas,getState,minimap){
  const c=canvas.getContext('2d'),mc=minimap.getContext('2d');
@@ -22,8 +22,11 @@ export function makeRenderer(canvas,getState,minimap){
  preloadRelic();
  let attackFrames=null;
  attackAtlas.onload=()=>{attackFrames=prepareFrames(attackAtlas,ATTACK_FRAMES);};
- const heroes=image('./assets/heroines-v4.png'),objects=image('./assets/creatures-props-v4.png');
- const winchProp=image('./assets/v9/props/shortcut-key.png'),cacheProp=image('./assets/v9/props/supply-cache.png');
+ const heroes=image('./assets/v95/heroes-field.webp'),objects=image('./assets/v95/creatures.webp');
+ const winchProp=image('./assets/v95/props/mechanism.webp'),cacheProp=image('./assets/v95/props/chest.webp');
+ const propArt=Object.fromEntries(['moon','crown','heart','dragon-memory','chest','camp','shrine','lantern'].map(id=>[id,image(`./assets/v95/props/${id}.webp`)]));
+ propArt.shrine=image('./assets/v95/field-shrine.webp');
+ const noxPoses=[0,1,2,3].map(i=>image(`./assets/v95/nox-poses/nox-${i}.webp`));
  const focusRing=image('./assets/v9/props/focus/focus-ring.png');
  const winchIcon=image('./assets/v9/props/glyph-shortcut.png');
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -42,9 +45,9 @@ export function makeRenderer(canvas,getState,minimap){
  function shadow(x,y,w){c.fillStyle='#0107128c';c.beginPath();c.ellipse(x,y,w,w*.24,0,0,Math.PI*2);c.fill();}
  function legacyActor(kind,x,y,height,ms,flip=false){
   const hero=['rogue','knight','mage'].indexOf(kind),source=hero>=0?heroes:objects;
-  const id=hero>=0?hero:kind==='dragon'?2:kind==='sentinel'?1:0,sh=hero>=0?560:540,width=height*512/sh;
+  const id=hero>=0?hero:kind==='dragon'?2:kind==='sentinel'?1:0,sh=hero>=0?(source.naturalHeight||560):540,sw=hero>=0?(source.naturalWidth/3||512):512,width=height*sw/sh;
   shadow(x,y,width*.24);c.save();c.translate(x,y);if(flip)c.scale(-1,1);
-  if(source.complete&&source.naturalWidth)c.drawImage(source,id*512,0,512,sh,-width/2,-height+(reduced?0:Math.sin(ms*.002)*.6),width,height);
+  if(source.complete&&source.naturalWidth)c.drawImage(source,id*sw,0,sw,sh,-width/2,-height+(reduced?0:Math.sin(ms*.002)*.6),width,height);
   else sprite(c,kind==='rogue'?'hero':kind,0,0,3,ms/1000);c.restore();
  }
  function hero(x,y,height,ms,walking,attack){
@@ -69,9 +72,10 @@ export function makeRenderer(canvas,getState,minimap){
  }
  function drawProp(r,x,y,height,ms){
   if(r.enemy?.hp>0)return;
-  if(r.type==='merchant'){legacyActor('mage',x,y,height*.92,ms,true);return;}
+  if(r.type==='merchant'||r.host==='nox'){const pose=noxPoses[document.querySelector('#cutscene[open][data-speaker=guest]')?2:document.querySelector('#modal[open][data-mode=market]')?1:getState().tradeStory?.lastBuy?3:0];if(pose?.complete&&pose.naturalWidth){const width=height*pose.naturalWidth/pose.naturalHeight;shadow(x,y,width*.24);c.drawImage(pose,x-width/2,y-height,width,height);}return;}
   if(!r.used&&['relic','mechanism','chest'].includes(r.type)&&focusRing.complete&&focusRing.naturalWidth){const beat=reduced?0:ms%960,frame=beat<260?0:beat<480?1:beat<740?2:3;const width=height*1.1;c.save();c.globalAlpha=.7;c.drawImage(focusRing,1+frame*50,1,48,48,x-width/2,y-width*.16,width,width*.32);c.restore();}
-  const custom=r.type==='mechanism'?winchProp:r.row>=4&&r.type==='chest'?cacheProp:null;
+  const relicId=r.relic?.value===56?'dragon-memory':r.relic?.icon==='crown'?'crown':r.relic?.icon==='heartgem'?'heart':'moon';
+  const custom=r.type==='mechanism'?winchProp:r.type==='relic'?propArt[relicId]:r.type==='chest'?cacheProp:propArt[r.type];
   if(custom?.complete&&custom.naturalWidth){const size=height*.93;shadow(x,y,size*.27);c.save();if(r.used)c.globalAlpha=.4;c.drawImage(custom,x-size/2,y-size*.92,size,size);c.restore();if(r.used&&!(r.type==='mechanism'&&interaction)){const font=Math.max(14,11*W/cssWidth);c.fillStyle='#b8dfcc';c.font=`${font}px system-ui`;c.textAlign='center';c.fillText(r.type==='mechanism'?'승강 통로 개방':'사용 완료',x,y+font);}return;}
   const id={chest:0,camp:1,shrine:2,relic:2,mechanism:2}[r.type];
   if(id===undefined||!objects.complete||!objects.naturalWidth)return;
@@ -99,10 +103,11 @@ export function makeRenderer(canvas,getState,minimap){
   if(recentEnemyPos!==s.pos){recentEnemy=null;recentEnemyPos=s.pos;killing=null;killFx.clear();}
   if(r.enemy?.hp>0)recentEnemy={...r.enemy};
   const since=ms-hitAt,attack=!reduced&&since<swingDuration(plan)?swingClock(since,plan)/SWING_MS:0,frozen=attack>0&&inHitStop(since,plan);
-  const baseX=W*.4,baseY=H*.73,heroH=Math.min(H*.31,W*.18);
+  const compact=cssWidth<560;
+  const baseX=W*.4,baseY=H*(compact?.60:.73),heroH=Math.min(H*.31,W*(compact?.30:.18));
   const hx=baseX-(walking?(1-p)*vector.x*W*.12:0)+Math.sin(attack*Math.PI)*W*.17;
   const hy=baseY-(walking?(1-p)*vector.y*W*.12:0)-Math.sin(attack*Math.PI)*H*.085;
-  const ex=W*.66,ey=H*.59;
+  const ex=W*.66,ey=H*(compact?.48:.59);
   if(interaction&&interaction.pos!==s.pos){interaction=null;interactFx.clear();}
   if(interaction&&interaction.at===null&&!walking&&!attack&&!document.querySelector('dialog[open]')){
    interaction.at=ms;rewardAt=-10000;

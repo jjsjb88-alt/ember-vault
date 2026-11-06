@@ -12,3 +12,5 @@ Vendored from https://github.com/patch-gg/pixelfx at commit a841596 (MIT). Only 
 Files under dist/vendor/pixelfx/fx/*/lib.js were renamed from _lib.js so GitHub Pages (Jekyll) publishes them.
 
 The pickups helper includes only the glint function used by collect-burst. The host supplies muted teal metal and warm gold palettes for the winch and relic interactions.
+
+V9.5 also uses arcane/rune-circle and its shared arcane helper for the epic memory aura (same MIT library and original notices retained).

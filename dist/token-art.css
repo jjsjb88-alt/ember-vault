@@ -1,0 +1,55 @@
+.memory-token{--token-size:48px;position:relative;display:inline-block;flex:none;width:var(--token-size);height:var(--token-size);isolation:isolate;vertical-align:middle;filter:drop-shadow(0 3px 4px #0008)}
+.memory-token-art{position:absolute;inset:8%;width:84%;height:84%;object-fit:contain;image-rendering:auto;z-index:0}
+.memory-token-frame{position:absolute;inset:0;background:url('./assets/v95/rarity-frames.png') var(--frame-x) 0/400% 100% no-repeat;z-index:1;pointer-events:none;image-rendering:auto}
+.memory-token:before{content:"";position:absolute;inset:7%;border-radius:50%;background:radial-gradient(ellipse at 30% 16%,#fff4d628,transparent 48%);z-index:1;pointer-events:none}
+.memory-token-mark{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);z-index:3;padding:1px 3px;color:var(--grade);background:#07131de8;border:1px solid color-mix(in srgb,var(--grade),transparent 65%);font-size:5px;line-height:7px;letter-spacing:1px;white-space:nowrap;border-radius:2px}
+.memory-token-fx{position:absolute;inset:-50%;width:200%;height:200%;z-index:4;pointer-events:none;image-rendering:auto}
+.tier-common .memory-token-fx{opacity:.4}.tier-uncommon .memory-token-fx{opacity:.55}.tier-rare .memory-token-fx{opacity:.75}.tier-epic .memory-token-fx{opacity:.9}
+.memory-token.tier-uncommon{filter:drop-shadow(0 0 4px #65bba22a) drop-shadow(0 3px 4px #0008)}
+.memory-token.tier-rare{filter:drop-shadow(0 0 7px #62acff40) drop-shadow(0 3px 4px #0008)}
+.memory-token.tier-epic{filter:drop-shadow(0 0 10px #c28aff66) drop-shadow(0 3px 4px #0008)}
+.memory-token.tier-rare:after,.memory-token.tier-epic:after{content:"";position:absolute;inset:-6%;z-index:2;pointer-events:none;background:radial-gradient(circle at 17% 26%,#d9ecff 0 1px,transparent 2px),radial-gradient(circle at 85% 68%,#a4d6ff 0 1px,transparent 2px);animation:memory-glint 3.4s ease-in-out infinite}
+.memory-token.tier-epic:after{background:radial-gradient(circle at 14% 34%,#ffe3b0 0 1px,transparent 2px),radial-gradient(circle at 87% 65%,#d6b3ff 0 1.5px,transparent 3px),radial-gradient(circle at 64% 6%,#ffe5f3 0 1px,transparent 2px);animation-duration:2.7s}
+.memory-grade{display:inline-block;font-size:9px;line-height:1.5;letter-spacing:.05em;color:#c4b08b;vertical-align:middle;font-weight:400;margin-right:5px}
+.memory-grade.tier-uncommon{color:#81d4bd}.memory-grade.tier-rare{color:#8bbdf1}.memory-grade.tier-epic{color:#d5a6e8}
+.vault-item{display:inline-flex;align-items:center;justify-content:center;flex:none;width:var(--item-size,48px);height:var(--item-size,48px);vertical-align:middle}
+.vault-item>img{width:100%;height:100%;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 3px 5px #0008)}
+#modal[data-mode=market] .market-card{grid-template-columns:72px minmax(0,1fr);min-height:174px;align-items:center}
+#modal[data-mode=market] .market-card .offer strong{font-size:15px}
+#modal[data-mode=market] .offer{gap:5px}
+#modal[data-mode=market] .offer em{font-size:11px}
+.deck-item>.memory-token{margin:2px 8px 2px 0}
+.ability-choice .ability-gem{width:108px;height:108px;border:0;background:none;box-shadow:none;overflow:visible}
+.ability-choice .ability-gem .memory-token{--token-size:100px!important}
+.ability-choice .choose-label{margin-top:8px}
+.pool-details .token-icon{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;overflow:visible}
+.pool-details .token-icon>.memory-token{--token-size:34px!important}
+.pool-details .memory-token-mark,.res-top .memory-token-mark,.hud-gold .memory-token-mark{display:none}
+.res-top>.memory-token{--token-size:24px!important}
+.reveal-orb-core>.memory-token{--token-size:132px!important}
+.reveal-orb-core>.vault-item{--item-size:110px!important}
+.reveal-orb-core{overflow:visible}
+.sealed-token .seal-face{padding:0;background:none;border:0;overflow:visible}
+.sealed-token .seal-face>.memory-token{--token-size:38px!important}
+.sealed-token .memory-token-mark{display:none}
+.hud-gold>.vault-item{--item-size:24px!important}
+.portrait{background-image:url('./assets/v95/heroines.webp')!important;image-rendering:auto!important}
+body:has(#tutorialCoach[data-step-key="recruit"]) .coach-spot{animation:none;box-shadow:0 0 0 200vmax #02060c55,0 0 0 2px #fff2b9,0 0 24px 4px #e7b65199}
+@keyframes memory-glint{0%,100%{opacity:.2;transform:rotate(-5deg)}50%{opacity:1;transform:rotate(5deg)}}
+@media(max-width:600px) and (orientation:portrait){
+ .scene-target.merchant{top:29%;height:28%;width:30%}
+ #modal[data-mode=market] .market-card{grid-template-columns:1fr;justify-items:center;gap:9px;padding:12px 10px;min-height:248px;text-align:center}
+ #modal[data-mode=market] .market-card>.memory-token{--token-size:86px!important}
+ #modal[data-mode=market] .market-card .offer{width:100%;align-items:center}
+ #modal[data-mode=market] .market-card .offer strong{font-size:13px}
+ #modal[data-mode=market] .offer em{font-size:10px}
+ #modal[data-mode=market] .price{justify-self:stretch;text-align:center}
+ .pool-details .token-icon>.memory-token{--token-size:27px!important}
+ .reveal-orb-core>.memory-token{--token-size:112px!important}
+}
+@media(max-height:430px) and (orientation:landscape){
+ #modal[data-mode=market] .market-card{grid-template-columns:56px minmax(0,1fr);padding:11px;min-height:158px}
+ #modal[data-mode=market] .market-card>.memory-token{--token-size:58px!important}
+ .reveal-orb-core>.memory-token{--token-size:88px!important}
+}
+@media(prefers-reduced-motion:reduce){.memory-token:after{animation:none!important;opacity:.7}}

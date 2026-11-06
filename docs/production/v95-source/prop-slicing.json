@@ -1,0 +1,358 @@
+{
+  "kind": "sprite-gen-slice-sheet",
+  "version": 1,
+  "sheet": "exec-50ff5a93-89ed-4555-8f6a-7963e360c451.png",
+  "grid": [
+    4,
+    3
+  ],
+  "canvas": {
+    "w": 256,
+    "h": 256
+  },
+  "baseline_y": 256.0,
+  "target_height": 256.0,
+  "scale": "cell",
+  "fit": "contain",
+  "factor": null,
+  "factor_from": null,
+  "alpha_cleanup": null,
+  "cells": [
+    {
+      "name": "moon",
+      "file": "moon.png",
+      "factor": 0.7052341597796143,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 362,
+          "h": 362
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "crown",
+      "file": "crown.png",
+      "factor": 0.7052341597796143,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 362,
+          "h": 362
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "heart",
+      "file": "heart.png",
+      "factor": 0.7052341597796143,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 362,
+          "h": 362
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "dragon-memory",
+      "file": "dragon-memory.png",
+      "factor": 0.7052341597796143,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 362,
+          "h": 362
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "chest",
+      "file": "chest.png",
+      "factor": 0.7052341597796143,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 362,
+          "h": 362
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "camp",
+      "file": "camp.png",
+      "factor": 0.7052341597796143,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 362,
+          "h": 362
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "shrine",
+      "file": "shrine.png",
+      "factor": 0.7052341597796143,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 362,
+          "h": 362
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "mechanism",
+      "file": "mechanism.png",
+      "factor": 0.7052341597796143,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 362,
+          "h": 362
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "key",
+      "file": "key.png",
+      "factor": 0.7052341597796143,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 362,
+          "h": 362
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "seal",
+      "file": "seal.png",
+      "factor": 0.7052341597796143,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 362,
+          "h": 362
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "lantern",
+      "file": "lantern.png",
+      "factor": 0.7052341597796143,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 362,
+          "h": 362
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "coin",
+      "file": "coin.png",
+      "factor": 0.7052341597796143,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 362,
+          "h": 362
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    }
+  ]
+}

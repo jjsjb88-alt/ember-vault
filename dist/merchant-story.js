@@ -1,10 +1,10 @@
 // Nox feeds on forgotten stories. Its case links distant rooms to the same den.
-export const MERCHANT={name:'녹스',identity:'nox-v1',title:'잊힌 이야기를 먹는 것',art:'./assets/nox-refuge-v94.png'};
+export const MERCHANT={name:'녹스',identity:'nox-v1',title:'기억 등불의 여주인',art:'./assets/v95/nox.webp'};
 export function marketContext(s,practice=false){
  const present=s.rooms[s.pos].type==='merchant'||practice&&s.pos===7;
  const title=present?'이끼 피난처 · 녹스의 둥지':'황동 기억함 · 녹스의 잔상';
  const greeting=practice?'저 갑옷 속엔 틈이 있지. 네 단검에 이 불씨를 실어. 끝이 제법 맛있어질 거야.':s.relic?'반짝이는 결말을 주웠네. 이제 살아서 돌아오는 문장을 써 볼까?':s.hp<s.maxHp/2?'이런, 이야기 끝에 피 냄새가 나. 결말을 서두르진 말아 줘.':s.noise>=8?'쉬이. 금고가 네 이야기에 귀를 기울였어. 아직 끝을 들려주진 마.':'어서 와, 아직 끝나지 않은 이야기. 오늘은 어떤 기억을 두르고 갈까?';
- return {present,title,greeting,explanation:present?'뿔에 매달린 등불들이 고개를 든다. 가면 안의 푸른 불씨가 당신을 보고 웃는다.':'뚜껑 사이로 푸른 불씨가 스민다. 함 너머에서 뿔의 등불들이 하나씩 깨어난다.'};
+ return {present,title,greeting,explanation:present?'뿔에 매달린 등불들이 고개를 든다. 은발 아래 황금빛 눈매가 당신을 향해 휘어진다.':'뚜껑 사이로 푸른 불씨가 스민다. 함 너머에서 뿔의 등불들이 하나씩 깨어난다.'};
 }
 export function meetingLines(s,practice=false){
  if(practice)return [

@@ -1,0 +1,137 @@
+{
+  "kind": "sprite-gen-slice-sheet",
+  "version": 1,
+  "sheet": "exec-3ae01f38-50e2-4bc4-ab1a-892dc21e51a2.png",
+  "grid": [
+    4,
+    1
+  ],
+  "canvas": {
+    "w": 384,
+    "h": 560
+  },
+  "baseline_y": 530.0,
+  "target_height": 500.0,
+  "scale": "sheet",
+  "fit": "contain",
+  "factor": 0.7092198581560284,
+  "factor_from": {
+    "rule": "target_height",
+    "cell": "nox-0"
+  },
+  "alpha_cleanup": null,
+  "cells": [
+    {
+      "name": "nox-0",
+      "file": "nox-0.png",
+      "factor": 0.7092198581560284,
+      "factor_from": "target_height",
+      "subject": {
+        "sheet": {
+          "w": 331,
+          "h": 705
+        },
+        "canvas": {
+          "w": 235,
+          "h": 500
+        }
+      },
+      "box": {
+        "x": 75,
+        "y": 30,
+        "w": 235,
+        "h": 500
+      },
+      "anchor": [
+        192.5,
+        530.0
+      ],
+      "clipped_px": 0,
+      "parts": 2
+    },
+    {
+      "name": "nox-1",
+      "file": "nox-1.png",
+      "factor": 0.7092198581560284,
+      "factor_from": "target_height",
+      "subject": {
+        "sheet": {
+          "w": 338,
+          "h": 705
+        },
+        "canvas": {
+          "w": 240,
+          "h": 500
+        }
+      },
+      "box": {
+        "x": 72,
+        "y": 30,
+        "w": 240,
+        "h": 500
+      },
+      "anchor": [
+        192.0,
+        530.0
+      ],
+      "clipped_px": 0,
+      "parts": 2
+    },
+    {
+      "name": "nox-2",
+      "file": "nox-2.png",
+      "factor": 0.7092198581560284,
+      "factor_from": "target_height",
+      "subject": {
+        "sheet": {
+          "w": 362,
+          "h": 705
+        },
+        "canvas": {
+          "w": 257,
+          "h": 500
+        }
+      },
+      "box": {
+        "x": 64,
+        "y": 30,
+        "w": 257,
+        "h": 500
+      },
+      "anchor": [
+        192.5,
+        530.0
+      ],
+      "clipped_px": 0,
+      "parts": 3
+    },
+    {
+      "name": "nox-3",
+      "file": "nox-3.png",
+      "factor": 0.7092198581560284,
+      "factor_from": "target_height",
+      "subject": {
+        "sheet": {
+          "w": 331,
+          "h": 704
+        },
+        "canvas": {
+          "w": 235,
+          "h": 499
+        }
+      },
+      "box": {
+        "x": 75,
+        "y": 31,
+        "w": 235,
+        "h": 499
+      },
+      "anchor": [
+        192.5,
+        530.0
+      ],
+      "clipped_px": 0,
+      "parts": 3
+    }
+  ]
+}

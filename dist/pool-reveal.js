@@ -1,9 +1,10 @@
-import {CARDS,neighbours,moveCost} from './engine.js?v=20261106e';
-import {paintIcons} from './art.js?v=20261106e';
+import {CARDS,neighbours,moveCost} from './engine.js?v=20261106f';
+import {paintIcons} from './art.js?v=20261106f';
+import {tokenMarkup,richGlyph} from './token-art.js?v=20261106f';
 
 const KEYS=['sword','move','skill','block','quiet','rattle'];
 const VALUES=[['sword','공격력'],['move','이동력'],['skill','기술'],['block','방어']];
-const glyph=(name,size=64)=>`<canvas data-icon="${name}" width="${size}" height="${size}" aria-hidden="true"></canvas>`;
+const glyph=(name,size=64)=>richGlyph(name,size)||`<canvas data-icon="${name}" width="${size}" height="${size}" aria-hidden="true"></canvas>`;
 
 export function noiseDrawState(step){
  const added=step.delta.rattle||0,stored=step.totals.rattle||0,quiet=step.totals.quiet||0;
@@ -47,7 +48,7 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   q('.reveal-slots').innerHTML=Array.from({length:Math.min(5,visibleSlots-start)},(_,offset)=>{
    const i=start+offset;
    const known=i<=index,card=known?CARDS[plan.steps[i].id]:null;
-   return `<div class="sealed-token ${known?'opened '+card.family:''} ${i===index+1&&!complete?'next':''}" aria-label="${known?card.name:'미공개 능력'}"><span class="seal-face">${known?glyph(card.icon,28):'<b>◇</b>'}</span><small>${known?card.name:String(i+1).padStart(2,'0')}</small></div>`;
+   return `<div class="sealed-token ${known?'opened '+card.family:''} ${i===index+1&&!complete?'next':''}" aria-label="${known?card.name:'미공개 능력'}"><span class="seal-face">${known?tokenMarkup(plan.steps[i].id,{size:38}):'<b>◇</b>'}</span><small>${known?card.name:String(i+1).padStart(2,'0')}</small></div>`;
   }).join('');
   paintIcons(q('.reveal-slots'));
  }
@@ -92,7 +93,7 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   const noise=noiseDrawState(step);
   visibleSlots=step.slots;
   dialog.dataset.phase=noise.added?'noise':'revealed';dialog.dataset.family=card.family;
-  q('.reveal-orb-core').innerHTML=noise.added?'<img class="draw-noise-seal" src="./assets/noise-seal-v6.png" alt="금이 간 소음의 봉인">':glyph(card.icon,100);
+  q('.reveal-orb-core').innerHTML=noise.added?'<img class="draw-noise-seal" src="./assets/v95/props/seal.webp" alt="금이 간 소음의 봉인">':tokenMarkup(step.id,{size:132,awaken:true});
   q('.reveal-name').textContent=card.name;
   q('.reveal-effect').textContent=card.text;
   q('.reveal-count').textContent=step.added?`연쇄 추출 · 봉인 ${step.added}개 추가`:`${String(index+1).padStart(2,'0')} / ${String(visibleSlots).padStart(2,'0')} · ${card.kind}`;

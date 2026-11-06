@@ -1,0 +1,694 @@
+{
+  "kind": "sprite-gen-slice-sheet",
+  "version": 1,
+  "sheet": "ember-v95-token-source.png",
+  "grid": [
+    6,
+    4
+  ],
+  "canvas": {
+    "w": 256,
+    "h": 256
+  },
+  "baseline_y": 256.0,
+  "target_height": 256.0,
+  "scale": "cell",
+  "fit": "contain",
+  "factor": null,
+  "factor_from": null,
+  "alpha_cleanup": null,
+  "cells": [
+    {
+      "name": "step",
+      "file": "step.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "scout",
+      "file": "scout.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "slash",
+      "file": "slash.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "focus",
+      "file": "focus.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "guard",
+      "file": "guard.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "sneak",
+      "file": "sneak.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "spark",
+      "file": "spark.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "rush",
+      "file": "rush.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "blade",
+      "file": "blade.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "bash",
+      "file": "bash.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "insight",
+      "file": "insight.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "ghost",
+      "file": "ghost.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "potion",
+      "file": "potion.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "greed",
+      "file": "greed.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "fury",
+      "file": "fury.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "lantern",
+      "file": "lantern.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "acrobat",
+      "file": "acrobat.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "treasure",
+      "file": "treasure.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "sentinel",
+      "file": "sentinel.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "ambush",
+      "file": "ambush.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "healing",
+      "file": "healing.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "wisdom",
+      "file": "wisdom.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "echo",
+      "file": "echo.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    },
+    {
+      "name": "silence",
+      "file": "silence.png",
+      "factor": 0.9961089494163424,
+      "factor_from": "fit",
+      "subject": {
+        "sheet": {
+          "w": 256,
+          "h": 256
+        },
+        "canvas": {
+          "w": 255,
+          "h": 255
+        }
+      },
+      "box": {
+        "x": 1,
+        "y": 1,
+        "w": 255,
+        "h": 255
+      },
+      "anchor": [
+        128.5,
+        256.0
+      ],
+      "clipped_px": 0,
+      "parts": 1
+    }
+  ]
+}

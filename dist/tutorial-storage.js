@@ -1,5 +1,5 @@
-import {CARDS,MODES,TERRAINS,validSave} from './engine.js?v=20261106e';
-import {TUTORIAL_STEPS} from './tutorial.js?v=20261106e';
+import {CARDS,MODES,TERRAINS,validSave} from './engine.js?v=20261106f';
+import {TUTORIAL_STEPS} from './tutorial.js?v=20261106f';
 
 // Separate from the real expedition and its best score. Bump the scenario when
 // a lesson change makes an old position/resource/checkpoint unsafe to resume.
