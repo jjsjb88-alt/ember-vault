@@ -1,4 +1,4 @@
-import {newRun,moveCost,resolvePool,breathPlan,dragonDue} from './engine.js?v=20261106d';
+import {newRun,moveCost,resolvePool,breathPlan,dragonDue} from './engine.js?v=20261106e';
 
 // 연습은 그림자 도적의 첫 금고 털이. 등불 속 불씨 '깜부기'가 옆에서 떠든다.
 // talk = 이 행동을 하는 이유(대사), text = 무엇을 누르고 무엇이 일어나는가. 한 단계의 사고가 다음 단계의 이유가 된다.
@@ -13,7 +13,7 @@ export const TUTORIAL_STEPS=[
  {key:'pass-junction',title:'정말 길이 열렸어요',autoTalk:true,titleHint:'유인 성공',talk:[['깜부기','갔다! 지도에서 파편 회랑이 빈 것 보이지? 이제 갈림목으로 가자.']],text:'「돌의 갈림목」으로 이동하세요. 유인한 적이 떠난 동안 다음 통로로 접근합니다.',action:'move',id:2,mode:'walk',target:'.scene-exit[data-id="2"]'},
  {key:'pass-guard',title:'비어 있는 회랑을 통과하세요',talk:[['깜부기','아까 그 녀석이 서 있던 자리야. 싸우지 않고 지나갈 수 있어.']],text:'「파편 회랑」으로 이동하세요. 적은 무기고에 있습니다. 파편을 밟는 소리는 다시 들을 수 있으니 여기서 멈추지 마세요.',action:'move',id:6,mode:'walk',target:'.scene-exit[data-id="6"]'},
  {key:'refuge',title:'추적하기 전에 한 방 더',talk:[['깜부기','발소리를 들었네. 돌아오기 전에 이끼 회랑으로 빠져나가자.']],text:'「이끼 회랑」으로 이동하세요. 적의 추적은 다음 턴에 일어납니다. 지금 열린 길을 끝까지 통과해 두세요.',action:'move',id:7,mode:'walk',target:'.scene-exit[data-id="7"]'},
- {key:'recruit',chapter:'2 · 새 능력으로 돌파',title:'세라에게 불씨를 건네받으세요',talk:[['깜부기','저 등불 아래 기억장수가 있어. 세라라면 단검에 실을 불씨를 줄 거야.']],text:'「교역」에서 세라를 만나 「불씨 화살」을 깨우세요. 기술 3을 쓰며 공격 +3 메달이 버린 주머니에 들어갑니다. 지금 공격력은 아직 2입니다.',action:'buy',card:'spark',target:'#marketToggle'},
+ {key:'recruit',chapter:'2 · 새 능력으로 돌파',title:'녹스에게 불씨를 건네받으세요',talk:[['깜부기','뿔에 등불을 단 녀석이 보여? 기억 먹는 녹스야. 단검에 실을 불씨도 있을 거야.']],text:'「교역」에서 녹스를 만나 「불씨 화살」을 깨우세요. 기술 3을 쓰며 공격 +3 메달이 버린 주머니에 들어갑니다. 지금 공격력은 아직 2입니다.',action:'buy',card:'spark',target:'#marketToggle'},
  {key:'draw-recruit',title:'산 능력이 다시 나올 때',talk:[['도적','샀는데 힘은 그대로야.'],['깜부기','식은 기억도 다시 섞이면 살아나. 내가 깜빡일 때를 봐.']],text:'「다음 턴」을 누르세요. 이 회상의 작은 주머니를 다시 섞습니다. 「금지된 서고」의 추가 추출까지 적용되어 불씨 화살을 실제로 뽑고, 단검과 합쳐 공격 5를 얻습니다.',action:'end',target:'#endTurn'},
  {key:'approach',checkpoint:true,fastDraw:true,title:'새 힘을 들고 봉인실로',autoTalk:true,talk:[['깜부기','불씨 화살이 돌아왔어. 뒤의 파수병은 두고, 앞의 문지기를 넘자.']],text:'공격 5를 확인하고 「이끼 서고」로 이동하세요. 새 메달은 버튼을 다시 누르지 않아도 자원에 합산됩니다.',action:'move',id:11,free:true},
  {key:'guardian',title:'금화와 귀환 길을 함께 보세요',talk:[['깜부기','서고 상자도 남아 있네. 열면 금화, 남겨 두면 돌아올 길이 조용해.'],['도적','돌아올 때도 이 방을 지날 수 있겠군.']],text:'상자는 선택입니다. 열면 금화와 메아리를 얻습니다. 「회상의 봉인실」로 이동해 수호자를 만나세요.',action:'move',id:10,free:true},

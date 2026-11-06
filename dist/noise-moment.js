@@ -1,7 +1,7 @@
-import {soundWavePlan} from './encounter.js?v=20261106d';
-import {makeFxLayer,FX} from './fx-layer.js?v=20261106d';
-import {lairRoom} from './engine.js?v=20261106d';
-import {mapLayout,projectMap,mapPassage,passagePoint} from './scene-layout.js?v=20261106d';
+import {soundWavePlan} from './encounter.js?v=20261106e';
+import {makeFxLayer,FX} from './fx-layer.js?v=20261106e';
+import {lairRoom} from './engine.js?v=20261106e';
+import {mapLayout,projectMap,mapPassage,passagePoint} from './scene-layout.js?v=20261106e';
 
 export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSound=()=>{}}={}){
  let active=false,timers=[],frame=0,fxFrame=0,callback=null,previousFocus=null;

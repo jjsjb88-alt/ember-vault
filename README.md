@@ -1,6 +1,12 @@
-# 잿불 금고 · Ember Vault V9.3
+# 잿불 금고 · Ember Vault V9.4
 
-한국어 싱글플레이 풀빌딩 던전 크롤러. [바로 플레이](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261106d) · [첫 금고 털이 연습](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261106d&tutorial=1)
+한국어 싱글플레이 풀빌딩 던전 크롤러. [바로 플레이](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261106e) · [첫 금고 털이 연습](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261106e&tutorial=1)
+
+## V9.4 — 인외 상인 녹스
+
+- 교역의 주인을 검은 사슴 가면과 세 개의 불씨 눈, 기억 등불이 달린 뿔을 가진 인외 **녹스**로 바꿨습니다. 전용 원화·초상·작업대 화면과 첫 만남·구매·사연 대사를 함께 교체했습니다.
+- 녹스는 잊힌 이야기를 먹고 삽니다. 손님을 「아직 끝나지 않은 이야기」라 부르며, 그 결말을 듣고 싶어서 귀환을 돕습니다. 황동 기억함도 녹스의 둥지와 연결됩니다.
+- 기존 탐험을 이어가도 처음 녹스를 만날 때 새 대화가 나옵니다. 저장한 자원·메달·단계는 이어집니다. [V9.4 캐릭터·검수 기록](docs/production/V94-NOX.md).
 
 ## V9.3 — 기억장수 세라와의 만남
 
@@ -52,7 +58,7 @@ npm test
 python3 -m http.server 8000 --directory dist
 ```
 
-규칙·저장 호환·지름길·소리·숨결·좌표와 튜토리얼의 실제 행동 결과를 검사합니다. V9.3 교역의 실행 결과·화면 증거는 [교역 경험 기록](docs/production/V93-TRADE-EXPERIENCE.md), 지도·유인·저장 상세는 [V9.2 검증 기록](docs/production/V92-VERIFICATION.md)을 기준으로 봅니다. 로컬 Chromium의 모바일 화면 검수, 실제 휴대폰 검수, GitHub Actions 배포 확인은 서로 구분합니다. 이번 작업 환경에서 공개 플레이 주소 직접 접속은 프록시 403으로 제한됐으며, 로컬 실행 성공을 공개 주소 접속 성공으로 표시하지 않습니다. 자동 탐험은 규칙과 경로를 확인하는 보조 수단이며 실제 사람의 난이도나 승률을 보장하지 않습니다. 이전 기록은 [V9.1](docs/production/V91-VERIFICATION.md)과 [V9](docs/production/V9-VERIFICATION.md)에 보존합니다.
+규칙·저장 호환·지름길·소리·숨결·좌표와 튜토리얼의 실제 행동 결과를 검사합니다. 현재 교역의 실행 결과·화면 증거는 [V9.4 녹스 기록](docs/production/V94-NOX.md), 지도·유인·저장 상세는 [V9.2 검증 기록](docs/production/V92-VERIFICATION.md)을 기준으로 봅니다. 로컬 Chromium의 모바일 화면 검수, 실제 휴대폰 검수, GitHub Actions 배포 확인은 서로 구분합니다. 이번 작업 환경에서 공개 플레이 주소 직접 접속은 프록시 403으로 제한됐으며, 로컬 실행 성공을 공개 주소 접속 성공으로 표시하지 않습니다. 자동 탐험은 규칙과 경로를 확인하는 보조 수단이며 실제 사람의 난이도나 승률을 보장하지 않습니다. 이전 기록은 [V9.1](docs/production/V91-VERIFICATION.md)과 [V9](docs/production/V9-VERIFICATION.md)에 보존합니다.
 
 ## 이전 버전 기록
 

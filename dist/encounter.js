@@ -1,4 +1,4 @@
-import {enemyTurn,neighbours,previewNoise} from './engine.js?v=20261106d';
+import {enemyTurn,neighbours,previewNoise} from './engine.js?v=20261106e';
 
 export function roomEnvironment(room){return ['camp','merchant'].includes(room.type)?'refuge':['relic','shrine'].includes(room.type)?'vault':'library';}
 

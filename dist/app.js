@@ -1,17 +1,17 @@
-import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,breathPlan} from './engine.js?v=20261106d';
-import {paintIcons} from './art.js?v=20261106d';
-import {makeRenderer} from './scene-v5.js?v=20261106d';
-import {makePoolReveal} from './pool-reveal.js?v=20261106d';
-import {pageOf,pager} from './pages.js?v=20261106d';
-import {exitAnchor} from './scene-layout.js?v=20261106d';
-import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261106d';
-import {makeNoiseMoment} from './noise-moment.js?v=20261106d';
-import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,createTutorialRun,tutorialAllows,tutorialAdvance,tutorialChapter,tutorialTargets,tutorialHint,tutorialMapLesson,tutorialActionReason} from './tutorial.js?v=20261106d';
-import {makeCutscene} from './cutscene.js?v=20261106d';
-import {returnRoute,routeAdvice,lureForecast} from './strategy.js?v=20261106d';
-import {createTutorialJournal,recordTutorialAction,tutorialRecap} from './tutorial-journal.js?v=20261106d';
-import {loadTutorialProgress,saveTutorialProgress,clearTutorialProgress} from './tutorial-storage.js?v=20261106d';
-import {MERCHANT,marketContext,meetingLines,memoryLore,purchaseLines,SERA_STORY} from './merchant-story.js?v=20261106d';
+import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,breathPlan} from './engine.js?v=20261106e';
+import {paintIcons} from './art.js?v=20261106e';
+import {makeRenderer} from './scene-v5.js?v=20261106e';
+import {makePoolReveal} from './pool-reveal.js?v=20261106e';
+import {pageOf,pager} from './pages.js?v=20261106e';
+import {exitAnchor} from './scene-layout.js?v=20261106e';
+import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261106e';
+import {makeNoiseMoment} from './noise-moment.js?v=20261106e';
+import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,createTutorialRun,tutorialAllows,tutorialAdvance,tutorialChapter,tutorialTargets,tutorialHint,tutorialMapLesson,tutorialActionReason} from './tutorial.js?v=20261106e';
+import {makeCutscene} from './cutscene.js?v=20261106e';
+import {returnRoute,routeAdvice,lureForecast} from './strategy.js?v=20261106e';
+import {createTutorialJournal,recordTutorialAction,tutorialRecap} from './tutorial-journal.js?v=20261106e';
+import {loadTutorialProgress,saveTutorialProgress,clearTutorialProgress} from './tutorial-storage.js?v=20261106e';
+import {MERCHANT,marketContext,meetingLines,memoryLore,purchaseLines,MERCHANT_STORY} from './merchant-story.js?v=20261106e';
 const $=s=>document.querySelector(s),SAVE_KEY='ember-vault-save-v2',BEST_KEY='ember-vault-best-v1';
 let state,storageOK=true,best=0,sound=false,selectedRole='rogue',dialogMode='',lastFocus=null,toastTimer,audio,migrated=false,loadedRun=false,fastDraw=false;
 try{let saved=JSON.parse(localStorage.getItem(SAVE_KEY));if(!validSave(saved)){const prior=JSON.parse(localStorage.getItem('ember-vault-save-v1'));if(prior){saved=migrateSave(prior);migrated=!!saved;}}loadedRun=validSave(saved);state=loadedRun?saved:newRun();best=Number(localStorage.getItem(BEST_KEY))||0;sound=localStorage.getItem('ember-vault-sound')==='on';fastDraw=localStorage.getItem('ember-vault-fast-draw')==='on';}catch{state=newRun();storageOK=false;}
@@ -23,7 +23,7 @@ if(!tutorialStorageOK)tutorialRecoveryNotice='이 브라우저에서는 연습 �
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const portrait=(role,cls='')=>`<span class="portrait ${role} ${cls}" role="img" aria-label="${ROLES[role].name} 초상화"></span>`;
 // 연습 대사는 컷신으로: 말하는 쪽 초상(깜부기 = 등불 속 잿불, 도적 = 연습 직업 초상)
-const cutscene=makeCutscene({reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,heroPortrait:()=>portrait(state.role||'rogue','cut-portrait-img'),portraits:{세라:`<img class="sera-portrait" src="${MERCHANT.art}" alt="기억장수 세라">`}});let talkShown=-1;
+const cutscene=makeCutscene({reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,heroPortrait:()=>portrait(state.role||'rogue','cut-portrait-img'),portraits:{[MERCHANT.name]:`<img class="nox-portrait" src="${MERCHANT.art}" alt="기억장수 녹스">`}});let talkShown=-1;
 const ico=(name,n=32)=>`<canvas data-icon="${name}" width="${n}" height="${n}" aria-hidden="true"></canvas>`;
 const renderer=makeRenderer($('#dungeon'),()=>state,$('#minimap'));
 const poolReveal=makePoolReveal($('#poolReveal'),{cue:drawCue,getSound:()=>sound,toggleSound,onClose:()=>{$('.pool-panel').classList.remove('revealing');void $('.pool-panel').offsetWidth;$('.pool-panel').classList.add('revealing');renderTutorial();}});
@@ -204,8 +204,8 @@ function setStanceMenu(open){
  if(open)$('#stanceMenu button[aria-pressed="true"]')?.focus({preventScroll:true});
 }
 function showMarket(){
- if(!state.tradeStory?.met){
-  state.tradeStory={met:true};persistTutorial();save();
+ if(state.tradeStory?.identity!==MERCHANT.identity){
+  state.tradeStory={...state.tradeStory,met:true,identity:MERCHANT.identity};persistTutorial();save();
   const run=state;cutscene.play(meetingLines(state,!!tutorial),()=>{if(state===run)openMarket();},merchantScene());return;
  }
  openMarket();
@@ -213,7 +213,7 @@ function showMarket(){
 function merchantScene(){const c=marketContext(state,!!tutorial);return {key:'merchant',art:MERCHANT.art,title:c.title,text:c.explanation};}
 function openMarket(receipt=''){
  const context=marketContext(state,!!tutorial);
- openModal(modalShell('세라의 기억 공방','만남 · '+esc(context.title),`<div class="sera-market"><div class="sera-hero"><img src="${MERCHANT.art}" alt="등불 아래 불씨 메달을 건네는 기억장수 세라"><div class="sera-identity"><span>${MERCHANT.title}</span><strong>세라</strong></div><p class="sera-quote">“${esc(context.greeting)}”</p></div><div class="sera-counter"><div class="sera-conversation"><p>${receipt?esc(receipt):esc(context.explanation)}</p><button class="subtle-button" data-act="merchantTalk">세라의 이야기</button></div><div class="market-summary"><span>기술 <b id="marketSkill"></b> · 금화 <b id="marketGold"></b></span><button class="refresh-button" data-act="refresh" aria-label="금화 2로 교역 목록 교체">다른 기억 보기 · 금화 2</button></div><p class="sera-rule">${tutorial?'불씨 화살 · 공격 +3. 다음 추출에서 단검과 함께 수호자를 돌파하세요.':'기술로 기억을 깨웁니다. 새 메달은 주머니를 다시 섞을 때부터 나옵니다.'}</p><div id="market" class="market-offers"></div><p class="sera-sendoff">${tutorial?'“다녀와. 돌아오는 길에도 이 등불은 켜 둘게.”':'“가져간 기억보다 네 이야기가 더 길었으면 좋겠네.”'}</p></div></div>`),'market');renderMarket();
+ openModal(modalShell('녹스의 기억 둥지','만남 · '+esc(context.title),`<div class="nox-market"><div class="nox-hero"><img src="${MERCHANT.art}" alt="기억 등불이 달린 뿔과 검은 가면을 가진 인외 상인 녹스"><div class="nox-identity"><span>${MERCHANT.title}</span><strong>녹스</strong></div><p class="nox-quote">“${esc(context.greeting)}”</p></div><div class="nox-counter"><div class="nox-conversation"><p>${receipt?esc(receipt):esc(context.explanation)}</p><button class="subtle-button" data-act="merchantTalk">녹스의 이야기</button></div><div class="market-summary"><span>기술 <b id="marketSkill"></b> · 금화 <b id="marketGold"></b></span><button class="refresh-button" data-act="refresh" aria-label="금화 2로 교역 목록 교체">다른 기억 보기 · 금화 2</button></div><p class="nox-rule">${tutorial?'불씨 화살 · 공격 +3. 다음 추출에서 단검과 함께 수호자를 돌파하세요.':'기술로 기억을 깨웁니다. 새 메달은 주머니를 다시 섞을 때부터 나옵니다.'}</p><div id="market" class="market-offers"></div><p class="nox-sendoff">${tutorial?'“다녀와. 결말은 돌아와서 들려줘. 등불 하나 비워 둘 테니.”':'“조심히 가. 마음에 든 이야기는 오래 읽고 싶거든.”'}</p></div></div>`),'market');renderMarket();
 }
 function renderMarket(){
  if(dialogMode!=='market'||!$('#market'))return;
@@ -222,7 +222,7 @@ function renderMarket(){
  $('#market').innerHTML=s.market.map((id,i)=>{const a=CARDS[id],allowed=!tutorial||tutorialAllows(tutorial.index,{type:'buy',index:i},s),can=active&&s.resource.skill>=a.cost&&allowed,short=Math.max(0,a.cost-s.resource.skill);return `<button class="market-card ${can?'affordable':''}" data-act="buy" data-index="${i}" data-card="${id}" aria-label="${a.name}, ${a.text}, 기술 ${a.cost}점으로 영입${short?', 기술 '+short+' 부족':''}${!allowed?', 지금 안내된 능력을 먼저 영입하세요':''}" ${!can?'disabled':''}>${ico(a.icon,46)}<span class="offer"><strong>${a.name}</strong><small>${a.text}</small><em>${esc(memoryLore(id,a))}</em></span><span class="price${short?' short':''}">기술 ${a.cost}${short?' · '+short+' 부족':!allowed?' · 다음에':' · 기억 깨우기'}</span></button>`;}).join('');
  $('[data-act="refresh"]').disabled=!!tutorial||!active||s.gold<2||s.refreshTurn===s.turn;paintIcons($('#modal'));
 }
-function showMenu(){openModal(modalShell('탐험 메뉴','잿불 금고 V9.3',`<p class="modal-sub">${state.relic?state.relic.name+' 회수 · 귀환 '+state.countdown+'턴':'유물을 찾아 입구로 돌아오세요'} · 최고 ${best}점${storageOK?'':' · 저장 불가'}</p>${tutorialRecoveryNotice?`<p class="tutorial-storage-note">${esc(tutorialRecoveryNotice)}</p>`:''}<div class="game-menu"><button data-act="deck">나의 메달 주머니<small>가진 능력과 남은 메달 보기</small></button><button data-act="tutorialIntro">${storedTutorial?'튜토리얼 이어하기':'직접 배우는 튜토리얼'}<small>${storedTutorial?`${Math.min(storedTutorial.index+1,TUTORIAL_STEPS.length)}/${TUTORIAL_STEPS.length}단계에서 계속`:`${TUTORIAL_STEPS.length}단계 · 유인 성공부터 성장과 귀환까지`}</small></button><button data-act="help">플레이 방법<small>추출 · 이동 · 소리 · 탈출</small></button><button data-act="sound" class="${sound?'selected':''}">효과음 ${sound?'켜짐':'꺼짐'}<small>추출의 심장 박동과 봉인 파열음</small></button><button data-act="speed" class="${fastDraw?'selected':''}">${fastDraw?'빠른 추출':'긴장감 있는 추출'}<small>${fastDraw?'합산 결과만 빠르게 표시':'하나씩 공개 · 마지막 능력까지 기다림'}</small></button><button data-act="log">탐험 일지<small>발소리와 전투 기록</small></button><button data-act="new">새 탐험<small>20개 방 · 캐릭터 선택 · 현재 탐험 초기화</small></button><button data-act="fullscreen">전체 화면<small>휴대폰 가로 화면으로 플레이</small></button></div>`),'menu');}
+function showMenu(){openModal(modalShell('탐험 메뉴','잿불 금고 V9.4',`<p class="modal-sub">${state.relic?state.relic.name+' 회수 · 귀환 '+state.countdown+'턴':'유물을 찾아 입구로 돌아오세요'} · 최고 ${best}점${storageOK?'':' · 저장 불가'}</p>${tutorialRecoveryNotice?`<p class="tutorial-storage-note">${esc(tutorialRecoveryNotice)}</p>`:''}<div class="game-menu"><button data-act="deck">나의 메달 주머니<small>가진 능력과 남은 메달 보기</small></button><button data-act="tutorialIntro">${storedTutorial?'튜토리얼 이어하기':'직접 배우는 튜토리얼'}<small>${storedTutorial?`${Math.min(storedTutorial.index+1,TUTORIAL_STEPS.length)}/${TUTORIAL_STEPS.length}단계에서 계속`:`${TUTORIAL_STEPS.length}단계 · 유인 성공부터 성장과 귀환까지`}</small></button><button data-act="help">플레이 방법<small>추출 · 이동 · 소리 · 탈출</small></button><button data-act="sound" class="${sound?'selected':''}">효과음 ${sound?'켜짐':'꺼짐'}<small>추출의 심장 박동과 봉인 파열음</small></button><button data-act="speed" class="${fastDraw?'selected':''}">${fastDraw?'빠른 추출':'긴장감 있는 추출'}<small>${fastDraw?'합산 결과만 빠르게 표시':'하나씩 공개 · 마지막 능력까지 기다림'}</small></button><button data-act="log">탐험 일지<small>발소리와 전투 기록</small></button><button data-act="new">새 탐험<small>20개 방 · 캐릭터 선택 · 현재 탐험 초기화</small></button><button data-act="fullscreen">전체 화면<small>휴대폰 가로 화면으로 플레이</small></button></div>`),'menu');}
 async function fullscreen(){
  try{if(document.fullscreenElement)await document.exitFullscreen();else if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else toast('이 브라우저에서는 가로 화면으로 바로 플레이하세요.');}
  catch{toast('전체 화면을 열지 못했습니다. 가로 화면으로 플레이할 수 있습니다.');}
@@ -353,7 +353,7 @@ function act(action,fromJudge=false){
  const impact=action.type==='end'?turnImpact(state):null;
  const boughtId=action.type==='buy'?state.market[action.index]:null;
  const result=apply(state,action);if(!result.ok){if(fromJudge)noiseMoment.close();toast(result.message,true);beep('bad');return false;}
- if(boughtId)state.tradeStory={met:true,lastBuy:boughtId};
+ if(boughtId)state.tradeStory={met:true,identity:MERCHANT.identity,lastBuy:boughtId};
  const practiceFeedback=tutorial?recordTutorialAction(tutorial.journal,practiceBefore,action,state):'';
  if(action.type==='move'){travelUntil=performance.now()+450;renderer.setHover(-1);if(mapOpen)selectPanel('routes');}
  if(action.type==='end'){handPage=0;enemyPage=0;lureMode=false;}if(action.type==='lure')lureMode=false;
@@ -399,7 +399,7 @@ document.addEventListener('click',ev=>{
  if(a==='stance'){setStanceMenu(!modeOpen);return;}
  if(a==='market')return showMarket();
  if(a==='merchantTalk'){
-  const run=state;$('#modal').close();dialogMode='';cutscene.play(SERA_STORY,()=>{if(state===run)openMarket();},merchantScene());return;
+  const run=state;$('#modal').close();dialogMode='';cutscene.play(MERCHANT_STORY,()=>{if(state===run)openMarket();},merchantScene());return;
  }
  if(a==='tutorialIntro')return showTutorialIntro();
  if(a==='tutorialStart')return startTutorial();
