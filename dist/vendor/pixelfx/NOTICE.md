@@ -8,5 +8,7 @@ straw target), from
 https://github.com/rehan-remade/hollow-crown, Copyright (c) 2026 rehan-remade, MIT License.
 
 
-Vendored from https://github.com/patch-gg/pixelfx at commit a841596 (MIT). Only src/core and seven effects are included (fire-breath, ripples, soul-rise, spirit-flame, hit-spark, crit-hit, impact-frame).
+Vendored from https://github.com/patch-gg/pixelfx at commit a841596 (MIT). Only src/core and nine effects are included (fire-breath, ripples, soul-rise, spirit-flame, hit-spark, crit-hit, impact-frame, parry, collect-burst).
 Files under dist/vendor/pixelfx/fx/*/lib.js were renamed from _lib.js so GitHub Pages (Jekyll) publishes them.
+
+The pickups helper includes only the glint function used by collect-burst. The host supplies muted teal metal and warm gold palettes for the winch and relic interactions.

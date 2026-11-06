@@ -1,31 +1,16 @@
-# Ember Vault V7 작업 인계
+# Ember Vault V9 작업 인계
 
-승인된 시각 방향은 `docs/visual/approved/`의 탐험·마지막 봉인 목업입니다. 현재 V7은 그 배경·픽셀 에셋·자원 표현을 유지하며, 겹치던 조작을 하나의 플레이 화면으로 통합했습니다.
+V9는 2026-11-06의 기존 main `878b3bc`에서 이어 작업했다. 기존 게임의 메아리·숨결, 도적 걷기·공격, 컷신과 자동 메달 추출을 보존하고, 마지막 유물 회수·귀환까지 직접 해보는 튜토리얼과 전략 던전을 확장한다.
 
-## 현재 조작
+- 일반 새 탐험: 20방·5층. `newRun({layout:'classic'})`은 기존16방·RNG를 유지한다.
+- 저장 key/version은 그대로다. 기존16방 탐험을 임의로 확장하지 않는다. 메뉴 → 새 탐험의 확인 화면을 거쳐야20방으로 시작한다.
+- 윈치17은 기술2·소리6으로9↔17 승강통로를 연다. 소리·추적·숨결은 실제 edges를 따른다.
+- 튜토리얼14단계: 처음10개 기본 조작, 양갈래길·선택 상호작용·유물·실제 탈출. 기존 탐험/최고 기록은 보존하고, 실패시11단계 체크포인트부터 재시도한다.
+- 주 UI: `dist/app.js`, `dist/v9.css`; 규칙: `engine.js`; 지도: `scene-layout.js`/`scene-v5.js`/`noise-moment.js`; 여행 안내: `strategy.js`.
+- 회수 atlas: `dist/assets/v9/motion/rogue-relic-se/manifest.json`; 런타임 절대rect 모듈은 제작 도구로 생성해 원본과 일치시킨다. 이미지격자를 추측하거나개별프레임배율을바꾸지않는다.
 
-- 방 이름: 이동 / 유인 모드에서는 돌멩이 투척.
-- 적·물체 위 버튼: 공격 / 상호작용. 피해·소음·가격을 표시.
-- 우측 상단 미니맵: 소리 지도 열기/닫기. 펼친 지도에서 방을 누르면 이동 후 장면 복귀.
-- 하단: 이번 추출 상세, 이동 방식 팝업, 유인, 숨죽이기, 교역 창, 한 개의 풀 뽑기 버튼.
-- 메뉴: 전체 풀, 튜토리얼, 도움말, 소리, 추출 속도, 기록, 새 탐험, 전체 화면.
+검사: `npm run check && npm test`. 브라우저·그림·8개도구 적용범위/한계는 `docs/production/V9-VERIFICATION.md`, `V9-TOOLS.md`, `V9-MOTION.md`, `V9-ENVIRONMENT.md` 참조. GPU 연구후보SSD는실행하지않았고 Forge의머리밴드자동FAIL은별도시각채택근거와함께보존한다. 모든미술검사가자동PASS라고표현하지않는다.
 
-`dist/play-surface.css`와 `dist/index.html`이 V7 화면 구성입니다. `dist/app.js`가 DOM·모달·저장·효과음을 연결합니다. `engine.js`의 규칙은 V6와 동일하며, 임시 미리보기용 `dist/__qa.html`을 배포하지 마세요. 새 캐릭터 제작보다 중복 UI 정리가 이번 변경의 범위입니다.
+실제 iOS/Android 휴대폰의 성능·오디오·장기적인 밸런스, 다른 직업의 신규 모션, 모든방의독립배경은별도작업이다. B5배경은기존배경의선택적표면변형이다.
 
-## 검증과 남은 제작
-
-`npm run check`, `npm test` (30개), 브라우저에서 새 UI의 튜토리얼 8단계·교역 구매·지도 이동·키보드 선택 및 네 화면 크기를 확인했습니다. 세부 증거는 `docs/production/V7-VERIFICATION.md`, 실제 화면은 `docs/visual/implemented/v7-*.jpg`입니다. 기존 V6 일반 탐험 완주 결과는 별도 V6 검수 문서에 있습니다.
-
-다음 아트 작업은 방별 모듈형 배경, 기사·마법사·몬스터 모션, 도적 발 접지와 프레임 연속성 정리입니다. 세 직업 모두 동일한 8방향 모션이 완성됐다고 표시하지 마세요. 실제 휴대폰 장비의 터치·오디오·성능 검수도 남아 있습니다.
-
-## GitHub 이어받기
-
-사용자 저장소는 `jjsjb88-alt/ember-vault`입니다. 2026-10-29 KST 확인 당시 GitHub `main`은 V6 커밋 `815213a27722ccdec94cf43fb4fada3e4133911b`이며, 이 작업 환경의 GitHub 연결은 읽기만 허용했습니다. V7 배포 성공과 GitHub 업로드 성공을 혼동하지 마세요.
-
-V7 변경 묶음은 그 V6 커밋을 기반으로 합니다. 권한이 있는 환경의 기존 저장소에서 아래 순서로 이어받을 수 있습니다. 다른 변경이 있다면 별도 작업 트리에서 검토하고, 강제 푸시하지 마세요.
-
-```bash
-git fetch /path/to/ember-vault-v7-update.bundle main
-git merge --ff-only FETCH_HEAD
-git push origin main
-```
+배포는기존 `main`의 GitHub Pages 워크플로를사용한다. Jekyll source는저장소루트이며 루트 `index.html`이`dist/`로연결한다. 공개게임주소는 https://jjsjb88-alt.github.io/ember-vault/dist/ . 이실행환경에서는 Pages도메인직접접속이403프록시차단이므로 로컬터치브라우저검증과GitHub Actions배포성공을구분한다. 보호규칙을바꾸거나강제푸시하지않는다.

@@ -1,0 +1,19 @@
+{
+  "imageReady": true,
+  "browserErrors": [],
+  "samplePageTimesMs": [
+    205,
+    684,
+    1164
+  ],
+  "sampleDiffBounds": [
+    [
+      15,
+      15,
+      230,
+      230
+    ],
+    null
+  ],
+  "note": "Live browser samples, timing includes capture overhead; compare with 960 ms authored cycle."
+}

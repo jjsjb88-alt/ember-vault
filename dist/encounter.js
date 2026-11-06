@@ -1,4 +1,4 @@
-import {enemyTurn,neighbours,previewNoise} from './engine.js?v=20261104h';
+import {enemyTurn,neighbours,previewNoise} from './engine.js?v=20261106a';
 
 export function roomEnvironment(room){return ['camp','merchant'].includes(room.type)?'refuge':['relic','shrine'].includes(room.type)?'vault':'library';}
 
@@ -9,11 +9,12 @@ export function roomInteraction(s){
  if(r.type==='entry')return {act:'interact',text:s.relic?'유물과 함께 탈출':'유물을 찾아 돌아오세요',short:'탈출',subject:'지상으로 향하는 문',detail:'유물을 지상으로 가져가세요',enabled:!!s.relic,reason:'먼저 유물 하나를 회수하세요.',kind:'relic'};
  if(r.used)return {act:'',text:'이 방의 보상을 받았습니다',enabled:false,short:'회수 완료'};
  const a={
-  chest:{act:'interact',text:'상자 열기',short:'열기',subject:'보물 상자',detail:`금화 획득 · 소리 ${previewNoise(s,r.row===3?7:3)}`,enabled:true,kind:'loot'},
+  chest:{act:'interact',text:'상자 열기',short:'열기',subject:'보물 상자',detail:`${r.id===18?'금화 14':r.row>=3?'금화 10':'금화 5~7'} · 소리 ${previewNoise(s,r.id===18?9:r.row>=3?7:3)}`,enabled:true,kind:'loot'},
   camp:{act:'interact',text:'휴식 · 체력 +6 / 경계 −3',short:'휴식',subject:'작은 모닥불',detail:`체력 +${Math.min(6,s.maxHp-s.hp)} · 경계 −${Math.min(3,s.noise)}`,enabled:s.hp<s.maxHp||s.noise>0,reason:'체력과 경계가 충분히 회복되어 있습니다.',kind:'heal'},
   shrine:{act:'interact',text:'능력 하나 영구 제거',short:'정화',subject:'기억의 제단',detail:'능력 하나를 주머니에서 제거',enabled:s.deck.length+s.discard.length+s.played.length>5,reason:'주머니에는 최소 5개의 능력이 필요합니다.',kind:'relic'},
   merchant:{act:'merchant',text:'물약 구매 · 금화 5',short:'구매',subject:'떠돌이 상인',detail:'금화 5 · 체력 +8',enabled:s.gold>=5&&s.hp<s.maxHp,reason:s.hp===s.maxHp?'체력이 이미 가득 찼습니다.':'물약에는 금화 5가 필요합니다.',kind:'heal'},
-  relic:{act:'interact',text:`${r.relic?.name} 획득`,short:'봉인 해제',subject:r.relic?.name,detail:`소리 ${previewNoise(s,8)} · 회수 후 입구로`,enabled:!s.relic||s.relic.value<r.relic?.value,reason:'이미 더 값진 유물을 가지고 있습니다.',kind:'relic'}
+  relic:{act:'interact',text:`${r.relic?.name} 획득`,short:'봉인 해제',subject:r.relic?.name,detail:`${r.relic?.value}점 · 소리 ${previewNoise(s,8)} · 회수 후 입구로`,enabled:!s.relic||s.relic.value<r.relic?.value,reason:'이미 더 값진 유물을 가지고 있습니다.',kind:'relic'},
+  mechanism:{act:'interact',text:'승강 통로 열기',short:'윈치 작동',subject:'귀환 윈치',detail:`기술 2 · 소리 ${previewNoise(s,6)} · B3 연결`,enabled:s.resource.skill>=2,reason:'윈치에는 기술 2가 필요합니다. 다음 턴에 힘을 모으거나 우회하세요.',kind:'mechanism'}
  };
  return a[r.type]??{act:'',text:'길이 열렸습니다',enabled:false,short:''};
 }

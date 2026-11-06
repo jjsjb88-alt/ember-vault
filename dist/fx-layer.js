@@ -7,6 +7,8 @@ import * as soulRise from './vendor/pixelfx/fx/spawn/soul-rise.js';
 import * as hitSpark from './vendor/pixelfx/fx/impacts/hit-spark.js';
 import * as critHit from './vendor/pixelfx/fx/impacts/crit-hit.js';
 import * as impactFrame from './vendor/pixelfx/fx/impacts/impact-frame.js';
+import * as winchClasp from './vendor/pixelfx/fx/impacts/parry.js';
+import * as relicUnseal from './vendor/pixelfx/fx/pickups/collect-burst.js';
 
 // The impact frame is 320x180 effect pixels; on taller or wider stages its first four solid beats
 // (paper, paper, ink, ink) are extended to the whole layer so no edge of the scene peeks through.
@@ -25,7 +27,7 @@ const fullImpactFrame = {
  },
 };
 
-export const FX = {fireBreath, ripples, soulRise, hitSpark, critHit, impactFrame: fullImpactFrame};
+export const FX = {fireBreath, ripples, soulRise, hitSpark, critHit, winchClasp, relicUnseal, impactFrame: fullImpactFrame};
 // One effect pixel = 4 stage pixels (the stage canvas is 1200 wide, about 300 effect pixels across).
 export const FX_PIXEL = 4;
 export const PALETTES = {
@@ -41,6 +43,8 @@ export const PALETTES = {
  crit: ['#1e0508','#4e0c14','#94201e','#d8482a','#ff8a34','#ffc85a','#fff2b0','#ffffff'],
  // the anime impact frame on a kill: soot ink on warm paper
  frame: ['#120806','#5a2a14','#fff0d4'],
+ winch: ['#10212c','#284853','#48717a','#79a4a4','#b8d9c9','#f3edc7'],
+ relic: ['#2a140b','#563013','#966025','#c99547','#eacb82','#fff0c5'],
 };
 
 /** A layer of live effects for one canvas. Positions and sizes are given in canvas pixels. */

@@ -1,0 +1,279 @@
+{
+  "date_kst": "2026-11-06",
+  "browser": "Chromium via Python Playwright",
+  "cases": [
+    {
+      "case": "portrait-safe",
+      "viewport": [
+        390,
+        844
+      ],
+      "route": 3,
+      "reduced_motion": false,
+      "touch": true,
+      "result": "PASS",
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "original_save_preserved": true,
+      "original_best_preserved": true,
+      "completed_reload_no_intro": true,
+      "errors": [],
+      "request_failures": [],
+      "http_errors": [],
+      "dialog_keyboard_blocked": true,
+      "viewport_overflow_count": 0
+    },
+    {
+      "case": "portrait-risk",
+      "viewport": [
+        390,
+        844
+      ],
+      "route": 6,
+      "reduced_motion": false,
+      "touch": true,
+      "result": "PASS",
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "original_save_preserved": true,
+      "original_best_preserved": true,
+      "completed_reload_no_intro": true,
+      "errors": [],
+      "request_failures": [],
+      "http_errors": [],
+      "dialog_keyboard_blocked": "not separately tested in this run",
+      "viewport_overflow_count": 0
+    },
+    {
+      "case": "landscape-risk",
+      "viewport": [
+        844,
+        390
+      ],
+      "route": 6,
+      "reduced_motion": false,
+      "touch": true,
+      "result": "PASS",
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "original_save_preserved": true,
+      "original_best_preserved": true,
+      "completed_reload_no_intro": true,
+      "errors": [],
+      "request_failures": [],
+      "http_errors": [],
+      "dialog_keyboard_blocked": true,
+      "viewport_overflow_count": 0
+    },
+    {
+      "case": "small-safe",
+      "viewport": [
+        740,
+        320
+      ],
+      "route": 3,
+      "reduced_motion": true,
+      "touch": true,
+      "result": "PASS",
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "original_save_preserved": true,
+      "original_best_preserved": true,
+      "completed_reload_no_intro": true,
+      "errors": [],
+      "request_failures": [],
+      "http_errors": [],
+      "dialog_keyboard_blocked": true,
+      "viewport_overflow_count": 0
+    },
+    {
+      "case": "desktop-risk",
+      "viewport": [
+        1280,
+        720
+      ],
+      "route": 6,
+      "reduced_motion": true,
+      "touch": false,
+      "result": "PASS",
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "original_save_preserved": true,
+      "original_best_preserved": true,
+      "completed_reload_no_intro": true,
+      "errors": [],
+      "request_failures": [],
+      "http_errors": [],
+      "dialog_keyboard_blocked": true,
+      "viewport_overflow_count": 0
+    },
+    {
+      "case": "retry-safe",
+      "viewport": [
+        844,
+        390
+      ],
+      "route": 3,
+      "reduced_motion": true,
+      "touch": true,
+      "result": "PASS",
+      "stages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "original_save_preserved": true,
+      "original_best_preserved": true,
+      "completed_reload_no_intro": true,
+      "errors": [],
+      "request_failures": [],
+      "http_errors": [],
+      "dialog_keyboard_blocked": true,
+      "viewport_overflow_count": 0,
+      "retry": {
+        "stalled_turns": 14,
+        "failure_text": "회상의 한 장면\n돌아오는 길에서 다시 배워요\n\n금고가 무너졌습니다. 유물을 얻으면 입구로 돌아가세요. 실제 탐험은 그대로입니다. 갈림길부터 다시 시도할 수 있어요.\n\n원래 탐험으로\n갈림길부터 다시 →",
+        "checkpoint_restored": true,
+        "restored": {
+          "step": "11",
+          "location": "B1 · 파수병의 방\nT02",
+          "hp": 18,
+          "noise": 3,
+          "gold": "9",
+          "move": 3,
+          "coach": "3 · 선택과 귀환\n11/14\n✓ 갈림길에서 다시 시작합니다\n이번 길은 당신이 고르세요\n\n「이끼 쉼터」는 조용한 회복 길, 「파편 보물고」는 시끄러운 보물 길. 두 방의 소리를 비교하고 하나를 고르세요.\n\n💬 대화\n×",
+          "dialogs": []
+        }
+      }
+    }
+  ],
+  "winch": {
+    "result": "PASS",
+    "kind": "seeded B5 pre-action fixture + real UI",
+    "rooms": 20,
+    "skill_cost": 2,
+    "sound": 6,
+    "shortcut": [
+      17,
+      9
+    ],
+    "destination": 9,
+    "reload_preserved": true,
+    "page_errors": [],
+    "request_failures": [],
+    "http_errors": []
+  },
+  "coach_layout_followup": {
+    "change": "2D placement avoids the complete highlighted button rectangles",
+    "cases": [
+      "390x844 safe route",
+      "844x390 risk route"
+    ],
+    "tested_steps": [
+      "4 lure target",
+      "11 both branch choices",
+      "14 artifact pickup and each return move"
+    ],
+    "assertion": "No positive-area intersection between the complete coach rectangle and highlighted target rectangles",
+    "result": "PASS",
+    "screenshots_refreshed": [
+      "portrait-safe-lure-target.png",
+      "portrait-safe-choice.png",
+      "portrait-safe-return.png",
+      "landscape-risk-lure-target.png",
+      "landscape-risk-choice.png",
+      "landscape-risk-return.png"
+    ]
+  }
+}

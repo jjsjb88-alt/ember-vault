@@ -1,0 +1,45 @@
+{
+  "schema": "generate2dmap.map_bundle.v2",
+  "id": "room-9",
+  "world": {
+    "width": 64,
+    "height": 64,
+    "unit": "px"
+  },
+  "layers": [],
+  "collision": {
+    "actorRadius": 4
+  },
+  "spawns": [
+    {
+      "id": "start",
+      "x": 32,
+      "y": 32
+    }
+  ],
+  "portals": [
+    {
+      "id": "lift-to-17",
+      "rect": [
+        48,
+        24,
+        8,
+        16
+      ],
+      "to": "room-17:start",
+      "activation": "intent",
+      "radius": 6,
+      "entranceByFrom": {
+        "room-17": [
+          32,
+          32
+        ]
+      },
+      "travelDirection": [
+        1,
+        0
+      ],
+      "reciprocal": true
+    }
+  ]
+}

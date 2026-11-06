@@ -1,3 +1,18 @@
+# V9 에셋 제작 기록
+
+이번 배포의 원본·도구·라이선스·검수 범위는 [V9 도구 사용 기록](docs/production/V9-TOOLS.md)에 정리했습니다.
+
+| 런타임 에셋 | 제작·적용 |
+| --- | --- |
+| `dist/assets/v9/motion/rogue-relic-se/` | 기존 도적을 참조한 모델 생성 회수 동작 14프레임. sprite-gen으로 3584×1024 아틀라스 패킹. 모델 작화와 로컬 분할·배경 제거·정렬·패킹을 구분 |
+| `dist/assets/v9/props/` | Codixel 윈치·메아리·보급함·경로 글리프, Pixelbolt 4프레임 초점 표시 |
+| `dist/assets/v9/environment/b5-moonstone-vault.png` | PixelOE로 기존 배경의 일부 표면만 정리한 B5 변형 |
+| `dist/vendor/pixelfx/` | 기존 효과에 윈치 체결·유물 해제 2종 추가. MIT 원문·NOTICE 포함 |
+
+[모션 원본·프롬프트·판정](docs/production/V9-MOTION.md), [환경 처리·비교](docs/production/V9-ENVIRONMENT.md), [실행 화면](docs/production/V9-VERIFICATION.md)을 참고하세요. Forge의 머리 밴드 자동 QC FAIL은 숨기지 않고 실제 화면에서의 별도 시각 검토와 구분해 기록했습니다. 다른 직업과 기존 걷기·공격 동작은 원래 에셋을 사용합니다.
+
+---
+
 # V4 아트 제작 기록
 
 제작 모드: **내장 이미지 생성 도구(built-in image generation)**. 세 시트를 새로 생성해 원본 그대로 사용합니다. 알파 투명도를 보존하고 Canvas와 CSS에서 셀을 잘라 표시합니다.

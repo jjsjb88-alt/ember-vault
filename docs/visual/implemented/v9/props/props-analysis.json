@@ -1,0 +1,287 @@
+{
+  "shortcut-key": {
+    "width": 64,
+    "height": 64,
+    "bounds": {
+      "x": 12,
+      "y": 10,
+      "w": 42,
+      "h": 46
+    },
+    "colors": 11,
+    "opaquePixels": 1276,
+    "edgeFindings": {
+      "nubs": [
+        [
+          42,
+          12
+        ],
+        [
+          53,
+          15
+        ],
+        [
+          31,
+          17
+        ],
+        [
+          20,
+          21
+        ],
+        [
+          49,
+          35
+        ],
+        [
+          17,
+          46
+        ],
+        [
+          45,
+          46
+        ],
+        [
+          13,
+          55
+        ],
+        [
+          49,
+          55
+        ]
+      ],
+      "strips": [],
+      "holes": [
+        [
+          44,
+          18
+        ],
+        [
+          18,
+          22
+        ],
+        [
+          39,
+          22
+        ],
+        [
+          18,
+          26
+        ],
+        [
+          18,
+          27
+        ],
+        [
+          44,
+          27
+        ],
+        [
+          17,
+          47
+        ],
+        [
+          45,
+          47
+        ]
+      ]
+    }
+  },
+  "echo-marker": {
+    "width": 64,
+    "height": 64,
+    "bounds": {
+      "x": 6,
+      "y": 9,
+      "w": 53,
+      "h": 47
+    },
+    "colors": 13,
+    "opaquePixels": 1066,
+    "edgeFindings": {
+      "nubs": [
+        [
+          31,
+          9
+        ],
+        [
+          21,
+          50
+        ],
+        [
+          43,
+          50
+        ]
+      ],
+      "strips": [],
+      "holes": [
+        [
+          11,
+          37
+        ],
+        [
+          12,
+          37
+        ],
+        [
+          18,
+          37
+        ],
+        [
+          19,
+          37
+        ],
+        [
+          25,
+          37
+        ],
+        [
+          38,
+          37
+        ],
+        [
+          39,
+          37
+        ],
+        [
+          45,
+          37
+        ],
+        [
+          46,
+          37
+        ],
+        [
+          52,
+          37
+        ],
+        [
+          53,
+          37
+        ],
+        [
+          27,
+          38
+        ],
+        [
+          37,
+          38
+        ],
+        [
+          35,
+          39
+        ],
+        [
+          32,
+          41
+        ],
+        [
+          22,
+          48
+        ],
+        [
+          42,
+          48
+        ]
+      ]
+    }
+  },
+  "supply-cache": {
+    "width": 64,
+    "height": 64,
+    "bounds": {
+      "x": 11,
+      "y": 16,
+      "w": 44,
+      "h": 41
+    },
+    "colors": 15,
+    "opaquePixels": 1425,
+    "edgeFindings": {
+      "nubs": [],
+      "strips": [],
+      "holes": []
+    }
+  },
+  "glyph-safe": {
+    "width": 24,
+    "height": 24,
+    "bounds": {
+      "x": 3,
+      "y": 2,
+      "w": 19,
+      "h": 20
+    },
+    "colors": 4,
+    "opaquePixels": 280,
+    "edgeFindings": {
+      "nubs": [],
+      "strips": [],
+      "holes": []
+    }
+  },
+  "glyph-risk": {
+    "width": 24,
+    "height": 24,
+    "bounds": {
+      "x": 1,
+      "y": 2,
+      "w": 22,
+      "h": 20
+    },
+    "colors": 4,
+    "opaquePixels": 273,
+    "edgeFindings": {
+      "nubs": [
+        [
+          1,
+          19
+        ]
+      ],
+      "strips": [],
+      "holes": []
+    }
+  },
+  "glyph-cache": {
+    "width": 24,
+    "height": 24,
+    "bounds": {
+      "x": 2,
+      "y": 3,
+      "w": 21,
+      "h": 19
+    },
+    "colors": 7,
+    "opaquePixels": 319,
+    "edgeFindings": {
+      "nubs": [],
+      "strips": [],
+      "holes": []
+    }
+  },
+  "glyph-shortcut": {
+    "width": 24,
+    "height": 24,
+    "bounds": {
+      "x": 3,
+      "y": 3,
+      "w": 20,
+      "h": 18
+    },
+    "colors": 5,
+    "opaquePixels": 260,
+    "edgeFindings": {
+      "nubs": [
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          13
+        ]
+      ],
+      "strips": [],
+      "holes": []
+    }
+  }
+}

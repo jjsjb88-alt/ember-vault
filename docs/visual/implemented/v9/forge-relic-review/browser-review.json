@@ -1,0 +1,37 @@
+{
+  "browserErrors": [],
+  "playbackSamples": [
+    "Frame 1 / 13 \u00b7 0.100 s \u00b7 source 512 \u00d7 512 \u00b7 preview cap 192px",
+    "Frame 3 / 13 \u00b7 0.300 s \u00b7 source 512 \u00d7 512 \u00b7 preview cap 192px",
+    "Frame 4 / 13 \u00b7 0.400 s \u00b7 source 512 \u00d7 512 \u00b7 preview cap 192px",
+    "Frame 6 / 13 \u00b7 0.600 s \u00b7 source 512 \u00d7 512 \u00b7 preview cap 192px"
+  ],
+  "playbackChanged": true,
+  "captures": [
+    {
+      "bodyHeightPx": 72,
+      "canvasCssWidth": 102,
+      "background": "dark",
+      "contact": "body-72-dark-all.png"
+    },
+    {
+      "bodyHeightPx": 72,
+      "canvasCssWidth": 102,
+      "background": "light",
+      "contact": "body-72-light-all.png"
+    },
+    {
+      "bodyHeightPx": 128,
+      "canvasCssWidth": 182,
+      "background": "dark",
+      "contact": "body-128-dark-all.png"
+    },
+    {
+      "bodyHeightPx": 128,
+      "canvasCssWidth": 182,
+      "background": "light",
+      "contact": "body-128-light-all.png"
+    }
+  ],
+  "scope": "Forge reduced preview, fixed original registration, representative 72/128px body sizes; not the integrated game. Ground red line is review annotation."
+}

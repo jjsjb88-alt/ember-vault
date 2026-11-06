@@ -1,0 +1,151 @@
+{
+  "frames": {
+    "focus-0": {
+      "frame": {
+        "x": 1,
+        "y": 1,
+        "w": 48,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 48
+      },
+      "duration": 260,
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "anchor": {
+        "x": 24,
+        "y": 24
+      }
+    },
+    "focus-1": {
+      "frame": {
+        "x": 51,
+        "y": 1,
+        "w": 48,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 48
+      },
+      "duration": 220,
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "anchor": {
+        "x": 24,
+        "y": 24
+      }
+    },
+    "focus-2": {
+      "frame": {
+        "x": 101,
+        "y": 1,
+        "w": 48,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 48
+      },
+      "duration": 260,
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "anchor": {
+        "x": 24,
+        "y": 24
+      }
+    },
+    "focus-3": {
+      "frame": {
+        "x": 151,
+        "y": 1,
+        "w": 48,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 48
+      },
+      "duration": 220,
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "anchor": {
+        "x": 24,
+        "y": 24
+      }
+    }
+  },
+  "animations": {
+    "focus": {
+      "frames": [
+        "focus-0",
+        "focus-1",
+        "focus-2",
+        "focus-3"
+      ],
+      "loop": true,
+      "duration": 960
+    }
+  },
+  "meta": {
+    "app": "Pixelbolt",
+    "version": "1",
+    "image": "focus-ring.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 200,
+      "h": 50
+    },
+    "scale": "1",
+    "frameTags": [
+      {
+        "name": "focus",
+        "from": 0,
+        "to": 3,
+        "direction": "forward"
+      }
+    ]
+  }
+}

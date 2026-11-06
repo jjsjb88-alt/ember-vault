@@ -1,13 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {apply,newRun,emitNoise,breathPlan,CARDS} from '../dist/engine.js';
+import {apply,newRun,emitNoise,breathPlan,moveCost,CARDS} from '../dist/engine.js';
 import {roomInteraction,soundWavePlan,turnImpact,tensionNeeded} from '../dist/encounter.js';
 import {createTutorialRun,tutorialAdvance,tutorialAllows,TUTORIAL_STEPS} from '../dist/tutorial.js';
 import {buildRevealPlan,noiseDrawState} from '../dist/pool-reveal.js';
 
-test('the complete tutorial reaches dragon breath, a real victory reward, and a finish without dead ends',()=>{
+test('the fourteen-step tutorial teaches danger, a route choice, relic recovery and a real escape',()=>{
  const s=createTutorialRun();let step=0;
- const perform=action=>{assert.ok(tutorialAllows(step,action));if(action.type!=='panel')assert.equal(apply(s,action).ok,true);step=tutorialAdvance(step,action);};
+ const perform=action=>{const before=step;assert.ok(tutorialAllows(step,action,s));if(action.type!=='panel')assert.equal(apply(s,action).ok,true);step=tutorialAdvance(step,action,s);if(before===4&&step===5)s.mode='walk';};
  perform({type:'move',id:1});assert.equal(s.noise,2);
  perform({type:'interact'});assert.equal(s.noise,4);assert.ok(s.gold>=5);
  perform({type:'panel',id:'sound'});perform({type:'lure',id:5});assert.equal(s.noise,7);
@@ -18,7 +18,11 @@ test('the complete tutorial reaches dragon breath, a real victory reward, and a 
  perform({type:'reward',id:s.pending.options[0]});assert.equal(s.pending,null);
  const i=s.market.findIndex(id=>CARDS[id].cost<=s.resource.skill);assert.ok(i>=0,'something is affordable');perform({type:'buy',index:i});
  assert.ok(s.echo[2]>0,'the fight left an echo here');const n=s.noise;perform({type:'hide'});assert.equal(s.noise,Math.max(0,n-2));
- assert.equal(step,TUTORIAL_STEPS.length);assert.equal(s.phase,'playing');
+ assert.equal(step,10);perform({type:'move',id:3});assert.equal(s.rooms[s.pos].type,'camp');perform({type:'interact'});assert.equal(step,11);
+ perform({type:'move',id:7});perform({type:'interact'});assert.equal(s.relic.name,'첫 불씨');assert.equal(s.countdown,14);assert.equal(step,13);
+ for(const id of [3,2,1,0]){let waits=0;while(s.resource.move<moveCost(s,id)){assert.ok(waits++<10,'new medals must permit the return');perform({type:'end'});}perform({type:'move',id});}
+ assert.equal(step,13,'reaching the entrance alone does not complete the lesson');perform({type:'interact'});
+ assert.equal(step,TUTORIAL_STEPS.length);assert.equal(s.phase,'won');assert.ok(s.score>0);
 });
 
 test('the dragon forecast accounts for armor spent on the enemy first and stops after a lethal enemy hit',()=>{

@@ -1,0 +1,741 @@
+{
+  "characterId": "rogue-relic-se",
+  "engine": "component-row",
+  "game_input": "spritesheet.png",
+  "degraded_static_fallback": false,
+  "curation_applied": false,
+  "frame_variant": "pixel",
+  "sprite_sheet_alpha": "spritesheet.png",
+  "sprite_sheet_alpha_report": null,
+  "base_image": null,
+  "cell": {
+    "shape": "square",
+    "width": 512,
+    "height": 512,
+    "size": 512,
+    "safe_margin": 0
+  },
+  "chroma_key": {
+    "name": "magenta",
+    "hex": "#FF00FF",
+    "rgb": [
+      255,
+      0,
+      255
+    ]
+  },
+  "animation": {
+    "cellWidth": 512,
+    "cellHeight": 512,
+    "columns": 7,
+    "rows": {
+      "relic": {
+        "row": 0,
+        "frames": 14,
+        "fps": 10,
+        "durations_ms": [
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "loop": false,
+        "frame_variant": "pixel",
+        "physicalRows": 2
+      }
+    },
+    "physicalRows": 2
+  },
+  "frame_layout": {
+    "sheetWidth": 3584,
+    "sheetHeight": 1024,
+    "cellWidth": 512,
+    "cellHeight": 512,
+    "rows": {
+      "relic": [
+        {
+          "x": 0,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        {
+          "x": 512,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        {
+          "x": 1024,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        {
+          "x": 1536,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        {
+          "x": 2048,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        {
+          "x": 2560,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        {
+          "x": 3072,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        {
+          "x": 0,
+          "y": 512,
+          "w": 512,
+          "h": 512
+        },
+        {
+          "x": 512,
+          "y": 512,
+          "w": 512,
+          "h": 512
+        },
+        {
+          "x": 1024,
+          "y": 512,
+          "w": 512,
+          "h": 512
+        },
+        {
+          "x": 1536,
+          "y": 512,
+          "w": 512,
+          "h": 512
+        },
+        {
+          "x": 2048,
+          "y": 512,
+          "w": 512,
+          "h": 512
+        },
+        {
+          "x": 2560,
+          "y": 512,
+          "w": 512,
+          "h": 512
+        },
+        {
+          "x": 3072,
+          "y": 512,
+          "w": 512,
+          "h": 512
+        }
+      ]
+    }
+  },
+  "schemaVersion": 1,
+  "actionId": "rogue-relic-se",
+  "direction": "SE",
+  "frameCount": 14,
+  "keyframeIndices": [
+    2,
+    5,
+    8,
+    11
+  ],
+  "anchorIndices": [
+    0,
+    2,
+    5,
+    8,
+    11,
+    13
+  ],
+  "segmentInsertions": [
+    1,
+    2,
+    2,
+    2,
+    1
+  ],
+  "previewBackground": "#FFFFFF",
+  "canvas": {
+    "width": 512,
+    "height": 512
+  },
+  "coordinateSpace": "screen-space",
+  "activeLimb": "screen-right hand",
+  "activeShoulder": "screen-right shoulder",
+  "anchorLimb": "screen-left dagger arm",
+  "weaponHand": "screen-left hand",
+  "carriedProp": "brass lantern remains on screen-right wrist/handle; same palm cups cyan relic",
+  "anchor": {
+    "x": 287,
+    "y": 436
+  },
+  "footBaseline": 436,
+  "fps": 10,
+  "durationMs": 1400,
+  "loop": false,
+  "spritesheet": "spritesheet.png",
+  "preview": "preview.gif",
+  "contactSheet": "contact-sheet.png",
+  "source": {
+    "path": "assets/rogue-walk-v5.png",
+    "sha256": "f3936298e25e69e95d8b5f2cadfefc65e2522f8b38eda8433699d1f42f8a9cf4",
+    "direction": "SE",
+    "walkFrame": 0,
+    "crop": {
+      "x": 202,
+      "y": 36,
+      "w": 152,
+      "h": 245
+    },
+    "standardize": {
+      "tool": "2dimg2motion/scripts/standardize_baseline.py",
+      "subjectMax": 360,
+      "marginRatio": 0.55,
+      "subjectSize": [
+        223,
+        360
+      ],
+      "standardizedCanvas": [
+        619,
+        756
+      ],
+      "paddedReferenceCanvas": [
+        768,
+        768
+      ]
+    },
+    "endpoint": "00 and 13 are byte-identical; standardized original pixels translated only into final canvas"
+  },
+  "normalization": {
+    "generatedCell": [
+      627,
+      627
+    ],
+    "sharedScaledCell": [
+      515,
+      515
+    ],
+    "sharedScale": 0.8213716108452951,
+    "fixedXTranslation": 15,
+    "perFrameTranslation": "vertical alignment only, alpha bottom y436",
+    "perFrameScale": false,
+    "sourceSheetOrder": {
+      "keys": [
+        2,
+        5,
+        8,
+        11
+      ],
+      "inbetweenA": [
+        1,
+        4,
+        3,
+        6
+      ],
+      "inbetweenB": [
+        7,
+        9,
+        10,
+        12
+      ]
+    }
+  },
+  "events": [
+    {
+      "frame": 2,
+      "name": "notice"
+    },
+    {
+      "frame": 5,
+      "name": "relic-contact"
+    },
+    {
+      "frame": 8,
+      "name": "relic-lift"
+    },
+    {
+      "frame": 10,
+      "name": "relic-stow"
+    },
+    {
+      "frame": 13,
+      "name": "return"
+    }
+  ],
+  "frameOrder": [
+    "fullframe/rogue-relic-se_00.png",
+    "fullframe/rogue-relic-se_01.png",
+    "fullframe/rogue-relic-se_02.png",
+    "fullframe/rogue-relic-se_03.png",
+    "fullframe/rogue-relic-se_04.png",
+    "fullframe/rogue-relic-se_05.png",
+    "fullframe/rogue-relic-se_06.png",
+    "fullframe/rogue-relic-se_07.png",
+    "fullframe/rogue-relic-se_08.png",
+    "fullframe/rogue-relic-se_09.png",
+    "fullframe/rogue-relic-se_10.png",
+    "fullframe/rogue-relic-se_11.png",
+    "fullframe/rogue-relic-se_12.png",
+    "fullframe/rogue-relic-se_13.png"
+  ],
+  "frames": [
+    {
+      "index": 0,
+      "path": "fullframe/rogue-relic-se_00.png",
+      "x": 0,
+      "y": 0,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        144,
+        76,
+        367,
+        436
+      ],
+      "sha256": "208cde0088f3377413333300f262d9c6219e617f36132eecfa1fd7f2258dd19e"
+    },
+    {
+      "index": 1,
+      "path": "fullframe/rogue-relic-se_01.png",
+      "x": 512,
+      "y": 0,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        152,
+        86,
+        397,
+        436
+      ],
+      "sha256": "59b9af1cd285e3fe889acb8db4fcaded6f85519034c159d6f9847bece82610b7"
+    },
+    {
+      "index": 2,
+      "path": "fullframe/rogue-relic-se_02.png",
+      "x": 1024,
+      "y": 0,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        147,
+        89,
+        403,
+        436
+      ],
+      "sha256": "060b7dae189934141705dca7b2884410fd220b4f9f5e6d76f915f4a275ce4daf"
+    },
+    {
+      "index": 3,
+      "path": "fullframe/rogue-relic-se_03.png",
+      "x": 1536,
+      "y": 0,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        141,
+        119,
+        388,
+        436
+      ],
+      "sha256": "e4946bbc58bcc7ad63f4948e363c105a4dcdd95ad4863396ea9645b69a1a1dbd"
+    },
+    {
+      "index": 4,
+      "path": "fullframe/rogue-relic-se_04.png",
+      "x": 2048,
+      "y": 0,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        137,
+        126,
+        384,
+        436
+      ],
+      "sha256": "8e490ed564ebafab2b14654dcf77da2d077208dd9865e986057485e887e89155"
+    },
+    {
+      "index": 5,
+      "path": "fullframe/rogue-relic-se_05.png",
+      "x": 2560,
+      "y": 0,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        135,
+        125,
+        374,
+        436
+      ],
+      "sha256": "261844cf950d74faf07f3f38db0d645fd7df10c2ccf604cb750c3466450043c6"
+    },
+    {
+      "index": 6,
+      "path": "fullframe/rogue-relic-se_06.png",
+      "x": 3072,
+      "y": 0,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        142,
+        88,
+        361,
+        436
+      ],
+      "sha256": "6c5881f8c9256ab06ed0817513e7eab0a265802a27d1bd27412df752a757d63c"
+    },
+    {
+      "index": 7,
+      "path": "fullframe/rogue-relic-se_07.png",
+      "x": 0,
+      "y": 512,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        149,
+        87,
+        379,
+        436
+      ],
+      "sha256": "556daf7761fd64b712281138073976ca2cf3c86448ceae30fa301da5b11adb55"
+    },
+    {
+      "index": 8,
+      "path": "fullframe/rogue-relic-se_08.png",
+      "x": 512,
+      "y": 512,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        157,
+        72,
+        365,
+        436
+      ],
+      "sha256": "2dd18050aead5655cad1253e5cf600a0c63a4d07ba592bb4f2a6b4666945269b"
+    },
+    {
+      "index": 9,
+      "path": "fullframe/rogue-relic-se_09.png",
+      "x": 1024,
+      "y": 512,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        146,
+        78,
+        369,
+        436
+      ],
+      "sha256": "6f3cb2835a0daa1e45ed250627acf2313c0f616eef7b377c9ac686ff5a4520e4"
+    },
+    {
+      "index": 10,
+      "path": "fullframe/rogue-relic-se_10.png",
+      "x": 1536,
+      "y": 512,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        156,
+        64,
+        368,
+        436
+      ],
+      "sha256": "252538e73f3bead359c021dcf690557120f4b2c74317e08020d2099608757d3e"
+    },
+    {
+      "index": 11,
+      "path": "fullframe/rogue-relic-se_11.png",
+      "x": 2048,
+      "y": 512,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        145,
+        72,
+        367,
+        436
+      ],
+      "sha256": "b9ceb69d719327593bb9a803e69fc4ea6ac5ba4d025cfc0266ccbe99605781bd"
+    },
+    {
+      "index": 12,
+      "path": "fullframe/rogue-relic-se_12.png",
+      "x": 2560,
+      "y": 512,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        147,
+        69,
+        368,
+        436
+      ],
+      "sha256": "59614f8af546dc3b9847afe2a3462f247ecb88f85f809d55c5592cd89ccf2495"
+    },
+    {
+      "index": 13,
+      "path": "fullframe/rogue-relic-se_13.png",
+      "x": 3072,
+      "y": 512,
+      "w": 512,
+      "h": 512,
+      "durationMs": 100,
+      "bounds": [
+        144,
+        76,
+        367,
+        436
+      ],
+      "sha256": "208cde0088f3377413333300f262d9c6219e617f36132eecfa1fd7f2258dd19e"
+    }
+  ],
+  "production": {
+    "documentation": "docs/production/V9-MOTION.md",
+    "tools": [
+      {
+        "name": "2dimg2motion",
+        "url": "https://github.com/WU-HAOTIAN34/2dimg2motion",
+        "commit": "d4d73e243b6ff64b7cbb3879e45e951f972a7e62",
+        "license": "MIT"
+      },
+      {
+        "name": "sprite-gen",
+        "url": "https://github.com/aldegad/sprite-gen",
+        "commit": "4f5ccd55c7cf06685a41f954acc1e476b7772ece",
+        "version": "3.15.0",
+        "license": "Apache-2.0"
+      }
+    ],
+    "artGeneration": "host image_gen, reference-guided whole-character sheets",
+    "spriteGenPack": {
+      "ok": true,
+      "atlasPixelEqualToFrames": true,
+      "width": 3584,
+      "height": 1024,
+      "columns": 7,
+      "physicalRows": 2,
+      "physicalStateNames": [
+        "pack_00",
+        "pack_01"
+      ],
+      "metadataAdaptation": "sprite-gen packs one row per physical state; concatenate their 7+7 unchanged rects into one logical relic state with 14 frames"
+    },
+    "spriteGenInspect": {
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "metrics": {
+        "histogram_intersection": {
+          "min": 0.8192894055331029,
+          "mean": 0.9238322412362913
+        },
+        "dhash_similarity": {
+          "min": 0.859375,
+          "mean": 0.9387019230769231
+        },
+        "motion_presence": 0.02687064008295626,
+        "centroid_sigma": {
+          "x": 6.086401963809466,
+          "y": 14.296880375404886
+        }
+      }
+    },
+    "spriteGenMotion": {
+      "status": "needs-review",
+      "frame_count": 14,
+      "duration_seconds": 1.4000000000000001,
+      "duplicate_frames": {
+        "exact": 1,
+        "adjacent_exact": 0,
+        "exact_silhouette": 1,
+        "near_silhouette": 0
+      },
+      "motion": {
+        "present": true,
+        "changed_transitions": 13,
+        "silhouette_changed_transitions": 13,
+        "silhouette_change_per_second": 2.119219384436299
+      },
+      "bbox_stats": {
+        "union": [
+          135,
+          64,
+          403,
+          436
+        ],
+        "width_range": [
+          208,
+          256
+        ],
+        "height_range": [
+          310,
+          372
+        ],
+        "bottom_range": [
+          436,
+          436
+        ]
+      },
+      "edge_contact": {
+        "frames": [],
+        "sides": {
+          "left": [],
+          "top": [],
+          "right": [],
+          "bottom": []
+        }
+      },
+      "stride_verified": false,
+      "warnings": [
+        "Ground contact is unknown: provide both manual contacts and a single-foot ROI; silhouette bottoms do not identify a planted foot.",
+        "Repeated poses retain all source frame durations; no frames were removed."
+      ],
+      "source": "dist/assets/v9/motion/rogue-relic-se/manifest.json"
+    },
+    "structuralValidation": "2dimg2motion validate_14frame_pattern.py: OK",
+    "independentContactReview": "clank_docs agent: consistent identity, readable reach/lift/stow/recovery; stationary action accepted",
+    "playbackIntent": "stationary non-loop gesture; stride is not used or claimed",
+    "sheetSha256": "d27f2855877a896b20f4673c55dcc57175b4cefb9ff48cb3e5f36134b1cf9e30",
+    "forgeReview": {
+      "status": "fail",
+      "report": "docs/production/v9-tools/forge-relic-frames/sheet-qc.json",
+      "checks": [
+        {
+          "id": "identity_head_ratio",
+          "status": "fail",
+          "value": {
+            "0": 0.962,
+            "1": 1.058,
+            "2": 1.058,
+            "3": 0.942,
+            "4": 1.0,
+            "5": 0.942,
+            "6": 1.038,
+            "7": 0.942,
+            "8": 1.0,
+            "9": 1.058,
+            "10": 1.038,
+            "11": 1.0,
+            "12": 1.038,
+            "13": 0.962
+          },
+          "threshold": [
+            0.95,
+            1.05
+          ],
+          "frames": [
+            1,
+            2,
+            3,
+            5,
+            7,
+            9
+          ]
+        },
+        {
+          "id": "identity_residual",
+          "status": "pass",
+          "value": {
+            "0": null,
+            "1": 1.1,
+            "2": 1.04,
+            "3": 1.09,
+            "4": 1.11,
+            "5": 1.03,
+            "6": 1.0,
+            "7": 1.11,
+            "8": 0.8,
+            "9": 0.89,
+            "10": 0.78,
+            "11": 0.6,
+            "12": 0.76,
+            "13": 0.0
+          },
+          "threshold": 1.5,
+          "frames": []
+        },
+        {
+          "id": "near_duplicates",
+          "status": "warn",
+          "value": [
+            [
+              0,
+              13
+            ]
+          ],
+          "threshold": 0.95
+        },
+        {
+          "id": "phase_coverage",
+          "status": "skipped",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "id": "leg_alternation",
+          "status": "skipped",
+          "value": null,
+          "threshold": null
+        },
+        {
+          "id": "torso_drift",
+          "status": "warn",
+          "value": 35.3,
+          "threshold": 2.0
+        },
+        {
+          "id": "row_baseline",
+          "status": "pass",
+          "value": 0.0,
+          "threshold": 0.5
+        },
+        {
+          "id": "seam",
+          "status": "pass",
+          "value": 1.32,
+          "threshold": 1.5
+        }
+      ],
+      "measurementLimitation": "head_ratio matches top 35% of whole body including long hair, cloak, shoulders, and raised props; it does not segment the face or skull",
+      "visualDecision": "Accepted after independent full sequence and 72/128px game-scale identity review; automated FAIL/WARN preserved",
+      "perFrameScaleChanged": false,
+      "thresholdChanged": false
+    }
+  }
+}

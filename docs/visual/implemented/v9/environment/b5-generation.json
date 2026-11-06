@@ -1,0 +1,28 @@
+{
+  "source": "dist/assets/lunar-vault-v6.png",
+  "source_sha256": "dc6e08e6f4f9bb9f28caf0d359746251e069fd3a73e2ff99735e8d5389ca7488",
+  "output": "dist/assets/v9/environment/b5-moonstone-vault.png",
+  "output_sha256": "a5d0d838af1ea2bf562e839846d64636f1ab3d74eabdf948439cb5c763274952",
+  "size": [
+    1672,
+    941
+  ],
+  "pixeloe_target_size": [
+    418,
+    236
+  ],
+  "pixeloe_native_output_size": [
+    1668,
+    940
+  ],
+  "mask_nonzero_percent": 11.247,
+  "changed_pixels_percent": 10.507,
+  "mean_absolute_channel_difference": 0.3284,
+  "unmasked_pixels_exactly_preserved": true,
+  "protected_lighting_pixels_exactly_preserved": true,
+  "versions": {
+    "torch": "2.9.0+cpu",
+    "numpy": "2.2.6",
+    "opencv": "4.12.0"
+  }
+}

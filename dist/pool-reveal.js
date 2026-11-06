@@ -1,5 +1,5 @@
-import {CARDS,neighbours,moveCost} from './engine.js?v=20261104h';
-import {paintIcons} from './art.js';
+import {CARDS,neighbours,moveCost} from './engine.js?v=20261106a';
+import {paintIcons} from './art.js?v=20261106a';
 
 const KEYS=['sword','move','skill','block','quiet','rattle'];
 const VALUES=[['sword','공격력'],['move','이동력'],['skill','기술'],['block','방어']];

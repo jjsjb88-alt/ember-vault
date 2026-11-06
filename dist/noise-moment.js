@@ -1,10 +1,13 @@
-import {soundWavePlan} from './encounter.js?v=20261104h';
-import {makeFxLayer,FX} from './fx-layer.js?v=20261104h';
+import {soundWavePlan} from './encounter.js?v=20261106a';
+import {makeFxLayer,FX} from './fx-layer.js?v=20261106a';
+import {lairRoom} from './engine.js?v=20261106a';
+import {mapLayout,projectMap,mapPassage,passagePoint} from './scene-layout.js?v=20261106a';
 
 export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSound=()=>{}}={}){
  let active=false,timers=[],frame=0,fxFrame=0,callback=null,previousFocus=null;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
  const q=s=>dialog.querySelector(s);
+ function passage(ctx,path,progress=1){const end=passagePoint(path,progress);ctx.beginPath();ctx.moveTo(path.start.x,path.start.y);if(path.control)ctx.quadraticCurveTo(path.start.x+(path.control.x-path.start.x)*progress,path.start.y+(path.control.y-path.start.y)*progress,end.x,end.y);else ctx.lineTo(end.x,end.y);ctx.stroke();return end;}
  const later=(fn,ms)=>timers.push(setTimeout(()=>{if(active)fn();},ms));
  function clear(){timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(frame);cancelAnimationFrame(fxFrame);cancelAnimationFrame(mapFrame);}
  function close(){if(!active)return;clear();active=false;dialog.close();document.body.classList.remove('listening');cue('stop');const done=callback;callback=null;previousFocus?.isConnected&&previousFocus.focus({preventScroll:true});done?.();}
@@ -19,11 +22,11 @@ export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSoun
   const sound=s.lastSound,plan=soundWavePlan(s,sound),rage=s.noise>=8;
   shell('noise',done);q('#noiseSource').textContent=sound.label;q('#noiseValue').textContent=`소리 ${sound.strength}`;
   q('#noiseDetail').textContent='금고의 어둠이, 당신의 소리를 기다립니다.';gauge(previousNoise);cue('heartbeat');
-  const ctx=q('#noiseTrace').getContext('2d'),begin=performance.now()+500,at=id=>({x:56+(id%4)*120,y:28+Math.floor(id/4)*58});
+  const trace=q('#noiseTrace'),ctx=trace.getContext('2d'),begin=performance.now()+500,at=id=>projectMap(id,trace.width,trace.height,{roomCount:s.rooms.length});
   function draw(now){
-   if(!active)return;const elapsed=reduced?2000:now-begin;ctx.clearRect(0,0,480,240);
-   for(const[a,b]of s.edges){const A=at(a),B=at(b);ctx.strokeStyle='#344550';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke();}
-   for(const edge of plan.edges){const p=Math.min(1,Math.max(0,(elapsed-edge.delay)/300));if(!p)continue;const A=at(edge.from),B=at(edge.to);ctx.strokeStyle='#efaa57';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(A.x+(B.x-A.x)*p,A.y+(B.y-A.y)*p);ctx.stroke();if(p<1){ctx.fillStyle='#ffefd1';ctx.fillRect(A.x+(B.x-A.x)*p-3,A.y+(B.y-A.y)*p-3,6,6);}}
+   if(!active)return;const elapsed=reduced?2000:now-begin;ctx.clearRect(0,0,trace.width,trace.height);
+   for(const[a,b]of s.edges){const path=mapPassage(a,b,trace.width,trace.height,{roomCount:s.rooms.length});ctx.strokeStyle=path.lift?'#77c6ba':'#344550';ctx.lineWidth=2;ctx.setLineDash(path.lift?[5,4]:[]);passage(ctx,path);ctx.setLineDash([]);}
+   for(const edge of plan.edges){const p=Math.min(1,Math.max(0,(elapsed-edge.delay)/300));if(!p)continue;const path=mapPassage(edge.from,edge.to,trace.width,trace.height,{roomCount:s.rooms.length});ctx.strokeStyle='#efaa57';ctx.lineWidth=3;const point=passage(ctx,path,p);if(p<1){ctx.fillStyle='#ffefd1';ctx.fillRect(point.x-3,point.y-3,6,6);}}
    for(const r of s.rooms){const p=at(r.id),node=plan.nodes.find(n=>n.id===r.id),lit=node&&elapsed>=node.delay,heard=lit&&sound.heard.some(e=>e.id===r.id);ctx.fillStyle=heard?'#9e3431':lit?'#795334':'#122631';ctx.strokeStyle=heard?'#ff8063':lit?'#ffcb86':'#54616a';ctx.lineWidth=2;ctx.fillRect(p.x-10,p.y-10,20,20);ctx.strokeRect(p.x-10,p.y-10,20,20);ctx.fillStyle='#ffe6bb';ctx.font='bold 18px system-ui';ctx.textAlign='center';if(r.id===sound.origin)ctx.fillText('·',p.x,p.y+4);else if(heard)ctx.fillText(r.seen?'!':'?',p.x,p.y+6);}
    frame=requestAnimationFrame(draw);
   }frame=requestAnimationFrame(draw);
@@ -54,20 +57,23 @@ export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSoun
  // ── Dragon breath that follows echoes. Time stops on the sound map; the breath catches the strongest echo
  //    and crawls along echoing passages. Will it reach the room you stand in?
  let pickFn=null,cancelFn=null,mapFrame=0;
- const MAP_W=480,MAP_H=260,spot=id=>({x:60+(id%4)*120,y:36+Math.floor(id/4)*62}),LAIR_ID=15;
+ const MAP_W=480,MAP_H=260;
  function drawBreathMap(cv,s,echo,{burned=[],lead=null,hit=false}={},now=performance.now()){
-  const ctx=cv.getContext('2d');ctx.clearRect(0,0,MAP_W,MAP_H);
-  for(const[a,b]of s.edges){const A=spot(a),B=spot(b),fire=burned.some(x=>x.id===a&&x.from===b||x.id===b&&x.from===a);ctx.strokeStyle=fire?'#ff7a3c':'#33414c';ctx.lineWidth=fire?4:2;ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke();}
-  if(lead){const A=spot(lead.from),B=spot(lead.to),p=lead.p;ctx.strokeStyle='#ffb05c';ctx.lineWidth=4;ctx.setLineDash(lead.from===LAIR_ID&&lead.lair?[6,6]:[]);ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(A.x+(B.x-A.x)*p,A.y+(B.y-A.y)*p);ctx.stroke();ctx.setLineDash([]);
-   const hx=A.x+(B.x-A.x)*p,hy=A.y+(B.y-A.y)*p,g=ctx.createRadialGradient(hx,hy,0,hx,hy,22);g.addColorStop(0,'#fff3c8');g.addColorStop(.4,'#ff9a3caa');g.addColorStop(1,'#ff4a1a00');ctx.fillStyle=g;ctx.beginPath();ctx.arc(hx,hy,22,0,Math.PI*2);ctx.fill();}
-  for(const r of s.rooms){const p=spot(r.id),e=echo[r.id],burn=burned.find(x=>x.id===r.id),me=r.id===s.pos;
-   if(burn){const f=.75+.25*Math.sin(now/90+r.id);const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,40);g.addColorStop(0,`rgba(255,170,70,${.85*f})`);g.addColorStop(.5,`rgba(220,70,20,${.5*f})`);g.addColorStop(1,'rgba(120,20,0,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,40,0,Math.PI*2);ctx.fill();}
-   else if(e>0){const f=.6+.4*Math.sin(now/260+r.id*1.7),rad=10+e*2.6;const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,rad);g.addColorStop(0,`rgba(255,190,90,${.55*f})`);g.addColorStop(1,'rgba(255,120,40,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,rad,0,Math.PI*2);ctx.fill();}
-   ctx.fillStyle=me?(hit?'#ff6b4a':'#e6c478'):burn?'#7a2a14':r.seen?'#2a3d4b':'#13212b';ctx.strokeStyle=me?'#fff0c0':r.id===LAIR_ID?'#c2412a':'#56636c';ctx.lineWidth=me?3:2;ctx.fillRect(p.x-12,p.y-12,24,24);ctx.strokeRect(p.x-12,p.y-12,24,24);
-   ctx.textAlign='center';ctx.font='bold 12px system-ui';
+  const ctx=cv.getContext('2d'),options={roomCount:s.rooms.length},grid=mapLayout(cv.width,cv.height,options),spot=id=>projectMap(id,cv.width,cv.height,options),lair=lairRoom(s),pixel=cv.width/(cv.clientWidth||cv.width);
+  ctx.clearRect(0,0,cv.width,cv.height);
+  for(const[a,b]of s.edges){const path=mapPassage(a,b,cv.width,cv.height,options),fire=burned.some(x=>x.id===a&&x.from===b||x.id===b&&x.from===a);ctx.strokeStyle=fire?'#ff7a3c':path.lift?'#77c6ba':'#33414c';ctx.lineWidth=fire?4:2;ctx.setLineDash(path.lift?[5,4]:[]);passage(ctx,path);ctx.setLineDash([]);}
+  if(lead){const path=mapPassage(lead.from,lead.to,cv.width,cv.height,options);if(lead.lair)path.control=null;ctx.strokeStyle='#ffb05c';ctx.lineWidth=4;ctx.setLineDash(lead.from===lair&&lead.lair?[6,6]:[]);const point=passage(ctx,path,lead.p);ctx.setLineDash([]);
+   const hx=point.x,hy=point.y,g=ctx.createRadialGradient(hx,hy,0,hx,hy,22);g.addColorStop(0,'#fff3c8');g.addColorStop(.4,'#ff9a3caa');g.addColorStop(1,'#ff4a1a00');ctx.fillStyle=g;ctx.beginPath();ctx.arc(hx,hy,22,0,Math.PI*2);ctx.fill();}
+  for(const r of s.rooms){const p=spot(r.id),me=r.id===s.pos,known=r.seen||me,e=known?echo[r.id]||0:0,burn=burned.find(x=>x.id===r.id);
+   if(burn){const f=reduced?1:.75+.25*Math.sin(now/90+r.id);const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,40);g.addColorStop(0,`rgba(255,170,70,${.85*f})`);g.addColorStop(.5,`rgba(220,70,20,${.5*f})`);g.addColorStop(1,'rgba(120,20,0,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,40,0,Math.PI*2);ctx.fill();}
+   else if(e>0){const f=reduced?1:.6+.4*Math.sin(now/260+r.id*1.7),rad=10+e*2.6;const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,rad);g.addColorStop(0,`rgba(255,190,90,${.55*f})`);g.addColorStop(1,'rgba(255,120,40,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,rad,0,Math.PI*2);ctx.fill();}
+   ctx.fillStyle=me?(hit?'#ff6b4a':'#e6c478'):burn?'#7a2a14':known?'#2a3d4b':'#13212b';ctx.strokeStyle=me?'#fff0c0':known&&r.id===lair?'#c2412a':'#56636c';ctx.lineWidth=me?3:2;ctx.fillRect(p.x-12,p.y-12,24,24);ctx.strokeRect(p.x-12,p.y-12,24,24);
+   ctx.textAlign='center';ctx.font=`bold ${12*pixel}px system-ui`;
    if(me){ctx.fillStyle='#2a1a08';ctx.fillText('나',p.x,p.y+4);}
-   else if(r.id===LAIR_ID){ctx.fillStyle='#ffb49a';ctx.fillText('용',p.x,p.y+4);}
-   if(e>0&&!burn){ctx.fillStyle='#ffd08a';ctx.font='bold 11px system-ui';ctx.fillText(e,p.x+17,p.y-12);}
+   else if(known&&r.id===lair){ctx.fillStyle='#ffb49a';ctx.fillText('용',p.x,p.y+4);}
+   else if(known&&r.type==='mechanism'){ctx.fillStyle='#c7d9c4';ctx.fillText(r.used?'↗':'⚙',p.x,p.y+4);}
+   if(e>0&&!burn){ctx.fillStyle='#ffd08a';ctx.font=`bold ${11*pixel}px system-ui`;ctx.fillText(e,p.x+22*pixel,p.y+4*pixel);}
+   if(known){ctx.fillStyle=me?'#ffe4aa':'#bdc8ce';ctx.font=`${10*pixel}px system-ui`;let name=r.name;while(name.length>1&&ctx.measureText(name).width>grid.columnGap*.88)name=name.slice(0,-2)+'…';ctx.fillText(name,p.x,p.y+12+11*pixel);}
   }
  }
  function judge(s,plan,block,onPick,onCancel){
@@ -92,7 +98,7 @@ export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSoun
   const name=id=>s.rooms[id].seen?s.rooms[id].name:'어둠 속 방';
   if(a.start===null){q('#judgeTitle').textContent='숨결이 길을 잃었다.';q('#judgeDetail').textContent='따라갈 메아리가 없어 어둠만 태우고 사그라듭니다.';later(()=>land(s,a,false),reduced?50:1400);return;}
   q('#judgeTitle').textContent='둥지에서 불길이 일어난다.';q('#judgeDetail').textContent=`가장 진한 메아리 — ${name(a.start)}`;
-  const steps=a.path.map((id,i)=>({id,from:i?a.path.slice(0,i).find(p=>s.edges.some(([x,y])=>x===id&&y===p||y===id&&x===p))??a.path[i-1]:LAIR_ID,lair:!i}));
+  const steps=a.path.map((id,i)=>({id,from:i?a.path.slice(0,i).find(p=>s.edges.some(([x,y])=>x===id&&y===p||y===id&&x===p))??a.path[i-1]:lairRoom(s),lair:!i}));
   let at=reduced?0:300;
   steps.forEach((st,i)=>{
    const toMe=st.id===a.pos,near=steps[i+1]?.id===a.pos,travel=reduced?0:st.lair?900:650,pause=reduced?40:toMe?1500:near?1100:500+i*120;

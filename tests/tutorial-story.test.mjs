@@ -5,7 +5,7 @@ import {makeQueue,typeDuration} from '../dist/cutscene.js';
 
 const ok=talk=>Array.isArray(talk)&&talk.length&&talk.every(([who,line])=>who&&line&&!/연습|튜토리얼/.test(line));
 test('every practice step has a reason told as dialogue and a control line',()=>{
- assert.equal(TUTORIAL_STEPS.length,10);
+ assert.equal(TUTORIAL_STEPS.length,14);
  for(const s of TUTORIAL_STEPS){
   assert.ok(s.title&&s.text&&ok(s.talk),s.title);
   assert.ok(s.talk.some(([who])=>who===TUTOR_NAME),`${TUTOR_NAME} speaks: ${s.title}`);

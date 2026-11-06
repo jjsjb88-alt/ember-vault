@@ -36,17 +36,20 @@ export const MODES={walk:{name:'걷기',short:'보통',noise:2,extra:0},sneak:{n
 export const TERRAINS={stone:{name:'돌바닥',noise:0,damp:0},water:{name:'물웅덩이',noise:1,damp:0},shards:{name:'돌 파편',noise:2,damp:0},moss:{name:'이끼',noise:-1,damp:1}};
 export const ALERTS={idle:'무경계',listen:'청취 중',investigate:'조사 중',hunt:'추적 중'};
 const EDGES=[[0,1],[0,4],[1,2],[1,5],[2,3],[2,6],[3,7],[4,5],[4,8],[5,9],[6,7],[6,10],[7,11],[8,9],[8,12],[9,10],[9,13],[10,11],[10,14],[11,15],[12,13],[13,14],[14,15]];
+const EXPANDED_EDGES=[[12,16],[16,17],[17,18],[18,19],[15,19]];
+export const SHORTCUT_EDGE=Object.freeze([9,17]);
 // Echoes: the vault remembers footsteps. Every sound leaves an echo in the room it came from; echoes fade each turn.
 // When the dragon attacks, its breath catches the strongest echo and crawls along the echoing passages toward you.
 export const ECHO_MAX=9,LAIR=15,MEMORY_MAX=3;
+export function lairRoom(s){return s.layout==='expanded'?19:LAIR;}
 export function dragonDue(s){return s.noise>=8?'noise':s.relic&&s.turn%3===0?'relic':null;}
 export function breathReach(s){return Math.min(6,3+Math.max(0,s.noise-8));}
 export function echoFadeEvery(s){return (s.memory||0)+1;}
-function distances(s,from){const d=Array(16).fill(99);d[from]=0;const q=[from];while(q.length){const id=q.shift();for(const n of neighbours(s,id))if(d[n]>d[id]+1){d[n]=d[id]+1;q.push(n);}}return d;}
-function upgradeEcho(s){if(s.bag!==undefined||s.clank!==undefined){if(s.bag&&!s.echo){s.echo=Array(16).fill(0);s.memory=s.rageStep??(s.relic?1:0);}delete s.bag;delete s.clank;delete s.rageStep;}}
+function distances(s,from){const d=Array(s.rooms.length).fill(99);d[from]=0;const q=[from];while(q.length){const id=q.shift();for(const n of neighbours(s,id))if(d[n]>d[id]+1){d[n]=d[id]+1;q.push(n);}}return d;}
+function upgradeEcho(s){if(s.bag!==undefined||s.clank!==undefined){if(s.bag&&!s.echo){s.echo=Array(s.rooms.length).fill(0);s.memory=s.rageStep??(s.relic?1:0);}delete s.bag;delete s.clank;delete s.rageStep;}}
 /** Where the breath will go if the dragon attacks now: start at the strongest echo, spread to echoing neighbours. */
 export function breathPlan(s){
- const e=s.echo||[],reach=breathReach(s),lair=distances(s,LAIR),me=distances(s,s.pos);
+ const e=s.echo||[],reach=breathReach(s),lair=distances(s,lairRoom(s)),me=distances(s,s.pos);
  const hot=e.map((v,id)=>id).filter(id=>e[id]>0);
  if(!hot.length)return {start:null,path:[],reach,hit:false,damage:0,echo:0};
  const rank=(a,b)=>e[b]-e[a]||a-b;
@@ -63,28 +66,29 @@ function shuffle(s,a){for(let i=a.length-1;i>0;i--){const j=Math.floor(next(s)*(
 function sample(s,a){return a[Math.floor(next(s)*a.length)];}
 export function log(s,message,tone='normal'){s.log.unshift({turn:s.turn,message,tone});s.log=s.log.slice(0,80);}
 function decorateRoom(r){
- r.terrain=['stone','shards','stone','moss','moss','shards','water','stone','moss','water','stone','moss','shards','stone','moss','stone'][r.id];
- if(r.enemy)Object.assign(r.enemy,{home:r.id,mode:'idle',target:null,memory:0,awareness:0,anchored:r.type==='relic'});
+ r.terrain=['stone','shards','stone','moss','moss','shards','water','stone','moss','water','stone','moss','shards','stone','moss','stone','moss','stone','shards','stone'][r.id];
+ if(r.enemy)Object.assign(r.enemy,{home:r.id,mode:'idle',target:null,memory:0,awareness:0,anchored:r.type==='relic'||r.id===18});
  return r;
 }
 function generateRooms(s){
  const specs=[['entry','무너진 입구'],['chest','망각의 창고'],['shrine','잊힌 제단'],['merchant','떠돌이의 쉼터'],['enemy','이끼 낀 회랑'],['enemy','부서진 무기고'],['chest','잠든 서고'],['enemy','감시자의 방'],['camp','작은 모닥불'],['enemy','속삭이는 묘실'],['relic','달의 봉인실'],['camp','마지막 불씨'],['chest','금빛 함정'],['relic','왕의 무덤'],['shrine','고요의 성소'],['relic','잿불의 심장']];
  if(next(s)>.5)[specs[2],specs[3]]=[specs[3],specs[2]];
+ if(s.layout==='expanded')specs.push(['camp','이끼 숨터'],['mechanism','귀환 윈치실'],['chest','쇳소리 보물고'],['relic','용의 기억실']);
  return specs.map(([type,name],id)=>{
   const room={id,type,name,col:id%4,row:Math.floor(id/4),seen:[0,1,4].includes(id),visited:id===0,used:false,enemy:null};
-  if(type==='enemy'||type==='relic'){
-   const hp=type==='relic'?({10:5,13:7,15:12}[id]):({4:3,5:4,7:5,9:6}[id]);
-   const kinds=type==='relic'?(id===15?['dragon','잿불의 파수꾼']:['sentinel','유물 수호자']):sample(s,[['skeleton','방황하는 해골'],['skeleton','묘지의 척후병']]);
-   room.enemy={kind:kinds[0],name:kinds[1],hp,maxHp:hp,damage:id===15?5:Math.max(2,Math.ceil(hp/3)),gold:Math.ceil(hp/2)};
+  if(type==='enemy'||type==='relic'||id===18){
+   const hp=type==='relic'?({10:5,13:7,15:12,19:14}[id]):id===18?8:({4:3,5:4,7:5,9:6}[id]);
+   const kinds=type==='relic'?(id===19?['dragon','기억의 수호룡']:id===15?['dragon','잿불의 파수꾼']:['sentinel','유물 수호자']):id===18?['sentinel','심층 금고지기']:sample(s,[['skeleton','방황하는 해골'],['skeleton','묘지의 척후병']]);
+   room.enemy={kind:kinds[0],name:kinds[1],hp,maxHp:hp,damage:id===15||id===19?5:Math.max(2,Math.ceil(hp/3)),gold:Math.ceil(hp/2)};
   }
-  if(type==='relic')room.relic={name:{10:'달의 눈물',13:'잊힌 왕관',15:'잿불의 심장'}[id],value:{10:18,13:28,15:42}[id],icon:{10:'crystal',13:'crown',15:'heartgem'}[id]};
+  if(type==='relic')room.relic={name:{10:'달의 눈물',13:'잊힌 왕관',15:'잿불의 심장',19:'용의 기억'}[id],value:{10:18,13:28,15:42,19:56}[id],icon:{10:'crystal',13:'crown',15:'heartgem',19:'heartgem'}[id]};
   return decorateRoom(room);
  });
 }
 export function neighbours(s,id=s.pos){return s.edges.filter(e=>e.includes(id)).map(e=>e[0]===id?e[1]:e[0]);}
-export function moveCost(s,id,mode=s.mode){return Math.max(1,(s.rooms[id].row===3?2:1)+MODES[mode].extra);}
+export function moveCost(s,id,mode=s.mode){return Math.max(1,(s.rooms[id].row>=3?2:1)+MODES[mode].extra);}
 export function moveNoise(s,id,mode=s.mode){return Math.max(0,MODES[mode].noise+TERRAINS[s.rooms[id].terrain].noise+(s.rooms[s.pos].enemy?.hp>0?2:0));}
-export function previewNoise(s,raw){return Math.max(0,raw+s.resource.rattle-s.resource.quiet);}
+export function previewNoise(s,raw){return Math.max(0,Math.min(12,raw+s.resource.rattle-s.resource.quiet));}
 function resources(s){return {move:1,sword:0,skill:s.role==='mage'?1:0,block:s.role==='knight'?1:0,quiet:0,rattle:0};}
 function take(s){
  if(!s.deck.length){if(!s.discard.length)return null;s.deck=shuffle(s,s.discard.splice(0));log(s,'사용한 메달을 섞어 주머니를 다시 채웠습니다.');}
@@ -132,10 +136,11 @@ export function emitNoise(s,origin,raw,label,personal=true){
  return s.lastSound;
 }
 function freshFields(s){Object.assign(s,{mode:'walk',soundSeq:0,lastSound:null,noiseMade:0,hideTurn:0,lureTurn:0,hidden:false,pursuits:[]});}
-export function newRun({seed=Date.now(),role='rogue'}={}){
+export function newRun({seed=Date.now(),role='rogue',layout='expanded'}={}){
  if(!ROLES[role])role='rogue';seed=Number(seed)>>>0||135792468;
  const s={version:VERSION,seed,rng:seed,role,turn:1,pos:0,from:null,hp:ROLES[role].hp,maxHp:ROLES[role].hp,gold:0,noise:0,resource:null,hand:[],deck:[],discard:[],played:[],edges:EDGES.map(e=>[...e]),rooms:[],market:[],log:[],relic:null,countdown:null,phase:'playing',pending:null,kills:0,purchases:0,refreshTurn:0,steps:0};
- freshFields(s);s.echo=Array(16).fill(0);s.memory=0;s.resource=resources(s);s.rooms=generateRooms(s);
+ if(layout!=='classic'){s.layout='expanded';s.edges.push(...EXPANDED_EDGES.map(e=>[...e]));}
+ freshFields(s);s.memory=0;s.resource=resources(s);s.rooms=generateRooms(s);s.echo=Array(s.rooms.length).fill(0);
  s.deck=shuffle(s,['scout','step','slash','focus','guard']);
  s.market=['step',...shuffle(s,MARKET_IDS.filter(x=>x!=='step')).slice(0,3)];
  resolvePool(s,['scout','step',role==='mage'?'spark':'slash','focus',role==='rogue'?'sneak':'guard']);
@@ -221,7 +226,17 @@ export function apply(s,action){
   if(r.enemy?.hp>0)return fail(s,'적을 먼저 쓰러뜨려야 합니다.');
   if(r.type==='entry'){if(!s.relic)return fail(s,'유물을 하나 찾아야 탈출할 수 있습니다.');finish(s,true,`${s.relic.name}을 품고 지상으로 돌아왔습니다.`);return ok(s,'탈출 성공!');}
   if(r.used)return fail(s,'이 방의 보상은 이미 받았습니다.');
-  if(r.type==='chest'){const gold=r.row===3?10:5+Math.floor(next(s)*3);s.gold+=gold;r.used=true;emitNoise(s,s.pos,r.row===3?7:3,r.row===3?'상자의 경보 장치':'낡은 경첩');log(s,`보물 상자 · 금화 +${gold}`,'good');return ok(s,`금화 +${gold}`);}
+  if(r.type==='mechanism'){
+   if(s.layout!=='expanded'||r.id!==17)return fail(s,'이 장치는 작동하지 않습니다.');
+   const [destination,source]=SHORTCUT_EDGE;
+   if(neighbours(s,source).includes(destination))return fail(s,'귀환 지름길이 이미 열려 있습니다.');
+   if(s.resource.skill<2)return fail(s,'윈치를 돌리려면 기술 2가 필요합니다.');
+   s.resource.skill-=2;r.used=true;s.edges.push([...SHORTCUT_EDGE]);s.rooms[destination].seen=true;
+   emitNoise(s,s.pos,6,'귀환 윈치');
+   log(s,'귀환 윈치 · 기술 −2 · 속삭이는 묘실로 승강 통로가 열렸습니다. 열린 통로로 소리와 숨결도 지납니다.','good');
+   return ok(s,'귀환 지름길 개방 · 기술 −2');
+  }
+  if(r.type==='chest'){const gold=r.id===18?14:r.row>=3?10:5+Math.floor(next(s)*3),noise=r.id===18?9:r.row>=3?7:3;s.gold+=gold;r.used=true;emitNoise(s,s.pos,noise,r.row>=3?'상자의 경보 장치':'낡은 경첩');log(s,`보물 상자 · 금화 +${gold}`,'good');return ok(s,`금화 +${gold}`);}
   if(r.type==='camp'){if(s.hp===s.maxHp&&s.noise===0)return fail(s,'아직 쉬어 갈 필요가 없습니다.');const healed=Math.min(6,s.maxHp-s.hp);s.hp+=healed;s.noise=Math.max(0,s.noise-3);r.used=true;log(s,`불가에서 휴식 · 체력 +${healed}, 경계 −3`,'good');return ok(s,'따뜻한 휴식');}
   if(r.type==='shrine'){const total=[...s.deck,...s.discard,...s.played];if(total.length<=5)return fail(s,'최소 5개의 능력은 남겨 두어야 합니다.');s.pending={type:'purge',options:[...new Set(total)]};return ok(s,'주머니에서 지울 능력을 선택하세요.');}
   if(r.type==='relic'){if(s.relic&&s.relic.value>=r.relic.value)return fail(s,'이미 더 값진 유물을 가지고 있습니다.');s.relic={...r.relic};r.used=true;if(s.countdown===null)s.countdown=14;emitNoise(s,s.pos,8,'유물 봉인 파괴');log(s,`${r.relic.name} 획득! ${s.countdown}턴 이내에 입구로 탈출하세요.`,'good');if(s.echo){s.memory=Math.min(MEMORY_MAX,(s.memory||0)+1);log(s,`금고의 기억이 깊어진다 · 메아리가 ${echoFadeEvery(s)}턴마다 1씩 옅어짐`,'bad');return ok(s,`유물 획득 · 금고가 ${echoFadeEvery(s)}턴을 기억합니다`);}return ok(s,'유물 획득 · 용이 깨어났습니다!');}
@@ -265,6 +280,16 @@ export function apply(s,action){
  }
 }
 export function validSave(s){
- if(!(s&&s.version===VERSION&&ROLES[s.role]&&MODES[s.mode]&&Number.isInteger(s.pos)&&s.pos>=0&&s.pos<16&&Array.isArray(s.rooms)&&s.rooms.length===16&&Array.isArray(s.edges)&&['playing','won','lost'].includes(s.phase)&&Number.isFinite(s.hp)&&s.resource&&s.poolTotal&&Array.isArray(s.market)&&s.market.length===4&&Array.isArray(s.log)))return false;
- return ['hand','deck','discard','played','market'].every(p=>Array.isArray(s[p])&&s[p].every(c=>!!CARDS[c]))&&s.rooms.every(r=>r&&Number.isInteger(r.id)&&TERRAINS[r.terrain])&&['move','sword','skill','block','quiet','rattle'].every(k=>Number.isFinite(s.resource[k])&&s.resource[k]>=0);
+ if(!(s&&s.version===VERSION&&ROLES[s.role]&&MODES[s.mode]&&Array.isArray(s.rooms)))return false;
+ const count=s.rooms.length,expanded=s.layout==='expanded',roomId=id=>Number.isInteger(id)&&id>=0&&id<count;
+ if((expanded?count!==20:count!==16)||(!expanded&&s.layout!==undefined&&s.layout!=='classic'))return false;
+ if(!(roomId(s.pos)&&Array.isArray(s.edges)&&['playing','won','lost'].includes(s.phase)&&Number.isFinite(s.hp)&&s.resource&&s.poolTotal&&Array.isArray(s.market)&&s.market.length===4&&Array.isArray(s.log)))return false;
+ if(!s.rooms.every((r,id)=>r&&r.id===id&&r.row===Math.floor(id/4)&&r.col===id%4&&TERRAINS[r.terrain]))return false;
+ const connections=new Set();
+ for(const edge of s.edges){
+  if(!Array.isArray(edge)||edge.length!==2||!edge.every(roomId)||edge[0]===edge[1])return false;
+  const key=[...edge].sort((a,b)=>a-b).join(':');if(connections.has(key))return false;connections.add(key);
+ }
+ if(s.echo!==undefined&&s.echo!==null&&(!Array.isArray(s.echo)||s.echo.length!==count||!s.echo.every(v=>Number.isFinite(v)&&v>=0&&v<=ECHO_MAX)))return false;
+ return ['hand','deck','discard','played','market'].every(p=>Array.isArray(s[p])&&s[p].every(c=>!!CARDS[c]))&&['move','sword','skill','block','quiet','rattle'].every(k=>Number.isFinite(s.resource[k])&&s.resource[k]>=0);
 }

@@ -1,0 +1,4 @@
+ok    impacts/parry
+ok    pickups/collect-burst
+
+2 effects: 2 pass, 0 fail, 0 with warnings

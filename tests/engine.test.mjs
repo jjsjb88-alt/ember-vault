@@ -61,11 +61,11 @@ test('camp, merchant and ability removal remain one-use',()=>{
  s.pos=s.rooms.find(r=>r.type==='merchant').id;s.gold=5;doAction(s,{type:'merchant'});assert.equal(s.gold,0);assert.equal(s.hp,s.maxHp);assert.equal(apply(s,{type:'merchant'}).ok,false);
 });
 test('v1 saves retain progress and only unresolved hand effects are added',()=>{
- const v=newRun({seed:42});v.version=1;v.pos=1;v.hp=16;v.gold=8;v.played=['scout'];v.hand=['step','slash','focus','sneak'];v.resource={move:2,sword:0,skill:1,block:0};
+ const v=newRun({seed:42,layout:'classic'});v.version=1;v.pos=1;v.hp=16;v.gold=8;v.played=['scout'];v.hand=['step','slash','focus','sneak'];v.resource={move:2,sword:0,skill:1,block:0};
  const s=migrateSave(v);assert.ok(validSave(s));assert.equal(s.pos,1);assert.equal(s.hp,16);assert.equal(s.gold,8);assert.equal(s.resource.move,5);assert.equal(s.resource.sword,2);assert.equal(s.resource.skill,3);assert.equal(total(s),10);assert.equal(v.version,1);assert.equal(v.hand.length,4);
 });
 function journey(seed,role,target=10){
- const s=newRun({seed,role});const path=target===10?[1,2,6,10]:[1,2,3,7,11,15];let returning=false,pathIndex=0,actions=0;
+ const s=newRun({seed,role,layout:'classic'});const path=target===10?[1,2,6,10]:[1,2,3,7,11,15];let returning=false,pathIndex=0,actions=0;
  while(s.phase==='playing'&&actions++<500){
   if(s.pending){const options=s.pending.options,pick=['blade','spark','ambush','potion','fury','wisdom','rush','step'].find(x=>options.includes(x));doAction(s,pick?{type:'reward',id:pick}:{type:'skipReward'});continue;}
   const r=s.rooms[s.pos];
@@ -79,12 +79,12 @@ function journey(seed,role,target=10){
  }
  assert.ok(actions<500,'no infinite game loop');return s;
 }
-test('180 complete seeded journeys remain bounded and each role can escape both depths',()=>{
+test('180 classic seeded journeys remain bounded and each role can escape both depths',()=>{
  const results={};for(const role of Object.keys(ROLES))for(const target of [10,15]){let wins=0;for(let seed=1;seed<=30;seed++){const s=journey(seed,role,target);assert.ok(['won','lost'].includes(s.phase));if(s.phase==='won'){wins++;assert.equal(s.relic.value,target===10?18:42);}}results[role+'_'+target]=wins;assert.ok(wins>0,'each role/depth must be winnable');}
  console.log('Route wins / 30 (no shop, no stealth):',JSON.stringify(results));
 });
 test('echoes: sounds leave echoes, they fade, and the breath follows them to you',()=>{
- const s=newRun({seed:21});assert.equal(s.echo.length,16);assert.ok(s.echo.every(v=>v===0));assert.equal(s.memory,0);
+ const s=newRun({seed:21});assert.equal(s.echo.length,20);assert.ok(s.echo.every(v=>v===0));assert.equal(s.memory,0);
  emitNoise(s,5,6,'test');assert.equal(s.echo[5],3);emitNoise(s,5,6,'test');assert.equal(s.echo[5],6);
  // no echo anywhere -> nothing to follow
  const q=newRun({seed:3});q.pos=0;q.noise=8;doAction(q,{type:'end'});assert.equal(q.attack.start,null);assert.equal(q.attack.taken,0);

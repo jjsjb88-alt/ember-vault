@@ -1,0 +1,220 @@
+{
+  "schema": "forge-animation-review/v1",
+  "status": "needs-visual-review",
+  "sourceDirectory": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe",
+  "sourceDirectoryName": "fullframe",
+  "sourceSize": [
+    512,
+    512
+  ],
+  "fps": 10.0,
+  "previewMaxSide": 192,
+  "candidates": [],
+  "diagnostics": {
+    "frameCount": 14,
+    "durationSeconds": 1.4,
+    "uniqueVisibleFrames": 13,
+    "blankFrames": [],
+    "adjacentExactDuplicates": [],
+    "largestSteps": [
+      {
+        "from": 0,
+        "to": 1,
+        "MAE": 0.0405108
+      },
+      {
+        "from": 6,
+        "to": 7,
+        "MAE": 0.0382973
+      },
+      {
+        "from": 5,
+        "to": 6,
+        "MAE": 0.0381198
+      },
+      {
+        "from": 2,
+        "to": 3,
+        "MAE": 0.0359044
+      },
+      {
+        "from": 10,
+        "to": 11,
+        "MAE": 0.0347193
+      },
+      {
+        "from": 7,
+        "to": 8,
+        "MAE": 0.0313733
+      },
+      {
+        "from": 8,
+        "to": 9,
+        "MAE": 0.0276207
+      },
+      {
+        "from": 9,
+        "to": 10,
+        "MAE": 0.026505
+      }
+    ],
+    "candidateGate": "recurrenceMAE < adjacentMedianMAE; heuristic improvement over ordinary frame-to-frame change, not loop approval",
+    "limits": "Recurrence is not gait/contact/identity validation. Candidate lengths may be partial or multiple cycles. No interpolation or registration repair applied."
+  },
+  "frames": [
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_00.png",
+      "sha256": "208cde0088f3377413333300f262d9c6219e617f36132eecfa1fd7f2258dd19e",
+      "bounds": [
+        144,
+        76,
+        367,
+        436
+      ],
+      "preview": "frames/frame-0000.png"
+    },
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_01.png",
+      "sha256": "59b9af1cd285e3fe889acb8db4fcaded6f85519034c159d6f9847bece82610b7",
+      "bounds": [
+        152,
+        86,
+        397,
+        436
+      ],
+      "preview": "frames/frame-0001.png"
+    },
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_02.png",
+      "sha256": "060b7dae189934141705dca7b2884410fd220b4f9f5e6d76f915f4a275ce4daf",
+      "bounds": [
+        147,
+        89,
+        403,
+        436
+      ],
+      "preview": "frames/frame-0002.png"
+    },
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_03.png",
+      "sha256": "e4946bbc58bcc7ad63f4948e363c105a4dcdd95ad4863396ea9645b69a1a1dbd",
+      "bounds": [
+        141,
+        119,
+        388,
+        436
+      ],
+      "preview": "frames/frame-0003.png"
+    },
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_04.png",
+      "sha256": "8e490ed564ebafab2b14654dcf77da2d077208dd9865e986057485e887e89155",
+      "bounds": [
+        137,
+        126,
+        384,
+        436
+      ],
+      "preview": "frames/frame-0004.png"
+    },
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_05.png",
+      "sha256": "261844cf950d74faf07f3f38db0d645fd7df10c2ccf604cb750c3466450043c6",
+      "bounds": [
+        135,
+        125,
+        374,
+        436
+      ],
+      "preview": "frames/frame-0005.png"
+    },
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_06.png",
+      "sha256": "6c5881f8c9256ab06ed0817513e7eab0a265802a27d1bd27412df752a757d63c",
+      "bounds": [
+        142,
+        88,
+        361,
+        436
+      ],
+      "preview": "frames/frame-0006.png"
+    },
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_07.png",
+      "sha256": "556daf7761fd64b712281138073976ca2cf3c86448ceae30fa301da5b11adb55",
+      "bounds": [
+        149,
+        87,
+        379,
+        436
+      ],
+      "preview": "frames/frame-0007.png"
+    },
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_08.png",
+      "sha256": "2dd18050aead5655cad1253e5cf600a0c63a4d07ba592bb4f2a6b4666945269b",
+      "bounds": [
+        157,
+        72,
+        365,
+        436
+      ],
+      "preview": "frames/frame-0008.png"
+    },
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_09.png",
+      "sha256": "6f3cb2835a0daa1e45ed250627acf2313c0f616eef7b377c9ac686ff5a4520e4",
+      "bounds": [
+        146,
+        78,
+        369,
+        436
+      ],
+      "preview": "frames/frame-0009.png"
+    },
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_10.png",
+      "sha256": "252538e73f3bead359c021dcf690557120f4b2c74317e08020d2099608757d3e",
+      "bounds": [
+        156,
+        64,
+        368,
+        436
+      ],
+      "preview": "frames/frame-0010.png"
+    },
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_11.png",
+      "sha256": "b9ceb69d719327593bb9a803e69fc4ea6ac5ba4d025cfc0266ccbe99605781bd",
+      "bounds": [
+        145,
+        72,
+        367,
+        436
+      ],
+      "preview": "frames/frame-0011.png"
+    },
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_12.png",
+      "sha256": "59614f8af546dc3b9847afe2a3462f247ecb88f85f809d55c5592cd89ccf2495",
+      "bounds": [
+        147,
+        69,
+        368,
+        436
+      ],
+      "preview": "frames/frame-0012.png"
+    },
+    {
+      "source": "../../../../../dist/assets/v9/motion/rogue-relic-se/fullframe/rogue-relic-se_13.png",
+      "sha256": "208cde0088f3377413333300f262d9c6219e617f36132eecfa1fd7f2258dd19e",
+      "bounds": [
+        144,
+        76,
+        367,
+        436
+      ],
+      "preview": "frames/frame-0013.png"
+    }
+  ]
+}

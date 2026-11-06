@@ -1,0 +1,14 @@
+{
+  "source": "dist/engine.js",
+  "originalSourceSha256": "fe583af0ce3d963b6ca6420bf8391c3210468fb5a45a8ba30e34e9d0e8c3c62e",
+  "latestSourceSha256": "cd5e02c03d8e73ae8a88463a7c19ef8f6f09762c81fbcd20bd2c2dde3c4a7a53",
+  "exportEquality": {
+    "classic.json": true,
+    "expanded.json": true,
+    "expanded-winch.json": true,
+    "expanded-winch-lift-room-9.json": true,
+    "expanded-winch-lift-room-17.json": true
+  },
+  "returnCostsEqual": true,
+  "note": "Engine changed after first QC; rerunning the export yielded semantically identical topology/portal inputs and route costs, so previous independent Forge results apply to this latest exported input."
+}

@@ -1,0 +1,555 @@
+{
+  "finalAnchor": {
+    "x": 0.49,
+    "y": 0.65
+  },
+  "scope": "Prepared expanded-game fixtures with living enemy in room 9; actual winch interaction, lift entry, attack and retreat. The 740x320 action pass was rerun after raising the anchor by .01. Other action passes at y=.66 are followed by final y=.65 geometry checks.",
+  "actualActions": [
+    {
+      "viewport": [
+        740,
+        320
+      ],
+      "result": "PASS",
+      "winch_actual_click": true,
+      "lift_and_retreat": [
+        17,
+        9,
+        17
+      ],
+      "enemy_attack_registered": true,
+      "rooms": [
+        {
+          "room": 17,
+          "boxes": [
+            {
+              "id": "16",
+              "x": 61.6875,
+              "y": 194.359375,
+              "w": 143,
+              "h": 59.5
+            },
+            {
+              "id": "18",
+              "x": 246.6875,
+              "y": 92.84375,
+              "w": 143,
+              "h": 59.5
+            },
+            {
+              "id": "9",
+              "x": 291.09375,
+              "y": 191.546875,
+              "w": 143,
+              "h": 59.5
+            },
+            {
+              "id": "mapToggle",
+              "x": 612,
+              "y": 46,
+              "w": 116,
+              "h": 88
+            },
+            {
+              "id": "play-dock",
+              "x": 10,
+              "y": 252,
+              "w": 720,
+              "h": 62
+            }
+          ],
+          "overlaps": [],
+          "overflow": false,
+          "screenshot": "/tmp/ember-v9-lift-layout-room17-740x320.png"
+        },
+        {
+          "room": 9,
+          "boxes": [
+            {
+              "id": "5",
+              "x": 61.6875,
+              "y": 135.140625,
+              "w": 143,
+              "h": 59.5
+            },
+            {
+              "id": "8",
+              "x": 61.6875,
+              "y": 194.359375,
+              "w": 143,
+              "h": 59.5
+            },
+            {
+              "id": "10",
+              "x": 246.6875,
+              "y": 92.84375,
+              "w": 143,
+              "h": 59.5
+            },
+            {
+              "id": "13",
+              "x": 527.890625,
+              "y": 194.359375,
+              "w": 143,
+              "h": 59.5
+            },
+            {
+              "id": "17",
+              "x": 291.09375,
+              "y": 191.546875,
+              "w": 143,
+              "h": 59.5
+            },
+            {
+              "id": "mapToggle",
+              "x": 612,
+              "y": 46,
+              "w": 116,
+              "h": 88
+            },
+            {
+              "id": "sceneTarget",
+              "x": 436.59375,
+              "y": 131.046875,
+              "w": 103.59375,
+              "h": 73.3125
+            },
+            {
+              "id": "play-dock",
+              "x": 10,
+              "y": 252,
+              "w": 720,
+              "h": 62
+            }
+          ],
+          "overlaps": [],
+          "overflow": false,
+          "screenshot": "/tmp/ember-v9-lift-layout-room9-740x320.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "result": "PASS",
+      "winch_actual_click": true,
+      "lift_and_retreat": [
+        17,
+        9,
+        17
+      ],
+      "enemy_attack_registered": true,
+      "rooms": [
+        {
+          "room": 17,
+          "boxes": [
+            {
+              "id": "16",
+              "x": 80.40625,
+              "y": 240.015625,
+              "w": 143,
+              "h": 64.6875
+            },
+            {
+              "id": "18",
+              "x": 291.40625,
+              "y": 115.453125,
+              "w": 143,
+              "h": 64.6875
+            },
+            {
+              "id": "9",
+              "x": 342.046875,
+              "y": 240.015625,
+              "w": 143,
+              "h": 64.6875
+            },
+            {
+              "id": "mapToggle",
+              "x": 684,
+              "y": 56,
+              "w": 144,
+              "h": 112
+            },
+            {
+              "id": "play-dock",
+              "x": 12,
+              "y": 306,
+              "w": 820,
+              "h": 76
+            }
+          ],
+          "overlaps": [],
+          "overflow": false,
+          "screenshot": "/tmp/ember-v9-lift-layout-room17-844x390.png"
+        },
+        {
+          "room": 9,
+          "boxes": [
+            {
+              "id": "5",
+              "x": 80.40625,
+              "y": 167.34375,
+              "w": 143,
+              "h": 64.6875
+            },
+            {
+              "id": "8",
+              "x": 80.40625,
+              "y": 240.015625,
+              "w": 143,
+              "h": 64.6875
+            },
+            {
+              "id": "10",
+              "x": 291.40625,
+              "y": 115.453125,
+              "w": 143,
+              "h": 64.6875
+            },
+            {
+              "id": "13",
+              "x": 612.125,
+              "y": 240.015625,
+              "w": 143,
+              "h": 64.6875
+            },
+            {
+              "id": "17",
+              "x": 342.046875,
+              "y": 240.015625,
+              "w": 143,
+              "h": 64.6875
+            },
+            {
+              "id": "mapToggle",
+              "x": 684,
+              "y": 56,
+              "w": 144,
+              "h": 112
+            },
+            {
+              "id": "sceneTarget",
+              "x": 497.953125,
+              "y": 158.171875,
+              "w": 118.15625,
+              "h": 89.953125
+            },
+            {
+              "id": "play-dock",
+              "x": 12,
+              "y": 306,
+              "w": 820,
+              "h": 76
+            }
+          ],
+          "overlaps": [],
+          "overflow": false,
+          "screenshot": "/tmp/ember-v9-lift-layout-room9-844x390.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "result": "PASS",
+      "winch_actual_click": true,
+      "lift_and_retreat": [
+        17,
+        9,
+        17
+      ],
+      "enemy_attack_registered": true,
+      "rooms": [
+        {
+          "room": 17,
+          "boxes": [
+            {
+              "id": "16",
+              "x": 8.6875,
+              "y": 542.859375,
+              "w": 123,
+              "h": 61
+            },
+            {
+              "id": "18",
+              "x": 106.1875,
+              "y": 256.296875,
+              "w": 123,
+              "h": 61
+            },
+            {
+              "id": "9",
+              "x": 132.6953125,
+              "y": 542.859375,
+              "w": 116.796875,
+              "h": 61
+            },
+            {
+              "id": "mapToggle",
+              "x": 270,
+              "y": 132,
+              "w": 110,
+              "h": 85
+            },
+            {
+              "id": "play-dock",
+              "x": 10,
+              "y": 711,
+              "w": 370,
+              "h": 125
+            }
+          ],
+          "overlaps": [],
+          "overflow": false,
+          "screenshot": "/tmp/ember-v9-lift-layout-room17-390x844.png"
+        },
+        {
+          "room": 9,
+          "boxes": [
+            {
+              "id": "5",
+              "x": 8.6875,
+              "y": 375.6875,
+              "w": 123,
+              "h": 61
+            },
+            {
+              "id": "8",
+              "x": 8.6875,
+              "y": 542.859375,
+              "w": 123,
+              "h": 61
+            },
+            {
+              "id": "10",
+              "x": 106.1875,
+              "y": 256.296875,
+              "w": 123,
+              "h": 61
+            },
+            {
+              "id": "13",
+              "x": 254.390625,
+              "y": 542.859375,
+              "w": 123,
+              "h": 61
+            },
+            {
+              "id": "17",
+              "x": 132.6953125,
+              "y": 542.859375,
+              "w": 116.796875,
+              "h": 61
+            },
+            {
+              "id": "mapToggle",
+              "x": 270,
+              "y": 132,
+              "w": 110,
+              "h": 85
+            },
+            {
+              "id": "sceneTarget",
+              "x": 214.4921875,
+              "y": 366.390625,
+              "w": 85.796875,
+              "h": 151.234375
+            },
+            {
+              "id": "play-dock",
+              "x": 10,
+              "y": 711,
+              "w": 370,
+              "h": 125
+            }
+          ],
+          "overlaps": [],
+          "overflow": false,
+          "screenshot": "/tmp/ember-v9-lift-layout-room9-390x844.png"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "viewport": [
+        360,
+        780
+      ],
+      "result": "PASS",
+      "winch_actual_click": true,
+      "lift_and_retreat": [
+        17,
+        9,
+        17
+      ],
+      "enemy_attack_registered": true,
+      "rooms": [
+        {
+          "room": 17,
+          "boxes": [
+            {
+              "id": "16",
+              "x": 3.296875,
+              "y": 500.609375,
+              "w": 123,
+              "h": 61
+            },
+            {
+              "id": "18",
+              "x": 93.296875,
+              "y": 237.09375,
+              "w": 123,
+              "h": 61
+            },
+            {
+              "id": "9",
+              "x": 127.296875,
+              "y": 500.609375,
+              "w": 98.1875,
+              "h": 61
+            },
+            {
+              "id": "mapToggle",
+              "x": 240,
+              "y": 132,
+              "w": 110,
+              "h": 85
+            },
+            {
+              "id": "play-dock",
+              "x": 10,
+              "y": 647,
+              "w": 340,
+              "h": 125
+            }
+          ],
+          "overlaps": [],
+          "overflow": false,
+          "screenshot": "/tmp/ember-v9-lift-layout-room17-360x780.png"
+        },
+        {
+          "room": 9,
+          "boxes": [
+            {
+              "id": "5",
+              "x": 3.296875,
+              "y": 346.890625,
+              "w": 123,
+              "h": 61
+            },
+            {
+              "id": "8",
+              "x": 3.296875,
+              "y": 500.609375,
+              "w": 123,
+              "h": 61
+            },
+            {
+              "id": "10",
+              "x": 93.296875,
+              "y": 237.09375,
+              "w": 123,
+              "h": 61
+            },
+            {
+              "id": "13",
+              "x": 230.09375,
+              "y": 500.609375,
+              "w": 123,
+              "h": 61
+            },
+            {
+              "id": "17",
+              "x": 127.296875,
+              "y": 500.609375,
+              "w": 98.1875,
+              "h": 61
+            },
+            {
+              "id": "mapToggle",
+              "x": 240,
+              "y": 132,
+              "w": 110,
+              "h": 85
+            },
+            {
+              "id": "sceneTarget",
+              "x": 198,
+              "y": 340.796875,
+              "w": 79.1875,
+              "h": 139.078125
+            },
+            {
+              "id": "play-dock",
+              "x": 10,
+              "y": 647,
+              "w": 340,
+              "h": 125
+            }
+          ],
+          "overlaps": [],
+          "overflow": false,
+          "screenshot": "/tmp/ember-v9-lift-layout-room9-360x780.png"
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "finalGeometry": [
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "room": 17,
+      "overlaps": []
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "room": 9,
+      "overlaps": []
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "room": 17,
+      "overlaps": []
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "room": 9,
+      "overlaps": []
+    },
+    {
+      "viewport": [
+        360,
+        780
+      ],
+      "room": 17,
+      "overlaps": []
+    },
+    {
+      "viewport": [
+        360,
+        780
+      ],
+      "room": 9,
+      "overlaps": []
+    }
+  ]
+}

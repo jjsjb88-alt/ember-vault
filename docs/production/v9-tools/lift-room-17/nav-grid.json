@@ -1,0 +1,163 @@
+{
+  "schema": "generate2dmap.nav_grid.v1",
+  "map": "room-17",
+  "bundle": {
+    "path": "../map-inputs/expanded-winch-lift-room-17.json",
+    "sha256": "3c164e1cda3b7fb689fda3a53eeffdd38434c1f0b32d31386208ca1f55b2c247",
+    "bytes": 654
+  },
+  "world": {
+    "width": 64.0,
+    "height": 64.0
+  },
+  "actor": {
+    "radius": 4.0,
+    "ySquash": 1.0,
+    "samples": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        4.0,
+        0.0
+      ],
+      [
+        2.8284271247461903,
+        2.8284271247461903
+      ],
+      [
+        0.0,
+        4.0
+      ],
+      [
+        -2.8284271247461903,
+        2.8284271247461903
+      ],
+      [
+        -4.0,
+        0.0
+      ],
+      [
+        -2.8284271247461903,
+        -2.8284271247461903
+      ],
+      [
+        0.0,
+        -4.0
+      ],
+      [
+        2.8284271247461903,
+        -2.8284271247461903
+      ]
+    ]
+  },
+  "cell": 2,
+  "cols": 32,
+  "rows": 32,
+  "nodeCentre": "x = (col + 0.5) * cell, y = (row + 0.5) * cell",
+  "moveBits": {
+    "E": 1,
+    "S": 2,
+    "W": 4,
+    "N": 8
+  },
+  "moves": [
+    "################################",
+    "################################",
+    "##3777777777777777777777777776##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##bffffffffffffffffffffffffffe##",
+    "##9ddddddddddddddddddddddddddc##",
+    "################################",
+    "################################"
+  ],
+  "reachable": [
+    "00000000000000000000000000000000",
+    "00000000000000000000000000000000",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00111111111111111111111111111100",
+    "00000000000000000000000000000000",
+    "00000000000000000000000000000000"
+  ],
+  "blockedRects": [
+    [
+      0,
+      0,
+      64,
+      4
+    ],
+    [
+      0,
+      4,
+      4,
+      60
+    ],
+    [
+      60,
+      4,
+      4,
+      60
+    ],
+    [
+      4,
+      60,
+      56,
+      4
+    ]
+  ],
+  "runtimeInputs": {
+    "tileSolids": [],
+    "materialGrid": null
+  }
+}

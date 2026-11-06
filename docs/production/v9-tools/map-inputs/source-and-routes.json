@@ -1,0 +1,387 @@
+{
+  "source": "dist/engine.js",
+  "sha256": "fe583af0ce3d963b6ca6420bf8391c3210468fb5a45a8ba30e34e9d0e8c3c62e",
+  "seed": 20261106,
+  "cases": [
+    {
+      "name": "classic",
+      "file": "docs/production/v9-tools/map-inputs/classic.json",
+      "rooms": 16,
+      "edges": 23,
+      "portals": [],
+      "returnRoutes": [
+        {
+          "room": 0,
+          "name": "무너진 입구",
+          "steps": 0,
+          "walkingCost": 0
+        },
+        {
+          "room": 1,
+          "name": "망각의 창고",
+          "steps": 1,
+          "walkingCost": 1
+        },
+        {
+          "room": 2,
+          "name": "잊힌 제단",
+          "steps": 2,
+          "walkingCost": 2
+        },
+        {
+          "room": 3,
+          "name": "떠돌이의 쉼터",
+          "steps": 3,
+          "walkingCost": 3
+        },
+        {
+          "room": 4,
+          "name": "이끼 낀 회랑",
+          "steps": 1,
+          "walkingCost": 1
+        },
+        {
+          "room": 5,
+          "name": "부서진 무기고",
+          "steps": 2,
+          "walkingCost": 2
+        },
+        {
+          "room": 6,
+          "name": "잠든 서고",
+          "steps": 3,
+          "walkingCost": 3
+        },
+        {
+          "room": 7,
+          "name": "감시자의 방",
+          "steps": 4,
+          "walkingCost": 4
+        },
+        {
+          "room": 8,
+          "name": "작은 모닥불",
+          "steps": 2,
+          "walkingCost": 2
+        },
+        {
+          "room": 9,
+          "name": "속삭이는 묘실",
+          "steps": 3,
+          "walkingCost": 3
+        },
+        {
+          "room": 10,
+          "name": "달의 봉인실",
+          "steps": 4,
+          "walkingCost": 4
+        },
+        {
+          "room": 11,
+          "name": "마지막 불씨",
+          "steps": 5,
+          "walkingCost": 5
+        },
+        {
+          "room": 12,
+          "name": "금빛 함정",
+          "steps": 3,
+          "walkingCost": 3
+        },
+        {
+          "room": 13,
+          "name": "왕의 무덤",
+          "steps": 4,
+          "walkingCost": 4
+        },
+        {
+          "room": 14,
+          "name": "고요의 성소",
+          "steps": 5,
+          "walkingCost": 5
+        },
+        {
+          "room": 15,
+          "name": "잿불의 심장",
+          "steps": 6,
+          "walkingCost": 6
+        }
+      ]
+    },
+    {
+      "name": "expanded",
+      "file": "docs/production/v9-tools/map-inputs/expanded.json",
+      "rooms": 20,
+      "edges": 28,
+      "portals": [],
+      "returnRoutes": [
+        {
+          "room": 0,
+          "name": "무너진 입구",
+          "steps": 0,
+          "walkingCost": 0
+        },
+        {
+          "room": 1,
+          "name": "망각의 창고",
+          "steps": 1,
+          "walkingCost": 1
+        },
+        {
+          "room": 2,
+          "name": "잊힌 제단",
+          "steps": 2,
+          "walkingCost": 2
+        },
+        {
+          "room": 3,
+          "name": "떠돌이의 쉼터",
+          "steps": 3,
+          "walkingCost": 3
+        },
+        {
+          "room": 4,
+          "name": "이끼 낀 회랑",
+          "steps": 1,
+          "walkingCost": 1
+        },
+        {
+          "room": 5,
+          "name": "부서진 무기고",
+          "steps": 2,
+          "walkingCost": 2
+        },
+        {
+          "room": 6,
+          "name": "잠든 서고",
+          "steps": 3,
+          "walkingCost": 3
+        },
+        {
+          "room": 7,
+          "name": "감시자의 방",
+          "steps": 4,
+          "walkingCost": 4
+        },
+        {
+          "room": 8,
+          "name": "작은 모닥불",
+          "steps": 2,
+          "walkingCost": 2
+        },
+        {
+          "room": 9,
+          "name": "속삭이는 묘실",
+          "steps": 3,
+          "walkingCost": 3
+        },
+        {
+          "room": 10,
+          "name": "달의 봉인실",
+          "steps": 4,
+          "walkingCost": 4
+        },
+        {
+          "room": 11,
+          "name": "마지막 불씨",
+          "steps": 5,
+          "walkingCost": 5
+        },
+        {
+          "room": 12,
+          "name": "금빛 함정",
+          "steps": 3,
+          "walkingCost": 3
+        },
+        {
+          "room": 13,
+          "name": "왕의 무덤",
+          "steps": 4,
+          "walkingCost": 4
+        },
+        {
+          "room": 14,
+          "name": "고요의 성소",
+          "steps": 5,
+          "walkingCost": 5
+        },
+        {
+          "room": 15,
+          "name": "잿불의 심장",
+          "steps": 6,
+          "walkingCost": 6
+        },
+        {
+          "room": 16,
+          "name": "이끼 숨터",
+          "steps": 4,
+          "walkingCost": 5
+        },
+        {
+          "room": 17,
+          "name": "귀환 윈치실",
+          "steps": 5,
+          "walkingCost": 7
+        },
+        {
+          "room": 18,
+          "name": "쇳소리 보물고",
+          "steps": 6,
+          "walkingCost": 9
+        },
+        {
+          "room": 19,
+          "name": "용의 기억실",
+          "steps": 7,
+          "walkingCost": 8
+        }
+      ]
+    },
+    {
+      "name": "expanded-winch",
+      "file": "docs/production/v9-tools/map-inputs/expanded-winch.json",
+      "rooms": 20,
+      "edges": 29,
+      "portals": [
+        {
+          "edge": [
+            9,
+            17
+          ],
+          "files": [
+            "docs/production/v9-tools/map-inputs/expanded-winch-lift-room-9.json",
+            "docs/production/v9-tools/map-inputs/expanded-winch-lift-room-17.json"
+          ]
+        }
+      ],
+      "returnRoutes": [
+        {
+          "room": 0,
+          "name": "무너진 입구",
+          "steps": 0,
+          "walkingCost": 0
+        },
+        {
+          "room": 1,
+          "name": "망각의 창고",
+          "steps": 1,
+          "walkingCost": 1
+        },
+        {
+          "room": 2,
+          "name": "잊힌 제단",
+          "steps": 2,
+          "walkingCost": 2
+        },
+        {
+          "room": 3,
+          "name": "떠돌이의 쉼터",
+          "steps": 3,
+          "walkingCost": 3
+        },
+        {
+          "room": 4,
+          "name": "이끼 낀 회랑",
+          "steps": 1,
+          "walkingCost": 1
+        },
+        {
+          "room": 5,
+          "name": "부서진 무기고",
+          "steps": 2,
+          "walkingCost": 2
+        },
+        {
+          "room": 6,
+          "name": "잠든 서고",
+          "steps": 3,
+          "walkingCost": 3
+        },
+        {
+          "room": 7,
+          "name": "감시자의 방",
+          "steps": 4,
+          "walkingCost": 4
+        },
+        {
+          "room": 8,
+          "name": "작은 모닥불",
+          "steps": 2,
+          "walkingCost": 2
+        },
+        {
+          "room": 9,
+          "name": "속삭이는 묘실",
+          "steps": 3,
+          "walkingCost": 3
+        },
+        {
+          "room": 10,
+          "name": "달의 봉인실",
+          "steps": 4,
+          "walkingCost": 4
+        },
+        {
+          "room": 11,
+          "name": "마지막 불씨",
+          "steps": 5,
+          "walkingCost": 5
+        },
+        {
+          "room": 12,
+          "name": "금빛 함정",
+          "steps": 3,
+          "walkingCost": 3
+        },
+        {
+          "room": 13,
+          "name": "왕의 무덤",
+          "steps": 4,
+          "walkingCost": 4
+        },
+        {
+          "room": 14,
+          "name": "고요의 성소",
+          "steps": 5,
+          "walkingCost": 5
+        },
+        {
+          "room": 15,
+          "name": "잿불의 심장",
+          "steps": 6,
+          "walkingCost": 6
+        },
+        {
+          "room": 16,
+          "name": "이끼 숨터",
+          "steps": 4,
+          "walkingCost": 5
+        },
+        {
+          "room": 17,
+          "name": "귀환 윈치실",
+          "steps": 4,
+          "walkingCost": 4
+        },
+        {
+          "room": 18,
+          "name": "쇳소리 보물고",
+          "steps": 5,
+          "walkingCost": 6
+        },
+        {
+          "room": 19,
+          "name": "용의 기억실",
+          "steps": 6,
+          "walkingCost": 8
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Room grids are a schematic export of adjacent corridors, not the painted rooms. Non-adjacent lifts use separate reciprocal-portal bundles.",
+    "Door matching and topology do not prove enemy balance, resource feasibility, artwork collision or mobile hit targets.",
+    "Lift bundles prove entry/arrival/reciprocity at both endpoints; they do not describe full room art or other room exits.",
+    "Return costs include every game edge, ignore living enemies and use walking; the game also supports sneak and rush."
+  ]
+}

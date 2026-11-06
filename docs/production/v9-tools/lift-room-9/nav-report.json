@@ -1,0 +1,212 @@
+{
+  "schema": "generate2dmap.nav_report.v1",
+  "status": "pass",
+  "method": "plan Appendix C validity (centre + 8 footprint samples against walk regions, solids, object footprints scaled once, tile collision and material classes) on a grid of cell max(1, round(r/2)) px; 4-neighbour moves open when segmentClear holds between node centres (samples every cell/2, plus the exact thin-gap centre path and one_way direction); BFS from every spawn and portal arrival to every interaction, exit, anchor slot and approach point",
+  "notProven": [
+    "that the collision data matches the painted art",
+    "positions closer than one grid cell to a blocker (the grid samples cell centres)",
+    "runtime movement code: map-runtime.mjs parity is tested during integration",
+    "links to maps not passed with --link"
+  ],
+  "checks": [
+    {
+      "id": "starts_valid",
+      "status": "pass",
+      "value": {
+        "starts": 2,
+        "blocked": []
+      },
+      "threshold": {
+        "blocked": 0
+      }
+    },
+    {
+      "id": "targets_reachable",
+      "status": "pass",
+      "value": {
+        "reachable": 1,
+        "total": 1,
+        "unreachable": []
+      },
+      "threshold": {
+        "unreachable": 0
+      }
+    },
+    {
+      "id": "portals_inside_world",
+      "status": "pass",
+      "value": {
+        "outside": []
+      },
+      "threshold": {
+        "outside": 0
+      }
+    },
+    {
+      "id": "arrivals_outside_triggers",
+      "status": "pass",
+      "value": {
+        "problems": 0
+      },
+      "threshold": {
+        "problems": 0
+      }
+    },
+    {
+      "id": "reciprocal_links",
+      "status": "pass",
+      "value": {
+        "links": [
+          {
+            "portal": "lift-to-17",
+            "to": "room-17",
+            "arrival": [
+              32.0,
+              32.0
+            ],
+            "returnPortals": [
+              "lift-to-9"
+            ],
+            "status": "pass"
+          }
+        ],
+        "notChecked": []
+      },
+      "threshold": {
+        "errors": 0
+      }
+    },
+    {
+      "id": "thin_gaps",
+      "status": "pass",
+      "value": 0,
+      "threshold": "reported: moves the thin-gap rule closed although every footprint sample was valid"
+    },
+    {
+      "id": "unreachable_walkable_area",
+      "status": "pass",
+      "value": {
+        "pockets": 0,
+        "cells": 0
+      },
+      "threshold": "reported"
+    },
+    {
+      "id": "blocked_rects_union",
+      "status": "pass",
+      "value": {
+        "rects": 4,
+        "blockedCells": 240
+      },
+      "threshold": "union == blocked cells"
+    },
+    {
+      "id": "footprints_scaled_once",
+      "status": "pass",
+      "value": {
+        "objectSolids": 0
+      },
+      "threshold": "object footprint x scale, never inflated by the actor radius"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "../map-inputs/expanded-winch-lift-room-9.json",
+      "sha256": "5869af1f3634df570318114f84fbe2c53543dee99646a02232de85031f736596",
+      "bytes": 656
+    },
+    {
+      "path": "../map-inputs/expanded-winch-lift-room-17.json",
+      "sha256": "3c164e1cda3b7fb689fda3a53eeffdd38434c1f0b32d31386208ca1f55b2c247",
+      "bytes": 654
+    }
+  ],
+  "outputs": [
+    {
+      "path": "nav-grid.json",
+      "sha256": "0745291a52232244ad17e8e64e154ef666fbc606c288936f0c03d29b08101a3a",
+      "bytes": 3949
+    },
+    {
+      "path": "nav-debug.png",
+      "sha256": "0ffb27df0614d5ee25509b70a399901d864d2b216d19c865e131969b0c6d3680",
+      "bytes": 1186
+    }
+  ],
+  "tool": {
+    "name": "map_nav.py",
+    "version": "0.4.0"
+  },
+  "map": "room-9",
+  "cell": 2,
+  "starts": [
+    {
+      "kind": "spawn",
+      "id": "start",
+      "point": [
+        32.0,
+        32.0
+      ],
+      "reachable": true,
+      "steps": 0,
+      "node": [
+        31.0,
+        31.0
+      ],
+      "reason": null
+    },
+    {
+      "kind": "arrival",
+      "id": "lift-to-17<-room-17",
+      "point": [
+        32.0,
+        32.0
+      ],
+      "reachable": true,
+      "steps": 0,
+      "node": [
+        31.0,
+        31.0
+      ],
+      "reason": null
+    }
+  ],
+  "targets": [
+    {
+      "kind": "exit",
+      "id": "lift-to-17",
+      "point": [
+        52.0,
+        32.0
+      ],
+      "reachable": true,
+      "steps": 3,
+      "node": [
+        43.0,
+        29.0
+      ],
+      "reason": null
+    }
+  ],
+  "links": [
+    {
+      "portal": "lift-to-17",
+      "to": "room-17",
+      "arrival": [
+        32.0,
+        32.0
+      ],
+      "returnPortals": [
+        "lift-to-9"
+      ],
+      "status": "pass"
+    }
+  ],
+  "thinGaps": [],
+  "unreachablePockets": [],
+  "bundleNav": {
+    "cell": 2,
+    "grid": "nav-grid.json"
+  },
+  "problems": []
+}

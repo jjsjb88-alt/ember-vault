@@ -1,0 +1,82 @@
+[
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "motion": "no-preference",
+    "result": "PASS",
+    "frames": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "fixed_anchor_and_scale": true,
+    "cosmetic_only": true,
+    "room_change_cancels": true,
+    "screenshots": [
+      "/tmp/ember-v9-relic-return-no-preference-390x844.png",
+      "/workspace/ember-vault-v9/docs/visual/implemented/v9/rogue-relic-motion-portrait.png"
+    ],
+    "errors": []
+  },
+  {
+    "viewport": [
+      844,
+      390
+    ],
+    "motion": "no-preference",
+    "result": "PASS",
+    "frames": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "fixed_anchor_and_scale": true,
+    "cosmetic_only": true,
+    "room_change_cancels": true,
+    "screenshots": [
+      "/tmp/ember-v9-relic-return-no-preference-844x390.png",
+      "/workspace/ember-vault-v9/docs/visual/implemented/v9/rogue-relic-motion-landscape.png"
+    ],
+    "errors": []
+  },
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "motion": "reduce",
+    "result": "PASS",
+    "frames": [],
+    "fixed_anchor_and_scale": true,
+    "cosmetic_only": true,
+    "room_change_cancels": false,
+    "screenshots": [
+      "/tmp/ember-v9-relic-return-reduce-390x844.png"
+    ],
+    "errors": []
+  }
+]

@@ -1,0 +1,108 @@
+{
+  "runtimeBytes": 6930,
+  "files": {
+    "echo-marker.png": {
+      "bytes": 541,
+      "sha256": "051c760ddca6322030063f33bd4e53e83406efd15cf862c51ff5f9d31cc89b08",
+      "width": 64,
+      "height": 64,
+      "frames": 1,
+      "alphaValues": [
+        0,
+        255
+      ]
+    },
+    "focus/animations/focus.png": {
+      "bytes": 1113,
+      "sha256": "c3ed6782f8300b814c66a2959df253733a390126bbba3e8d2acd404e9ee76a62",
+      "width": 48,
+      "height": 48,
+      "frames": 4,
+      "alphaValues": [
+        0,
+        255
+      ]
+    },
+    "focus/focus-ring.atlas.json": {
+      "bytes": 2422,
+      "sha256": "6d766b2e5e7857fbd19077ebf6a1fde9fbc93b3d5f1f5278213bdc47adf4e753"
+    },
+    "focus/focus-ring.png": {
+      "bytes": 638,
+      "sha256": "5cdf56c24e874b90824f79024c4f205def1db411f4e1dd8000ef351ee50c6ed6",
+      "width": 200,
+      "height": 50,
+      "frames": 1,
+      "alphaValues": [
+        0,
+        255
+      ]
+    },
+    "glyph-cache.png": {
+      "bytes": 233,
+      "sha256": "af27a4152eb8d68dd5f410e30858af5abcde81dc5360ef05373af4210e951369",
+      "width": 24,
+      "height": 24,
+      "frames": 1,
+      "alphaValues": [
+        0,
+        255
+      ]
+    },
+    "glyph-risk.png": {
+      "bytes": 200,
+      "sha256": "448484626cf269f69cae84bd8dbe479cdbb0e440d3b06c512a06f30b05fc0148",
+      "width": 24,
+      "height": 24,
+      "frames": 1,
+      "alphaValues": [
+        0,
+        255
+      ]
+    },
+    "glyph-safe.png": {
+      "bytes": 198,
+      "sha256": "30118e0ca516c1e007b9a1d9eee05c7f937c5c7fdc14f479c4b35853a2bdd85f",
+      "width": 24,
+      "height": 24,
+      "frames": 1,
+      "alphaValues": [
+        0,
+        255
+      ]
+    },
+    "glyph-shortcut.png": {
+      "bytes": 209,
+      "sha256": "94e293fef1aad92c3b61e19fc86f9e6c23fa97e57150f99d2d1a65769ddbf9e0",
+      "width": 24,
+      "height": 24,
+      "frames": 1,
+      "alphaValues": [
+        0,
+        255
+      ]
+    },
+    "shortcut-key.png": {
+      "bytes": 707,
+      "sha256": "8583e8da2202064f21d4dc8ae74c1b6c9ea035c549c1c7d458955c8dffd2055b",
+      "width": 64,
+      "height": 64,
+      "frames": 1,
+      "alphaValues": [
+        0,
+        255
+      ]
+    },
+    "supply-cache.png": {
+      "bytes": 669,
+      "sha256": "81d94d87c42d27fe92d09afe75a0ee99c10920c8f79804d6aba70c85b18df463",
+      "width": 64,
+      "height": 64,
+      "frames": 1,
+      "alphaValues": [
+        0,
+        255
+      ]
+    }
+  }
+}
