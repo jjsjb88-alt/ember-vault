@@ -1,4 +1,4 @@
-import {apply,enemyTurn,neighbours,moveCost,moveNoise,previewNoise,TERRAINS} from './engine.js?v=20261107a';
+import {apply,enemyTurn,neighbours,moveCost,moveNoise,previewNoise,TERRAINS} from './engine.js?v=20261107b';
 
 // Only charted passages are used. This is a travel estimate, not a combat forecast.
 export function returnRoute(s){

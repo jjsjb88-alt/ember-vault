@@ -1,10 +1,10 @@
-import {newRun,moveCost,resolvePool,breathPlan,dragonDue,previewNoise} from './engine.js?v=20261107a';
+import {newRun,moveCost,resolvePool,breathPlan,dragonDue,previewNoise} from './engine.js?v=20261107b';
 
 // 연습은 그림자 도적의 첫 금고 털이. 등불 속 불씨 '깜부기'가 옆에서 떠든다.
 // talk = 이 행동을 하는 이유(대사), text = 무엇을 누르고 무엇이 일어나는가. 한 단계의 사고가 다음 단계의 이유가 된다.
 export const TUTOR_NAME='깜부기';
 export const TUTORIAL_STEPS=[
- {key:'warehouse',chapter:'1 · 소리로 길 열기',title:'창고부터 털자',talk:[['깜부기','주머니가 비었네. 저 창고부터 보자. 돌아올 입구는 여기야.']],text:'금빛 「망각의 창고」를 누르세요. 이 회상에서는 기억 메달 5개로 시작합니다.',action:'move',id:1,target:'.scene-exit[data-id="1"]'},
+ {key:'warehouse',chapter:'1 · 소리로 길 열기',title:'창고부터 털자',talk:[['깜부기','손도 풀렸으니 저 창고부터 보자. 돌아올 입구는 여기야.']],text:'금빛 「망각의 창고」를 누르세요. 깜부기가 깨운 기억들의 힘으로 첫 발을 뗍니다.',action:'move',id:1,target:'.scene-exit[data-id="1"]'},
  {key:'chest',title:'상자를 여세요',talk:[['깜부기','금화다! 경첩이 녹슬었으니까 천천히…'],['도적','이미 삐걱했어.']],text:'상자 위 「열기」를 누르세요. 금화와 함께 경계가 오르고 이 방에 메아리가 남습니다.',action:'interact',target:'#sceneTarget'},
  {key:'sound',observe:true,title:'소리가 남은 자리를 보세요',talk:[['깜부기','금화는 네 주머니에, 소리는 금고에 남았어. 어디까지 퍼졌는지 보자.']],text:'미니맵을 열어 주황빛과 방 옆 메아리 숫자를 보세요. 아직 멀리 있는 파수병은 듣지 못했습니다. 다 살펴본 뒤 「지도 확인 · 계속」을 누르세요.',action:'panel',id:'sound',target:'#mapToggle'},
  {key:'hush',title:'경계부터 낮추세요',talk:[['깜부기','더 소란을 피우기 전에 잠깐 가만히 있어. 다음엔 우리가 듣게 만들 차례야.']],text:'「숨죽이기」를 누르세요. 이동 1로 경계 −2, 은신 +2. 메아리 자체가 지워지지는 않습니다.',action:'hide',target:'#hideAction'},
@@ -13,12 +13,12 @@ export const TUTORIAL_STEPS=[
  {key:'pass-junction',title:'정말 길이 열렸어요',autoTalk:true,titleHint:'유인 성공',talk:[['깜부기','갔다! 지도에서 파편 회랑이 빈 것 보이지? 이제 갈림목으로 가자.']],text:'「돌의 갈림목」으로 이동하세요. 유인한 적이 떠난 동안 다음 통로로 접근합니다.',action:'move',id:2,mode:'walk',target:'.scene-exit[data-id="2"]'},
  {key:'pass-guard',title:'비어 있는 회랑을 통과하세요',talk:[['깜부기','아까 그 녀석이 서 있던 자리야. 싸우지 않고 지나갈 수 있어.']],text:'「파편 회랑」으로 이동하세요. 적은 무기고에 있습니다. 파편을 밟는 소리는 다시 들을 수 있으니 여기서 멈추지 마세요.',action:'move',id:6,mode:'walk',target:'.scene-exit[data-id="6"]'},
  {key:'refuge',title:'추적하기 전에 한 방 더',talk:[['깜부기','발소리를 들었네. 돌아오기 전에 이끼 회랑으로 빠져나가자.']],text:'「이끼 회랑」으로 이동하세요. 적의 추적은 다음 턴에 일어납니다. 지금 열린 길을 끝까지 통과해 두세요.',action:'move',id:7,mode:'walk',target:'.scene-exit[data-id="7"]'},
- {key:'recruit',chapter:'2 · 새 능력으로 돌파',title:'녹스에게 불씨를 건네받으세요',talk:[['깜부기','뿔에 등불을 단 녀석이 보여? 기억 먹는 녹스야. 단검에 실을 불씨도 있을 거야.']],text:'「교역」에서 녹스를 만나 「불씨 화살」을 깨우세요. 기술 3을 쓰며 공격 +3 메달이 버린 주머니에 들어갑니다. 지금 공격력은 아직 2입니다.',action:'buy',card:'spark',target:'#marketToggle'},
- {key:'draw-recruit',title:'산 능력이 다시 나올 때',talk:[['도적','샀는데 힘은 그대로야.'],['깜부기','식은 기억도 다시 섞이면 살아나. 내가 깜빡일 때를 봐.']],text:'「다음 턴」을 누르세요. 이 회상의 작은 주머니를 다시 섞습니다. 「금지된 서고」의 추가 추출까지 적용되어 불씨 화살을 실제로 뽑고, 단검과 합쳐 공격 5를 얻습니다.',action:'end',target:'#endTurn'},
- {key:'approach',checkpoint:true,fastDraw:true,title:'새 힘을 들고 봉인실로',autoTalk:true,talk:[['깜부기','불씨 화살이 돌아왔어. 뒤의 파수병은 두고, 앞의 문지기를 넘자.']],text:'공격 5를 확인하고 「이끼 서고」로 이동하세요. 새 메달은 버튼을 다시 누르지 않아도 자원에 합산됩니다.',action:'move',id:11,free:true},
+ {key:'recruit',chapter:'2 · 새 능력으로 돌파',title:'녹스에게 불씨를 건네받으세요',talk:[['깜부기','뿔에 등불을 단 녀석이 보여? 기억 먹는 녹스야. 아직 주인을 기다리는 솜씨도 모아 둬.']],text:'「교역」에서 녹스를 만나 「불씨 화살」을 건네받으세요. 영입 비용은 기술 3. 식은 메달을 받아도 지금 손의 힘은 바로 늘지 않습니다.',action:'buy',card:'spark',target:'#marketToggle'},
+ {key:'draw-recruit',title:'아직 식어 있는 화살',talk:[['도적','녹스가 쥐여 준 건 아직 차가워.'],['깜부기','저 사수도 오래 기다렸으니까. 네 다른 기억들 곁에 넣어 둬. 다음 불빛이 닿게.']],text:'「다음 턴」을 눌러 깜부기의 불빛을 기다리세요. 녹스가 건넨 식은 메달도 주머니의 기억들과 함께 다시 깨어납니다.',action:'end',target:'#endTurn'},
+ {key:'approach',checkpoint:true,fastDraw:true,title:'마지막 화살이 네 손끝에',autoTalk:true,talk:[['도적','손끝이 뜨거워. 방금… 끊어진 다리 저편을 겨누고 있었어.'],['깜부기','그 사수는 마지막 사람이 건널 때까지 버텼대. 이번엔 네가 돌아갈 길을 열어.'],['도적','단검 끝에도 불씨가 붙었어. 저 문지기를 넘을 수 있겠군.']],text:'불씨 화살의 온기가 단검에 이어졌습니다. 공격 5를 확인하고 「이끼 서고」로 이동하세요.',action:'move',id:11,free:true},
  {key:'guardian',title:'금화와 귀환 길을 함께 보세요',talk:[['깜부기','서고 상자도 남아 있네. 열면 금화, 남겨 두면 돌아올 길이 조용해.'],['도적','돌아올 때도 이 방을 지날 수 있겠군.']],text:'상자는 선택입니다. 열면 금화와 메아리를 얻습니다. 「회상의 봉인실」로 이동해 수호자를 만나세요.',action:'move',id:10,free:true},
- {key:'attack',title:'영입한 힘으로 돌파하세요',talk:[['깜부기','단검에 불씨를 실어. 방금 데려온 기억이 길을 열어 줄 거야.']],text:'수호자 위 「공격」. 체력 5인 적을 단검 2 + 불씨 화살 3으로 쓰러뜨립니다. 적이 있는 방에서는 처치하거나 왔던 길로만 나갈 수 있습니다.',action:'attack',target:'#sceneTarget',free:true},
- {key:'reward',title:'쓰러진 적의 기억',talk:[['깜부기','남긴 기억도 하나 챙겨. 다음에 주머니를 섞을 때 함께 돌아올 거야.']],text:'보상 능력 하나를 고르거나 건너뛰세요. 보상도 실제 주머니에 들어갑니다. 회상에서 얻은 것은 기존 탐험에 섞이지 않습니다.',action:'reward',target:'.ability-choice'},
+ {key:'attack',title:'빌려온 불씨로 길을 여세요',talk:[['깜부기','그 손끝의 온기를 놓치지 마. 누군가를 끝까지 지켰던 불씨야.']],text:'수호자 위 「공격」. 체력 5인 적을 단검 2 + 불씨 화살 3으로 쓰러뜨립니다. 적이 있는 방에서는 처치하거나 왔던 길로만 나갈 수 있습니다.',action:'attack',target:'#sceneTarget',free:true},
+ {key:'reward',title:'쓰러진 적의 기억',talk:[['깜부기','갑옷 안에도 메달이 있었네. 이 문을 지키던 솜씨야. 데려가면 내 불빛으로 깨워 줄게.']],text:'보상 능력 하나를 고르거나 건너뛰세요. 받은 메달은 식은 기억들과 함께 주머니로 갑니다. 회상에서 얻은 것은 기존 탐험에 섞이지 않습니다.',action:'reward',target:'.ability-choice'},
  {key:'relic',chapter:'3 · 예보를 보고 귀환',autoTalk:true,title:'유물을 들면 귀환이 시작돼요',talk:[['깜부기','찾았다. 하지만 여기서 들고 있는 것만으론 네 보물이 아니야.'],['도적','입구까지 가져가야지.']],text:'「봉인 해제」로 첫 불씨를 회수하세요. 실제 14턴 귀환이 시작됩니다. 메아리는 더 오래 남고 3의 배수 턴에도 숨결이 옵니다.',action:'interact',target:'#sceneTarget',free:true},
  {key:'forecast',observe:true,title:'위험을 먼저 보고 고르세요',talk:[['깜부기','짧은 길엔 아까 그 파수병, 긴 길엔 이끼가 있어. 남긴 소리까지 보고 골라.']],text:'미니맵을 열어 숨결 예보와 적의 위치를 확인하세요. 귀환할 길을 생각한 뒤 「지도 확인 · 계속」을 누르세요.',action:'panel',id:'sound',target:'#mapToggle'},
  {key:'escape',title:'이번 귀환은 당신의 선택',talk:[['도적','빠르게 뚫을까, 조용히 돌아갈까.'],['깜부기','어느 쪽이든 유물과 네 두 발을 같이 데려와.']],text:'파편 회랑 지름길은 4칸, 이끼 우회로는 6칸입니다. 이동 방식·숨죽이기·전투·휴식을 골라 입구에서 「탈출」을 누르세요.',action:'escape',free:true,fastDraw:true}
@@ -29,25 +29,26 @@ export const TUTORIAL_DONE=[
  ['깜부기','가도 돼. 대신 돌아올 길부터 열어 둬. 아래층 윈치가 그럴 때 쓰는 거야.']
 ];
 
-// 설정(대사로 직접 설명하지 않는다): 금고는 발소리를 기억한다. 시끄럽게 걸은 자리에 메아리가 남고, 맨 아래의 '그것'이
-// 그 메아리를 따라 올라온다(보스 정체는 열어 둔다). 등불 속 잿불 깜부기가 한 번 크게 깜빡일 때마다(= 한 턴) 그 불빛에
-// 이곳에 묻힌 사람들의 기억이 메달로 떠오른다. 불빛이 다시 잦아들면 쓰지 않은 기억은 식어서 재가 된다.
+// Shared world rule: medals are tangible keepsakes, not visions exclusive to the hero.
+// Anyone carrying the lantern can borrow their stored skills. Each pulse lends temporary
+// warmth; the metal and memory persist when that warmth fades. Cold medals wait for a
+// later bag cycle, including Nox's purchases. No game rules or draw order are changed.
 export const TUTORIAL_PROLOGUE=[
  ['깜부기','쉿. 발밑 조심.'],
  ['도적','아무도 없잖아.'],
  ['깜부기','금고가 듣고 있어. 여긴 발소리를 기억하거든.'],
- ['도적','…그래서, 어두워서 아무것도 안 보이는데.'],
- ['깜부기','잠깐만. 크게 한 번 깜빡여 볼게.'],
- ['도적','…바닥에서 뭐가 떠올라. 메달?'],
- ['깜부기','주워 봐. 따뜻하지?'],
- ['도적','누가 방금까지 쥐고 있던 것 같아.'],
- ['깜부기','여기 묻힌 사람들 기억이야. 내 불빛에만 떠올라. 내가 다시 깜빡이기 전에 다 써. 남기면 식어서 재 돼.'],
+ ['도적','네 등불 밑에 묶인 주머니… 안에서 메달들이 부딪쳐.'],
+ ['깜부기','전에 이 길을 걷던 이들이 맡긴 솜씨야. 잠깐, 크게 깜빡여 볼게.'],
+ ['도적','문양이 움직여. 따뜻해… 손이 저절로 단검을 고쳐 쥐었어.'],
+ ['깜부기','불빛 안에선 누구나 볼 수 있어. 등불을 든 손에는 저들의 솜씨도 전해지지.'],
+ ['도적','그럼 나보다 먼저 걸었던 사람들하고 같이 가는 거네.'],
+ ['깜부기','그래. 온기가 가시기 전에 빌려 써. 식은 메달은 주머니에 모아 둬. 다시 깨워 줄 테니.'],
 ];
 export const TUTORIAL_TURN=[
  ['깜부기','저쪽으로 간다. 길이 열렸어.'],
- ['깜부기','자, 다시 깜빡인다. 또 떠오른다.'],
- ['도적','아까 남겨 둔 건… 진짜 재가 됐네.'],
- ['깜부기','힘이 남아도 기다릴 때는 기다려야지. 지금 길을 열었잖아.'],
+ ['도적','손의 온기가 빠졌어. 메달은 그대로인데.'],
+ ['깜부기','빌린 힘만 식은 거야. 저 기억들까지 없어진 건 아니고.'],
+ ['깜부기','식은 건 아래칸에 넣어 둬. 자, 다시 깜빡인다. 이번엔 누가 길을 빌려줄까.'],
 ];
 export const TUTORIAL_REVEALS={first:TUTORIAL_PROLOGUE,turn:TUTORIAL_TURN};
 /** 대사 묶음을 HTML 한 덩어리로. */
@@ -137,7 +138,7 @@ export function tutorialActionReason(index,action,state){
  const step=TUTORIAL_STEPS[index];if(!step||tutorialAllows(index,action,state))return '';
  if(step.observe)return '먼저 지도를 살펴본 뒤 「지도 확인 · 계속」을 누르세요.';
  if(step.mode&&(action.type==='mode'||action.type==='move'))return `지금은 ${step.mode==='walk'?'걷기':step.mode==='sneak'?'은밀 이동':'질주'}로 열린 길을 지나가는 단계예요. 「이동 방식」에서 안내된 방식을 선택하세요.`;
- if(step.action==='buy')return '이번에는 불씨 화살을 영입해 다음 추출에서 공격이 늘어나는지 확인하세요.';
+ if(step.action==='buy')return '녹스가 맡긴 사수의 기억을 먼저 데려가세요. 「교역」에서 「불씨 화살」을 고르세요.';
  return tutorialHint(index,state);
 }
 export function tutorialHint(index,s,{returnHelp=false}={}){

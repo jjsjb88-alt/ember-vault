@@ -1,19 +1,19 @@
-import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,breathPlan} from './engine.js?v=20261107a';
-import {paintIcons} from './art.js?v=20261107a';
-import {makeRenderer} from './scene-v5.js?v=20261107a';
-import {makePoolReveal} from './pool-reveal.js?v=20261107a';
-import {pageOf,pager} from './pages.js?v=20261107a';
-import {exitAnchor} from './scene-layout.js?v=20261107a';
-import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261107a';
-import {makeNoiseMoment} from './noise-moment.js?v=20261107a';
-import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,createTutorialRun,tutorialAllows,tutorialAdvance,tutorialChapter,tutorialTargets,tutorialHint,tutorialMapLesson,tutorialActionReason} from './tutorial.js?v=20261107a';
-import {makeCutscene} from './cutscene.js?v=20261107a';
-import {returnRoute,routeAdvice,lureForecast} from './strategy.js?v=20261107a';
-import {createTutorialJournal,recordTutorialAction,tutorialRecap} from './tutorial-journal.js?v=20261107a';
-import {loadTutorialProgress,saveTutorialProgress,clearTutorialProgress} from './tutorial-storage.js?v=20261107a';
-import {MERCHANT,marketContext,meetingLines,memoryLore,purchaseLines,MERCHANT_STORY} from './merchant-story.js?v=20261107a';
-import {tokenMarkup,gradeLabel,itemMarkup,richGlyph} from './token-art.js?v=20261107a';
-import {firstExpeditionGoal} from './first-expedition.js?v=20261107a';
+import {CARDS,ROLES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,breathPlan} from './engine.js?v=20261107b';
+import {paintIcons} from './art.js?v=20261107b';
+import {makeRenderer} from './scene-v5.js?v=20261107b';
+import {makePoolReveal} from './pool-reveal.js?v=20261107b';
+import {pageOf,pager} from './pages.js?v=20261107b';
+import {exitAnchor} from './scene-layout.js?v=20261107b';
+import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261107b';
+import {makeNoiseMoment} from './noise-moment.js?v=20261107b';
+import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,createTutorialRun,tutorialAllows,tutorialAdvance,tutorialChapter,tutorialTargets,tutorialHint,tutorialMapLesson,tutorialActionReason} from './tutorial.js?v=20261107b';
+import {makeCutscene} from './cutscene.js?v=20261107b';
+import {returnRoute,routeAdvice,lureForecast} from './strategy.js?v=20261107b';
+import {createTutorialJournal,recordTutorialAction,tutorialRecap} from './tutorial-journal.js?v=20261107b';
+import {loadTutorialProgress,saveTutorialProgress,clearTutorialProgress} from './tutorial-storage.js?v=20261107b';
+import {MERCHANT,marketContext,meetingLines,memoryLore,purchaseLines,MERCHANT_STORY} from './merchant-story.js?v=20261107b';
+import {tokenMarkup,gradeLabel,itemMarkup,richGlyph} from './token-art.js?v=20261107b';
+import {firstExpeditionGoal} from './first-expedition.js?v=20261107b';
 const $=s=>document.querySelector(s),SAVE_KEY='ember-vault-save-v2',BEST_KEY='ember-vault-best-v1';
 let state,storageOK=true,best=0,sound=false,selectedRole='rogue',dialogMode='',lastFocus=null,toastTimer,audio,migrated=false,loadedRun=false,fastDraw=false;
 try{let saved=JSON.parse(localStorage.getItem(SAVE_KEY));if(!validSave(saved)){const prior=JSON.parse(localStorage.getItem('ember-vault-save-v1'));if(prior){saved=migrateSave(prior);migrated=!!saved;}}loadedRun=validSave(saved);state=loadedRun?saved:newRun();best=Number(localStorage.getItem(BEST_KEY))||0;sound=localStorage.getItem('ember-vault-sound')==='on';fastDraw=localStorage.getItem('ember-vault-fast-draw')==='on';}catch{state=newRun();storageOK=false;}
@@ -250,7 +250,7 @@ function renderMarket(){
  $('#market').innerHTML=s.market.map((id,i)=>{const a=CARDS[id],allowed=!tutorial||tutorialAllows(tutorial.index,{type:'buy',index:i},s),can=active&&s.resource.skill>=a.cost&&allowed,short=Math.max(0,a.cost-s.resource.skill);return `<button class="market-card ${can?'affordable':''}" data-act="buy" data-index="${i}" data-card="${id}" aria-label="${a.name}, ${a.text}, 기술 ${a.cost}점으로 영입${short?', 기술 '+short+' 부족':''}${!allowed?', 지금 안내된 능력을 먼저 영입하세요':''}" ${!can?'disabled':''}>${tokenMarkup(id,{size:72})}<span class="offer"><strong>${a.name}</strong><small>${gradeLabel(id)}${a.text}</small><em>${esc(memoryLore(id,a))}</em></span><span class="price${short?' short':''}">기술 ${a.cost}${short?' · '+short+' 부족':!allowed?' · 다음에':' · 기억 깨우기'}</span></button>`;}).join('');
  $('[data-act="refresh"]').disabled=!!tutorial||!active||s.gold<2||s.refreshTurn===s.turn;paintIcons($('#modal'));
 }
-function showMenu(){openModal(modalShell('탐험 메뉴','잿불 금고 V9.6',`<p class="modal-sub">${state.relic?state.relic.name+' 회수 · 귀환 '+state.countdown+'턴':'유물을 찾아 입구로 돌아오세요'} · 최고 ${best}점${storageOK?'':' · 저장 불가'}</p>${tutorialRecoveryNotice?`<p class="tutorial-storage-note">${esc(tutorialRecoveryNotice)}</p>`:''}<div class="game-menu">${tutorialCompleted&&!tutorial?'<button data-act="firstExpedition">첫 실전 준비<small>유물 하나를 품고 입구에서 탈출하기</small></button>':''}<button data-act="codex">금고도감<small>인물 · 기억 메달 · 유물의 기록</small></button><button data-act="deck">나의 메달 주머니<small>가진 능력과 남은 메달 보기</small></button><button data-act="tutorialIntro">${storedTutorial?'튜토리얼 이어하기':'직접 배우는 튜토리얼'}<small>${storedTutorial?`${Math.min(storedTutorial.index+1,TUTORIAL_STEPS.length)}/${TUTORIAL_STEPS.length}단계에서 계속`:`${TUTORIAL_STEPS.length}단계 · 유인 성공부터 성장과 귀환까지`}</small></button><button data-act="help">플레이 방법<small>추출 · 이동 · 소리 · 탈출</small></button><button data-act="sound" class="${sound?'selected':''}">효과음 ${sound?'켜짐':'꺼짐'}<small>추출의 심장 박동과 봉인 파열음</small></button><button data-act="speed" class="${fastDraw?'selected':''}">${fastDraw?'빠른 추출':'긴장감 있는 추출'}<small>${fastDraw?'합산 결과만 빠르게 표시':'하나씩 공개 · 마지막 능력까지 기다림'}</small></button><button data-act="log">탐험 일지<small>발소리와 전투 기록</small></button><button data-act="new">새 탐험<small>20개 방 · 캐릭터 선택 · 현재 탐험 초기화</small></button><button data-act="fullscreen">전체 화면<small>휴대폰 가로 화면으로 플레이</small></button></div>`),'menu');}
+function showMenu(){openModal(modalShell('탐험 메뉴','잿불 금고 V9.7',`<p class="modal-sub">${state.relic?state.relic.name+' 회수 · 귀환 '+state.countdown+'턴':'유물을 찾아 입구로 돌아오세요'} · 최고 ${best}점${storageOK?'':' · 저장 불가'}</p>${tutorialRecoveryNotice?`<p class="tutorial-storage-note">${esc(tutorialRecoveryNotice)}</p>`:''}<div class="game-menu">${tutorialCompleted&&!tutorial?'<button data-act="firstExpedition">첫 실전 준비<small>유물 하나를 품고 입구에서 탈출하기</small></button>':''}<button data-act="codex">금고도감<small>인물 · 기억 메달 · 유물의 기록</small></button><button data-act="deck">나의 메달 주머니<small>가진 능력과 남은 메달 보기</small></button><button data-act="tutorialIntro">${storedTutorial?'튜토리얼 이어하기':'직접 배우는 튜토리얼'}<small>${storedTutorial?`${Math.min(storedTutorial.index+1,TUTORIAL_STEPS.length)}/${TUTORIAL_STEPS.length}단계에서 계속`:`${TUTORIAL_STEPS.length}단계 · 유인 성공부터 성장과 귀환까지`}</small></button><button data-act="help">플레이 방법<small>추출 · 이동 · 소리 · 탈출</small></button><button data-act="sound" class="${sound?'selected':''}">효과음 ${sound?'켜짐':'꺼짐'}<small>추출의 심장 박동과 봉인 파열음</small></button><button data-act="speed" class="${fastDraw?'selected':''}">${fastDraw?'빠른 추출':'긴장감 있는 추출'}<small>${fastDraw?'합산 결과만 빠르게 표시':'하나씩 공개 · 마지막 능력까지 기다림'}</small></button><button data-act="log">탐험 일지<small>발소리와 전투 기록</small></button><button data-act="new">새 탐험<small>20개 방 · 캐릭터 선택 · 현재 탐험 초기화</small></button><button data-act="fullscreen">전체 화면<small>휴대폰 가로 화면으로 플레이</small></button></div>`),'menu');}
 async function fullscreen(){
  try{if(document.fullscreenElement)await document.exitFullscreen();else if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen();else toast('이 브라우저에서는 가로 화면으로 바로 플레이하세요.');}
  catch{toast('전체 화면을 열지 못했습니다. 가로 화면으로 플레이할 수 있습니다.');}
@@ -429,7 +429,7 @@ function act(action,fromJudge=false){
    const returnToShop=!tutorial;$('#modal').close();dialogMode='';
    cutscene.play(purchaseLines(boughtId,CARDS[boughtId],!!tutorial),()=>{if(state===actionRun&&returnToShop)openMarket(`「${CARDS[boughtId].name}」을 주머니에 넣었습니다. 다음 순환부터 만날 수 있어요.`);},merchantScene());
   }
-  if(action.type==='end'&&state.phase==='playing'&&!state.pending){const draw=()=>poolReveal.start(state,{fast:tutorial?!!practiceStep?.fastDraw:fastDraw,holdNoise:!!tutorial,beforeHp:beforeHP});if(tutorial&&practiceStep?.key==='wait-lure')cutscene.play(TUTORIAL_TURN,draw);else draw();}
+  if(action.type==='end'&&state.phase==='playing'&&!state.pending){const draw=()=>poolReveal.start(state,{fast:tutorial?!!practiceStep?.fastDraw:fastDraw,holdNoise:!!tutorial,beforeHp:beforeHP,memory:tutorial&&practiceStep?.key==='draw-recruit'?{id:'spark',source:'녹스가 맡긴 사수의 기억',line:'끝까지 겨눴던 손의 온기가 단검에 옮겨붙습니다.'}:null});if(tutorial&&practiceStep?.key==='wait-lure')cutscene.play(TUTORIAL_TURN,draw);else draw();}
   document.body.classList.remove('turn-impact');
  };
  if(fromJudge&&state.attack){actionBusy=true;document.body.classList.add('turn-impact');noiseMoment.spin(state,state.attack,finish);}
@@ -450,7 +450,7 @@ document.addEventListener('click',ev=>{
  if(a==='market')return showMarket();
  if(a==='firstExpedition')return showNew(true);
  if(a==='tutorialHelp'){if(!tutorial||TUTORIAL_STEPS[tutorial.index]?.key!=='escape')return;const focused=document.activeElement===b;tutorial.returnHelp=!tutorial.returnHelp;tutorial.returnHelpUsed ||= tutorial.returnHelp;persistTutorial();renderTutorial();if(focused)$('[data-act="tutorialHelp"]')?.focus({preventScroll:true});return;}
- if(a==='codex')return window.open('./artbook.html?v=20261107a','_blank','noopener');
+ if(a==='codex')return window.open('./artbook.html?v=20261107b','_blank','noopener');
  if(a==='merchantTalk'){
   const run=state;$('#modal').close();dialogMode='';cutscene.play(MERCHANT_STORY,()=>{if(state===run)openMarket();},merchantScene());return;
  }

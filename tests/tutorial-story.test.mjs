@@ -13,12 +13,11 @@ test('every practice step has a reason told as dialogue and a control line',()=>
   for(const [,line] of s.talk)assert.ok(line.length<=70,`one cutscene line stays short: ${line}`);
  }
 });
-test('the prologue shows why medals fall each breath without lecturing',()=>{
+test('the prologue and turn dialogue stay brief and avoid rule lectures or boss spoilers',()=>{
  assert.ok(ok(TUTORIAL_PROLOGUE)&&ok(TUTORIAL_TURN)&&ok(TUTORIAL_DONE));
  const pro=TUTORIAL_PROLOGUE.map(x=>x[1]).join(' '),turn=TUTORIAL_TURN.map(x=>x[1]).join(' ');
- for(const w of ['발소리를 기억','깜빡','메달','따뜻','재'])assert.ok(pro.includes(w),w);
+ for(const w of ['발소리를 기억','깜빡','메달','따뜻'])assert.ok(pro.includes(w),w);
  assert.ok(!/종/.test(pro+turn),'no bell');
- assert.ok(/깜빡/.test(turn)&&/떠오른다/.test(turn)&&/재/.test(turn),'the next breath drops new medals and turns the unused to ash');
  // 설명조 금지: 자원 이름을 나열하거나 규칙을 숫자로 말하지 않는다
  for(const [,line] of [...TUTORIAL_PROLOGUE,...TUTORIAL_TURN]){
   const named=['공격','이동','기술','방어'].filter(w=>line.includes(w)).length;

@@ -1,6 +1,6 @@
-import {CARDS,neighbours,moveCost} from './engine.js?v=20261107a';
-import {paintIcons} from './art.js?v=20261107a';
-import {tokenMarkup,richGlyph} from './token-art.js?v=20261107a';
+import {CARDS,neighbours,moveCost} from './engine.js?v=20261107b';
+import {paintIcons} from './art.js?v=20261107b';
+import {tokenMarkup,richGlyph} from './token-art.js?v=20261107b';
 
 const KEYS=['sword','move','skill','block','quiet','rattle'];
 const VALUES=[['sword','공격력'],['move','이동력'],['skill','기술'],['block','방어']];
@@ -38,7 +38,7 @@ export function buildRevealPlan(state){
 
 export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound=()=>{},onClose=()=>{}}={}){
  const root=dialog.querySelector('.reveal-content');
- let plan=null,run=null,index=-1,visibleSlots=5,timers=new Set(),active=false,complete=false,previousFocus=null,holdNoise=false,noiseHeld=false;
+ let plan=null,run=null,memory=null,index=-1,visibleSlots=5,timers=new Set(),active=false,complete=false,previousFocus=null,holdNoise=false,noiseHeld=false;
  const q=s=>root.querySelector(s);
  function later(fn,ms){const id=setTimeout(()=>{timers.delete(id);if(active)fn();},ms);timers.add(id);}
  function clear(){for(const id of timers)clearTimeout(id);timers.clear();}
@@ -64,14 +64,16 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   if(!active||complete)return;
   clear();complete=true;noiseHeld=false;index=plan.steps.length-1;visibleSlots=plan.steps.length;
   dialog.dataset.phase='complete';dialog.dataset.family='gold';
-  q('#revealTitle').textContent='이번 턴의 힘';q('.reveal-kicker').textContent=`${String(run.turn).padStart(2,'0')}턴 · 추출 완료`;
-  q('.reveal-orb-core').innerHTML=glyph('heartgem',100);
-  q('.reveal-name').textContent=`${plan.steps.length}개의 능력이 깨어났다`;
-  q('.reveal-effect').textContent='이제, 당신의 발걸음이 금고를 바꿉니다.';
-  q('.reveal-count').textContent='추출 완료 · 자동 합산';
+  const recalled=memory&&plan.steps.some(step=>step.id===memory.id);
+  q('#revealTitle').textContent=recalled?CARDS[memory.id].name:'이번 턴의 힘';q('.reveal-kicker').textContent=recalled?'기억의 온기가 돌아온다':`${String(run.turn).padStart(2,'0')}턴 · 추출 완료`;
+  if(recalled)q('#revealStakes').textContent=memory.line;
+  q('.reveal-orb-core').innerHTML=recalled?tokenMarkup(memory.id,{size:132,awaken:true}):glyph('heartgem',100);
+  q('.reveal-name').textContent=recalled?`${CARDS[memory.id].name}이 깨어났다`:`${plan.steps.length}개의 능력이 깨어났다`;
+  q('.reveal-effect').textContent=recalled?memory.line:'이제, 당신의 발걸음이 금고를 바꿉니다.';
+  q('.reveal-count').textContent=recalled?memory.source:'추출 완료 · 자동 합산';
   q('[data-reveal="skip"]').textContent='던전으로 →';
   totals(plan.totals);strip();paintIcons(root);cue('resolve');
-  q('.reveal-announcement').textContent=`추출 완료. 공격력 ${plan.totals.sword}, 이동력 ${plan.totals.move}, 기술 ${plan.totals.skill}, 방어 ${plan.totals.block}.`;
+  q('.reveal-announcement').textContent=`추출 완료. 공격력 ${plan.totals.sword}, 이동력 ${plan.totals.move}, 기술 ${plan.totals.skill}, 방어 ${plan.totals.block}.${recalled?` ${memory.line}`:''}`;
   later(close,1600);
  }
  function anticipate(){
@@ -100,8 +102,11 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   totals(step.totals,step.delta);strip();paintIcons(q('.reveal-orb-core'));
   q('#revealStakes').textContent=revealStakes(run,step.totals);
   if(noise.added){q('#revealTitle').textContent='소음을 뽑았다.';q('#revealStakes').textContent=`다음 행동 소음 +${noise.stored}${noise.quiet?` · 은신 ${noise.quiet}로 완화`:''}`;q('.reveal-effect').textContent='지금은 예고. 다음 발소리가 금고를 깨운다.';}
+  // Use the visible title/stakes: the compact portrait layout hides the effect line.
+  // Only name this memory once its actual token has been revealed.
+  if(memory?.id===step.id){q('#revealTitle').textContent=card.name;q('#revealStakes').textContent=memory.line;q('.reveal-count').textContent=memory.source;}
   cue(noise.added?'noise-reveal':step.last?'last-reveal':step.added?'chain':'reveal',step);
-  q('.reveal-announcement').textContent=`${card.name}. ${card.text}${step.added?`. ${step.added}개 추가 추출`:''}`;
+  q('.reveal-announcement').textContent=`${card.name}. ${card.text}${step.added?`. ${step.added}개 추가 추출`:''}${memory?.id===step.id?`. ${memory.source}. ${memory.line}`:''}`;
   if(noise.added&&holdNoise){noiseHeld=true;q('[data-reveal="skip"]').textContent='다음 봉인 →';}
   else later(step.last?summary:anticipate,noise.added?3000:step.last?720:index>=4?400:510);
  }
@@ -109,8 +114,8 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   if(!active)return;clear();active=false;cue('stop');dialog.close();document.body.classList.remove('drawing-pool');
   previousFocus?.isConnected&&previousFocus.focus({preventScroll:true});onClose();
  }
- function start(state,{fast=false,holdNoise:hold=false,story=''}={}){
-  if(active)close();run=state;plan=buildRevealPlan(state);index=-1;visibleSlots=plan.initialSlots;complete=false;active=true;holdNoise=hold;noiseHeld=false;
+ function start(state,{fast=false,holdNoise:hold=false,story='',memory:recollection=null}={}){
+  if(active)close();run=state;memory=recollection;plan=buildRevealPlan(state);index=-1;visibleSlots=plan.initialSlots;complete=false;active=true;holdNoise=hold;noiseHeld=false;
   previousFocus=document.activeElement;
   const stakes=revealStakes(state,plan.base);
   root.innerHTML=`<div class="reveal-grain" aria-hidden="true"></div><div class="reveal-top"><div><span class="reveal-kicker">추출 직전</span><h2 id="revealTitle">금고가 숨을 죽인다</h2></div><button data-reveal="sound" type="button"></button></div><p id="revealStakes">${stakes}</p>${story?`<p class="reveal-story">${story}</p>`:''}<div class="reveal-slots" aria-label="추출 진행"></div><div class="reveal-stage"><div class="reveal-orb" aria-hidden="true"><div class="orb-ring outer"></div><div class="orb-ring inner"></div><div class="orb-rays"></div><div class="reveal-orb-core"><span class="sealed-mark">✧</span></div>${Array.from({length:12},(_,i)=>`<i class="orb-mote" style="--n:${i}"></i>`).join('')}</div><div class="reveal-identity"><span class="reveal-count">봉인된 능력 ${visibleSlots}개</span><h3 class="reveal-name">능력을 불러오는 중</h3><p class="reveal-effect">작은 힘 하나가, 탈출을 결정합니다.</p></div></div><div class="reveal-bottom"><div class="reveal-totals">${VALUES.map(([key,name])=>`<div class="reveal-stat ${key}" data-total="${key}"><span>${name}</span><strong>0</strong><em></em></div>`).join('')}</div><div class="reveal-traits"></div><button class="reveal-skip" data-reveal="skip" type="button">결과 바로 보기 →</button></div><p class="reveal-announcement sr-only" aria-live="polite" aria-atomic="true"></p>`;

@@ -1,0 +1,1310 @@
+{
+  "date": "2026-11-07",
+  "timezone": "Asia/Seoul",
+  "base_commit": "f44ddec",
+  "version": "9.7.0",
+  "result": "PASS",
+  "runtime_modules_checked": 24,
+  "unit_tests_passed": 101,
+  "source": "tools/verify-v97-story.py",
+  "scope": "Real UI/local Chromium. No game, RNG or storage injection. Purchase/resume/real redraw/guardian/relic/return/recap. Not real hardware or human learning assessment.",
+  "cases": [
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "reduced_motion": false,
+      "scope": "Local Chromium touch emulation, real UI and read-only storage. Not human learning or hardware testing.",
+      "scenes": [
+        {
+          "label": "prologue",
+          "lines": [
+            {
+              "who": "깜부기",
+              "line": "쉿. 발밑 조심.",
+              "geometry": {
+                "x": 33,
+                "y": 683.859375,
+                "width": 324,
+                "height": 51.1875,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 324,
+                "clientWidth": 324
+              }
+            },
+            {
+              "who": "도적",
+              "line": "아무도 없잖아.",
+              "geometry": {
+                "x": 33,
+                "y": 683.859375,
+                "width": 324,
+                "height": 51.1875,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 324,
+                "clientWidth": 324
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "금고가 듣고 있어. 여긴 발소리를 기억하거든.",
+              "geometry": {
+                "x": 33,
+                "y": 683.859375,
+                "width": 324,
+                "height": 51.1875,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 324,
+                "clientWidth": 324
+              }
+            },
+            {
+              "who": "도적",
+              "line": "네 등불 밑에 묶인 주머니… 안에서 메달들이 부딪쳐.",
+              "geometry": {
+                "x": 33,
+                "y": 683.859375,
+                "width": 324,
+                "height": 51.1875,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 324,
+                "clientWidth": 324
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "전에 이 길을 걷던 이들이 맡긴 솜씨야. 잠깐, 크게 깜빡여 볼게.",
+              "geometry": {
+                "x": 33,
+                "y": 683.859375,
+                "width": 324,
+                "height": 51.1875,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 324,
+                "clientWidth": 324
+              }
+            },
+            {
+              "who": "도적",
+              "line": "문양이 움직여. 따뜻해… 손이 저절로 단검을 고쳐 쥐었어.",
+              "geometry": {
+                "x": 33,
+                "y": 683.859375,
+                "width": 324,
+                "height": 51.1875,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 324,
+                "clientWidth": 324
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "불빛 안에선 누구나 볼 수 있어. 등불을 든 손에는 저들의 솜씨도 전해지지.",
+              "geometry": {
+                "x": 33,
+                "y": 683.859375,
+                "width": 324,
+                "height": 51.1875,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 324,
+                "clientWidth": 324
+              }
+            },
+            {
+              "who": "도적",
+              "line": "그럼 나보다 먼저 걸었던 사람들하고 같이 가는 거네.",
+              "geometry": {
+                "x": 33,
+                "y": 683.859375,
+                "width": 324,
+                "height": 51.1875,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 324,
+                "clientWidth": 324
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "그래. 온기가 가시기 전에 빌려 써. 식은 메달은 주머니에 모아 둬. 다시 깨워 줄 테니.",
+              "geometry": {
+                "x": 33,
+                "y": 683.859375,
+                "width": 324,
+                "height": 51.1875,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 324,
+                "clientWidth": 324
+              }
+            }
+          ]
+        },
+        {
+          "label": "meeting",
+          "lines": [
+            {
+              "who": "깜부기",
+              "line": "뿔의 등불을 봐. 녹스야. 인사는 해도, 네 이름까지 주진 마.",
+              "geometry": {
+                "x": 31,
+                "y": 660.5,
+                "width": 328,
+                "height": 54,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 328,
+                "clientWidth": 328
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "후후. 작은 불씨가 말을 참 야박하게 하네. 어서 와, 아직 끝나지 않은 이야기.",
+              "geometry": {
+                "x": 31,
+                "y": 660.5,
+                "width": 328,
+                "height": 54,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 328,
+                "clientWidth": 328
+              }
+            },
+            {
+              "who": "도적",
+              "line": "…지금 나를 먹을 것처럼 봤는데.",
+              "geometry": {
+                "x": 31,
+                "y": 660.5,
+                "width": 328,
+                "height": 48,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 328,
+                "clientWidth": 328
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "잊힌 이야기만 먹어. 넌 아직 너무 따뜻해서, 뒷이야기가 궁금하거든.",
+              "geometry": {
+                "x": 31,
+                "y": 660.5,
+                "width": 328,
+                "height": 54,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 328,
+                "clientWidth": 328
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "어머, 저 불빛을 기억하는 메달들이네. 깜부기, 아직도 길 잃은 손을 데려오는구나.",
+              "geometry": {
+                "x": 31,
+                "y": 660.5,
+                "width": 328,
+                "height": 54,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 328,
+                "clientWidth": 328
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "수호자에게 갈 테지? 끝까지 누군가를 지켰던 사수가 있어. 네 손을 빌려주겠니?",
+              "geometry": {
+                "x": 31,
+                "y": 660.5,
+                "width": 328,
+                "height": 54,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 328,
+                "clientWidth": 328
+              }
+            }
+          ]
+        },
+        {
+          "label": "purchase",
+          "lines": [
+            {
+              "who": "녹스",
+              "line": "이 화살의 주인은 무너지는 다리 앞에 남았어. 마지막 사람이 건널 때까지.",
+              "geometry": {
+                "x": 31,
+                "y": 660.5,
+                "width": 328,
+                "height": 54,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 328,
+                "clientWidth": 328
+              }
+            },
+            {
+              "who": "도적",
+              "line": "활도 없는 내게… 이걸?",
+              "geometry": {
+                "x": 31,
+                "y": 660.5,
+                "width": 328,
+                "height": 48,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 328,
+                "clientWidth": 328
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "빌려주는 건 활이 아니라 끝까지 겨눴던 손이야. 네 단검에도 그 불씨가 옮겨붙겠지.",
+              "geometry": {
+                "x": 31,
+                "y": 660.5,
+                "width": 328,
+                "height": 54,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 328,
+                "clientWidth": 328
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "네가 메달의 문양을 짚어 줘. 내가 저 기억에 익숙한 불빛을 새길게.",
+              "geometry": {
+                "x": 31,
+                "y": 660.5,
+                "width": 328,
+                "height": 54,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 328,
+                "clientWidth": 328
+              }
+            },
+            {
+              "who": "도적",
+              "line": "문양이 새겨졌어. 그런데 메달은 아직 차갑네.",
+              "geometry": {
+                "x": 31,
+                "y": 660.5,
+                "width": 328,
+                "height": 48,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 328,
+                "clientWidth": 328
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "오래 잠든 손이니까. 식은 메달들 곁에 넣어 둬. 불빛이 다시 닿으면 네 손을 찾아갈 거야.",
+              "geometry": {
+                "x": 31,
+                "y": 660.5,
+                "width": 328,
+                "height": 54,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 328,
+                "clientWidth": 328
+              }
+            }
+          ]
+        },
+        {
+          "label": "remembered-archer",
+          "lines": [
+            {
+              "who": "도적",
+              "line": "손끝이 뜨거워. 방금… 끊어진 다리 저편을 겨누고 있었어.",
+              "geometry": {
+                "x": 33,
+                "y": 683.859375,
+                "width": 324,
+                "height": 51.1875,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 324,
+                "clientWidth": 324
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "그 사수는 마지막 사람이 건널 때까지 버텼대. 이번엔 네가 돌아갈 길을 열어.",
+              "geometry": {
+                "x": 33,
+                "y": 683.859375,
+                "width": 324,
+                "height": 51.1875,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 324,
+                "clientWidth": 324
+              }
+            },
+            {
+              "who": "도적",
+              "line": "단검 끝에도 불씨가 붙었어. 저 문지기를 넘을 수 있겠군.",
+              "geometry": {
+                "x": 33,
+                "y": 683.859375,
+                "width": 324,
+                "height": 51.1875,
+                "viewport": 390,
+                "screenHeight": 844,
+                "scrollWidth": 324,
+                "clientWidth": 324
+              }
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "prologue-lines-visible",
+          "main_unchanged": true
+        },
+        {
+          "name": "purchase-only-binds-cold-memory",
+          "skill_spent": 3,
+          "attack_before": 2,
+          "attack_after": 2
+        },
+        {
+          "name": "real-redraw-then-memory-dialogue",
+          "attack": 5,
+          "animated_spark_observed": true,
+          "redraw_same_after_reload": true
+        },
+        {
+          "name": "complete-and-preserve-original",
+          "won": true,
+          "main_unchanged": true,
+          "best_unchanged": true
+        }
+      ],
+      "errors": [],
+      "http_errors": [],
+      "reveal_snapshots": [
+        {
+          "phase": "gather",
+          "name": "능력을 불러오는 중",
+          "count": "봉인된 능력 5개",
+          "effect": "작은 힘 하나가, 탈출을 결정합니다.",
+          "title": "금고가 숨을 죽인다",
+          "stakes": "다음 발걸음은, 이 추출에 달려 있다"
+        },
+        {
+          "phase": "charging",
+          "name": "봉인이 흔들린다",
+          "count": "0 / 5 공개 · 자동 합산",
+          "effect": "아직, 무엇이 나올지 알 수 없습니다.",
+          "title": "어둠 속에서, 하나씩",
+          "stakes": "다음 발걸음은, 이 추출에 달려 있다"
+        },
+        {
+          "phase": "revealed",
+          "name": "불씨 화살",
+          "count": "녹스가 맡긴 사수의 기억",
+          "effect": "공격 +3",
+          "title": "불씨 화살",
+          "stakes": "끝까지 겨눴던 손의 온기가 단검에 옮겨붙습니다."
+        },
+        {
+          "phase": "revealed",
+          "name": "숨죽이기",
+          "count": "02 / 05 · 은신",
+          "effect": "이동 +1 · 은신 +2",
+          "title": "어둠 속에서, 하나씩",
+          "stakes": "다음 발걸음은, 이 추출에 달려 있다"
+        },
+        {
+          "phase": "charging",
+          "name": "봉인이 흔들린다",
+          "count": "2 / 5 공개 · 자동 합산",
+          "effect": "아직, 무엇이 나올지 알 수 없습니다.",
+          "title": "어둠 속에서, 하나씩",
+          "stakes": "다음 발걸음은, 이 추출에 달려 있다"
+        },
+        {
+          "phase": "revealed",
+          "name": "금지된 서고",
+          "count": "연쇄 추출 · 봉인 1개 추가",
+          "effect": "기술 +3 · 1개 추가 추출",
+          "title": "어둠 속에서, 하나씩",
+          "stakes": "다음 발걸음은, 이 추출에 달려 있다"
+        },
+        {
+          "phase": "charging",
+          "name": "봉인이 흔들린다",
+          "count": "3 / 6 공개 · 자동 합산",
+          "effect": "아직, 무엇이 나올지 알 수 없습니다.",
+          "title": "어둠 속에서, 하나씩",
+          "stakes": "다음 발걸음은, 이 추출에 달려 있다"
+        },
+        {
+          "phase": "charging",
+          "name": "봉인이 흔들린다",
+          "count": "4 / 6 공개 · 자동 합산",
+          "effect": "아직, 무엇이 나올지 알 수 없습니다.",
+          "title": "어둠 속에서, 하나씩",
+          "stakes": "다음 발걸음은, 이 추출에 달려 있다"
+        },
+        {
+          "phase": "revealed",
+          "name": "잰걸음",
+          "count": "05 / 06 · 이동",
+          "effect": "이동 +2",
+          "title": "어둠 속에서, 하나씩",
+          "stakes": "다음 발걸음은, 이 추출에 달려 있다"
+        },
+        {
+          "phase": "last",
+          "name": "숨을 죽이세요",
+          "count": "5 / 6 공개 · 자동 합산",
+          "effect": "이번 턴을 바꿀 마지막 힘",
+          "title": "마지막 하나.",
+          "stakes": "다음 발걸음은, 이 추출에 달려 있다"
+        },
+        {
+          "phase": "revealed",
+          "name": "길잡이",
+          "count": "06 / 06 · 탐험",
+          "effect": "이동 +1 · 기술 +1",
+          "title": "마지막 하나.",
+          "stakes": "다음 발걸음은, 이 추출에 달려 있다"
+        },
+        {
+          "phase": "complete",
+          "name": "불씨 화살이 깨어났다",
+          "count": "녹스가 맡긴 사수의 기억",
+          "effect": "끝까지 겨눴던 손의 온기가 단검에 옮겨붙습니다.",
+          "title": "불씨 화살",
+          "stakes": "끝까지 겨눴던 손의 온기가 단검에 옮겨붙습니다."
+        }
+      ],
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        360,
+        640
+      ],
+      "reduced_motion": true,
+      "scope": "Local Chromium touch emulation, real UI and read-only storage. Not human learning or hardware testing.",
+      "scenes": [
+        {
+          "label": "prologue",
+          "lines": [
+            {
+              "who": "깜부기",
+              "line": "쉿. 발밑 조심.",
+              "geometry": {
+                "x": 33,
+                "y": 498.21875,
+                "width": 294,
+                "height": 51.1875,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 294,
+                "clientWidth": 294
+              }
+            },
+            {
+              "who": "도적",
+              "line": "아무도 없잖아.",
+              "geometry": {
+                "x": 33,
+                "y": 498.21875,
+                "width": 294,
+                "height": 51.1875,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 294,
+                "clientWidth": 294
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "금고가 듣고 있어. 여긴 발소리를 기억하거든.",
+              "geometry": {
+                "x": 33,
+                "y": 498.21875,
+                "width": 294,
+                "height": 51.1875,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 294,
+                "clientWidth": 294
+              }
+            },
+            {
+              "who": "도적",
+              "line": "네 등불 밑에 묶인 주머니… 안에서 메달들이 부딪쳐.",
+              "geometry": {
+                "x": 33,
+                "y": 498.21875,
+                "width": 294,
+                "height": 51.1875,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 294,
+                "clientWidth": 294
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "전에 이 길을 걷던 이들이 맡긴 솜씨야. 잠깐, 크게 깜빡여 볼게.",
+              "geometry": {
+                "x": 33,
+                "y": 498.21875,
+                "width": 294,
+                "height": 51.1875,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 294,
+                "clientWidth": 294
+              }
+            },
+            {
+              "who": "도적",
+              "line": "문양이 움직여. 따뜻해… 손이 저절로 단검을 고쳐 쥐었어.",
+              "geometry": {
+                "x": 33,
+                "y": 498.21875,
+                "width": 294,
+                "height": 51.1875,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 294,
+                "clientWidth": 294
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "불빛 안에선 누구나 볼 수 있어. 등불을 든 손에는 저들의 솜씨도 전해지지.",
+              "geometry": {
+                "x": 33,
+                "y": 498.21875,
+                "width": 294,
+                "height": 51.1875,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 294,
+                "clientWidth": 294
+              }
+            },
+            {
+              "who": "도적",
+              "line": "그럼 나보다 먼저 걸었던 사람들하고 같이 가는 거네.",
+              "geometry": {
+                "x": 33,
+                "y": 498.21875,
+                "width": 294,
+                "height": 51.1875,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 294,
+                "clientWidth": 294
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "그래. 온기가 가시기 전에 빌려 써. 식은 메달은 주머니에 모아 둬. 다시 깨워 줄 테니.",
+              "geometry": {
+                "x": 33,
+                "y": 498.21875,
+                "width": 294,
+                "height": 51.1875,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 294,
+                "clientWidth": 294
+              }
+            }
+          ]
+        },
+        {
+          "label": "meeting",
+          "lines": [
+            {
+              "who": "깜부기",
+              "line": "뿔의 등불을 봐. 녹스야. 인사는 해도, 네 이름까지 주진 마.",
+              "geometry": {
+                "x": 31,
+                "y": 456.5,
+                "width": 298,
+                "height": 54,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 298,
+                "clientWidth": 298
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "후후. 작은 불씨가 말을 참 야박하게 하네. 어서 와, 아직 끝나지 않은 이야기.",
+              "geometry": {
+                "x": 31,
+                "y": 456.5,
+                "width": 298,
+                "height": 54,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 298,
+                "clientWidth": 298
+              }
+            },
+            {
+              "who": "도적",
+              "line": "…지금 나를 먹을 것처럼 봤는데.",
+              "geometry": {
+                "x": 31,
+                "y": 456.5,
+                "width": 298,
+                "height": 48,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 298,
+                "clientWidth": 298
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "잊힌 이야기만 먹어. 넌 아직 너무 따뜻해서, 뒷이야기가 궁금하거든.",
+              "geometry": {
+                "x": 31,
+                "y": 456.5,
+                "width": 298,
+                "height": 54,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 298,
+                "clientWidth": 298
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "어머, 저 불빛을 기억하는 메달들이네. 깜부기, 아직도 길 잃은 손을 데려오는구나.",
+              "geometry": {
+                "x": 31,
+                "y": 456.5,
+                "width": 298,
+                "height": 54,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 298,
+                "clientWidth": 298
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "수호자에게 갈 테지? 끝까지 누군가를 지켰던 사수가 있어. 네 손을 빌려주겠니?",
+              "geometry": {
+                "x": 31,
+                "y": 456.5,
+                "width": 298,
+                "height": 54,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 298,
+                "clientWidth": 298
+              }
+            }
+          ]
+        },
+        {
+          "label": "purchase",
+          "lines": [
+            {
+              "who": "녹스",
+              "line": "이 화살의 주인은 무너지는 다리 앞에 남았어. 마지막 사람이 건널 때까지.",
+              "geometry": {
+                "x": 31,
+                "y": 456.5,
+                "width": 298,
+                "height": 54,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 298,
+                "clientWidth": 298
+              }
+            },
+            {
+              "who": "도적",
+              "line": "활도 없는 내게… 이걸?",
+              "geometry": {
+                "x": 31,
+                "y": 456.5,
+                "width": 298,
+                "height": 48,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 298,
+                "clientWidth": 298
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "빌려주는 건 활이 아니라 끝까지 겨눴던 손이야. 네 단검에도 그 불씨가 옮겨붙겠지.",
+              "geometry": {
+                "x": 31,
+                "y": 456.5,
+                "width": 298,
+                "height": 54,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 298,
+                "clientWidth": 298
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "네가 메달의 문양을 짚어 줘. 내가 저 기억에 익숙한 불빛을 새길게.",
+              "geometry": {
+                "x": 31,
+                "y": 456.5,
+                "width": 298,
+                "height": 54,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 298,
+                "clientWidth": 298
+              }
+            },
+            {
+              "who": "도적",
+              "line": "문양이 새겨졌어. 그런데 메달은 아직 차갑네.",
+              "geometry": {
+                "x": 31,
+                "y": 456.5,
+                "width": 298,
+                "height": 48,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 298,
+                "clientWidth": 298
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "오래 잠든 손이니까. 식은 메달들 곁에 넣어 둬. 불빛이 다시 닿으면 네 손을 찾아갈 거야.",
+              "geometry": {
+                "x": 31,
+                "y": 456.5,
+                "width": 298,
+                "height": 54,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 298,
+                "clientWidth": 298
+              }
+            }
+          ]
+        },
+        {
+          "label": "remembered-archer",
+          "lines": [
+            {
+              "who": "도적",
+              "line": "손끝이 뜨거워. 방금… 끊어진 다리 저편을 겨누고 있었어.",
+              "geometry": {
+                "x": 33,
+                "y": 498.21875,
+                "width": 294,
+                "height": 51.1875,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 294,
+                "clientWidth": 294
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "그 사수는 마지막 사람이 건널 때까지 버텼대. 이번엔 네가 돌아갈 길을 열어.",
+              "geometry": {
+                "x": 33,
+                "y": 498.21875,
+                "width": 294,
+                "height": 51.1875,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 294,
+                "clientWidth": 294
+              }
+            },
+            {
+              "who": "도적",
+              "line": "단검 끝에도 불씨가 붙었어. 저 문지기를 넘을 수 있겠군.",
+              "geometry": {
+                "x": 33,
+                "y": 498.21875,
+                "width": 294,
+                "height": 51.1875,
+                "viewport": 360,
+                "screenHeight": 640,
+                "scrollWidth": 294,
+                "clientWidth": 294
+              }
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "prologue-lines-visible",
+          "main_unchanged": true
+        },
+        {
+          "name": "purchase-only-binds-cold-memory",
+          "skill_spent": 3,
+          "attack_before": 2,
+          "attack_after": 2
+        },
+        {
+          "name": "real-redraw-then-memory-dialogue",
+          "attack": 5,
+          "animated_spark_observed": false,
+          "redraw_same_after_reload": true
+        },
+        {
+          "name": "complete-and-preserve-original",
+          "won": true,
+          "main_unchanged": true,
+          "best_unchanged": true
+        }
+      ],
+      "errors": [],
+      "http_errors": [],
+      "reveal_snapshots": [
+        {
+          "phase": "complete",
+          "name": "불씨 화살이 깨어났다",
+          "count": "녹스가 맡긴 사수의 기억",
+          "effect": "끝까지 겨눴던 손의 온기가 단검에 옮겨붙습니다.",
+          "title": "불씨 화살",
+          "stakes": "끝까지 겨눴던 손의 온기가 단검에 옮겨붙습니다."
+        }
+      ],
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        740,
+        320
+      ],
+      "reduced_motion": true,
+      "scope": "Local Chromium touch emulation, real UI and read-only storage. Not human learning or hardware testing.",
+      "scenes": [
+        {
+          "label": "prologue",
+          "lines": [
+            {
+              "who": "깜부기",
+              "line": "쉿. 발밑 조심.",
+              "geometry": {
+                "x": 141,
+                "y": 224.21875,
+                "width": 570,
+                "height": 46.390625,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 570,
+                "clientWidth": 570
+              }
+            },
+            {
+              "who": "도적",
+              "line": "아무도 없잖아.",
+              "geometry": {
+                "x": 141,
+                "y": 224.21875,
+                "width": 570,
+                "height": 46.390625,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 570,
+                "clientWidth": 570
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "금고가 듣고 있어. 여긴 발소리를 기억하거든.",
+              "geometry": {
+                "x": 141,
+                "y": 224.21875,
+                "width": 570,
+                "height": 46.390625,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 570,
+                "clientWidth": 570
+              }
+            },
+            {
+              "who": "도적",
+              "line": "네 등불 밑에 묶인 주머니… 안에서 메달들이 부딪쳐.",
+              "geometry": {
+                "x": 141,
+                "y": 224.21875,
+                "width": 570,
+                "height": 46.390625,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 570,
+                "clientWidth": 570
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "전에 이 길을 걷던 이들이 맡긴 솜씨야. 잠깐, 크게 깜빡여 볼게.",
+              "geometry": {
+                "x": 141,
+                "y": 224.21875,
+                "width": 570,
+                "height": 46.390625,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 570,
+                "clientWidth": 570
+              }
+            },
+            {
+              "who": "도적",
+              "line": "문양이 움직여. 따뜻해… 손이 저절로 단검을 고쳐 쥐었어.",
+              "geometry": {
+                "x": 141,
+                "y": 224.21875,
+                "width": 570,
+                "height": 46.390625,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 570,
+                "clientWidth": 570
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "불빛 안에선 누구나 볼 수 있어. 등불을 든 손에는 저들의 솜씨도 전해지지.",
+              "geometry": {
+                "x": 141,
+                "y": 224.21875,
+                "width": 570,
+                "height": 46.390625,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 570,
+                "clientWidth": 570
+              }
+            },
+            {
+              "who": "도적",
+              "line": "그럼 나보다 먼저 걸었던 사람들하고 같이 가는 거네.",
+              "geometry": {
+                "x": 141,
+                "y": 224.21875,
+                "width": 570,
+                "height": 46.390625,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 570,
+                "clientWidth": 570
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "그래. 온기가 가시기 전에 빌려 써. 식은 메달은 주머니에 모아 둬. 다시 깨워 줄 테니.",
+              "geometry": {
+                "x": 141,
+                "y": 224.21875,
+                "width": 570,
+                "height": 46.390625,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 570,
+                "clientWidth": 570
+              }
+            }
+          ]
+        },
+        {
+          "label": "meeting",
+          "lines": [
+            {
+              "who": "깜부기",
+              "line": "뿔의 등불을 봐. 녹스야. 인사는 해도, 네 이름까지 주진 마.",
+              "geometry": {
+                "x": 123,
+                "y": 207.5,
+                "width": 590,
+                "height": 28,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 590,
+                "clientWidth": 590
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "후후. 작은 불씨가 말을 참 야박하게 하네. 어서 와, 아직 끝나지 않은 이야기.",
+              "geometry": {
+                "x": 123,
+                "y": 207.5,
+                "width": 590,
+                "height": 28,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 590,
+                "clientWidth": 590
+              }
+            },
+            {
+              "who": "도적",
+              "line": "…지금 나를 먹을 것처럼 봤는데.",
+              "geometry": {
+                "x": 123,
+                "y": 207.5,
+                "width": 590,
+                "height": 28,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 590,
+                "clientWidth": 590
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "잊힌 이야기만 먹어. 넌 아직 너무 따뜻해서, 뒷이야기가 궁금하거든.",
+              "geometry": {
+                "x": 123,
+                "y": 207.5,
+                "width": 590,
+                "height": 28,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 590,
+                "clientWidth": 590
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "어머, 저 불빛을 기억하는 메달들이네. 깜부기, 아직도 길 잃은 손을 데려오는구나.",
+              "geometry": {
+                "x": 123,
+                "y": 207.5,
+                "width": 590,
+                "height": 28,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 590,
+                "clientWidth": 590
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "수호자에게 갈 테지? 끝까지 누군가를 지켰던 사수가 있어. 네 손을 빌려주겠니?",
+              "geometry": {
+                "x": 123,
+                "y": 207.5,
+                "width": 590,
+                "height": 28,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 590,
+                "clientWidth": 590
+              }
+            }
+          ]
+        },
+        {
+          "label": "purchase",
+          "lines": [
+            {
+              "who": "녹스",
+              "line": "이 화살의 주인은 무너지는 다리 앞에 남았어. 마지막 사람이 건널 때까지.",
+              "geometry": {
+                "x": 123,
+                "y": 207.5,
+                "width": 590,
+                "height": 28,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 590,
+                "clientWidth": 590
+              }
+            },
+            {
+              "who": "도적",
+              "line": "활도 없는 내게… 이걸?",
+              "geometry": {
+                "x": 123,
+                "y": 207.5,
+                "width": 590,
+                "height": 28,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 590,
+                "clientWidth": 590
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "빌려주는 건 활이 아니라 끝까지 겨눴던 손이야. 네 단검에도 그 불씨가 옮겨붙겠지.",
+              "geometry": {
+                "x": 123,
+                "y": 207.5,
+                "width": 590,
+                "height": 28,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 590,
+                "clientWidth": 590
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "네가 메달의 문양을 짚어 줘. 내가 저 기억에 익숙한 불빛을 새길게.",
+              "geometry": {
+                "x": 123,
+                "y": 207.5,
+                "width": 590,
+                "height": 28,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 590,
+                "clientWidth": 590
+              }
+            },
+            {
+              "who": "도적",
+              "line": "문양이 새겨졌어. 그런데 메달은 아직 차갑네.",
+              "geometry": {
+                "x": 123,
+                "y": 207.5,
+                "width": 590,
+                "height": 28,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 590,
+                "clientWidth": 590
+              }
+            },
+            {
+              "who": "녹스",
+              "line": "오래 잠든 손이니까. 식은 메달들 곁에 넣어 둬. 불빛이 다시 닿으면 네 손을 찾아갈 거야.",
+              "geometry": {
+                "x": 123,
+                "y": 207.5,
+                "width": 590,
+                "height": 28,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 590,
+                "clientWidth": 590
+              }
+            }
+          ]
+        },
+        {
+          "label": "remembered-archer",
+          "lines": [
+            {
+              "who": "도적",
+              "line": "손끝이 뜨거워. 방금… 끊어진 다리 저편을 겨누고 있었어.",
+              "geometry": {
+                "x": 141,
+                "y": 224.21875,
+                "width": 570,
+                "height": 46.390625,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 570,
+                "clientWidth": 570
+              }
+            },
+            {
+              "who": "깜부기",
+              "line": "그 사수는 마지막 사람이 건널 때까지 버텼대. 이번엔 네가 돌아갈 길을 열어.",
+              "geometry": {
+                "x": 141,
+                "y": 224.21875,
+                "width": 570,
+                "height": 46.390625,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 570,
+                "clientWidth": 570
+              }
+            },
+            {
+              "who": "도적",
+              "line": "단검 끝에도 불씨가 붙었어. 저 문지기를 넘을 수 있겠군.",
+              "geometry": {
+                "x": 141,
+                "y": 224.21875,
+                "width": 570,
+                "height": 46.390625,
+                "viewport": 740,
+                "screenHeight": 320,
+                "scrollWidth": 570,
+                "clientWidth": 570
+              }
+            }
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "name": "prologue-lines-visible",
+          "main_unchanged": true
+        },
+        {
+          "name": "purchase-only-binds-cold-memory",
+          "skill_spent": 3,
+          "attack_before": 2,
+          "attack_after": 2
+        },
+        {
+          "name": "real-redraw-then-memory-dialogue",
+          "attack": 5,
+          "animated_spark_observed": false,
+          "redraw_same_after_reload": true
+        },
+        {
+          "name": "complete-and-preserve-original",
+          "won": true,
+          "main_unchanged": true,
+          "best_unchanged": true
+        }
+      ],
+      "errors": [],
+      "http_errors": [],
+      "reveal_snapshots": [
+        {
+          "phase": "complete",
+          "name": "불씨 화살이 깨어났다",
+          "count": "녹스가 맡긴 사수의 기억",
+          "effect": "끝까지 겨눴던 손의 온기가 단검에 옮겨붙습니다.",
+          "title": "불씨 화살",
+          "stakes": "끝까지 겨눴던 손의 온기가 단검에 옮겨붙습니다."
+        }
+      ],
+      "result": "PASS"
+    }
+  ]
+}
