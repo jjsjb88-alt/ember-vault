@@ -1,6 +1,6 @@
-import {CARDS,neighbours,moveCost} from './engine.js?v=20261107b';
-import {paintIcons} from './art.js?v=20261107b';
-import {tokenMarkup,richGlyph} from './token-art.js?v=20261107b';
+import {CARDS,neighbours,moveCost} from './engine.js?v=20261107c';
+import {paintIcons} from './art.js?v=20261107c';
+import {tokenMarkup,richGlyph} from './token-art.js?v=20261107c';
 
 const KEYS=['sword','move','skill','block','quiet','rattle'];
 const VALUES=[['sword','공격력'],['move','이동력'],['skill','기술'],['block','방어']];
@@ -100,7 +100,8 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   q('.reveal-effect').textContent=card.text;
   q('.reveal-count').textContent=step.added?`연쇄 추출 · 봉인 ${step.added}개 추가`:`${String(index+1).padStart(2,'0')} / ${String(visibleSlots).padStart(2,'0')} · ${card.kind}`;
   totals(step.totals,step.delta);strip();paintIcons(q('.reveal-orb-core'));
-  q('#revealStakes').textContent=revealStakes(run,step.totals);
+  q('#revealTitle').textContent=card.name;
+  q('#revealStakes').textContent=card.text;
   if(noise.added){q('#revealTitle').textContent='소음을 뽑았다.';q('#revealStakes').textContent=`다음 행동 소음 +${noise.stored}${noise.quiet?` · 은신 ${noise.quiet}로 완화`:''}`;q('.reveal-effect').textContent='지금은 예고. 다음 발소리가 금고를 깨운다.';}
   // Use the visible title/stakes: the compact portrait layout hides the effect line.
   // Only name this memory once its actual token has been revealed.

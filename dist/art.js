@@ -1,5 +1,5 @@
-import {neighbours,moveCost,ALERTS,TERRAINS} from './engine.js?v=20261107b';
-import {drawAssetIcon,paintTokens} from './token-art.js?v=20261107b';
+import {neighbours,moveCost,ALERTS,TERRAINS} from './engine.js?v=20261107c';
+import {drawAssetIcon,paintTokens} from './token-art.js?v=20261107c';
 const C={ink:'#10191b',edge:'#243137',stone:'#3b4948',moss:'#58715b',green:'#8ac09e',light:'#d5efd1',gold:'#e5b567',sun:'#ffe3a1',copper:'#ad6d45',red:'#ce665a',darkred:'#743b3e',blue:'#7baec7',violet:'#aa91c6',cream:'#f0d8ac'};
 const sprites={
  hero:[

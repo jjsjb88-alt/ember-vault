@@ -1,0 +1,268 @@
+{
+  "date": "2026-11-07",
+  "timezone": "Asia/Seoul",
+  "base_commit": "e942827",
+  "version": "9.8.0",
+  "result": "PASS",
+  "runtime_modules_checked": 25,
+  "unit_tests_passed": 101,
+  "scope": "Local Chromium touch emulation, real UI, no game/RNG/storage injection. Not hardware/Safari certification or human learning assessment.",
+  "cases": [
+    {
+      "viewport": [
+        360,
+        640
+      ],
+      "result": "PASS",
+      "checks": [
+        {
+          "name": "readable-current-medals",
+          "effects": [
+            {
+              "text": "이동 +1",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "기술 +1",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "이동 +2",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "공격 +2",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "첫 소음 +1",
+              "size": 16,
+              "width": 92,
+              "scrollWidth": 92
+            },
+            {
+              "text": "기술 +3",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "추가 추출 +1개",
+              "size": 16,
+              "width": 125,
+              "scrollWidth": 125
+            }
+          ],
+          "glossary_and_page_preserved": true
+        },
+        {
+          "name": "shop-effects-price-and-safe-return",
+          "price": {
+            "y": 568.0625,
+            "bottom": 601.0625,
+            "height": 33,
+            "dialogBottom": 630
+          }
+        },
+        {
+          "name": "reward-reading-never-selects",
+          "options_unchanged": true
+        },
+        {
+          "name": "tutorial-complete-and-original-protected",
+          "won": true
+        },
+        {
+          "name": "all-24-artbook-effects-and-keywords",
+          "cards": 24,
+          "main_unchanged": true
+        }
+      ],
+      "errors": [],
+      "http_errors": [],
+      "request_failures": []
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "result": "PASS",
+      "checks": [
+        {
+          "name": "actual-animated-token-has-visible-name-and-effect",
+          "snapshot": {
+            "phase": "revealed",
+            "title": "길잡이",
+            "name": "길잡이",
+            "effect": "이동 +1 · 기술 +1",
+            "font": 16
+          }
+        },
+        {
+          "name": "readable-current-medals",
+          "effects": [
+            {
+              "text": "이동 +1",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "기술 +1",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "이동 +2",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "공격 +2",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "첫 소음 +1",
+              "size": 16,
+              "width": 92,
+              "scrollWidth": 92
+            },
+            {
+              "text": "기술 +3",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "추가 추출 +1개",
+              "size": 16,
+              "width": 125,
+              "scrollWidth": 125
+            }
+          ],
+          "glossary_and_page_preserved": true
+        },
+        {
+          "name": "shop-effects-price-and-safe-return",
+          "price": {
+            "y": 568.0625,
+            "bottom": 601.0625,
+            "height": 33,
+            "dialogBottom": 834
+          }
+        },
+        {
+          "name": "reward-reading-never-selects",
+          "options_unchanged": true
+        },
+        {
+          "name": "tutorial-complete-and-original-protected",
+          "won": true
+        },
+        {
+          "name": "all-24-artbook-effects-and-keywords",
+          "cards": 24,
+          "main_unchanged": true
+        }
+      ],
+      "errors": [],
+      "http_errors": [],
+      "request_failures": []
+    },
+    {
+      "viewport": [
+        740,
+        320
+      ],
+      "result": "PASS",
+      "checks": [
+        {
+          "name": "readable-current-medals",
+          "effects": [
+            {
+              "text": "이동 +1",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "기술 +1",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "이동 +2",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "공격 +2",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "첫 소음 +1",
+              "size": 16,
+              "width": 92,
+              "scrollWidth": 92
+            },
+            {
+              "text": "기술 +3",
+              "size": 16,
+              "width": 73,
+              "scrollWidth": 73
+            },
+            {
+              "text": "추가 추출 +1개",
+              "size": 16,
+              "width": 125,
+              "scrollWidth": 125
+            }
+          ],
+          "glossary_and_page_preserved": true
+        },
+        {
+          "name": "shop-effects-price-and-safe-return",
+          "price": {
+            "y": 262.71875,
+            "bottom": 295.71875,
+            "height": 33,
+            "dialogBottom": 310
+          }
+        },
+        {
+          "name": "reward-reading-never-selects",
+          "options_unchanged": true
+        },
+        {
+          "name": "tutorial-complete-and-original-protected",
+          "won": true
+        },
+        {
+          "name": "all-24-artbook-effects-and-keywords",
+          "cards": 24,
+          "main_unchanged": true
+        }
+      ],
+      "errors": [],
+      "http_errors": [],
+      "request_failures": []
+    }
+  ]
+}

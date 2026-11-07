@@ -1,5 +1,5 @@
-import {CARDS} from './engine.js?v=20261107b';
-import {turnImpact} from './encounter.js?v=20261107b';
+import {CARDS} from './engine.js?v=20261107c';
+import {turnImpact} from './encounter.js?v=20261107c';
 
 const alive=enemy=>!!enemy&&enemy.hp>0;
 const roomInfo=room=>({id:room?.id,name:room?.name||'방',type:room?.type,route:room?.lessonRoute||null,returnRoute:room?.lessonReturn||null,optional:!!room?.lessonOptional});

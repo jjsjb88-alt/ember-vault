@@ -1,6 +1,12 @@
-# 잿불 금고 · Ember Vault V9.7
+# 잿불 금고 · Ember Vault V9.8
 
-한국어 싱글플레이 풀빌딩 던전 크롤러. [바로 플레이](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261107b) · [첫 금고 털이 연습](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261107b&tutorial=1)
+한국어 싱글플레이 풀빌딩 던전 크롤러. [바로 플레이](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261107c) · [첫 금고 털이 연습](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261107c&tutorial=1)
+
+## V9.8 — 읽히는 능력과 키워드
+
+메달 목록·교역·보상·도감의 능력명은18px, 효과는16px, 수치는20px로 키웠습니다. 하단 「능력 보기」에서 큰 목록을 열며, 해당 메달의 은신·첫 소음·추가 추출 뜻을 바로 읽을 수 있습니다. 사전은 설명을 열었던 페이지·교역·미선택 보상으로 돌아갑니다. 추출 연출도 실제 공개된 메달의 이름과 효과를 보이는 제목·본문에 표시합니다.
+
+유물의 귀환14턴·주기 숨결·메아리 지속 증가는 현재 게임의 규칙으로 설명합니다. 클랭크 기본판의 분노 상승·종료 카운트다운과의 차이, 검증 범위는 [읽기 개선과 규칙 비교](docs/production/V98-READABILITY.md)에 정리했습니다.
 
 ## V9.7 — 등불이 빌려주는 기억
 
@@ -21,7 +27,7 @@
 
 ## V9.5 — 기억과 보물을 만질 수 있게
 
-[금고도감 열기](https://jjsjb88-alt.github.io/ember-vault/dist/artbook.html?v=20261107b)
+[금고도감 열기](https://jjsjb88-alt.github.io/ember-vault/dist/artbook.html?v=20261107c)
 
 - 확정한 인외 여상인 녹스의 원화와 4개 키포즈, 플레이어 3직업 전신·초상, 적 3종을 공통 팔레트로 제작했습니다.
 - 기억 메달 24종을 각각 다른 고해상도 에셋으로 교체했습니다. 교역·주머니·추출·보상에서 같은 원화를 사용하며 일반·고급·희귀·영웅의 프레임과 픽셀FX로 구분합니다.
@@ -86,11 +92,11 @@ npm test
 python3 -m http.server 8000 --directory dist
 ```
 
-규칙·저장 호환·지름길·소리·숨결·좌표와 튜토리얼의 실제 행동 결과를 검사합니다. 현재 서사는 [V9.7 서사·검수 기록](docs/production/V97-STORY.md), 튜토리얼 구조는 [V9.6 에이전트 검수 기록](docs/production/V96-AGENT-REVIEW.md), 아트 제작은 [V9.5 검수 기록](docs/production/V95-VERIFICATION.md), 지도·유인·저장 상세는 [V9.2 검증 기록](docs/production/V92-VERIFICATION.md)을 기준으로 봅니다. 로컬 Chromium의 모바일 화면 검수, 실제 휴대폰 검수, GitHub Actions 배포 확인은 서로 구분합니다. 이번 작업 환경에서 공개 플레이 주소 직접 접속은 프록시 403으로 제한됐으며, 로컬 실행 성공을 공개 주소 접속 성공으로 표시하지 않습니다. 자동 탐험은 규칙과 경로를 확인하는 보조 수단이며 실제 사람의 난이도나 승률을 보장하지 않습니다. 이전 기록은 [V9.1](docs/production/V91-VERIFICATION.md)과 [V9](docs/production/V9-VERIFICATION.md)에 보존합니다.
+규칙·저장 호환·지름길·소리·숨결·좌표와 튜토리얼의 실제 행동 결과를 검사합니다. 현재 능력·용어 표시는 [V9.8 검수 기록](docs/production/V98-READABILITY.md), 서사는 [V9.7 서사·검수 기록](docs/production/V97-STORY.md), 튜토리얼 구조는 [V9.6 에이전트 검수 기록](docs/production/V96-AGENT-REVIEW.md), 아트 제작은 [V9.5 검수 기록](docs/production/V95-VERIFICATION.md), 지도·유인·저장 상세는 [V9.2 검증 기록](docs/production/V92-VERIFICATION.md)을 기준으로 봅니다. 로컬 Chromium의 모바일 화면 검수, 실제 휴대폰 검수, GitHub Actions 배포 확인은 서로 구분합니다. 이번 작업 환경에서 공개 플레이 주소 직접 접속은 프록시 403으로 제한됐으며, 로컬 실행 성공을 공개 주소 접속 성공으로 표시하지 않습니다. 자동 탐험은 규칙과 경로를 확인하는 보조 수단이며 실제 사람의 난이도나 승률을 보장하지 않습니다. 이전 기록은 [V9.1](docs/production/V91-VERIFICATION.md)과 [V9](docs/production/V9-VERIFICATION.md)에 보존합니다.
 
 ## 이전 버전 기록
 
-아래는 당시 구현을 설명하는 기록입니다. 방 수와 튜토리얼 단계·검증 범위 등 현재 동작은 위 V9.7 설명과 연결된 문서가 우선합니다.
+아래는 당시 구현을 설명하는 기록입니다. 방 수와 튜토리얼 단계·검증 범위 등 현재 동작은 위 V9.8 설명과 연결된 문서가 우선합니다.
 
 ## V7.6 — 컷신 대화 · 메달이 열리는 이유
 

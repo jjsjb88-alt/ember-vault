@@ -1,0 +1,74 @@
+/* Read the effect first; token art and a compact dock lead to the same large list. */
+.ability-effects{display:flex;flex-wrap:wrap;gap:6px 9px;align-items:center;margin:5px 0;min-width:0}
+.ability-effect{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:5px;padding:3px 7px;border:1px solid #71827770;background:#07151e99;color:#e4ece7;font-size:16px;line-height:1.45;white-space:normal}
+.ability-effect b{font-size:20px;line-height:1.3;color:#fff0c9;font-weight:700}
+.effect-sword b,.effect-rattle b{color:#ffc3a1}.effect-move b,.effect-quiet b{color:#a9ead8}.effect-skill b,.effect-draw b{color:#bbdaff}
+.ability-notes{display:flex;flex-direction:column;gap:6px;margin:8px 0 0;min-width:0;text-align:left}
+.ability-notes>span{font:14px/1.6 system-ui,sans-serif;color:#c7d8d6;word-break:keep-all;overflow-wrap:anywhere}
+.ability-notes b{font-size:14px;font-weight:600;color:#efdeb7}
+.ability-reading-note{font:15px/1.7 system-ui,sans-serif;color:#cededc;margin:8px 0 14px}
+.keyword-button{min-height:44px;padding:8px 12px;border:1px solid #a38b58;background:#17313c;color:#f1dfb5;font:15px/1.4 system-ui,sans-serif}
+.keyword-list{margin:12px 0}.keyword-list>div{padding:14px 0;border-top:1px solid #647a6b66;text-align:left}
+.keyword-list dt{font-size:18px;font-weight:650;color:#f6dfb4;margin-bottom:5px}
+.keyword-list dd{margin:0;font:16px/1.75 system-ui,sans-serif;color:#dae4e2;word-break:keep-all;overflow-wrap:anywhere}
+.keyword-list dd small{display:block;margin-top:7px;font:14px/1.65 system-ui,sans-serif;color:#b7cece;letter-spacing:0}
+#modal[data-mode=glossary]{max-height:calc(100dvh - 20px);overflow:auto;width:min(720px,calc(100vw - 20px))}
+#modal[data-mode=glossary] .modal-top h2,#modal[data-mode=deck] .modal-top h2{font-size:23px}
+#modal[data-mode=deck] .deck-tabs{display:flex;flex-wrap:wrap;gap:6px}
+#modal[data-mode=deck] .deck-tabs button{min-height:44px;font-size:14px;padding:7px 10px}
+#modal[data-mode=deck] .deck-list{display:flex;flex-direction:column;gap:12px}
+#modal[data-mode=deck] .deck-item{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;padding:13px 10px;align-items:start}
+#modal[data-mode=deck] .deck-item>.memory-token{--token-size:64px!important;margin:0}
+#modal[data-mode=deck] .deck-item>div{min-width:0}
+#modal[data-mode=deck] .deck-item .ability-name{font-size:18px;line-height:1.5;color:#f3e5c6;display:block}
+#modal[data-mode=deck] .deck-item>b{font-size:16px;padding-top:4px}
+#modal[data-mode=deck] .page-controls button{min-height:44px;min-width:44px}
+#poolDetails .pool-heading>strong{font-size:13px;line-height:18px;color:#f1dfb4}
+#poolDetails .pool-heading .pool-ready{font-size:11px;line-height:15px;gap:3px}
+#poolDetails .pool-heading{min-width:0}
+#modal[data-mode=market] .market-card .offer strong.ability-name,body.tutorial-mode #modal[data-mode=market] .market-card .offer strong.ability-name{font-size:18px;line-height:1.45}
+#modal[data-mode=market] .market-card .price,body.tutorial-mode #modal[data-mode=market] .market-card .price{font-size:16px;line-height:1.5;min-height:32px}
+#modal[data-mode=market] .market-card>.ability-notes,#modal[data-mode=market] .market-card>.memory-lore{grid-column:1/-1}
+#modal[data-mode=market] .market-card>.memory-lore{font:14px/1.6 system-ui,sans-serif;color:#adbfbd;word-break:keep-all}
+#modal[data-mode=market] .market-card .ability-effects{margin:3px 0}
+#modal[data-mode=market] .market-card .ability-effect{padding:2px 5px}
+#modal[data-mode=market] .nox-rule{font-size:14px;line-height:1.6}
+#modal[data-mode=market] .market-summary{flex-wrap:wrap}
+#modal[data-mode=reward] .ability-choice>.ability-name{font-size:18px;line-height:1.5}
+#modal[data-mode=reward] .ability-choice>.ability-effects{justify-content:center}
+#modal[data-mode=reward] .ability-choice>.ability-notes{margin:8px 0}
+#modal[data-mode=reward] .ability-choice>.choose-label{font-size:14px;line-height:1.5}
+#modal[data-mode=reward] .ability-choice>small{font-size:12px}
+#modal .memory-grade{font-size:12px}
+#modal[data-mode=purge] .deck-item .ability-name{font-size:18px;line-height:1.5}
+#modal[data-mode=purge] .deck-item>div{min-width:0}
+#poolReveal #revealStakes{font-size:16px;line-height:1.5;max-width:calc(100% - 28px)}
+#poolReveal .reveal-count{font-size:14px;line-height:1.5;letter-spacing:0}
+@media(max-width:600px) and (orientation:portrait){
+ #modal[data-mode=market] .market-offers,body.tutorial-mode #modal[data-mode=market] .market-offers{grid-template-columns:minmax(0,1fr)}
+ #modal[data-mode=reward] .ability-choice{grid-template-rows:auto auto auto auto auto}
+ #modal[data-mode=reward] .ability-choice>.ability-effects{grid-column:2;grid-row:3;justify-content:flex-start}
+ #modal[data-mode=reward] .ability-choice>.ability-notes{grid-column:1/-1;grid-row:4}
+ #modal[data-mode=reward] .ability-choice>.choose-label{grid-column:1/-1;grid-row:5}
+ #modal[data-mode=deck] .deck-item{grid-template-columns:52px minmax(0,1fr) auto;gap:9px}
+ #modal[data-mode=deck] .deck-item>.memory-token{--token-size:52px!important}
+ #poolDetails{grid-template-rows:19px minmax(0,1fr)}
+}
+@media(max-height:430px) and (orientation:landscape){
+ #modal[data-mode=reward] .ability-choice{grid-template-columns:52px minmax(0,1fr);column-gap:7px;row-gap:5px;padding:9px;align-content:start;align-items:start}
+ #modal[data-mode=reward] .ability-gem{grid-column:1;grid-row:1/3}
+ #modal[data-mode=reward] .ability-gem,#modal[data-mode=reward] .ability-gem .memory-token{width:52px;height:52px;--token-size:52px!important}
+ #modal[data-mode=reward] .ability-choice>small{grid-column:2;grid-row:1}
+ #modal[data-mode=reward] .ability-choice>.ability-name{grid-column:2;grid-row:2}
+ #modal[data-mode=reward] .ability-choice>.ability-effects{grid-column:1/-1;grid-row:3;justify-content:flex-start}
+ #modal[data-mode=reward] .ability-choice>.ability-notes{grid-column:1/-1;grid-row:4}
+ #modal[data-mode=reward] .ability-choice>.choose-label{grid-column:1/-1;grid-row:5}
+}
+/* The artbook uses the same effects and definitions as the live game. */
+.memory-card>.ability-name{font-size:18px;line-height:1.5}
+.memory-card>.ability-effects{justify-content:center;margin-top:8px}
+.memory-card>.ability-notes{margin-top:10px}
+#detailBody .ability-effects{justify-content:center}
+#detailBody .ability-notes{padding:12px;background:#081720;border:1px solid #60787266}
+#detailBody>.memory-token{--token-size:150px!important}
+#detailBody>p{font-size:16px}
