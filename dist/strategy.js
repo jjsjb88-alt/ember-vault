@@ -1,4 +1,5 @@
-import {apply,enemyTurn,neighbours,moveCost,moveNoise,previewNoise,TERRAINS} from './engine.js?v=20261107c';
+import {isStaged,RETURN_LIFT_EDGE} from './expedition-stages.js?v=20261107d';
+import {apply,enemyTurn,neighbours,moveCost,moveNoise,previewNoise,TERRAINS} from './engine.js?v=20261107d';
 
 // Only charted passages are used. This is a travel estimate, not a combat forecast.
 export function returnRoute(s){
@@ -18,10 +19,10 @@ export function returnRoute(s){
 
 export function routeAdvice(s,id){
  const room=s.rooms[id],noise=previewNoise(s,moveNoise(s,id));
- const lift=Math.abs(s.pos-id)===8&&[9,17].includes(s.pos)&&[9,17].includes(id)&&neighbours(s).includes(id);
+ const pair=isStaged(s)?RETURN_LIFT_EDGE:[9,17],lift=pair.includes(s.pos)&&pair.includes(id)&&s.pos!==id&&neighbours(s).includes(id);
  const enemy=room.enemy?.hp>0;
  const completed={chest:'회수 완료',relic:'유물 회수 완료',camp:'휴식 완료',merchant:'물약 품절',shrine:'정화 완료',mechanism:'지름길 개방됨'};
- const available={entry:'귀환',camp:'회복',merchant:'물약',shrine:'능력 정리',mechanism:'지름길 개방',chest:'보물',relic:`유물 ${room.relic?.value||''}`,enemy:'빈 방'};
+ const available={checkpoint:'층간 정비',entry:'귀환',camp:'회복',merchant:'물약',shrine:'능력 정리',mechanism:'지름길 개방',chest:'보물',relic:`유물 ${room.relic?.value||''}`,enemy:'빈 방'};
  const label=enemy?'전투':lift?'승강 통로':room.used&&completed[room.type]||available[room.type]||'탐색';
  return {label,tone:enemy?'risk':lift||room.type==='mechanism'?'shortcut':noise>=4?'risk':room.terrain==='moss'?'safe':'neutral',terrain:TERRAINS[room.terrain].name,noise,lift};
 }

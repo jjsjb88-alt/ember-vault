@@ -1,6 +1,6 @@
-import {CARDS,neighbours,moveCost} from './engine.js?v=20261107c';
-import {paintIcons} from './art.js?v=20261107c';
-import {tokenMarkup,richGlyph} from './token-art.js?v=20261107c';
+import {CARDS,neighbours,moveCost} from './engine.js?v=20261107d';
+import {paintIcons} from './art.js?v=20261107d';
+import {tokenMarkup,richGlyph} from './token-art.js?v=20261107d';
 
 const KEYS=['sword','move','skill','block','quiet','rattle'];
 const VALUES=[['sword','공격력'],['move','이동력'],['skill','기술'],['block','방어']];

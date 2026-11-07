@@ -2,6 +2,7 @@
 // It never inspects undiscovered rooms, changes rules, or creates a run.
 export function firstExpeditionGoal(state){
  if(state?.firstExpedition!==true||state.phase!=='playing')return null;
+ if(state.layout==='staged'&&!state.relic)return {title:'심층의 유물을 회수하고 귀환',detail:'상층 → 중층 → 하층 → 심층. 층간 정비소에서 능력 풀과 보급을 준비하세요.',note:'심층의 용의 기억을 챙겨 입구에서 탈출해야 완료됩니다.'};
  if(!state.relic)return {
   title:'첫 목표 · 유물 하나와 함께 귀환',
   detail:'길을 살피며 유물을 하나 찾으세요. B3의 달의 눈물도 첫 탈출에 충분합니다.',

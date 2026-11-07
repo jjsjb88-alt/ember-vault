@@ -52,7 +52,7 @@ export function hitMapRoom(x,y,w,h,options){
 
 // Shared normalized anchors for the visible room buttons and floor hit areas.
 export function exitAnchor(from,to){
- if(Math.abs(to-from)===8&&from%4===to%4)return {x:.49,y:.65,arrow:'⇵'};
+ if(Math.abs(to-from)>=8&&from%4===to%4)return {x:.49,y:.65,arrow:'⇵'};
  return ({1:{x:.43,y:.30,arrow:'↗'},4:{x:.81,y:.66,arrow:'↘'},[-1]:{x:.18,y:.66,arrow:'↙'},[-4]:{x:.18,y:.45,arrow:'↖'}})[to-from]??null;
 }
 export function hitExit(from,ids,x,y){

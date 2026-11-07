@@ -1,4 +1,4 @@
-import {CARDS} from './engine.js?v=20261107c';
+import {CARDS} from './engine.js?v=20261107d';
 
 // Display rules shared by the game and artbook. These never resolve a draw or
 // inspect a run; numbers always come from the existing card definitions.
@@ -11,7 +11,7 @@ export const KEYWORDS={
  rattle:{name:'첫 소음',short:'다음 내 소리 행동에 한 번 추가됩니다. 해당 행동 뒤 사라짐 · 유인 제외.',text:'다음 내 이동·공격·상자 열기 등의 소리에 한 번 더합니다. 그 행동 뒤에는 모두 사라집니다. 은신으로 줄일 수 있으며 유인에는 소모되지 않습니다.',example:'첫 소음 +1, 기본 소리 2, 은신 2라면 실제 소리는 1입니다.'},
  draw:{name:'추가 추출',short:'이번 추출에서 메달을 더 공개하고 효과를 자동 합산합니다. 다시 누를 필요가 없습니다.',text:'이번 추출 중 주머니에서 메달을 더 공개하고 그 효과도 바로 합칩니다. 주머니가 비면 식은 메달을 섞되, 이번에 공개 중인 메달은 다시 뽑지 않습니다.',example:'1개 추가 추출이면 실제 뽑을 수 있는 메달이 있을 때 한 개를 더 공개합니다.'},
  heal:{name:'회복',short:'추출되는 즉시 체력을 회복합니다. 최대 체력을 넘지 않습니다.',text:'메달이 추출되는 즉시 체력을 회복합니다. 최대 체력보다 높아지지 않으며 회복한 체력은 다음 턴에도 남습니다.',example:'최대 체력 22에서 현재 21이면 회복 3으로 체력 22가 됩니다.'},
- gold:{name:'금화',short:'추출되는 즉시 얻습니다. 남은 금화는 다음 턴에도 유지됩니다.',text:'메달이 추출되는 즉시 금화를 얻습니다. 금화는 다음 턴에도 유지되며 교역 목록 교체 등에 쓰거나 탈출 점수로 가져갑니다.',example:'금화 +2는 지금 가진 금화에 2를 더합니다.'},
+ gold:{name:'금화',short:'추출되는 즉시 얻습니다. 남은 금화는 다음 턴에도 유지됩니다.',text:'메달이 추출되는 즉시 금화를 얻습니다. 금화는 다음 턴에도 유지되며 교역 목록 교체 등 원정 중 준비에 사용합니다.',example:'금화 +2는 지금 가진 금화에 2를 더합니다.'},
 };
 export function abilityEffects(id){
  const e=CARDS[id].e,items=[];

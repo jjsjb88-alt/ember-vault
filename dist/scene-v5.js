@@ -1,13 +1,14 @@
-import {neighbours,moveStatus} from './engine.js?v=20261107c';
-import {icon,sprite} from './art.js?v=20261107c';
-import {DIRECTIONS,travelVector,walkFrame,motionFrame,mapLayout,projectMap,mapPassage,hitMapRoom,exitAnchor,hitExit} from './scene-layout.js?v=20261107c';
-import {WALK_FRAMES} from './rogue-frames.js?v=20261107c';
-import {ATTACK_FRAMES} from './rogue-attack-frames.js?v=20261107c';
-import {RELIC_MOTION} from './rogue-relic-frames.js?v=20261107c';
-import {prepareFrames} from './sprite-atlas.js?v=20261107c';
-import {roomEnvironment} from './encounter.js?v=20261107c';
-import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261107c';
-import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261107c';
+import {isStaged,STAGES} from './expedition-stages.js?v=20261107d';
+import {neighbours,moveStatus} from './engine.js?v=20261107d';
+import {icon,sprite} from './art.js?v=20261107d';
+import {DIRECTIONS,travelVector,walkFrame,motionFrame,mapLayout,projectMap,mapPassage,hitMapRoom,exitAnchor,hitExit} from './scene-layout.js?v=20261107d';
+import {WALK_FRAMES} from './rogue-frames.js?v=20261107d';
+import {ATTACK_FRAMES} from './rogue-attack-frames.js?v=20261107d';
+import {RELIC_MOTION} from './rogue-relic-frames.js?v=20261107d';
+import {prepareFrames} from './sprite-atlas.js?v=20261107d';
+import {roomEnvironment} from './encounter.js?v=20261107d';
+import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261107d';
+import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261107d';
 
 export function makeRenderer(canvas,getState,minimap){
  const c=canvas.getContext('2d'),mc=minimap.getContext('2d');
@@ -201,12 +202,13 @@ export function makeRenderer(canvas,getState,minimap){
   }
   for(const r of s.rooms){const p=at(r.id),here=r.id===s.pos,known=r.seen||here,heard=s.lastSound?.turn===s.turn&&s.lastSound.field.find(x=>x.id===r.id);
    if(heard)glow(ctx,p.x,p.y,box*1.8,`rgba(255,173,66,${.12+heard.level*.035})`);
-   ctx.fillStyle=here?'#e6c478':r.seen?'#718292':'#263743';ctx.fillRect(p.x-box/2-1,p.y-box/2-1,box+2,box+2);
+   ctx.fillStyle=here?'#e6c478':r.seen&&isStaged(s)?STAGES[r.stage].color:r.seen?'#718292':'#263743';ctx.fillRect(p.x-box/2-1,p.y-box/2-1,box+2,box+2);
    ctx.fillStyle=here?'#6c5734':r.seen?'#233b4c':'#0f1c27';ctx.fillRect(p.x-box/2,p.y-box/2,box,box);
    const echo=known?s.echo?.[r.id]||0:0;if(echo){const f=reduced?1:.7+.3*Math.sin(ms/260+r.id*1.7);glow(ctx,p.x,p.y,box*(.9+echo*.18),`rgba(255,140,50,${(.16+echo*.05)*f})`);ctx.fillStyle='#ffc477';const echoSize=Math.max(large?10*pixel:9,Math.round(box*.45));ctx.font=`bold ${echoSize}px system-ui`;ctx.textAlign='center';ctx.fillText(echo,p.x+box*.6+echoSize*.6,p.y+echoSize*.35);}
    if(available.has(r.id)){ctx.strokeStyle='#ffe09a';ctx.lineWidth=large?3:2;ctx.strokeRect(p.x-box/2-4,p.y-box/2-4,box+8,box+8);}
    if(here){ctx.fillStyle='#ffe090';ctx.beginPath();ctx.moveTo(p.x,p.y-box*.4);ctx.lineTo(p.x+box*.34,p.y+box*.32);ctx.lineTo(p.x-box*.34,p.y+box*.32);ctx.closePath();ctx.fill();}
    else if(r.seen&&r.enemy?.hp>0){ctx.fillStyle='#662a33';ctx.fillRect(p.x-box*.5,p.y-box*.5,box,box);icon(ctx,'skull',p.x-box*.4,p.y-box*.4,box*.8);}
+   else if(r.seen&&r.type==='checkpoint'){icon(ctx,'camp',p.x-box*.4,p.y-box*.4,box*.8);}
    else if(r.seen&&r.type==='mechanism'&&!r.used&&winchIcon.complete&&winchIcon.naturalWidth)ctx.drawImage(winchIcon,p.x-box*.4,p.y-box*.4,box*.8,box*.8);
    else if(r.seen&&!r.used){const symbol={entry:'door',chest:'chest',camp:'camp',merchant:'merchant',shrine:'shrine',relic:r.relic?.icon,mechanism:'shrine'}[r.type];if(symbol)icon(ctx,symbol,p.x-box*.4,p.y-box*.4,box*.8);}
    else if(r.seen&&r.type==='mechanism'&&r.used){ctx.fillStyle='#b8dfcc';ctx.font=`bold ${Math.max(large?10*pixel:9,box*.7)}px system-ui`;ctx.textAlign='center';ctx.fillText('↗',p.x,p.y+box*.28);}

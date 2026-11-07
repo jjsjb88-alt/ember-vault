@@ -1,3 +1,4 @@
+import {STAGES,STAGE_ROOMS,RETURN_LIFT_EDGE,isStaged,stageIndex,checkpointIndex,configureStages,expeditionBonuses} from './expedition-stages.js?v=20261107d';
 export const VERSION=2;
 export const ROLES={
   rogue:{name:'그림자 도적',short:'도적',color:'#86c6aa',icon:'hero',desc:'가볍게 걷고, 조용히 훔칩니다.',trait:'매 턴 소음 1 추가 감소',hp:22},
@@ -41,7 +42,7 @@ export const SHORTCUT_EDGE=Object.freeze([9,17]);
 // Echoes: the vault remembers footsteps. Every sound leaves an echo in the room it came from; echoes fade each turn.
 // When the dragon attacks, its breath catches the strongest echo and crawls along the echoing passages toward you.
 export const ECHO_MAX=9,LAIR=15,MEMORY_MAX=3;
-export function lairRoom(s){return s.layout==='expanded'?19:LAIR;}
+export function lairRoom(s){return s.layout==='expanded'||isStaged(s)?19:LAIR;}
 export function dragonDue(s){return s.noise>=8?'noise':s.relic&&s.turn%3===0?'relic':null;}
 export function breathReach(s){return Math.min(6,3+Math.max(0,s.noise-8));}
 export function echoFadeEvery(s){return (s.memory||0)+1;}
@@ -73,7 +74,7 @@ function decorateRoom(r){
 function generateRooms(s){
  const specs=[['entry','무너진 입구'],['chest','망각의 창고'],['shrine','잊힌 제단'],['merchant','떠돌이의 쉼터'],['enemy','이끼 낀 회랑'],['enemy','부서진 무기고'],['chest','잠든 서고'],['enemy','감시자의 방'],['camp','작은 모닥불'],['enemy','속삭이는 묘실'],['relic','달의 봉인실'],['camp','마지막 불씨'],['chest','금빛 함정'],['relic','왕의 무덤'],['shrine','고요의 성소'],['relic','잿불의 심장']];
  if(next(s)>.5)[specs[2],specs[3]]=[specs[3],specs[2]];
- if(s.layout==='expanded')specs.push(['camp','이끼 숨터'],['mechanism','귀환 윈치실'],['chest','쇳소리 보물고'],['relic','용의 기억실']);
+ if(s.layout==='expanded'||isStaged(s))specs.push(['camp','이끼 숨터'],['mechanism','귀환 윈치실'],['chest','쇳소리 보물고'],['relic','용의 기억실']);
  return specs.map(([type,name],id)=>{
   const room={id,type,name,col:id%4,row:Math.floor(id/4),seen:[0,1,4].includes(id),visited:id===0,used:false,enemy:null};
   if(type==='enemy'||type==='relic'||id===18){
@@ -139,11 +140,12 @@ function freshFields(s){Object.assign(s,{mode:'walk',soundSeq:0,lastSound:null,n
 export function newRun({seed=Date.now(),role='rogue',layout='expanded'}={}){
  if(!ROLES[role])role='rogue';seed=Number(seed)>>>0||135792468;
  const s={version:VERSION,seed,rng:seed,role,turn:1,pos:0,from:null,hp:ROLES[role].hp,maxHp:ROLES[role].hp,gold:0,noise:0,resource:null,hand:[],deck:[],discard:[],played:[],edges:EDGES.map(e=>[...e]),rooms:[],market:[],log:[],relic:null,countdown:null,phase:'playing',pending:null,kills:0,purchases:0,refreshTurn:0,steps:0};
- if(layout!=='classic'){s.layout='expanded';s.edges.push(...EXPANDED_EDGES.map(e=>[...e]));}
+ if(layout!=='classic'){s.layout=layout==='staged'?'staged':'expanded';s.edges.push(...EXPANDED_EDGES.map(e=>[...e]));}
  freshFields(s);s.memory=0;s.resource=resources(s);s.rooms=generateRooms(s);s.echo=Array(s.rooms.length).fill(0);
  s.deck=shuffle(s,['scout','step','slash','focus','guard']);
  s.market=['step',...shuffle(s,MARKET_IDS.filter(x=>x!=='step')).slice(0,3)];
  resolvePool(s,['scout','step',role==='mage'?'spark':'slash','focus',role==='rogue'?'sneak':'guard']);
+ if(layout==='staged')configureStages(s);
  log(s,'금고의 문이 열렸습니다. 능력이 자동으로 추출됩니다. 유물을 찾아 이 입구로 돌아오세요.','good');return s;
 }
 export function migrateSave(old){
@@ -154,7 +156,7 @@ export function migrateSave(old){
 function ok(s,message){return {ok:true,state:s,message};}
 function fail(s,message){return {ok:false,state:s,message};}
 function damage(s,amount,source){const blocked=Math.min(amount,s.resource.block);s.resource.block-=blocked;const taken=amount-blocked;s.hp=Math.max(0,s.hp-taken);log(s,`${source} · ${blocked?`방어 ${blocked}, `:''}피해 ${taken}`,taken?'bad':'good');return taken;}
-function finish(s,won,reason){s.phase=won?'won':'lost';s.pending=null;s.reason=reason;s.score=won?(s.relic.value+s.gold+s.rooms.filter(r=>r.visited).length*2+s.hp+20):0;log(s,reason,won?'good':'bad');}
+function finish(s,won,reason){s.phase=won?'won':'lost';s.pending=null;s.reason=reason;s.score=won?(isStaged(s)?s.relic.value+20+s.hp+expeditionBonuses(s).tempo+expeditionBonuses(s).quiet:s.relic.value+s.gold+s.rooms.filter(r=>r.visited).length*2+s.hp+20):0;log(s,reason,won?'good':'bad');}
 function nextStep(s,from,to){const q=[[from]],seen=new Set([from]);while(q.length){const path=q.shift(),id=path.at(-1);if(id===to)return path[1]??from;for(const n of neighbours(s,id))if(!seen.has(n)){seen.add(n);q.push([...path,n]);}}return from;}
 export function enemyTurn(s){
  s.pursuits=[];
@@ -181,6 +183,7 @@ export function moveStatus(s,id){
  else if(s.pending)reason='먼저 보상을 선택해 주세요.';
  else if(!neighbours(s).includes(id))reason='연결된 방으로만 이동할 수 있습니다.';
  else if(s.rooms[s.pos].enemy?.hp>0&&!retreat)reason='적을 쓰러뜨리거나 들어온 방으로 후퇴하세요.';
+ else if(isStaged(s)&&stageIndex(s,id)>stageIndex(s)&&s.stagePrepared.slice(0,stageIndex(s,id)).some(choice=>choice===null))reason='이전 구역 정비소에서 능력·정리·보급 중 하나를 준비하세요.';
  else if(s.resource.move<cost)reason=`이동 ${cost} 필요 · 「다음 턴」으로 이동력을 얻으세요.`;
  return {allowed:!reason,cost,retreat:!!retreat,reason};
 }
@@ -196,6 +199,7 @@ export function apply(s,action){
   const id=action.id,status=moveStatus(s,id);if(!status.allowed)return fail(s,status.reason);
   const cost=status.cost;
   const noise=moveNoise(s,id);s.resource.move-=cost;s.from=s.pos;s.pos=id;s.steps++;s.hidden=false;s.rooms[id].visited=true;
+  if(isStaged(s)){const depth=stageIndex(s);s.memory=Math.max(s.memory,depth);if(s.rooms[id].type==='checkpoint')s.market=[...STAGES[checkpointIndex(s)].stock];}
   for(const n of [id,...neighbours(s)])s.rooms[n].seen=true;
   emitNoise(s,id,noise,`${MODES[s.mode].name} · ${TERRAINS[s.rooms[id].terrain].name}`);
   return ok(s,s.rooms[id].name);
@@ -224,17 +228,18 @@ export function apply(s,action){
  }
  case 'interact':{
   if(r.enemy?.hp>0)return fail(s,'적을 먼저 쓰러뜨려야 합니다.');
-  if(r.type==='entry'){if(!s.relic)return fail(s,'유물을 하나 찾아야 탈출할 수 있습니다.');finish(s,true,`${s.relic.name}을 품고 지상으로 돌아왔습니다.`);return ok(s,'탈출 성공!');}
+  if(r.type==='entry'){if(!s.relic||isStaged(s)&&s.relic.name!=='용의 기억')return fail(s,isStaged(s)?'심층의 용의 기억을 회수해야 탈출할 수 있습니다.':'유물을 하나 찾아야 탈출할 수 있습니다.');finish(s,true,`${s.relic.name}을 품고 지상으로 돌아왔습니다.`);return ok(s,'탈출 성공!');}
   if(r.used)return fail(s,'이 방의 보상은 이미 받았습니다.');
+  if(r.type==='checkpoint')return fail(s,'정비소에서 능력·정리·보급을 선택하세요.');
   if(r.type==='mechanism'){
-   if(s.layout!=='expanded'||r.id!==17)return fail(s,'이 장치는 작동하지 않습니다.');
-   const [destination,source]=SHORTCUT_EDGE;
+   if(!(s.layout==='expanded'||isStaged(s))||r.id!==17)return fail(s,'이 장치는 작동하지 않습니다.');
+   const [destination,source]=isStaged(s)?RETURN_LIFT_EDGE:SHORTCUT_EDGE,cost=isStaged(s)?3:2;
    if(neighbours(s,source).includes(destination))return fail(s,'귀환 지름길이 이미 열려 있습니다.');
-   if(s.resource.skill<2)return fail(s,'윈치를 돌리려면 기술 2가 필요합니다.');
-   s.resource.skill-=2;r.used=true;s.edges.push([...SHORTCUT_EDGE]);s.rooms[destination].seen=true;
-   emitNoise(s,s.pos,6,'귀환 윈치');
-   log(s,'귀환 윈치 · 기술 −2 · 속삭이는 묘실로 승강 통로가 열렸습니다. 열린 통로로 소리와 숨결도 지납니다.','good');
-   return ok(s,'귀환 지름길 개방 · 기술 −2');
+   if(s.resource.skill<cost)return fail(s,`승강기에는 기술 ${cost}이 필요합니다.`);
+   s.resource.skill-=cost;r.used=true;s.edges.push([destination,source]);s.rooms[destination].seen=true;
+   emitNoise(s,s.pos,isStaged(s)?8:6,'귀환 윈치');
+   log(s,`귀환 승강기 · 기술 −${cost} · ${s.rooms[destination].name}로 통로가 열렸습니다. 소리와 숨결도 지납니다.`,'good');
+   return ok(s,`귀환 지름길 개방 · 기술 −${cost}`);
   }
   if(r.type==='chest'){const gold=r.id===18?14:r.row>=3?10:5+Math.floor(next(s)*3),noise=r.id===18?9:r.row>=3?7:3;s.gold+=gold;r.used=true;emitNoise(s,s.pos,noise,r.row>=3?'상자의 경보 장치':'낡은 경첩');log(s,`보물 상자 · 금화 +${gold}`,'good');return ok(s,`금화 +${gold}`);}
   if(r.type==='camp'){if(s.hp===s.maxHp&&s.noise===0)return fail(s,'아직 쉬어 갈 필요가 없습니다.');const healed=Math.min(6,s.maxHp-s.hp);s.hp+=healed;s.noise=Math.max(0,s.noise-3);r.used=true;log(s,`불가에서 휴식 · 체력 +${healed}, 경계 −3`,'good');return ok(s,'따뜻한 휴식');}
@@ -246,17 +251,35 @@ export function apply(s,action){
   if(r.type!=='merchant'||r.enemy?.hp>0)return fail(s,'적이 없는 상인의 방에서 구매할 수 있습니다.');if(r.used)return fail(s,'물약이 품절되었습니다.');if(s.hp===s.maxHp)return fail(s,'체력이 이미 가득 찼습니다.');if(s.gold<5)return fail(s,'금화 5가 필요합니다.');
   s.gold-=5;s.hp=Math.min(s.maxHp,s.hp+8);r.used=true;return ok(s,'체력 8을 회복했습니다.');
  }
- case 'buy':{
-  const i=action.index,id=s.market[i],c=CARDS[id];if(!c)return fail(s,'능력을 찾을 수 없습니다.');if(s.resource.skill<c.cost)return fail(s,`기술 ${c.cost}이 필요합니다.`);
-  s.resource.skill-=c.cost;s.discard.push(id);s.purchases++;s.market[i]=sample(s,MARKET_IDS.filter(x=>!s.market.includes(x)));log(s,`${c.name} 영입 · 주머니를 다시 섞을 때부터 추출`,'good');return ok(s,`${c.name} 획득`);
+ case 'prepare':{
+  const index=checkpointIndex(s),total=[...s.deck,...s.discard,...s.played];
+  if(index<0||r.enemy?.hp>0)return fail(s,'적이 없는 층간 정비소에서 준비할 수 있습니다.');
+  if(s.stagePrepared[index]!==null)return fail(s,'이 정비소의 준비는 이미 마쳤습니다.');
+  if(action.choice==='recruit'){if(!STAGES[index].offers.includes(action.id))return fail(s,'이 정비소의 기억을 고르세요.');s.discard.push(action.id);}
+  else if(action.choice==='resupply'){s.hp=Math.min(s.maxHp,s.hp+6);s.noise=Math.max(0,s.noise-2);s.provisions++;}
+  else if(action.choice==='refine'){if(total.length<=5)return fail(s,'최소 5개의 능력을 남겨야 합니다.');s.pending={type:'purge',options:[...new Set(total)],checkpoint:index};return ok(s,'다음 구역을 위해 내려놓을 기억을 고르세요.');}
+  else return fail(s,'능력 영입·기억 정리·보급 중 하나를 선택하세요.');
+  s.stagePrepared[index]=action.choice;r.used=true;log(s,`${STAGES[index].name} 정비 · ${action.choice==='recruit'?CARDS[action.id].name+' 영입':'체력 +6 · 보급 +1 · 경계 −2'} · 다음 구역 개방`,'good');return ok(s,'준비 완료 · 다음 구역으로 갈 수 있습니다.');
  }
- case 'refresh':if(s.refreshTurn===s.turn)return fail(s,'교역소는 턴당 한 번 교체할 수 있습니다.');if(s.gold<2)return fail(s,'금화 2가 필요합니다.');s.gold-=2;s.market=shuffle(s,[...MARKET_IDS]).slice(0,4);s.refreshTurn=s.turn;return ok(s,'교역소 능력이 바뀌었습니다.');
+ case 'provision':{
+  if(!isStaged(s)||s.provisions<1)return fail(s,'남은 휴대 보급이 없습니다.');
+  if(s.provisionTurn===s.turn)return fail(s,'휴대 보급은 턴마다 한 번 사용할 수 있습니다.');
+  if(s.hp>=s.maxHp)return fail(s,'체력이 가득 차 있습니다.');
+  const amount=Math.min(6,s.maxHp-s.hp);s.provisions--;s.provisionTurn=s.turn;s.hp+=amount;emitNoise(s,s.pos,3,'보급 꾸러미 풀기');log(s,`휴대 보급 · 체력 +${amount}`,'good');return ok(s,`체력 +${amount} · 보급 사용`);
+ }
+ case 'buy':{
+  const camp=checkpointIndex(s);if(isStaged(s)&&(camp<0||r.enemy?.hp>0||s.stagePrepared[camp]===null||s.stageTrades[camp]>=1))return fail(s,'각 정비소의 추가 교역은 한 번만 가능합니다.');
+  const i=action.index,id=s.market[i],c=CARDS[id];if(!c)return fail(s,'능력을 찾을 수 없습니다.');if(s.resource.skill<c.cost)return fail(s,`기술 ${c.cost}이 필요합니다.`);
+  s.resource.skill-=c.cost;s.discard.push(id);s.purchases++;if(isStaged(s))s.stageTrades[camp]++;s.market[i]=sample(s,MARKET_IDS.filter(x=>!s.market.includes(x)));log(s,`${c.name} 영입 · 주머니를 다시 섞을 때부터 추출`,'good');return ok(s,`${c.name} 획득`);
+ }
+ case 'refresh':if(isStaged(s)&&(checkpointIndex(s)<0||s.rooms[s.pos].enemy?.hp>0||s.stagePrepared[checkpointIndex(s)]===null||s.stageTrades[checkpointIndex(s)]>=1))return fail(s,'추가 교역이 남은 정비소에서 목록을 바꿀 수 있습니다.');if(s.refreshTurn===s.turn)return fail(s,'교역소는 턴당 한 번 교체할 수 있습니다.');if(s.gold<2)return fail(s,'금화 2가 필요합니다.');s.gold-=2;s.market=shuffle(s,[...MARKET_IDS]).slice(0,4);s.refreshTurn=s.turn;return ok(s,'교역소 능력이 바뀌었습니다.');
  case 'reward':if(s.pending?.type!=='reward'||!s.pending.options.includes(action.id))return fail(s,'선택할 수 없는 보상입니다.');s.discard.push(action.id);s.pending=null;log(s,`전투 보상 · ${CARDS[action.id].name}`,'good');return ok(s,'새 능력을 메달 주머니에 넣었습니다.');
  case 'skipReward':if(s.pending?.type!=='reward')return fail(s,'선택할 보상이 없습니다.');s.pending=null;return ok(s,'보상을 받지 않았습니다.');
  case 'purge':{
   if(s.pending?.type!=='purge'||!s.pending.options.includes(action.id))return fail(s,'지울 능력을 선택하세요.');
   for(const pile of [s.discard,s.deck,s.played]){const i=pile.indexOf(action.id);if(i!==-1){pile.splice(i,1);break;}}
-  s.pending=null;r.used=true;log(s,`망각의 제단 · ${CARDS[action.id].name} 1개 제거`,'good');return ok(s,'메달 주머니가 가벼워졌습니다.');
+  if(isStaged(s)&&Number.isInteger(s.pending.checkpoint)){s.stagePrepared[s.pending.checkpoint]='refine';}
+  s.pending=null;r.used=true;log(s,`${isStaged(s)&&r.type==='checkpoint'?'정비소의 기억 정리':'망각의 제단'} · ${CARDS[action.id].name} 1개 제거`,'good');return ok(s,'메달 주머니가 가벼워졌습니다.');
  }
  case 'cancelPurge':if(s.pending?.type!=='purge')return fail(s,'진행 중인 의식이 없습니다.');s.pending=null;return ok(s,'의식을 미뤘습니다.');
  case 'end':{
@@ -281,10 +304,19 @@ export function apply(s,action){
 }
 export function validSave(s){
  if(!(s&&s.version===VERSION&&ROLES[s.role]&&MODES[s.mode]&&Array.isArray(s.rooms)))return false;
- const count=s.rooms.length,expanded=s.layout==='expanded',roomId=id=>Number.isInteger(id)&&id>=0&&id<count;
+ const count=s.rooms.length,expanded=s.layout==='expanded'||isStaged(s),roomId=id=>Number.isInteger(id)&&id>=0&&id<count;
  if((expanded?count!==20:count!==16)||(!expanded&&s.layout!==undefined&&s.layout!=='classic'))return false;
  if(!(roomId(s.pos)&&Array.isArray(s.edges)&&['playing','won','lost'].includes(s.phase)&&Number.isFinite(s.hp)&&s.resource&&s.poolTotal&&Array.isArray(s.market)&&s.market.length===4&&Array.isArray(s.log)))return false;
  if(!s.rooms.every((r,id)=>r&&r.id===id&&r.row===Math.floor(id/4)&&r.col===id%4&&TERRAINS[r.terrain]))return false;
+ if(isStaged(s)){
+  if(!Array.isArray(s.stagePrepared)||s.stagePrepared.length!==3||!s.stagePrepared.every(c=>[null,'recruit','refine','resupply'].includes(c))||!Array.isArray(s.stageTrades)||s.stageTrades.length!==3||!s.stageTrades.every(n=>Number.isInteger(n)&&n>=0&&n<=1)||!Number.isInteger(s.provisions)||s.provisions<0||s.provisions>4||!Number.isInteger(s.provisionTurn)||s.provisionTurn<0||s.provisionTurn>s.turn)return false;
+  if(!s.rooms.every((r,id)=>r.stage===STAGE_ROOMS[id]))return false;
+  if(!Number.isInteger(s.memory)||s.memory<s.rooms[s.pos].stage||s.memory>MEMORY_MAX||s.stagePrepared.some((choice,i)=>choice!==null&&s.stagePrepared.slice(0,i).some(x=>x===null))||s.stageTrades.some((trades,i)=>trades>0&&s.stagePrepared[i]===null))return false;
+  if(s.stagePrepared.slice(0,s.rooms[s.pos].stage).some(choice=>choice===null))return false;
+  if(s.pending?.checkpoint!==undefined&&(!Number.isInteger(s.pending.checkpoint)||s.pending.checkpoint!==checkpointIndex(s)||s.pending.type!=='purge'||s.stagePrepared[s.pending.checkpoint]!==null))return false;
+  if(s.rooms.filter(r=>r.type==='relic').length!==1||s.rooms[19].type!=='relic'||s.rooms[19].relic?.name!=='용의 기억'||s.relic&&s.relic.name!=='용의 기억')return false;
+  if(STAGES.slice(0,3).some((stage,i)=>s.rooms[stage.checkpoint].type!=='checkpoint'||s.rooms[stage.checkpoint].used!==(s.stagePrepared[i]!==null)))return false;
+ }
  const connections=new Set();
  for(const edge of s.edges){
   if(!Array.isArray(edge)||edge.length!==2||!edge.every(roomId)||edge[0]===edge[1])return false;

@@ -1,0 +1,24 @@
+{
+  "result": "PASS",
+  "scope": "90 earned engine routes; map-aware policy, not human difficulty evidence",
+  "roles": {
+    "rogue": {
+      "wins": 30,
+      "outOf": 30,
+      "min": 10,
+      "max": 15
+    },
+    "knight": {
+      "wins": 30,
+      "outOf": 30,
+      "min": 11,
+      "max": 16
+    },
+    "mage": {
+      "wins": 30,
+      "outOf": 30,
+      "min": 10,
+      "max": 15
+    }
+  }
+}
