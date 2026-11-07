@@ -32,8 +32,9 @@ export function projectMap(id,w,h,options){
 // Lift passages bend around the intervening floor so they never look connected to its room.
 export function mapPassage(from,to,w,h,options){
  const grid=mapLayout(w,h,options),start=projectMap(from,w,h,options),end=projectMap(to,w,h,options);
+ const secret=(from===16&&to===19)||(from===19&&to===16);
  const lift=Math.abs(to-from)>grid.columns&&from%grid.columns===to%grid.columns;
- return {start,end,lift,control:lift?{x:start.x+grid.columnGap*.7,y:(start.y+end.y)/2}:null};
+ return {start,end,lift,secret,control:secret?{x:(start.x+end.x)/2,y:start.y-grid.rowGap*.8}:lift?{x:start.x+grid.columnGap*.7,y:(start.y+end.y)/2}:null};
 }
 export function passagePoint(path,t){
  const {start:a,end:b,control:c}=path,u=1-t;
@@ -52,6 +53,7 @@ export function hitMapRoom(x,y,w,h,options){
 
 // Shared normalized anchors for the visible room buttons and floor hit areas.
 export function exitAnchor(from,to){
+ if(from===16&&to===19||from===19&&to===16)return {x:.60,y:.65,arrow:'◈'};
  if(Math.abs(to-from)>=8&&from%4===to%4)return {x:.49,y:.65,arrow:'⇵'};
  return ({1:{x:.43,y:.30,arrow:'↗'},4:{x:.81,y:.66,arrow:'↘'},[-1]:{x:.18,y:.66,arrow:'↙'},[-4]:{x:.18,y:.45,arrow:'↖'}})[to-from]??null;
 }

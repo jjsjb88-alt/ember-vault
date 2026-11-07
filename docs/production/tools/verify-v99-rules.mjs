@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import {newRun,apply,CARDS,moveCost,validSave} from '../../../dist/engine.js';
 import {STAGES,checkpointIndex} from '../../../dist/expedition-stages.js';
-function play(seed,role){const s=newRun({seed,role,layout:'staged'}),actions=[];let path=[1,5,6,7,11,15,14,13,17,18,19],i=0,returning=false;
+function play(seed,role){const s=newRun({seed,role,layout:'staged',gimmicks:false}),actions=[];let path=[1,5,6,7,11,15,14,13,17,18,19],i=0,returning=false;
  const act=a=>{const r=apply(s,a);if(!r.ok)throw Error(r.message+JSON.stringify(a));actions.push(a);if(!validSave(s))throw Error('Invalid save after '+JSON.stringify(a));};
  for(let turn=0;s.phase==='playing'&&actions.length<350;turn++){
   if(s.pending){act({type:'skipReward'});continue;}

@@ -1,0 +1,7 @@
+{
+  "result": "PASS",
+  "scope": "Fresh normal UI: preview is read-only, confirmation changes stance and travels.\nNo game state, RNG or storage injection. Chromium touch emulation, not hardware.\n",
+  "read_only_preview": true,
+  "confirmed_stance_and_travel": true,
+  "errors": []
+}

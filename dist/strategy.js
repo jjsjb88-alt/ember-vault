@@ -1,5 +1,6 @@
-import {isStaged,RETURN_LIFT_EDGE} from './expedition-stages.js?v=20261107d';
-import {apply,enemyTurn,neighbours,moveCost,moveNoise,previewNoise,TERRAINS} from './engine.js?v=20261107d';
+import {gimmickPassable} from './dungeon-gimmicks.js?v=20261107e';
+import {isStaged,RETURN_LIFT_EDGE} from './expedition-stages.js?v=20261107e';
+import {apply,enemyTurn,neighbours,moveCost,moveNoise,previewNoise,TERRAINS} from './engine.js?v=20261107e';
 
 // Only charted passages are used. This is a travel estimate, not a combat forecast.
 export function returnRoute(s){
@@ -9,8 +10,8 @@ export function returnRoute(s){
   if(done.has(from))continue;done.add(from);
   if(from===0)return {path:paths.get(from),cost:costs.get(from),steps:paths.get(from).length-1};
   for(const to of neighbours(s,from)){
-   if(!s.rooms[to]?.seen)continue;
-   const cost=costs.get(from)+moveCost(s,to,'walk');
+   if(!s.rooms[to]?.seen||!gimmickPassable(s,from,to))continue;
+   const cost=costs.get(from)+moveCost(s,to,'walk',from);
    if(cost<(costs.get(to)??Infinity)){costs.set(to,cost);paths.set(to,[...paths.get(from),to]);open.push(to);}
   }
  }

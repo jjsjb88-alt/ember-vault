@@ -1,14 +1,15 @@
-import {isStaged,STAGES} from './expedition-stages.js?v=20261107d';
-import {neighbours,moveStatus} from './engine.js?v=20261107d';
-import {icon,sprite} from './art.js?v=20261107d';
-import {DIRECTIONS,travelVector,walkFrame,motionFrame,mapLayout,projectMap,mapPassage,hitMapRoom,exitAnchor,hitExit} from './scene-layout.js?v=20261107d';
-import {WALK_FRAMES} from './rogue-frames.js?v=20261107d';
-import {ATTACK_FRAMES} from './rogue-attack-frames.js?v=20261107d';
-import {RELIC_MOTION} from './rogue-relic-frames.js?v=20261107d';
-import {prepareFrames} from './sprite-atlas.js?v=20261107d';
-import {roomEnvironment} from './encounter.js?v=20261107d';
-import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261107d';
-import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261107d';
+import {hasGimmicks,roomGimmick,passageRule,worldPassageOpen} from './dungeon-gimmicks.js?v=20261107e';
+import {isStaged,STAGES} from './expedition-stages.js?v=20261107e';
+import {neighbours,moveStatus} from './engine.js?v=20261107e';
+import {icon,sprite} from './art.js?v=20261107e';
+import {DIRECTIONS,travelVector,walkFrame,motionFrame,mapLayout,projectMap,mapPassage,passagePoint,hitMapRoom,exitAnchor,hitExit} from './scene-layout.js?v=20261107e';
+import {WALK_FRAMES} from './rogue-frames.js?v=20261107e';
+import {ATTACK_FRAMES} from './rogue-attack-frames.js?v=20261107e';
+import {RELIC_MOTION} from './rogue-relic-frames.js?v=20261107e';
+import {prepareFrames} from './sprite-atlas.js?v=20261107e';
+import {roomEnvironment} from './encounter.js?v=20261107e';
+import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261107e';
+import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261107e';
 
 export function makeRenderer(canvas,getState,minimap){
  const c=canvas.getContext('2d'),mc=minimap.getContext('2d');
@@ -76,7 +77,7 @@ export function makeRenderer(canvas,getState,minimap){
   if(r.type==='merchant'||r.host==='nox'){const pose=noxPoses[document.querySelector('#cutscene[open][data-speaker=guest]')?2:document.querySelector('#modal[open][data-mode=market]')?1:getState().tradeStory?.lastBuy?3:0];if(pose?.complete&&pose.naturalWidth){const width=height*pose.naturalWidth/pose.naturalHeight;shadow(x,y,width*.24);c.drawImage(pose,x-width/2,y-height,width,height);}return;}
   if(!r.used&&['relic','mechanism','chest'].includes(r.type)&&focusRing.complete&&focusRing.naturalWidth){const beat=reduced?0:ms%960,frame=beat<260?0:beat<480?1:beat<740?2:3;const width=height*1.1;c.save();c.globalAlpha=.7;c.drawImage(focusRing,1+frame*50,1,48,48,x-width/2,y-width*.16,width,width*.32);c.restore();}
   const relicId=r.relic?.value===56?'dragon-memory':r.relic?.icon==='crown'?'crown':r.relic?.icon==='heartgem'?'heart':'moon';
-  const custom=r.type==='mechanism'?winchProp:r.type==='relic'?propArt[relicId]:r.type==='chest'?cacheProp:propArt[r.type];
+  const custom=hasGimmicks(getState())&&r.id===14?winchProp:hasGimmicks(getState())&&r.id===16?propArt.shrine:r.type==='mechanism'?winchProp:r.type==='relic'?propArt[relicId]:r.type==='chest'?cacheProp:propArt[r.type];
   if(custom?.complete&&custom.naturalWidth){const size=height*.93;shadow(x,y,size*.27);c.save();if(r.used)c.globalAlpha=.4;c.drawImage(custom,x-size/2,y-size*.92,size,size);c.restore();if(r.used&&!(r.type==='mechanism'&&interaction)){const font=Math.max(14,11*W/cssWidth);c.fillStyle='#b8dfcc';c.font=`${font}px system-ui`;c.textAlign='center';c.fillText(r.type==='mechanism'?'승강 통로 개방':'사용 완료',x,y+font);}return;}
   const id={chest:0,camp:1,shrine:2,relic:2,mechanism:2}[r.type];
   if(id===undefined||!objects.complete||!objects.naturalWidth)return;
@@ -198,7 +199,11 @@ export function makeRenderer(canvas,getState,minimap){
   ctx.clearRect(0,0,w,h);ctx.fillStyle=large?'#06111af5':'#08121ace';ctx.fillRect(0,0,w,h);
   for(const[a,b]of s.edges){const path=mapPassage(a,b,w,h,options),A=path.start,B=path.end,seen=s.rooms[a].seen&&s.rooms[b].seen;
    const next=(a===s.pos&&available.has(b))||(b===s.pos&&available.has(a));
-   ctx.strokeStyle=path.lift?'#77c6ba':next?'#f3c978':seen?'#768597':'#2a3845';ctx.lineWidth=next?4:seen?3:1;ctx.setLineDash(path.lift?[5*pixel,4*pixel]:[]);ctx.beginPath();ctx.moveTo(A.x,A.y);if(path.control)ctx.quadraticCurveTo(path.control.x,path.control.y,B.x,B.y);else ctx.lineTo(B.x,B.y);ctx.stroke();ctx.setLineDash([]);
+   const rule=passageRule(s,a,b),blocked=!worldPassageOpen(s,a,b);
+   ctx.strokeStyle=blocked&&seen?'#ce8497':path.secret?'#b7a0f2':path.lift?'#77c6ba':next?'#f3c978':seen?'#768597':'#2a3845';ctx.lineWidth=next?4:seen?3:1;ctx.setLineDash(path.lift||path.secret||blocked&&seen?[5*pixel,4*pixel]:[]);ctx.beginPath();ctx.moveTo(A.x,A.y);if(path.control)ctx.quadraticCurveTo(path.control.x,path.control.y,B.x,B.y);else ctx.lineTo(B.x,B.y);ctx.stroke();ctx.setLineDash([]);
+   if(seen&&rule.kind){const p=passagePoint(path,.5),text=rule.kind==='guard'?'검':rule.kind==='key'?(s.keyDoorOpen?'열림':'열쇠'):rule.kind==='drop'?(s.sluiceOpen?'↕':'↓'):blocked?'봉인':'';
+    if(text){const fs=(large?11:9)*pixel;ctx.font=`bold ${fs}px system-ui`;ctx.textAlign='center';const tw=ctx.measureText(text).width;ctx.fillStyle='#0a1923';ctx.fillRect(p.x-tw/2-3*pixel,p.y-fs*.7,tw+6*pixel,fs+3*pixel);ctx.fillStyle=blocked?'#ffb4c5':'#f2d49b';ctx.fillText(text,p.x,p.y+fs*.28);}
+   }
   }
   for(const r of s.rooms){const p=at(r.id),here=r.id===s.pos,known=r.seen||here,heard=s.lastSound?.turn===s.turn&&s.lastSound.field.find(x=>x.id===r.id);
    if(heard)glow(ctx,p.x,p.y,box*1.8,`rgba(255,173,66,${.12+heard.level*.035})`);
@@ -212,7 +217,7 @@ export function makeRenderer(canvas,getState,minimap){
    else if(r.seen&&r.type==='mechanism'&&!r.used&&winchIcon.complete&&winchIcon.naturalWidth)ctx.drawImage(winchIcon,p.x-box*.4,p.y-box*.4,box*.8,box*.8);
    else if(r.seen&&!r.used){const symbol={entry:'door',chest:'chest',camp:'camp',merchant:'merchant',shrine:'shrine',relic:r.relic?.icon,mechanism:'shrine'}[r.type];if(symbol)icon(ctx,symbol,p.x-box*.4,p.y-box*.4,box*.8);}
    else if(r.seen&&r.type==='mechanism'&&r.used){ctx.fillStyle='#b8dfcc';ctx.font=`bold ${Math.max(large?10*pixel:9,box*.7)}px system-ui`;ctx.textAlign='center';ctx.fillText('↗',p.x,p.y+box*.28);}
-   if(large){ctx.font=`${labelSize}px system-ui`;ctx.textAlign='center';ctx.fillStyle=available.has(r.id)?'#ffe09a':known?'#cfd6db':'#5f7382';if(known||available.has(r.id))ctx.fillText(roomLabel((known?r.name:'미탐험')+(available.has(r.id)?' →':'')),p.x,p.y+box*.5+labelSize+2*pixel);}
+   if(large){ctx.font=`${labelSize}px system-ui`;ctx.textAlign='center';ctx.fillStyle=available.has(r.id)?'#ffe09a':known?'#cfd6db':'#5f7382';if(known||available.has(r.id))ctx.fillText(roomLabel((known?(roomGimmick(s,r.id)?.symbol||'')+r.name:'미탐험')+(available.has(r.id)?' →':'')),p.x,p.y+box*.5+labelSize+2*pixel);}
    if(r.enemy?.hp>0&&r.enemy.target!==null&&r.seen&&r.enemy.mode!=='idle'){
     const target=at(r.enemy.target);ctx.strokeStyle='#fa8d5370';ctx.setLineDash([3,6]);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(target.x,target.y);ctx.stroke();ctx.setLineDash([]);
    }

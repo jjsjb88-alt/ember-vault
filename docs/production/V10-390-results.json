@@ -1,0 +1,3611 @@
+{
+  "viewport": [
+    390,
+    844
+  ],
+  "role": "rogue",
+  "result": "PASS",
+  "actions": [
+    {
+      "action": "[data-act=tutorialSkip]",
+      "pos": 0,
+      "turn": 1,
+      "hp": 22,
+      "noise": 0,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=menu]",
+      "pos": 0,
+      "turn": 1,
+      "hp": 22,
+      "noise": 0,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=new]",
+      "pos": 0,
+      "turn": 1,
+      "hp": 22,
+      "noise": 0,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=role][data-id=rogue]",
+      "pos": 0,
+      "turn": 1,
+      "hp": 22,
+      "noise": 0,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=start]",
+      "pos": 0,
+      "turn": 1,
+      "hp": 22,
+      "noise": 0,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=menu]",
+      "pos": 0,
+      "turn": 1,
+      "hp": 22,
+      "noise": 0,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=stagePlan]",
+      "pos": 0,
+      "turn": 1,
+      "hp": 22,
+      "noise": 0,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#modal .close-button",
+      "pos": 0,
+      "turn": 1,
+      "hp": 22,
+      "noise": 0,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 0,
+      "turn": 1,
+      "hp": 22,
+      "noise": 0,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=sneak]",
+      "pos": 0,
+      "turn": 1,
+      "hp": 22,
+      "noise": 0,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"1\"]",
+      "pos": 1,
+      "turn": 1,
+      "hp": 22,
+      "noise": 0,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 3,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 1,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 1,
+      "turn": 1,
+      "hp": 22,
+      "noise": 1,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 3,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"5\"]",
+      "pos": 5,
+      "turn": 1,
+      "hp": 22,
+      "noise": 1,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 5,
+      "turn": 1,
+      "hp": 22,
+      "noise": 1,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=stageRecruit]",
+      "pos": 5,
+      "turn": 1,
+      "hp": 22,
+      "noise": 1,
+      "pool": 10,
+      "prepared": [
+        null,
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 5,
+      "turn": 1,
+      "hp": 22,
+      "noise": 1,
+      "pool": 11,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#modal [data-act=market]",
+      "pos": 5,
+      "turn": 1,
+      "hp": 22,
+      "noise": 1,
+      "pool": 11,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        0,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 2,
+        "skill": 3,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-card=\"spark\"]",
+      "pos": 5,
+      "turn": 1,
+      "hp": 22,
+      "noise": 1,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#modal .close-button",
+      "pos": 5,
+      "turn": 1,
+      "hp": 22,
+      "noise": 1,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#modal .close-button",
+      "pos": 5,
+      "turn": 1,
+      "hp": 22,
+      "noise": 1,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 5,
+      "turn": 1,
+      "hp": 22,
+      "noise": 1,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=walk]",
+      "pos": 5,
+      "turn": 1,
+      "hp": 22,
+      "noise": 1,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"6\"]",
+      "pos": 6,
+      "turn": 1,
+      "hp": 22,
+      "noise": 3,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=menu]",
+      "pos": 6,
+      "turn": 1,
+      "hp": 22,
+      "noise": 3,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#modal [data-act=passageGuide]",
+      "pos": 6,
+      "turn": 1,
+      "hp": 22,
+      "noise": 3,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=guideMode][data-id=sneak]",
+      "pos": 6,
+      "turn": 1,
+      "hp": 22,
+      "noise": 3,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#modal .close-button",
+      "pos": 6,
+      "turn": 1,
+      "hp": 22,
+      "noise": 3,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 6,
+      "turn": 1,
+      "hp": 22,
+      "noise": 3,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=sneak]",
+      "pos": 6,
+      "turn": 1,
+      "hp": 22,
+      "noise": 3,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 6,
+      "turn": 1,
+      "hp": 22,
+      "noise": 3,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=walk]",
+      "pos": 6,
+      "turn": 1,
+      "hp": 22,
+      "noise": 3,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 2,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#endTurn",
+      "pos": 6,
+      "turn": 2,
+      "hp": 22,
+      "noise": 0,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 2,
+        "skill": 3,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 6,
+      "turn": 2,
+      "hp": 22,
+      "noise": 0,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 2,
+        "skill": 3,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=sneak]",
+      "pos": 6,
+      "turn": 2,
+      "hp": 22,
+      "noise": 0,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 2,
+        "skill": 3,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"2\"]",
+      "pos": 2,
+      "turn": 2,
+      "hp": 22,
+      "noise": 1,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 2,
+        "sword": 2,
+        "skill": 3,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 2,
+      "turn": 2,
+      "hp": 22,
+      "noise": 3,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 2,
+        "sword": 2,
+        "skill": 3,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#endTurn",
+      "pos": 2,
+      "turn": 3,
+      "hp": 22,
+      "noise": 0,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 6,
+        "sword": 3,
+        "skill": 1,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"3\"]",
+      "pos": 3,
+      "turn": 3,
+      "hp": 22,
+      "noise": 0,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 3,
+        "skill": 1,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 3,
+      "turn": 3,
+      "hp": 22,
+      "noise": 3,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 0,
+        "skill": 1,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#endTurn",
+      "pos": 3,
+      "turn": 4,
+      "hp": 22,
+      "noise": 0,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 3,
+        "sword": 7,
+        "skill": 1,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 2
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 3,
+      "turn": 4,
+      "hp": 22,
+      "noise": 2,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 3,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=skipReward]",
+      "pos": 3,
+      "turn": 4,
+      "hp": 22,
+      "noise": 2,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 3,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"7\"]",
+      "pos": 7,
+      "turn": 4,
+      "hp": 22,
+      "noise": 2,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 7,
+      "turn": 4,
+      "hp": 22,
+      "noise": 2,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=stageRecruit]",
+      "pos": 7,
+      "turn": 4,
+      "hp": 22,
+      "noise": 2,
+      "pool": 12,
+      "prepared": [
+        "recruit",
+        null,
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#modal [data-act=market]",
+      "pos": 7,
+      "turn": 4,
+      "hp": 22,
+      "noise": 2,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#modal .close-button",
+      "pos": 7,
+      "turn": 4,
+      "hp": 22,
+      "noise": 2,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#modal .close-button",
+      "pos": 7,
+      "turn": 4,
+      "hp": 22,
+      "noise": 2,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 7,
+      "turn": 4,
+      "hp": 22,
+      "noise": 2,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=walk]",
+      "pos": 7,
+      "turn": 4,
+      "hp": 22,
+      "noise": 2,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"11\"]",
+      "pos": 11,
+      "turn": 4,
+      "hp": 22,
+      "noise": 3,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 11,
+      "turn": 4,
+      "hp": 22,
+      "noise": 3,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=sneak]",
+      "pos": 11,
+      "turn": 4,
+      "hp": 22,
+      "noise": 3,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 11,
+      "turn": 4,
+      "hp": 22,
+      "noise": 3,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=walk]",
+      "pos": 11,
+      "turn": 4,
+      "hp": 22,
+      "noise": 3,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 5,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#endTurn",
+      "pos": 11,
+      "turn": 5,
+      "hp": 22,
+      "noise": 0,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 6,
+        "skill": 4,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 11,
+      "turn": 5,
+      "hp": 22,
+      "noise": 0,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 6,
+        "skill": 4,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=sneak]",
+      "pos": 11,
+      "turn": 5,
+      "hp": 22,
+      "noise": 0,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 6,
+        "skill": 4,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 11,
+      "turn": 5,
+      "hp": 22,
+      "noise": 0,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 6,
+        "skill": 4,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=walk]",
+      "pos": 11,
+      "turn": 5,
+      "hp": 22,
+      "noise": 0,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 6,
+        "skill": 4,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#endTurn",
+      "pos": 11,
+      "turn": 6,
+      "hp": 22,
+      "noise": 0,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 6,
+        "sword": 2,
+        "skill": 2,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 11,
+      "turn": 6,
+      "hp": 22,
+      "noise": 0,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 6,
+        "sword": 2,
+        "skill": 2,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=sneak]",
+      "pos": 11,
+      "turn": 6,
+      "hp": 22,
+      "noise": 0,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 6,
+        "sword": 2,
+        "skill": 2,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"15\"]",
+      "pos": 15,
+      "turn": 6,
+      "hp": 22,
+      "noise": 0,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 3,
+        "sword": 2,
+        "skill": 2,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"14\"]",
+      "pos": 14,
+      "turn": 6,
+      "hp": 22,
+      "noise": 0,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 2,
+        "skill": 2,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 14,
+      "turn": 6,
+      "hp": 22,
+      "noise": 3,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 2,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 14,
+      "turn": 6,
+      "hp": 22,
+      "noise": 3,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 2,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=walk]",
+      "pos": 14,
+      "turn": 6,
+      "hp": 22,
+      "noise": 3,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 2,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#endTurn",
+      "pos": 14,
+      "turn": 7,
+      "hp": 22,
+      "noise": 0,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 14,
+      "turn": 7,
+      "hp": 22,
+      "noise": 0,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=sneak]",
+      "pos": 14,
+      "turn": 7,
+      "hp": 22,
+      "noise": 0,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"13\"]",
+      "pos": 13,
+      "turn": 7,
+      "hp": 22,
+      "noise": 1,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 13,
+      "turn": 7,
+      "hp": 22,
+      "noise": 1,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=stageRecruit]",
+      "pos": 13,
+      "turn": 7,
+      "hp": 22,
+      "noise": 1,
+      "pool": 13,
+      "prepared": [
+        "recruit",
+        "recruit",
+        null
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#modal [data-act=market]",
+      "pos": 13,
+      "turn": 7,
+      "hp": 22,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#modal .close-button",
+      "pos": 13,
+      "turn": 7,
+      "hp": 22,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#modal .close-button",
+      "pos": 13,
+      "turn": 7,
+      "hp": 22,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#mapToggle",
+      "pos": 13,
+      "turn": 7,
+      "hp": 22,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#soundPanel [data-act=passageGuide]",
+      "pos": 13,
+      "turn": 7,
+      "hp": 22,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#modal .close-button",
+      "pos": 13,
+      "turn": 7,
+      "hp": 22,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#mapToggle",
+      "pos": 13,
+      "turn": 7,
+      "hp": 22,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 13,
+      "turn": 7,
+      "hp": 22,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=walk]",
+      "pos": 13,
+      "turn": 7,
+      "hp": 22,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 8,
+        "skill": 1,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#endTurn",
+      "pos": 13,
+      "turn": 8,
+      "hp": 22,
+      "noise": 0,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 6,
+        "skill": 2,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 13,
+      "turn": 8,
+      "hp": 22,
+      "noise": 0,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 6,
+        "skill": 2,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=sneak]",
+      "pos": 13,
+      "turn": 8,
+      "hp": 22,
+      "noise": 0,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 6,
+        "skill": 2,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"17\"]",
+      "pos": 17,
+      "turn": 8,
+      "hp": 22,
+      "noise": 0,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 6,
+        "skill": 2,
+        "block": 0,
+        "quiet": 1,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#endTurn",
+      "pos": 17,
+      "turn": 9,
+      "hp": 22,
+      "noise": 0,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 3,
+        "sword": 3,
+        "skill": 4,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 17,
+      "turn": 9,
+      "hp": 22,
+      "noise": 4,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 3,
+        "sword": 3,
+        "skill": 1,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"18\"]",
+      "pos": 18,
+      "turn": 9,
+      "hp": 22,
+      "noise": 5,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 3,
+        "skill": 1,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 18,
+      "turn": 9,
+      "hp": 22,
+      "noise": 8,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 0,
+        "skill": 1,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#endTurn",
+      "pos": 18,
+      "turn": 10,
+      "hp": 20,
+      "noise": 0,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 5,
+        "skill": 2,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 18,
+      "turn": 10,
+      "hp": 20,
+      "noise": 2,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 1,
+        "skill": 2,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=skipReward]",
+      "pos": 18,
+      "turn": 10,
+      "hp": 20,
+      "noise": 2,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 1,
+        "skill": 2,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"19\"]",
+      "pos": 19,
+      "turn": 10,
+      "hp": 20,
+      "noise": 2,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 1,
+        "skill": 2,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 19,
+      "turn": 10,
+      "hp": 20,
+      "noise": 4,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 1,
+        "sword": 0,
+        "skill": 2,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#endTurn",
+      "pos": 19,
+      "turn": 11,
+      "hp": 17,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 12,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 3
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 19,
+      "turn": 11,
+      "hp": 17,
+      "noise": 6,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 3,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=skipReward]",
+      "pos": 19,
+      "turn": 11,
+      "hp": 17,
+      "noise": 6,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 3,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 19,
+      "turn": 11,
+      "hp": 17,
+      "noise": 10,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 5,
+        "sword": 3,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"18\"]",
+      "pos": 18,
+      "turn": 11,
+      "hp": 17,
+      "noise": 11,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 2,
+        "sword": 3,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 18,
+      "turn": 11,
+      "hp": 17,
+      "noise": 11,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 2,
+        "sword": 3,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=walk]",
+      "pos": 18,
+      "turn": 11,
+      "hp": 17,
+      "noise": 11,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 2,
+        "sword": 3,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"17\"]",
+      "pos": 17,
+      "turn": 11,
+      "hp": 17,
+      "noise": 12,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 3,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 17,
+      "turn": 11,
+      "hp": 17,
+      "noise": 12,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 0,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=skipReward]",
+      "pos": 17,
+      "turn": 11,
+      "hp": 17,
+      "noise": 12,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 0,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 17,
+      "turn": 11,
+      "hp": 17,
+      "noise": 12,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 0,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=sneak]",
+      "pos": 17,
+      "turn": 11,
+      "hp": 17,
+      "noise": 12,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 0,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 17,
+      "turn": 11,
+      "hp": 17,
+      "noise": 12,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 0,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=walk]",
+      "pos": 17,
+      "turn": 11,
+      "hp": 17,
+      "noise": 12,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 0,
+        "sword": 0,
+        "skill": 0,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#endTurn",
+      "pos": 17,
+      "turn": 12,
+      "hp": 14,
+      "noise": 4,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 1,
+      "resource": {
+        "move": 4,
+        "sword": 0,
+        "skill": 4,
+        "block": 3,
+        "quiet": 2,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#provisionAction",
+      "pos": 17,
+      "turn": 12,
+      "hp": 20,
+      "noise": 5,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 4,
+        "sword": 0,
+        "skill": 4,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#endTurn",
+      "pos": 17,
+      "turn": 13,
+      "hp": 20,
+      "noise": 2,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 2,
+        "sword": 8,
+        "skill": 2,
+        "block": 0,
+        "quiet": 2,
+        "rattle": 1
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 17,
+      "turn": 13,
+      "hp": 20,
+      "noise": 4,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 2,
+        "sword": 3,
+        "skill": 2,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=skipReward]",
+      "pos": 17,
+      "turn": 13,
+      "hp": 20,
+      "noise": 4,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 2,
+        "sword": 3,
+        "skill": 2,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 17,
+      "turn": 13,
+      "hp": 20,
+      "noise": 4,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 2,
+        "sword": 3,
+        "skill": 2,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=sneak]",
+      "pos": 17,
+      "turn": 13,
+      "hp": 20,
+      "noise": 4,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 2,
+        "sword": 3,
+        "skill": 2,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"5\"]",
+      "pos": 5,
+      "turn": 13,
+      "hp": 20,
+      "noise": 4,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 0,
+        "sword": 3,
+        "skill": 2,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 5,
+      "turn": 13,
+      "hp": 20,
+      "noise": 4,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 0,
+        "sword": 3,
+        "skill": 2,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=walk]",
+      "pos": 5,
+      "turn": 13,
+      "hp": 20,
+      "noise": 4,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 0,
+        "sword": 3,
+        "skill": 2,
+        "block": 0,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#endTurn",
+      "pos": 5,
+      "turn": 14,
+      "hp": 20,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 5,
+        "sword": 0,
+        "skill": 4,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#stanceToggle",
+      "pos": 5,
+      "turn": 14,
+      "hp": 20,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 5,
+        "sword": 0,
+        "skill": 4,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "[data-act=mode][data-id=sneak]",
+      "pos": 5,
+      "turn": 14,
+      "hp": 20,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 5,
+        "sword": 0,
+        "skill": 4,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"1\"]",
+      "pos": 1,
+      "turn": 14,
+      "hp": 20,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 3,
+        "sword": 0,
+        "skill": 4,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": ".scene-exit[data-id=\"0\"]",
+      "pos": 0,
+      "turn": 14,
+      "hp": 20,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 1,
+        "sword": 0,
+        "skill": 4,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "playing"
+    },
+    {
+      "action": "#sceneTarget",
+      "pos": 0,
+      "turn": 14,
+      "hp": 20,
+      "noise": 1,
+      "pool": 14,
+      "prepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "trades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "resource": {
+        "move": 1,
+        "sword": 0,
+        "skill": 4,
+        "block": 3,
+        "quiet": 0,
+        "rattle": 0
+      },
+      "phase": "won"
+    }
+  ],
+  "checks": [
+    {
+      "name": "checkpoint-prepared",
+      "index": 1,
+      "choice": "recruit",
+      "pool": 11,
+      "reload_did_not_duplicate": true
+    },
+    {
+      "name": "checkpoint-prepared",
+      "index": 2,
+      "choice": "recruit",
+      "pool": 13,
+      "reload_did_not_duplicate": false
+    },
+    {
+      "name": "checkpoint-prepared",
+      "index": 3,
+      "choice": "recruit",
+      "pool": 14,
+      "reload_did_not_duplicate": false
+    },
+    {
+      "name": "four-stages-deep-relic-and-return-complete",
+      "seed": 3018745565,
+      "turn": 14,
+      "hp": 20,
+      "score": 144,
+      "noiseMade": 83,
+      "stagePrepared": [
+        "recruit",
+        "recruit",
+        "recruit"
+      ],
+      "stageTrades": [
+        1,
+        0,
+        0
+      ],
+      "provisions": 0,
+      "hasKey": true,
+      "keyDoorOpen": false,
+      "sluiceOpen": true,
+      "sealForce": true,
+      "sealQuiet": false
+    }
+  ],
+  "errors": [],
+  "http_errors": [],
+  "request_failures": [],
+  "outcome": {
+    "seed": 3018745565,
+    "turn": 14,
+    "hp": 20,
+    "score": 144,
+    "noiseMade": 83,
+    "stagePrepared": [
+      "recruit",
+      "recruit",
+      "recruit"
+    ],
+    "stageTrades": [
+      1,
+      0,
+      0
+    ],
+    "provisions": 0,
+    "hasKey": true,
+    "keyDoorOpen": false,
+    "sluiceOpen": true,
+    "sealForce": true,
+    "sealQuiet": false
+  }
+}

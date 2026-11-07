@@ -1,4 +1,5 @@
-import {STAGES,STAGE_ROOMS,RETURN_LIFT_EDGE,isStaged,stageIndex,checkpointIndex,configureStages,expeditionBonuses} from './expedition-stages.js?v=20261107d';
+import {hasGimmicks,passageRule,movementGimmickReason,worldPassageOpen,movementDirectionAllowed,SECRET_EDGE} from './dungeon-gimmicks.js?v=20261107e';
+import {STAGES,STAGE_ROOMS,RETURN_LIFT_EDGE,isStaged,stageIndex,checkpointIndex,configureStages,expeditionBonuses} from './expedition-stages.js?v=20261107e';
 export const VERSION=2;
 export const ROLES={
   rogue:{name:'그림자 도적',short:'도적',color:'#86c6aa',icon:'hero',desc:'가볍게 걷고, 조용히 훔칩니다.',trait:'매 턴 소음 1 추가 감소',hp:22},
@@ -46,7 +47,7 @@ export function lairRoom(s){return s.layout==='expanded'||isStaged(s)?19:LAIR;}
 export function dragonDue(s){return s.noise>=8?'noise':s.relic&&s.turn%3===0?'relic':null;}
 export function breathReach(s){return Math.min(6,3+Math.max(0,s.noise-8));}
 export function echoFadeEvery(s){return (s.memory||0)+1;}
-function distances(s,from){const d=Array(s.rooms.length).fill(99);d[from]=0;const q=[from];while(q.length){const id=q.shift();for(const n of neighbours(s,id))if(d[n]>d[id]+1){d[n]=d[id]+1;q.push(n);}}return d;}
+function distances(s,from){const d=Array(s.rooms.length).fill(99);d[from]=0;const q=[from];while(q.length){const id=q.shift();for(const n of acousticNeighbours(s,id))if(d[n]>d[id]+1){d[n]=d[id]+1;q.push(n);}}return d;}
 function upgradeEcho(s){if(s.bag!==undefined||s.clank!==undefined){if(s.bag&&!s.echo){s.echo=Array(s.rooms.length).fill(0);s.memory=s.rageStep??(s.relic?1:0);}delete s.bag;delete s.clank;delete s.rageStep;}}
 /** Where the breath will go if the dragon attacks now: start at the strongest echo, spread to echoing neighbours. */
 export function breathPlan(s){
@@ -56,7 +57,7 @@ export function breathPlan(s){
  const rank=(a,b)=>e[b]-e[a]||a-b;
  const start=[...hot].sort((a,b)=>e[b]-e[a]||lair[a]-lair[b]||a-b)[0],path=[start];
  while(path.length<reach){
-  const frontier=[...new Set(path.flatMap(id=>neighbours(s,id)))].filter(id=>!path.includes(id)&&e[id]>0);
+  const frontier=[...new Set(path.flatMap(id=>acousticNeighbours(s,id)))].filter(id=>!path.includes(id)&&e[id]>0);
   if(!frontier.length)break;path.push(frontier.sort((a,b)=>e[b]-e[a]||me[a]-me[b]||rank(a,b))[0]);
  }
  const hit=path.includes(s.pos);
@@ -87,8 +88,9 @@ function generateRooms(s){
  });
 }
 export function neighbours(s,id=s.pos){return s.edges.filter(e=>e.includes(id)).map(e=>e[0]===id?e[1]:e[0]);}
-export function moveCost(s,id,mode=s.mode){return Math.max(1,(s.rooms[id].row>=3?2:1)+MODES[mode].extra);}
-export function moveNoise(s,id,mode=s.mode){return Math.max(0,MODES[mode].noise+TERRAINS[s.rooms[id].terrain].noise+(s.rooms[s.pos].enemy?.hp>0?2:0));}
+function acousticNeighbours(s,id){return neighbours(s,id).filter(n=>worldPassageOpen(s,id,n));}
+export function moveCost(s,id,mode=s.mode,from=s.pos){return Math.max(1,(s.rooms[id].row>=3?2:1)+MODES[mode].extra)+(passageRule(s,from,id).extra||0);}
+export function moveNoise(s,id,mode=s.mode){return Math.max(0,MODES[mode].noise+TERRAINS[s.rooms[id].terrain].noise+(s.rooms[s.pos].enemy?.hp>0?2:0)+(passageRule(s,s.pos,id).noise||0)+(hasGimmicks(s)&&id===9&&mode!=='sneak'?2:0));}
 export function previewNoise(s,raw){return Math.max(0,Math.min(12,raw+s.resource.rattle-s.resource.quiet));}
 function resources(s){return {move:1,sword:0,skill:s.role==='mage'?1:0,block:s.role==='knight'?1:0,quiet:0,rattle:0};}
 function take(s){
@@ -116,7 +118,7 @@ export function resolvePool(s,initial=null){
 export function soundField(s,origin,strength){
  const levels=new Map([[origin,strength]]),todo=[origin];
  while(todo.length){const id=todo.shift(),level=levels.get(id);
-  for(const n of neighbours(s,id)){const v=level-2-TERRAINS[s.rooms[n].terrain].damp;if(v>0&&v>(levels.get(n)||0)){levels.set(n,v);todo.push(n);}}
+  for(const n of acousticNeighbours(s,id)){const v=level-2-TERRAINS[s.rooms[n].terrain].damp;if(v>0&&v>(levels.get(n)||0)){levels.set(n,v);todo.push(n);}}
  }
  return [...levels].map(([id,level])=>({id,level}));
 }
@@ -137,7 +139,7 @@ export function emitNoise(s,origin,raw,label,personal=true){
  return s.lastSound;
 }
 function freshFields(s){Object.assign(s,{mode:'walk',soundSeq:0,lastSound:null,noiseMade:0,hideTurn:0,lureTurn:0,hidden:false,pursuits:[]});}
-export function newRun({seed=Date.now(),role='rogue',layout='expanded'}={}){
+export function newRun({seed=Date.now(),role='rogue',layout='expanded',gimmicks=true}={}){
  if(!ROLES[role])role='rogue';seed=Number(seed)>>>0||135792468;
  const s={version:VERSION,seed,rng:seed,role,turn:1,pos:0,from:null,hp:ROLES[role].hp,maxHp:ROLES[role].hp,gold:0,noise:0,resource:null,hand:[],deck:[],discard:[],played:[],edges:EDGES.map(e=>[...e]),rooms:[],market:[],log:[],relic:null,countdown:null,phase:'playing',pending:null,kills:0,purchases:0,refreshTurn:0,steps:0};
  if(layout!=='classic'){s.layout=layout==='staged'?'staged':'expanded';s.edges.push(...EXPANDED_EDGES.map(e=>[...e]));}
@@ -145,7 +147,7 @@ export function newRun({seed=Date.now(),role='rogue',layout='expanded'}={}){
  s.deck=shuffle(s,['scout','step','slash','focus','guard']);
  s.market=['step',...shuffle(s,MARKET_IDS.filter(x=>x!=='step')).slice(0,3)];
  resolvePool(s,['scout','step',role==='mage'?'spark':'slash','focus',role==='rogue'?'sneak':'guard']);
- if(layout==='staged')configureStages(s);
+ if(layout==='staged')configureStages(s,{gimmicks});
  log(s,'금고의 문이 열렸습니다. 능력이 자동으로 추출됩니다. 유물을 찾아 이 입구로 돌아오세요.','good');return s;
 }
 export function migrateSave(old){
@@ -157,7 +159,7 @@ function ok(s,message){return {ok:true,state:s,message};}
 function fail(s,message){return {ok:false,state:s,message};}
 function damage(s,amount,source){const blocked=Math.min(amount,s.resource.block);s.resource.block-=blocked;const taken=amount-blocked;s.hp=Math.max(0,s.hp-taken);log(s,`${source} · ${blocked?`방어 ${blocked}, `:''}피해 ${taken}`,taken?'bad':'good');return taken;}
 function finish(s,won,reason){s.phase=won?'won':'lost';s.pending=null;s.reason=reason;s.score=won?(isStaged(s)?s.relic.value+20+s.hp+expeditionBonuses(s).tempo+expeditionBonuses(s).quiet:s.relic.value+s.gold+s.rooms.filter(r=>r.visited).length*2+s.hp+20):0;log(s,reason,won?'good':'bad');}
-function nextStep(s,from,to){const q=[[from]],seen=new Set([from]);while(q.length){const path=q.shift(),id=path.at(-1);if(id===to)return path[1]??from;for(const n of neighbours(s,id))if(!seen.has(n)){seen.add(n);q.push([...path,n]);}}return from;}
+function nextStep(s,from,to){const q=[[from]],seen=new Set([from]);while(q.length){const path=q.shift(),id=path.at(-1);if(id===to)return path[1]??from;for(const n of acousticNeighbours(s,id))if(movementDirectionAllowed(s,id,n)&&!seen.has(n)){seen.add(n);q.push([...path,n]);}}return from;}
 export function enemyTurn(s){
  s.pursuits=[];
  const enemies=s.rooms.filter(r=>r.enemy?.hp>0).map(r=>({id:r.id,e:r.enemy}));
@@ -175,8 +177,8 @@ export function enemyTurn(s){
  }
 }
 // Shared by room markers, the map, and the actual move action.
-export function moveStatus(s,id){
- const cost=neighbours(s).includes(id)?moveCost(s,id):0;
+export function moveStatus(s,id,mode=s.mode){
+ const cost=neighbours(s).includes(id)?moveCost(s,id,mode):0;
  const retreat=s.rooms[s.pos].enemy?.hp>0&&id===s.from;
  let reason='';
  if(s.phase!=='playing')reason='탐험이 끝났습니다. 새 탐험을 시작해 주세요.';
@@ -184,8 +186,14 @@ export function moveStatus(s,id){
  else if(!neighbours(s).includes(id))reason='연결된 방으로만 이동할 수 있습니다.';
  else if(s.rooms[s.pos].enemy?.hp>0&&!retreat)reason='적을 쓰러뜨리거나 들어온 방으로 후퇴하세요.';
  else if(isStaged(s)&&stageIndex(s,id)>stageIndex(s)&&s.stagePrepared.slice(0,stageIndex(s,id)).some(choice=>choice===null))reason='이전 구역 정비소에서 능력·정리·보급 중 하나를 준비하세요.';
+ else if(movementGimmickReason(s,id))reason=movementGimmickReason(s,id);
  else if(s.resource.move<cost)reason=`이동 ${cost} 필요 · 「다음 턴」으로 이동력을 얻으세요.`;
  return {allowed:!reason,cost,retreat:!!retreat,reason};
+}
+
+export function passagePreview(s,id,mode=s.mode){
+ const rule=passageRule(s,s.pos,id),guard=rule.guard||0,attackSpent=Math.min(guard,s.resource.sword),rawDamage=guard-attackSpent,blockSpent=Math.min(rawDamage,s.resource.block);
+ return {...moveStatus(s,id,mode),noise:previewNoise(s,moveNoise(s,id,mode)),attackSpent,blockSpent,damage:rawDamage-blockSpent,rule,crystalStop:hasGimmicks(s)&&id===2};
 }
 
 export function apply(s,action){
@@ -198,11 +206,16 @@ export function apply(s,action){
  case 'move':{
   const id=action.id,status=moveStatus(s,id);if(!status.allowed)return fail(s,status.reason);
   const cost=status.cost;
-  const noise=moveNoise(s,id);s.resource.move-=cost;s.from=s.pos;s.pos=id;s.steps++;s.hidden=false;s.rooms[id].visited=true;
+  const noise=moveNoise(s,id),rule=passageRule(s,s.pos,id);
+  if(rule.guard){const spent=Math.min(rule.guard,s.resource.sword);s.resource.sword-=spent;if(spent<rule.guard)damage(s,rule.guard-spent,'검문 통로');}
+  if(hasGimmicks(s)&&rule.kind==='key')s.keyDoorOpen=true;
+  if(hasGimmicks(s)&&id===2){s.crystalStopTurn=s.turn;log(s,'수정의 울림에 발이 묶였습니다. 이번 턴의 이동은 여기까지입니다. 다른 행동은 가능합니다.');}
+  s.resource.move-=cost;s.from=s.pos;s.pos=id;s.steps++;s.hidden=false;s.rooms[id].visited=true;
   if(isStaged(s)){const depth=stageIndex(s);s.memory=Math.max(s.memory,depth);if(s.rooms[id].type==='checkpoint')s.market=[...STAGES[checkpointIndex(s)].stock];}
   for(const n of [id,...neighbours(s)])s.rooms[n].seen=true;
   emitNoise(s,id,noise,`${MODES[s.mode].name} · ${TERRAINS[s.rooms[id].terrain].name}`);
-  return ok(s,s.rooms[id].name);
+  if(s.hp<=0)finish(s,false,'검문 통로에서 쓰러졌습니다. 공격이나 방어를 준비해 통과하세요.');
+  return ok(s,s.rooms[id].name+(hasGimmicks(s)&&id===2?' · 수정 동굴: 다음 턴에 출발':''));
  }
  case 'hide':{
   if(r.enemy?.hp>0)return fail(s,'눈앞의 적이 지켜보고 있습니다. 먼저 후퇴하세요.');
@@ -212,7 +225,7 @@ export function apply(s,action){
   log(s,'어둠에 몸을 숨겼습니다. 경계 −2 · 은신 +2','good');return ok(s,'숨죽이기 · 경계 −2 / 은신 +2');
  }
  case 'lure':{
-  const id=action.id;if(!neighbours(s).includes(id))return fail(s,'돌멩이는 연결된 방에만 던질 수 있습니다.');
+  const id=action.id;if(!neighbours(s).includes(id)||!worldPassageOpen(s,s.pos,id))return fail(s,'돌멩이는 연결된 방에만 던질 수 있습니다.');
   if(s.lureTurn===s.turn)return fail(s,'유인은 턴당 한 번 할 수 있습니다.');
   if(s.resource.skill<1)return fail(s,'유인에는 기술 1이 필요합니다.');
   s.resource.skill--;s.lureTurn=s.turn;emitNoise(s,id,5,'돌멩이 유인',false);return ok(s,'그 방에 돌멩이를 던졌습니다. 적은 턴 끝에 조사합니다.');
@@ -221,6 +234,7 @@ export function apply(s,action){
   if(!r.enemy||r.enemy.hp<=0)return fail(s,'이 방에는 적이 없습니다.');
   if(s.resource.sword<=0)return fail(s,'공격력이 소진되었습니다. 후퇴하거나 다음 턴을 준비하세요.');
   const hit=Math.min(s.resource.sword,r.enemy.hp);s.resource.sword-=hit;r.enemy.hp-=hit;s.hidden=false;
+  if(hasGimmicks(s)&&r.enemy.home===18&&r.enemy.hp<=0){s.sealForce=true;log(s,'봉인병의 핵이 부서졌습니다. 기억실의 봉인이 풀립니다.','good');}
   emitNoise(s,s.pos,4+Math.floor(hit/3),'무기가 부딪히는 소리');log(s,`${r.enemy.name}에게 ${hit} 피해!`,'good');
   if(r.enemy.hp<=0){s.gold+=r.enemy.gold;s.kills++;s.pending={type:'reward',options:shuffle(s,[...MARKET_IDS]).slice(0,3)};log(s,`${r.enemy.name} 격파 · 금화 +${r.enemy.gold}`,'good');}
   else {r.enemy.mode='hunt';r.enemy.target=s.pos;r.enemy.memory=3;}
@@ -241,11 +255,29 @@ export function apply(s,action){
    log(s,`귀환 승강기 · 기술 −${cost} · ${s.rooms[destination].name}로 통로가 열렸습니다. 소리와 숨결도 지납니다.`,'good');
    return ok(s,`귀환 지름길 개방 · 기술 −${cost}`);
   }
-  if(r.type==='chest'){const gold=r.id===18?14:r.row>=3?10:5+Math.floor(next(s)*3),noise=r.id===18?9:r.row>=3?7:3;s.gold+=gold;r.used=true;emitNoise(s,s.pos,noise,r.row>=3?'상자의 경보 장치':'낡은 경첩');log(s,`보물 상자 · 금화 +${gold}`,'good');return ok(s,`금화 +${gold}`);}
+  if(r.type==='chest'){const gold=r.id===18?14:r.row>=3?10:5+Math.floor(next(s)*3),noise=r.id===18?9:r.row>=3?7:3;s.gold+=gold;r.used=true;if(hasGimmicks(s)&&r.id===2){s.hasKey=true;log(s,'황동 열쇠 획득 · 지름길을 열어도 소모되지 않습니다.','good');}emitNoise(s,s.pos,noise,r.row>=3?'상자의 경보 장치':'낡은 경첩');log(s,`보물 상자 · 금화 +${gold}`,'good');return ok(s,`금화 +${gold}`);}
   if(r.type==='camp'){if(s.hp===s.maxHp&&s.noise===0)return fail(s,'아직 쉬어 갈 필요가 없습니다.');const healed=Math.min(6,s.maxHp-s.hp);s.hp+=healed;s.noise=Math.max(0,s.noise-3);r.used=true;log(s,`불가에서 휴식 · 체력 +${healed}, 경계 −3`,'good');return ok(s,'따뜻한 휴식');}
   if(r.type==='shrine'){const total=[...s.deck,...s.discard,...s.played];if(total.length<=5)return fail(s,'최소 5개의 능력은 남겨 두어야 합니다.');s.pending={type:'purge',options:[...new Set(total)]};return ok(s,'주머니에서 지울 능력을 선택하세요.');}
   if(r.type==='relic'){if(s.relic&&s.relic.value>=r.relic.value)return fail(s,'이미 더 값진 유물을 가지고 있습니다.');s.relic={...r.relic};r.used=true;if(s.countdown===null)s.countdown=14;emitNoise(s,s.pos,8,'유물 봉인 파괴');log(s,`${r.relic.name} 획득! ${s.countdown}턴 이내에 입구로 탈출하세요.`,'good');if(s.echo){s.memory=Math.min(MEMORY_MAX,(s.memory||0)+1);log(s,`금고의 기억이 깊어진다 · 메아리가 ${echoFadeEvery(s)}턴마다 1씩 옅어짐`,'bad');return ok(s,`유물 획득 · 금고가 ${echoFadeEvery(s)}턴을 기억합니다`);}return ok(s,'유물 획득 · 용이 깨어났습니다!');}
   return fail(s,'상인에게 물약을 구매할 수 있습니다.');
+ }
+ case 'buyKey':{
+  const index=checkpointIndex(s);
+  if(!hasGimmicks(s)||index<0||s.stagePrepared[index]===null||r.enemy?.hp>0)return fail(s,'준비를 마친 정비소에서 열쇠를 구할 수 있습니다.');
+  if(s.hasKey)return fail(s,'황동 열쇠를 이미 가지고 있습니다.');if(s.gold<5)return fail(s,'금화 5가 필요합니다.');
+  s.gold-=5;s.hasKey=true;log(s,'황동 열쇠 구매 · 모든 열쇠 문에 재사용 가능','good');return ok(s,'황동 열쇠 획득');
+ }
+ case 'sluice':{
+  if(!hasGimmicks(s)||s.pos!==14||r.enemy?.hp>0)return fail(s,'적이 없는 수문 조작실에서 조작하세요.');
+  if(s.sluiceOpen)return fail(s,'귀환 사다리가 이미 열려 있습니다.');if(s.resource.skill<1)return fail(s,'기술 1이 필요합니다.');
+  s.resource.skill--;s.sluiceOpen=true;emitNoise(s,s.pos,5,'수문 사다리 개방');return ok(s,'낙하 통로를 왕복할 수 있습니다.');
+ }
+ case 'quietSeal':{
+  if(!hasGimmicks(s)||s.pos!==16||r.enemy?.hp>0)return fail(s,'적이 없는 고요의 공명제단에서 시도하세요.');
+  if(s.sealQuiet)return fail(s,'고요의 봉인이 이미 풀렸습니다.');
+  if(s.resource.skill<2||s.resource.quiet<3)return fail(s,'이번 턴의 기술 2와 은신 3이 필요합니다.');
+  s.resource.skill-=2;s.resource.quiet-=3;s.sealQuiet=true;s.edges.push([...SECRET_EDGE]);s.rooms[19].seen=true;
+  log(s,'흐트러진 기억을 소리 없이 맞췄습니다. 기억실의 봉인과 비밀길이 열립니다.','good');return ok(s,'봉인 해제 · 기억실 비밀길 개방');
  }
  case 'merchant':{
   if(r.type!=='merchant'||r.enemy?.hp>0)return fail(s,'적이 없는 상인의 방에서 구매할 수 있습니다.');if(r.used)return fail(s,'물약이 품절되었습니다.');if(s.hp===s.maxHp)return fail(s,'체력이 이미 가득 찼습니다.');if(s.gold<5)return fail(s,'금화 5가 필요합니다.');
@@ -316,6 +348,11 @@ export function validSave(s){
   if(s.pending?.checkpoint!==undefined&&(!Number.isInteger(s.pending.checkpoint)||s.pending.checkpoint!==checkpointIndex(s)||s.pending.type!=='purge'||s.stagePrepared[s.pending.checkpoint]!==null))return false;
   if(s.rooms.filter(r=>r.type==='relic').length!==1||s.rooms[19].type!=='relic'||s.rooms[19].relic?.name!=='용의 기억'||s.relic&&s.relic.name!=='용의 기억')return false;
   if(STAGES.slice(0,3).some((stage,i)=>s.rooms[stage.checkpoint].type!=='checkpoint'||s.rooms[stage.checkpoint].used!==(s.stagePrepared[i]!==null)))return false;
+ }
+ if(s.gimmicksVersion!==undefined){
+  if(!hasGimmicks(s)||!['hasKey','keyDoorOpen','sluiceOpen','sealForce','sealQuiet'].every(k=>typeof s[k]==='boolean')||!Number.isInteger(s.crystalStopTurn)||s.crystalStopTurn<0||s.crystalStopTurn>s.turn)return false;
+  if(s.keyDoorOpen&&!s.hasKey||s.pos===19&&!(s.sealForce||s.sealQuiet))return false;
+  const secret=s.edges.some(e=>Array.isArray(e)&&e.includes(16)&&e.includes(19));if(secret!==s.sealQuiet)return false;
  }
  const connections=new Set();
  for(const edge of s.edges){

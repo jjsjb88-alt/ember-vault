@@ -1,6 +1,7 @@
 import test from 'node:test';
+const newRun=(options)=>engineNewRun({...options,gimmicks:false});
 import assert from 'node:assert/strict';
-import {newRun,apply,validSave,moveStatus,emitNoise,breathPlan,echoFadeEvery,neighbours,CARDS,moveCost} from '../dist/engine.js';
+import {newRun as engineNewRun,apply,validSave,moveStatus,emitNoise,breathPlan,echoFadeEvery,neighbours,CARDS,moveCost} from '../dist/engine.js';
 import {STAGES,STAGE_ROOMS,RETURN_LIFT_EDGE,checkpointIndex,expeditionBonuses} from '../dist/expedition-stages.js';
 import {exitAnchor,hitExit} from '../dist/scene-layout.js';
 const act=(s,a)=>{const r=apply(s,a);assert.equal(r.ok,true,r.message);return r;};
