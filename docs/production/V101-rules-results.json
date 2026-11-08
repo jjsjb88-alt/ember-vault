@@ -1,0 +1,54 @@
+{
+  "result": "PASS",
+  "scope": "180 earned engine routes; fixed map-aware policies, not human difficulty evidence",
+  "roles": {
+    "force-rogue": {
+      "wins": 30,
+      "outOf": 30,
+      "min": 10,
+      "max": 15,
+      "quietWithoutForce": 0,
+      "losses": []
+    },
+    "force-knight": {
+      "wins": 30,
+      "outOf": 30,
+      "min": 11,
+      "max": 16,
+      "quietWithoutForce": 0,
+      "losses": []
+    },
+    "force-mage": {
+      "wins": 30,
+      "outOf": 30,
+      "min": 10,
+      "max": 15,
+      "quietWithoutForce": 0,
+      "losses": []
+    },
+    "quiet-rogue": {
+      "wins": 30,
+      "outOf": 30,
+      "min": 9,
+      "max": 18,
+      "quietWithoutForce": 30,
+      "losses": []
+    },
+    "quiet-knight": {
+      "wins": 30,
+      "outOf": 30,
+      "min": 11,
+      "max": 29,
+      "quietWithoutForce": 30,
+      "losses": []
+    },
+    "quiet-mage": {
+      "wins": 30,
+      "outOf": 30,
+      "min": 10,
+      "max": 17,
+      "quietWithoutForce": 30,
+      "losses": []
+    }
+  }
+}

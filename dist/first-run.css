@@ -1,0 +1,57 @@
+#modal[data-mode=welcome]{width:min(650px,calc(100vw - 20px));max-height:calc(100dvh - 20px);overflow:auto;background:#0a1923;border-color:#af9b73}
+#modal[data-mode=welcome] h2{font-size:24px;line-height:1.5}
+.first-welcome{display:flex;align-items:center;gap:18px;padding:14px;background:#15302f;border:1px solid #648677}
+.first-welcome img{width:100px;height:100px;object-fit:contain}.first-welcome p{font:17px/1.8 system-ui,sans-serif;color:#e4e3cb;margin:0}
+.welcome-rule,.first-help-text{font:16px/1.8 system-ui,sans-serif;color:#c3d6d3}
+.welcome-detail{display:block;width:100%;min-height:48px;margin-top:14px;padding:10px;border:1px solid #536d70;background:#10252f;color:#bdd1d1;font-size:14px}
+.expedition-goal.first-run-goal{width:210px;max-width:calc(100% - 24px);padding:0;transform:translate(var(--coach-shift-x,0px),var(--coach-shift,0px));pointer-events:auto}
+.first-run-goal>button{display:block;width:100%;min-height:54px;padding:8px 10px;text-align:left;background:#102b2df5;border:1px solid #b8a26c;color:#f1dfb2;cursor:pointer}
+.first-run-goal>button>strong{display:block!important;font-size:13px!important;line-height:1.5}.first-run-goal>button>small{display:block!important;font-size:11px!important;line-height:1.5;color:#b8d1c7}
+.pool-reveal.explained{overflow:auto;max-height:calc(100dvh - 20px)}
+.pool-reveal.explained[data-phase=complete] .reveal-content{overflow:visible;padding:18px 22px}
+.pool-reveal.explained[data-phase=complete] .reveal-stage,.pool-reveal.explained[data-phase=complete] .reveal-slots{display:none}
+.reveal-sources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:8px 0 12px}
+.reveal-sources[hidden]{display:none}.reveal-sources>p{grid-column:1/-1;margin:0 0 4px;color:#e0d7b7;font:15px/1.5 system-ui,sans-serif}
+.reveal-source{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid #4c7365;background:#142b30;min-width:0}
+.reveal-source>span:last-child{min-width:0}.reveal-source strong{font:15px/1.5 system-ui,sans-serif;color:#e5dfc6}.reveal-source .ability-effects{display:flex;flex-wrap:wrap;gap:3px 8px;margin:3px 0 0}.reveal-source .ability-effect{font-size:14px;line-height:1.4}.reveal-source .ability-effect b{font-size:17px}
+.pool-reveal.explained[data-phase=complete] #revealStakes{font-size:14px;line-height:1.6;margin:7px 0}
+.pool-reveal.explained[data-phase=complete] .reveal-bottom{position:sticky;bottom:-18px;padding:8px 0 0;background:#0a1515;z-index:3}
+.pool-reveal.explained .reveal-skip{min-height:48px;font-size:16px}
+@media(max-width:600px) and (orientation:portrait){
+ .first-welcome{padding:10px;gap:10px}.first-welcome img{width:65px;height:80px}.first-welcome p{font-size:15px}.welcome-rule{font-size:15px}
+ .reveal-sources{grid-template-columns:minmax(0,1fr);gap:5px}.reveal-source{padding:6px 8px}.pool-reveal.explained[data-phase=complete] .reveal-content{padding:14px}
+ .pool-reveal.explained .reveal-top h2{font-size:22px}.pool-reveal.explained .reveal-top button{font-size:10px;padding:6px}
+ .pool-reveal.explained .reveal-stat strong{font-size:26px}.pool-reveal.explained .reveal-traits{margin:5px 0}
+}
+@media(max-height:430px) and (orientation:landscape){
+ .first-welcome{padding:8px;gap:12px}.first-welcome img{width:58px;height:58px}.first-welcome p{font-size:15px}.welcome-rule{font-size:14px;line-height:1.6;margin:8px 0}
+ #modal[data-mode=welcome] .modal-inner{padding:12px}#modal[data-mode=welcome] .modal-top{margin-bottom:8px}.welcome-detail{margin-top:8px}
+ .expedition-goal.first-run-goal{width:180px}.first-run-goal>button{min-height:48px;padding:5px 8px}.first-run-goal>button>strong{font-size:12px!important}.first-run-goal>button>small{font-size:10px!important}
+ .pool-reveal.explained[data-phase=complete] .reveal-content{padding:10px 14px}.pool-reveal.explained .reveal-top h2{font-size:20px}.reveal-source{padding:5px 8px}.reveal-sources{gap:5px;margin-bottom:7px}
+ .pool-reveal.explained[data-phase=complete] .reveal-bottom{bottom:-10px}.pool-reveal.explained .reveal-stat strong{font-size:24px}.pool-reveal.explained .reveal-traits{margin:3px 0}.pool-reveal.explained .reveal-skip{min-height:44px}
+}
+.first-run-toggle{display:flex;align-items:center;gap:10px;min-height:48px;margin:12px 0;font:15px/1.6 system-ui,sans-serif;color:#cfdecf}.first-run-toggle input{width:22px;height:22px;accent-color:#c8a666}
+/* The cinematic uses display:contents and fixed grid areas. The readable ledger
+   has its own flex flow so totals cannot occupy a token row. */
+#poolReveal.explained[data-phase=complete] .reveal-content{display:flex;flex-direction:column;width:min(800px,100%);height:calc(100dvh - 20px);max-height:none;min-height:0;padding:14px 18px;background:#09171bf7;gap:8px}
+#poolReveal.explained[data-phase=complete] .reveal-top{display:flex;flex:none;align-items:center;justify-content:space-between}
+#poolReveal.explained[data-phase=complete] .reveal-top>div{position:static;text-align:left;align-self:auto;justify-self:auto}
+#poolReveal.explained[data-phase=complete] .reveal-top h2{font-size:22px;letter-spacing:0}
+#poolReveal.explained[data-phase=complete] .reveal-top button{position:static;min-height:44px}
+#poolReveal.explained[data-phase=complete] #revealStakes{flex:none;align-self:auto;max-width:100%;width:100%;text-align:left;font-size:14px;line-height:1.5;margin:0}
+#poolReveal.explained[data-phase=complete] .reveal-sources{flex:1;min-height:0;overflow:auto;grid-auto-rows:min-content;align-content:start;margin:0;padding-right:3px;overscroll-behavior:contain}
+#poolReveal.explained[data-phase=complete] .reveal-bottom{display:grid;position:static;flex:none;grid-template-columns:1fr;grid-template-rows:auto auto auto;gap:5px;padding-top:8px;background:#0a1515}
+#poolReveal.explained[data-phase=complete] .reveal-totals{grid-column:1;grid-row:1;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:auto;width:100%;gap:8px;align-self:auto;justify-self:auto}
+#poolReveal.explained[data-phase=complete] .reveal-stat{flex-direction:column;border:0;padding:0;gap:3px}
+#poolReveal.explained[data-phase=complete] .reveal-stat>span{font-size:12px}
+#poolReveal.explained[data-phase=complete] .reveal-stat strong{font:26px/1.1 ui-monospace,monospace}
+#poolReveal.explained[data-phase=complete] .reveal-traits{display:flex;grid-column:1;grid-row:2;justify-content:center;font-size:12px;gap:16px}
+#poolReveal.explained[data-phase=complete] .reveal-skip{position:static;grid-column:1;grid-row:3;width:100%;height:auto;min-height:46px;font-size:16px;justify-self:stretch}
+.action-receipt{padding:12px;border:1px solid #b69e69;background:#15332e;color:#f0deb8;font:15px/1.7 system-ui,sans-serif}
+@media(max-height:430px) and (orientation:landscape){#poolReveal.explained[data-phase=complete] .reveal-content{padding:6px 14px;gap:4px}#poolReveal.explained[data-phase=complete] .reveal-bottom{grid-template-columns:minmax(0,1fr) 170px;grid-template-rows:auto auto}#poolReveal.explained[data-phase=complete] .reveal-skip{grid-column:2;grid-row:1/3}#poolReveal.explained[data-phase=complete] .reveal-top h2{font-size:20px}#poolReveal.explained[data-phase=complete] .reveal-sources>p{font-size:14px}#poolReveal.explained[data-phase=complete] .reveal-stat strong{font-size:24px}}
+.reveal-sources>.reveal-base{font-size:13px;color:#afc8c1;margin-top:-3px}
+.ledger-scroll-hint{display:none;font:12px/1.5 system-ui,sans-serif;color:#b4cdc7;margin:0;flex:none}
+.stage-gimmick-brief summary{min-height:44px;font-size:15px;line-height:1.6;cursor:pointer;color:#ead2a5;display:flex;align-items:center}
+@media(max-height:430px) and (orientation:landscape){#poolReveal.explained[data-phase=complete] .ledger-scroll-hint{display:block}}
+.reveal-source strong{font-size:18px}.reveal-source .ability-effect{font-size:16px}.reveal-source .ability-effect b{font-size:20px}
+.play-surface.map-open .expedition-goal.first-run-goal{display:none}

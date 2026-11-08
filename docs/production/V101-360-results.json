@@ -1,0 +1,30 @@
+{
+  "viewport": [
+    360,
+    640
+  ],
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "real-campaign-first-choice",
+      "seconds": 5.77
+    },
+    {
+      "name": "chest-to-gold-and-noise"
+    },
+    {
+      "name": "same-expedition-reload-after-recruit"
+    },
+    {
+      "name": "actual-later-draw-not-immediate-grant"
+    },
+    {
+      "name": "same-run-growth-combat-and-next-stage",
+      "seconds": 18.32,
+      "turn": 3
+    }
+  ],
+  "errors": [],
+  "http_errors": [],
+  "request_failures": []
+}

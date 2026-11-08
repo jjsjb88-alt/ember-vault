@@ -1,6 +1,7 @@
-import {hasGimmicks,passageRule,movementGimmickReason,worldPassageOpen,movementDirectionAllowed,SECRET_EDGE} from './dungeon-gimmicks.js?v=20261107e';
-import {STAGES,STAGE_ROOMS,RETURN_LIFT_EDGE,isStaged,stageIndex,checkpointIndex,configureStages,expeditionBonuses} from './expedition-stages.js?v=20261107e';
+import {hasGimmicks,passageRule,movementGimmickReason,worldPassageOpen,movementDirectionAllowed,SECRET_EDGE} from './dungeon-gimmicks.js?v=20261109a';
+import {STAGES,STAGE_ROOMS,RETURN_LIFT_EDGE,isStaged,stageIndex,checkpointIndex,configureStages,expeditionBonuses} from './expedition-stages.js?v=20261109a';
 export const VERSION=2;
+export function objectParticle(name){const code=String(name).codePointAt(String(name).length-1);return code>=0xac00&&code<=0xd7a3&&(code-0xac00)%28?'을':'를';}
 export const ROLES={
   rogue:{name:'그림자 도적',short:'도적',color:'#86c6aa',icon:'hero',desc:'가볍게 걷고, 조용히 훔칩니다.',trait:'매 턴 소음 1 추가 감소',hp:22},
   knight:{name:'잿빛 기사',short:'기사',color:'#e5ad72',icon:'knight',desc:'두꺼운 방패로 위험을 견딥니다.',trait:'최대 체력 28 · 매 턴 방어 1',hp:28},
@@ -242,7 +243,7 @@ export function apply(s,action){
  }
  case 'interact':{
   if(r.enemy?.hp>0)return fail(s,'적을 먼저 쓰러뜨려야 합니다.');
-  if(r.type==='entry'){if(!s.relic||isStaged(s)&&s.relic.name!=='용의 기억')return fail(s,isStaged(s)?'심층의 용의 기억을 회수해야 탈출할 수 있습니다.':'유물을 하나 찾아야 탈출할 수 있습니다.');finish(s,true,`${s.relic.name}을 품고 지상으로 돌아왔습니다.`);return ok(s,'탈출 성공!');}
+  if(r.type==='entry'){if(!s.relic||isStaged(s)&&s.relic.name!=='용의 기억')return fail(s,isStaged(s)?'심층의 용의 기억을 회수해야 탈출할 수 있습니다.':'유물을 하나 찾아야 탈출할 수 있습니다.');finish(s,true,`${s.relic.name}${objectParticle(s.relic.name)} 품고 지상으로 돌아왔습니다.`);return ok(s,'탈출 성공!');}
   if(r.used)return fail(s,'이 방의 보상은 이미 받았습니다.');
   if(r.type==='checkpoint')return fail(s,'정비소에서 능력·정리·보급을 선택하세요.');
   if(r.type==='mechanism'){
@@ -354,6 +355,7 @@ export function validSave(s){
   if(s.keyDoorOpen&&!s.hasKey||s.pos===19&&!(s.sealForce||s.sealQuiet))return false;
   const secret=s.edges.some(e=>Array.isArray(e)&&e.includes(16)&&e.includes(19));if(secret!==s.sealQuiet)return false;
  }
+ if(s.firstRun!==undefined){const p=s.firstRun;if(!p||p.version!==1||!isStaged(s)||typeof p.enabled!=='boolean'||typeof p.used!=='boolean'||!(p.memory===null||Object.hasOwn(CARDS,p.memory))||!Number.isInteger(p.drawnTurn)||p.drawnTurn<0||p.drawnTurn>s.turn)return false;}
  const connections=new Set();
  for(const edge of s.edges){
   if(!Array.isArray(edge)||edge.length!==2||!edge.every(roomId)||edge[0]===edge[1])return false;

@@ -1,0 +1,92 @@
+{
+  "viewport": [
+    390,
+    844
+  ],
+  "result": "PASS",
+  "checks": [
+    {
+      "name": "actual-animated-token-has-visible-name-and-effect",
+      "snapshot": {
+        "phase": "revealed",
+        "title": "길잡이",
+        "name": "길잡이",
+        "effect": "이동 +1 · 기술 +1",
+        "font": 16
+      }
+    },
+    {
+      "name": "readable-current-medals",
+      "effects": [
+        {
+          "text": "이동 +1",
+          "size": 16,
+          "width": 73,
+          "scrollWidth": 73
+        },
+        {
+          "text": "기술 +1",
+          "size": 16,
+          "width": 73,
+          "scrollWidth": 73
+        },
+        {
+          "text": "이동 +2",
+          "size": 16,
+          "width": 73,
+          "scrollWidth": 73
+        },
+        {
+          "text": "공격 +2",
+          "size": 16,
+          "width": 73,
+          "scrollWidth": 73
+        },
+        {
+          "text": "첫 소음 +1",
+          "size": 16,
+          "width": 92,
+          "scrollWidth": 92
+        },
+        {
+          "text": "기술 +3",
+          "size": 16,
+          "width": 73,
+          "scrollWidth": 73
+        },
+        {
+          "text": "추가 추출 +1개",
+          "size": 16,
+          "width": 125,
+          "scrollWidth": 125
+        }
+      ],
+      "glossary_and_page_preserved": true
+    },
+    {
+      "name": "shop-effects-price-and-safe-return",
+      "price": {
+        "y": 568.0625,
+        "bottom": 601.0625,
+        "height": 33,
+        "dialogBottom": 834
+      }
+    },
+    {
+      "name": "reward-reading-never-selects",
+      "options_unchanged": true
+    },
+    {
+      "name": "tutorial-complete-and-original-protected",
+      "won": true
+    },
+    {
+      "name": "all-24-artbook-effects-and-keywords",
+      "cards": 24,
+      "main_unchanged": true
+    }
+  ],
+  "errors": [],
+  "http_errors": [],
+  "request_failures": []
+}

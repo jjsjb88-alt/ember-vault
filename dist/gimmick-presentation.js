@@ -1,7 +1,7 @@
-import {hasGimmicks,roomGimmick,STAGE_GIMMICK_PLANS} from './dungeon-gimmicks.js?v=20261107e';
-import {neighbours,passagePreview,MODES,previewNoise} from './engine.js?v=20261107e';
-import {stageIndex} from './expedition-stages.js?v=20261107e';
-import {itemMarkup} from './token-art.js?v=20261107e';
+import {hasGimmicks,roomGimmick,STAGE_GIMMICK_PLANS} from './dungeon-gimmicks.js?v=20261109a';
+import {neighbours,passagePreview,MODES,previewNoise} from './engine.js?v=20261109a';
+import {stageIndex} from './expedition-stages.js?v=20261109a';
+import {itemMarkup} from './token-art.js?v=20261109a';
 export function passageGuideMarkup(s,mode=s.mode){
  if(!hasGimmicks(s))return '';
  const here=roomGimmick(s,s.pos);

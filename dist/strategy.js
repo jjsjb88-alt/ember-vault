@@ -1,6 +1,6 @@
-import {gimmickPassable} from './dungeon-gimmicks.js?v=20261107e';
-import {isStaged,RETURN_LIFT_EDGE} from './expedition-stages.js?v=20261107e';
-import {apply,enemyTurn,neighbours,moveCost,moveNoise,previewNoise,TERRAINS} from './engine.js?v=20261107e';
+import {gimmickPassable} from './dungeon-gimmicks.js?v=20261109a';
+import {isStaged,RETURN_LIFT_EDGE} from './expedition-stages.js?v=20261109a';
+import {apply,enemyTurn,neighbours,moveCost,moveNoise,previewNoise,TERRAINS} from './engine.js?v=20261109a';
 
 // Only charted passages are used. This is a travel estimate, not a combat forecast.
 export function returnRoute(s){
