@@ -1,5 +1,5 @@
-import {CARDS,dragonDue,breathPlan} from './engine.js?v=20261109a';
-import {isStaged,stageIndex} from './expedition-stages.js?v=20261109a';
+import {CARDS,dragonDue,breathPlan} from './engine.js?v=20261111a';
+import {isStaged,stageIndex} from './expedition-stages.js?v=20261111a';
 export function startFirstRun(s){
  if(!isStaged(s)||s.phase!=='playing')return;
  s.firstExpedition=true;

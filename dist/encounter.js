@@ -1,6 +1,7 @@
-import {hasGimmicks,worldPassageOpen} from './dungeon-gimmicks.js?v=20261109a';
-import {isStaged,checkpointIndex} from './expedition-stages.js?v=20261109a';
-import {enemyTurn,neighbours,previewNoise} from './engine.js?v=20261109a';
+import {hasRisk,RISK,healingLeft,healingAmount,healingNote,soundLoss} from './risk-rules.js?v=20261111a';
+import {hasGimmicks,worldPassageOpen} from './dungeon-gimmicks.js?v=20261111a';
+import {isStaged,checkpointIndex} from './expedition-stages.js?v=20261111a';
+import {enemyTurn,neighbours,previewNoise} from './engine.js?v=20261111a';
 
 export function roomEnvironment(room){return ['camp','merchant','checkpoint'].includes(room.type)?'refuge':['relic','shrine'].includes(room.type)?'vault':'library';}
 
@@ -15,7 +16,7 @@ export function roomInteraction(s){
  if(r.used)return {act:'',text:'이 방의 보상을 받았습니다',enabled:false,short:'회수 완료'};
  const a={
   chest:{act:'interact',text:'상자 열기',short:'열기',subject:'보물 상자',detail:`${hasGimmicks(s)&&r.id===2?'황동 열쇠 · ':''}${r.id===18?'금화 14':r.row>=3?'금화 10':'금화 5~7'} · 소리 ${previewNoise(s,r.id===18?9:r.row>=3?7:3)}`,enabled:true,kind:'loot'},
-  camp:{act:'interact',text:'휴식 · 체력 +6 / 경계 −3',short:'휴식',subject:'작은 모닥불',detail:`체력 +${Math.min(6,s.maxHp-s.hp)} · 경계 −${Math.min(3,s.noise)}`,enabled:s.hp<s.maxHp||s.noise>0,reason:'체력과 경계가 충분히 회복되어 있습니다.',kind:'heal'},
+  camp:{act:'interact',text:`휴식 · 체력 최대 +${hasRisk(s)?RISK.campHeal:6} / 경계 −3`,short:'휴식',subject:'작은 모닥불',detail:`체력 +${healingAmount(s,hasRisk(s)?RISK.campHeal:6)} · 경계 −${Math.min(3,s.noise)}`,enabled:healingAmount(s,hasRisk(s)?RISK.campHeal:6)>0||s.noise>0,reason:'체력과 경계가 충분히 회복되어 있습니다.',kind:'heal'},
   shrine:{act:'interact',text:'능력 하나 영구 제거',short:'정화',subject:'기억의 제단',detail:'능력 하나를 주머니에서 제거',enabled:s.deck.length+s.discard.length+s.played.length>5,reason:'주머니에는 최소 5개의 능력이 필요합니다.',kind:'relic'},
   merchant:{act:'merchant',text:'물약 구매 · 금화 5',short:'구매',subject:'떠돌이 상인',detail:'금화 5 · 체력 +8',enabled:s.gold>=5&&s.hp<s.maxHp,reason:s.hp===s.maxHp?'체력이 이미 가득 찼습니다.':'물약에는 금화 5가 필요합니다.',kind:'heal'},
   relic:{act:'interact',text:`${r.relic?.name} 획득`,short:'봉인 해제',subject:r.relic?.name,detail:`${r.relic?.value}점 · 소리 ${previewNoise(s,8)} · 회수 후 입구로`,enabled:!s.relic||s.relic.value<r.relic?.value,reason:'이미 더 값진 유물을 가지고 있습니다.',kind:'relic'},

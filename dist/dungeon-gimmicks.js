@@ -1,3 +1,4 @@
+import {hasRisk,RISK} from './risk-rules.js?v=20261111a';
 // Optional generation marker: previously saved expeditions retain their original rules.
 export const SECRET_EDGE=[16,19];
 export function hasGimmicks(s){return s?.layout==='staged'&&s.gimmicksVersion===1;}
@@ -37,7 +38,7 @@ export function movementGimmickReason(s,to){
 }
 export function roomGimmick(s,id){
  if(!hasGimmicks(s))return null;
- return ({2:{label:'수정 동굴',symbol:'◆',description:'들어오면 이번 턴 이동 종료. 상자에서 금화와 영구 황동 열쇠 획득. 다른 행동은 가능.'},9:{label:'압력 바닥',symbol:'▦',description:'걷기·질주로 들어오면 소리 +2. 살금살금으로 피할 수 있으며 은신도 적용.'},14:{label:'수문 사다리',symbol:'⚙',description:s.sluiceOpen?'수문 개방 완료 · 낙하 통로 왕복 가능.':'기술 1 · 소리 5로 낙하 통로의 귀환 사다리를 엽니다.'},16:{label:'고요의 공명제단',symbol:'◇',description:s.sealQuiet?'고요의 봉인 해제 · 기억실로 비밀길 개방. 휴식은 별도로 한 번 가능.':'기술 2 + 은신 3으로 봉인 해제 · 기억실 비밀길 개방 · 소리 없음. 체력 +6 / 경계 −3 휴식도 별도로 한 번.'},19:{label:'기억의 봉인',symbol:s.sealForce||s.sealQuiet?'◇':'▣',description:s.sealForce||s.sealQuiet?'봉인 해제 완료. 수호룡을 쓰러뜨린 뒤 유물을 회수하세요.':'심층 봉인병을 격파하거나 공명제단에 기술 2 + 은신 3을 바쳐야 진입.'}})[id]||null;
+ return ({2:{label:'수정 동굴',symbol:'◆',description:'들어오면 이번 턴 이동 종료. 상자에서 금화와 영구 황동 열쇠 획득. 다른 행동은 가능.'},9:{label:'압력 바닥',symbol:'▦',description:'걷기·질주로 들어오면 소리 +2. 살금살금으로 피할 수 있으며 은신도 적용.'},14:{label:'수문 사다리',symbol:'⚙',description:s.sluiceOpen?'수문 개방 완료 · 낙하 통로 왕복 가능.':'기술 1 · 소리 5로 낙하 통로의 귀환 사다리를 엽니다.'},16:{label:'고요의 공명제단',symbol:'◇',description:s.sealQuiet?'고요의 봉인 해제 · 기억실로 비밀길 개방. 휴식은 별도로 한 번 가능.':`기술 2 + 은신 3으로 봉인 해제 · 기억실 비밀길 개방 · 소리 없음. 체력 최대 +${hasRisk(s)?RISK.campHeal:6} / 경계 −3 휴식도 별도로 한 번.`},19:{label:'기억의 봉인',symbol:s.sealForce||s.sealQuiet?'◇':'▣',description:s.sealForce||s.sealQuiet?'봉인 해제 완료. 수호룡을 쓰러뜨린 뒤 유물을 회수하세요.':'심층 봉인병을 격파하거나 공명제단에 기술 2 + 은신 3을 바쳐야 진입.'}})[id]||null;
 }
 export const STAGE_GIMMICK_PLANS=[
  '다음 중층에는 검문 통로와 수정 동굴이 있습니다. 공격을 준비하면 검문 피해를 막고, 수정고를 돌아가면 열쇠를 얻지만 들어간 턴에는 더 이동할 수 없습니다.',

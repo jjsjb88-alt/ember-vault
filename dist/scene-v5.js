@@ -1,15 +1,15 @@
-import {hasGimmicks,roomGimmick,passageRule,worldPassageOpen} from './dungeon-gimmicks.js?v=20261109a';
-import {isStaged,STAGES} from './expedition-stages.js?v=20261109a';
-import {neighbours,moveStatus} from './engine.js?v=20261109a';
-import {icon,sprite} from './art.js?v=20261109a';
-import {DIRECTIONS,travelVector,walkFrame,motionFrame,mapLayout,projectMap,mapPassage,passagePoint,hitMapRoom,exitAnchor,hitExit} from './scene-layout.js?v=20261109a';
-import {WALK_FRAMES} from './rogue-frames.js?v=20261109a';
-import {ATTACK_FRAMES} from './rogue-attack-frames.js?v=20261109a';
-import {RELIC_MOTION} from './rogue-relic-frames.js?v=20261109a';
-import {prepareFrames} from './sprite-atlas.js?v=20261109a';
-import {roomEnvironment} from './encounter.js?v=20261109a';
-import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261109a';
-import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261109a';
+import {hasGimmicks,roomGimmick,passageRule,worldPassageOpen} from './dungeon-gimmicks.js?v=20261111a';
+import {isStaged,STAGES} from './expedition-stages.js?v=20261111a';
+import {neighbours,moveStatus} from './engine.js?v=20261111a';
+import {icon,sprite} from './art.js?v=20261111a';
+import {DIRECTIONS,travelVector,walkFrame,motionFrame,mapLayout,projectMap,mapPassage,passagePoint,hitMapRoom,exitAnchor,hitExit} from './scene-layout.js?v=20261111a';
+import {WALK_FRAMES} from './rogue-frames.js?v=20261111a';
+import {ATTACK_FRAMES} from './rogue-attack-frames.js?v=20261111a';
+import {RELIC_MOTION} from './rogue-relic-frames.js?v=20261111a';
+import {prepareFrames} from './sprite-atlas.js?v=20261111a';
+import {roomEnvironment} from './encounter.js?v=20261111a';
+import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261111a';
+import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261111a';
 
 export function makeRenderer(canvas,getState,minimap){
  const c=canvas.getContext('2d'),mc=minimap.getContext('2d');

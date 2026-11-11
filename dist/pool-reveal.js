@@ -1,7 +1,7 @@
-import {abilityEffectsMarkup} from './ability-guide.js?v=20261109a';
-import {CARDS,neighbours,moveCost} from './engine.js?v=20261109a';
-import {paintIcons} from './art.js?v=20261109a';
-import {tokenMarkup,richGlyph} from './token-art.js?v=20261109a';
+import {abilityEffectsMarkup} from './ability-guide.js?v=20261111a';
+import {CARDS,neighbours,moveCost} from './engine.js?v=20261111a';
+import {paintIcons} from './art.js?v=20261111a';
+import {tokenMarkup,richGlyph} from './token-art.js?v=20261111a';
 
 const KEYS=['sword','move','skill','block','quiet','rattle'];
 const VALUES=[['sword','공격력'],['move','이동력'],['skill','기술'],['block','방어']];

@@ -1,5 +1,6 @@
-import {hasGimmicks,passageRule,movementGimmickReason,worldPassageOpen,movementDirectionAllowed,SECRET_EDGE} from './dungeon-gimmicks.js?v=20261109a';
-import {STAGES,STAGE_ROOMS,RETURN_LIFT_EDGE,isStaged,stageIndex,checkpointIndex,configureStages,expeditionBonuses} from './expedition-stages.js?v=20261109a';
+import {hasRisk,configureRisk,RISK,heal,healingAmount,healingLeft,riskBreathDamage,soundLoss} from './risk-rules.js?v=20261111a';
+import {hasGimmicks,passageRule,movementGimmickReason,worldPassageOpen,movementDirectionAllowed,SECRET_EDGE} from './dungeon-gimmicks.js?v=20261111a';
+import {STAGES,STAGE_ROOMS,RETURN_LIFT_EDGE,isStaged,stageIndex,checkpointIndex,configureStages,expeditionBonuses} from './expedition-stages.js?v=20261111a';
 export const VERSION=2;
 export function objectParticle(name){const code=String(name).codePointAt(String(name).length-1);return code>=0xac00&&code<=0xd7a3&&(code-0xac00)%28?'을':'를';}
 export const ROLES={
@@ -62,7 +63,7 @@ export function breathPlan(s){
   if(!frontier.length)break;path.push(frontier.sort((a,b)=>e[b]-e[a]||me[a]-me[b]||rank(a,b))[0]);
  }
  const hit=path.includes(s.pos);
- return {start,path,reach,hit,damage:hit?2+Math.floor(e[s.pos]/3):0,echo:e[s.pos]};
+ return {start,path,reach,hit,damage:hit?riskBreathDamage(s,e[s.pos]):0,echo:e[s.pos]};
 }
 function next(s){let x=s.rng|0;x^=x<<13;x^=x>>>17;x^=x<<5;s.rng=x>>>0;return s.rng/4294967296;}
 function shuffle(s,a){for(let i=a.length-1;i>0;i--){const j=Math.floor(next(s)*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
@@ -90,7 +91,7 @@ function generateRooms(s){
 }
 export function neighbours(s,id=s.pos){return s.edges.filter(e=>e.includes(id)).map(e=>e[0]===id?e[1]:e[0]);}
 function acousticNeighbours(s,id){return neighbours(s,id).filter(n=>worldPassageOpen(s,id,n));}
-export function moveCost(s,id,mode=s.mode,from=s.pos){return Math.max(1,(s.rooms[id].row>=3?2:1)+MODES[mode].extra)+(passageRule(s,from,id).extra||0);}
+export function moveCost(s,id,mode=s.mode,from=s.pos){return Math.max(1,(hasRisk(s)?RISK.move[s.rooms[id].stage]:s.rooms[id].row>=3?2:1)+MODES[mode].extra)+(passageRule(s,from,id).extra||0);}
 export function moveNoise(s,id,mode=s.mode){return Math.max(0,MODES[mode].noise+TERRAINS[s.rooms[id].terrain].noise+(s.rooms[s.pos].enemy?.hp>0?2:0)+(passageRule(s,s.pos,id).noise||0)+(hasGimmicks(s)&&id===9&&mode!=='sneak'?2:0));}
 export function previewNoise(s,raw){return Math.max(0,Math.min(12,raw+s.resource.rattle-s.resource.quiet));}
 function resources(s){return {move:1,sword:0,skill:s.role==='mage'?1:0,block:s.role==='knight'?1:0,quiet:0,rattle:0};}
@@ -107,7 +108,7 @@ export function resolvePool(s,initial=null){
   for(const [k,v]of Object.entries(c.e)){
    if(['move','sword','skill','block'].includes(k))s.resource[k]+=v;
    if(k==='noise')s.resource[v<0?'quiet':'rattle']+=Math.abs(v);
-   if(k==='heal')s.hp=Math.min(s.maxHp,s.hp+v);
+   if(k==='heal')heal(s,v);
    if(k==='gold')s.gold+=v;
    if(k==='draw')for(let n=0;n<v;n++){const extra=take(s);if(extra)queue.push(extra);}
   }
@@ -116,10 +117,10 @@ export function resolvePool(s,initial=null){
  log(s,`${queue.length}개 자동 추출 · 공격 ${s.resource.sword} / 이동 ${s.resource.move} / 기술 ${s.resource.skill}`,'good');
  return queue;
 }
-export function soundField(s,origin,strength){
+export function soundField(s,origin,strength,noise=s.noise){
  const levels=new Map([[origin,strength]]),todo=[origin];
  while(todo.length){const id=todo.shift(),level=levels.get(id);
-  for(const n of acousticNeighbours(s,id)){const v=level-2-TERRAINS[s.rooms[n].terrain].damp;if(v>0&&v>(levels.get(n)||0)){levels.set(n,v);todo.push(n);}}
+  for(const n of acousticNeighbours(s,id)){const v=level-soundLoss(s,noise)-TERRAINS[s.rooms[n].terrain].damp;if(v>0&&v>(levels.get(n)||0)){levels.set(n,v);todo.push(n);}}
  }
  return [...levels].map(([id,level])=>({id,level}));
 }
@@ -127,20 +128,21 @@ export function emitNoise(s,origin,raw,label,personal=true){
  let strength=raw,absorbed=0,gear=0;
  if(personal){gear=s.resource.rattle;strength+=gear;s.resource.rattle=0;absorbed=Math.min(strength,s.resource.quiet);s.resource.quiet-=absorbed;strength-=absorbed;}
  strength=Math.max(0,Math.min(12,strength));
- const field=strength?soundField(s,origin,strength):[],heard=[];
+ const rise=strength?Math.max(1,Math.ceil(strength/2)):0;
+ const field=strength?soundField(s,origin,strength,Math.min(12,s.noise+rise)):[],heard=[];
  for(const {id,level}of field){const e=s.rooms[id].enemy;if(!e||e.hp<=0)continue;
   e.awareness=Math.min(6,e.awareness+level);e.mode=e.awareness>=4?'hunt':e.awareness>=2?'investigate':'listen';e.target=origin;e.memory=3;
   heard.push({id,level,name:e.name});
  }
  s.soundSeq++;s.lastSound={seq:s.soundSeq,origin,strength,raw:raw+gear,gear,absorbed,label,field,heard,turn:s.turn};
- const rise=strength?Math.max(1,Math.ceil(strength/2)):0;s.noise=Math.min(12,s.noise+rise);upgradeEcho(s);if(s.echo&&rise)s.echo[origin]=Math.min(ECHO_MAX,s.echo[origin]+rise);
+ s.noise=Math.min(12,s.noise+rise);upgradeEcho(s);if(s.echo&&rise)s.echo[origin]=Math.min(ECHO_MAX,s.echo[origin]+rise);
  s.noiseMade+=strength;
  if(strength)log(s,`${label} · 소리 ${strength}${absorbed?` (은신으로 ${absorbed} 흡수)`:''} · ${heard.length?`적 ${heard.length}명이 들었습니다`:'들킨 기척 없음'}`,heard.length?'bad':'normal');
  else log(s,`${label} · 소리 없이 움직였습니다${absorbed?` (은신 ${absorbed} 사용)`:''}`,'good');
  return s.lastSound;
 }
 function freshFields(s){Object.assign(s,{mode:'walk',soundSeq:0,lastSound:null,noiseMade:0,hideTurn:0,lureTurn:0,hidden:false,pursuits:[]});}
-export function newRun({seed=Date.now(),role='rogue',layout='expanded',gimmicks=true}={}){
+export function newRun({seed=Date.now(),role='rogue',layout='expanded',gimmicks=true,risk=false}={}){
  if(!ROLES[role])role='rogue';seed=Number(seed)>>>0||135792468;
  const s={version:VERSION,seed,rng:seed,role,turn:1,pos:0,from:null,hp:ROLES[role].hp,maxHp:ROLES[role].hp,gold:0,noise:0,resource:null,hand:[],deck:[],discard:[],played:[],edges:EDGES.map(e=>[...e]),rooms:[],market:[],log:[],relic:null,countdown:null,phase:'playing',pending:null,kills:0,purchases:0,refreshTurn:0,steps:0};
  if(layout!=='classic'){s.layout=layout==='staged'?'staged':'expanded';s.edges.push(...EXPANDED_EDGES.map(e=>[...e]));}
@@ -149,6 +151,7 @@ export function newRun({seed=Date.now(),role='rogue',layout='expanded',gimmicks=
  s.market=['step',...shuffle(s,MARKET_IDS.filter(x=>x!=='step')).slice(0,3)];
  resolvePool(s,['scout','step',role==='mage'?'spark':'slash','focus',role==='rogue'?'sneak':'guard']);
  if(layout==='staged')configureStages(s,{gimmicks});
+ if(layout==='staged'&&gimmicks&&risk)configureRisk(s);
  log(s,'금고의 문이 열렸습니다. 능력이 자동으로 추출됩니다. 유물을 찾아 이 입구로 돌아오세요.','good');return s;
 }
 export function migrateSave(old){
@@ -257,7 +260,7 @@ export function apply(s,action){
    return ok(s,`귀환 지름길 개방 · 기술 −${cost}`);
   }
   if(r.type==='chest'){const gold=r.id===18?14:r.row>=3?10:5+Math.floor(next(s)*3),noise=r.id===18?9:r.row>=3?7:3;s.gold+=gold;r.used=true;if(hasGimmicks(s)&&r.id===2){s.hasKey=true;log(s,'황동 열쇠 획득 · 지름길을 열어도 소모되지 않습니다.','good');}emitNoise(s,s.pos,noise,r.row>=3?'상자의 경보 장치':'낡은 경첩');log(s,`보물 상자 · 금화 +${gold}`,'good');return ok(s,`금화 +${gold}`);}
-  if(r.type==='camp'){if(s.hp===s.maxHp&&s.noise===0)return fail(s,'아직 쉬어 갈 필요가 없습니다.');const healed=Math.min(6,s.maxHp-s.hp);s.hp+=healed;s.noise=Math.max(0,s.noise-3);r.used=true;log(s,`불가에서 휴식 · 체력 +${healed}, 경계 −3`,'good');return ok(s,'따뜻한 휴식');}
+  if(r.type==='camp'){if(healingAmount(s,hasRisk(s)?RISK.campHeal:6)===0&&s.noise===0)return fail(s,'아직 쉬어 갈 필요가 없거나 회복 한도를 모두 썼습니다.');const healed=heal(s,hasRisk(s)?RISK.campHeal:6);s.noise=Math.max(0,s.noise-3);r.used=true;log(s,`불가에서 휴식 · 체력 +${healed}, 경계 −3`,'good');return ok(s,'따뜻한 휴식');}
   if(r.type==='shrine'){const total=[...s.deck,...s.discard,...s.played];if(total.length<=5)return fail(s,'최소 5개의 능력은 남겨 두어야 합니다.');s.pending={type:'purge',options:[...new Set(total)]};return ok(s,'주머니에서 지울 능력을 선택하세요.');}
   if(r.type==='relic'){if(s.relic&&s.relic.value>=r.relic.value)return fail(s,'이미 더 값진 유물을 가지고 있습니다.');s.relic={...r.relic};r.used=true;if(s.countdown===null)s.countdown=14;emitNoise(s,s.pos,8,'유물 봉인 파괴');log(s,`${r.relic.name} 획득! ${s.countdown}턴 이내에 입구로 탈출하세요.`,'good');if(s.echo){s.memory=Math.min(MEMORY_MAX,(s.memory||0)+1);log(s,`금고의 기억이 깊어진다 · 메아리가 ${echoFadeEvery(s)}턴마다 1씩 옅어짐`,'bad');return ok(s,`유물 획득 · 금고가 ${echoFadeEvery(s)}턴을 기억합니다`);}return ok(s,'유물 획득 · 용이 깨어났습니다!');}
   return fail(s,'상인에게 물약을 구매할 수 있습니다.');
@@ -282,23 +285,24 @@ export function apply(s,action){
  }
  case 'merchant':{
   if(r.type!=='merchant'||r.enemy?.hp>0)return fail(s,'적이 없는 상인의 방에서 구매할 수 있습니다.');if(r.used)return fail(s,'물약이 품절되었습니다.');if(s.hp===s.maxHp)return fail(s,'체력이 이미 가득 찼습니다.');if(s.gold<5)return fail(s,'금화 5가 필요합니다.');
-  s.gold-=5;s.hp=Math.min(s.maxHp,s.hp+8);r.used=true;return ok(s,'체력 8을 회복했습니다.');
+  s.gold-=5;heal(s,8);r.used=true;return ok(s,'체력 8을 회복했습니다.');
  }
  case 'prepare':{
   const index=checkpointIndex(s),total=[...s.deck,...s.discard,...s.played];
   if(index<0||r.enemy?.hp>0)return fail(s,'적이 없는 층간 정비소에서 준비할 수 있습니다.');
   if(s.stagePrepared[index]!==null)return fail(s,'이 정비소의 준비는 이미 마쳤습니다.');
   if(action.choice==='recruit'){if(!STAGES[index].offers.includes(action.id))return fail(s,'이 정비소의 기억을 고르세요.');s.discard.push(action.id);}
-  else if(action.choice==='resupply'){s.hp=Math.min(s.maxHp,s.hp+6);s.noise=Math.max(0,s.noise-2);s.provisions++;}
+  else if(action.choice==='resupply'){heal(s,hasRisk(s)?RISK.prepareHeal:6);s.noise=Math.max(0,s.noise-2);s.provisions++;}
   else if(action.choice==='refine'){if(total.length<=5)return fail(s,'최소 5개의 능력을 남겨야 합니다.');s.pending={type:'purge',options:[...new Set(total)],checkpoint:index};return ok(s,'다음 구역을 위해 내려놓을 기억을 고르세요.');}
   else return fail(s,'능력 영입·기억 정리·보급 중 하나를 선택하세요.');
-  s.stagePrepared[index]=action.choice;r.used=true;log(s,`${STAGES[index].name} 정비 · ${action.choice==='recruit'?CARDS[action.id].name+' 영입':'체력 +6 · 보급 +1 · 경계 −2'} · 다음 구역 개방`,'good');return ok(s,'준비 완료 · 다음 구역으로 갈 수 있습니다.');
+  s.stagePrepared[index]=action.choice;r.used=true;log(s,`${STAGES[index].name} 정비 · ${action.choice==='recruit'?CARDS[action.id].name+' 영입':`체력 회복 최대 ${hasRisk(s)?RISK.prepareHeal:6} · 보급 +1 · 경계 −2`} · 다음 구역 개방`,'good');return ok(s,'준비 완료 · 다음 구역으로 갈 수 있습니다.');
  }
  case 'provision':{
   if(!isStaged(s)||s.provisions<1)return fail(s,'남은 휴대 보급이 없습니다.');
   if(s.provisionTurn===s.turn)return fail(s,'휴대 보급은 턴마다 한 번 사용할 수 있습니다.');
   if(s.hp>=s.maxHp)return fail(s,'체력이 가득 차 있습니다.');
-  const amount=Math.min(6,s.maxHp-s.hp);s.provisions--;s.provisionTurn=s.turn;s.hp+=amount;emitNoise(s,s.pos,3,'보급 꾸러미 풀기');log(s,`휴대 보급 · 체력 +${amount}`,'good');return ok(s,`체력 +${amount} · 보급 사용`);
+  if(healingLeft(s)===0)return fail(s,'이번 원정의 회복 한도를 모두 썼습니다.');
+  const amount=heal(s,hasRisk(s)?RISK.heal:6);s.provisions--;s.provisionTurn=s.turn;emitNoise(s,s.pos,3,'보급 꾸러미 풀기');log(s,`휴대 보급 · 체력 +${amount}`,'good');return ok(s,`체력 +${amount} · 보급 사용`);
  }
  case 'buy':{
   const camp=checkpointIndex(s);if(isStaged(s)&&(camp<0||r.enemy?.hp>0||s.stagePrepared[camp]===null||s.stageTrades[camp]>=1))return fail(s,'각 정비소의 추가 교역은 한 번만 가능합니다.');
@@ -356,6 +360,7 @@ export function validSave(s){
   const secret=s.edges.some(e=>Array.isArray(e)&&e.includes(16)&&e.includes(19));if(secret!==s.sealQuiet)return false;
  }
  if(s.firstRun!==undefined){const p=s.firstRun;if(!p||p.version!==1||!isStaged(s)||typeof p.enabled!=='boolean'||typeof p.used!=='boolean'||!(p.memory===null||Object.hasOwn(CARDS,p.memory))||!Number.isInteger(p.drawnTurn)||p.drawnTurn<0||p.drawnTurn>s.turn)return false;}
+ if(s.riskVersion!==undefined&&(!hasRisk(s)||s.gimmicksVersion!==1||!Number.isInteger(s.healingUsed)||s.healingUsed<0||s.healingUsed>RISK.healing))return false;
  const connections=new Set();
  for(const edge of s.edges){
   if(!Array.isArray(edge)||edge.length!==2||!edge.every(roomId)||edge[0]===edge[1])return false;

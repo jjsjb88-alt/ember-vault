@@ -1,0 +1,33 @@
+{
+  "viewport": [
+    390,
+    844
+  ],
+  "role": "knight",
+  "policy": "quiet",
+  "result": "PASS",
+  "errors": [],
+  "http_errors": [],
+  "request_failures": [],
+  "checks": [
+    "new-profile",
+    "rule-previews",
+    "normal-action-policy-match",
+    "state-and-rng-match",
+    "reload-preserves-result"
+  ],
+  "seed": 3357108871,
+  "expected_outcome": "won",
+  "action_index": 69,
+  "last_action": {
+    "type": "interact"
+  },
+  "outcome": {
+    "phase": "won",
+    "hp": 25,
+    "turn": 20,
+    "reason": "용의 기억을 품고 지상으로 돌아왔습니다.",
+    "healingUsed": 0,
+    "noiseMade": 54
+  }
+}

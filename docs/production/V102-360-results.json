@@ -1,0 +1,33 @@
+{
+  "viewport": [
+    360,
+    640
+  ],
+  "role": "mage",
+  "policy": "walk",
+  "result": "PASS",
+  "errors": [],
+  "http_errors": [],
+  "request_failures": [],
+  "checks": [
+    "new-profile",
+    "rule-previews",
+    "normal-action-policy-match",
+    "state-and-rng-match",
+    "reload-preserves-result"
+  ],
+  "seed": 3356857350,
+  "expected_outcome": "lost",
+  "action_index": 18,
+  "last_action": {
+    "type": "end"
+  },
+  "outcome": {
+    "phase": "lost",
+    "hp": 0,
+    "turn": 5,
+    "reason": "용의 숨결이 금고를 삼켰습니다.",
+    "healingUsed": 4,
+    "noiseMade": 35
+  }
+}
