@@ -1,6 +1,27 @@
-# 잿불 금고 · Ember Vault V10.1
+# 잿불 금고 · Ember Vault V11
 
-한국어 싱글플레이 풀빌딩 던전 크롤러. [바로 플레이](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261109a) · [첫 금고 털이 연습](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261109a&tutorial=1)
+모바일 웹에서 약10분을 목표로 하는 싱글플레이 풀빌딩 던전 탐험. [공개 게임 주소](https://jjsjb88-alt.github.io/ember-vault/) · [PR #20](https://github.com/jjsjb88-alt/ember-vault/pull/20). **PR 병합·Pages 배포 전에는 공개 주소가 기존 main 버전을 제공합니다.**
+
+## V11 · 네 구역의 기억 원정
+
+상층→중층→하층→심층을 내려가 유물을 회수하고 돌아옵니다. 세 정비소에서 메달·주머니·보급을 준비합니다. 새 지도와 울림/흡음/붕괴, 메달60종·적10종·지속 유물16종, 직업별 시작 주머니와 영입 풀, 판 사이 해금·두 결말·난도10단계를 연결했습니다. 기존 저장은 원래 규칙으로 이어갑니다.
+
+구역 음악과 위험층, 재질별 발소리와 전용 효과음을 추가했습니다. PWA 설치·오프라인·저장 파일 이전, 영·일 언어 설정, 큰 글씨·색 보조·진동/움직임 끄기를 제공합니다. 번역 사전은 초벌이며 기존 일지·상세 회상의 일부 한국어 문장은 보완 대상입니다.
+
+자동 비교에서 걷기 정책 승리는 직업별2/60·3/60·0/60, 전체 해금 풀의 여섯 관리 정책은50~58/60이었습니다. 사람 초심자의 승률이나 실제10분을 뜻하지 않습니다. 사람20명 테스트·실기기·잔여 번역·최종 권리 검토는 출시 전 남아 있습니다.
+
+[변경·측정·재현](docs/production/V110-ROADMAP.md) · [전체 계획과 진행](docs/plan/MASTERPIECE-PLAN.md) · [사람 테스트 양식](docs/production/V110-PLAYTEST-KIT.md) · [음악 출처](docs/production/AUDIO-SOURCES.json) · [효과음 출처](docs/production/SFX-SOURCES.json).
+
+```bash
+npm run check
+npm test
+npm run test:balance
+npm run test:campaign
+npm run build
+python -m http.server 8093 --directory _site
+```
+
+아래는 이전 버전의 구현 기록입니다. V10.2 수치와 비교 표본은 [기록](docs/production/V102-RISK.md)에 보존하며 현재 새 원정과 구분합니다.
 
 ## V10.1 — 짧은 상층 안내와 읽히는 자동 합산
 
@@ -118,7 +139,7 @@ npm test
 python3 -m http.server 8000 --directory dist
 ```
 
-규칙·저장 호환·지름길·소리·숨결·좌표와 튜토리얼의 실제 행동 결과를 검사합니다. 현재 첫 원정 안내는 [V10.1 검수 기록](docs/production/V101-FIRST-MINUTES.md), 기믹과 지도는 [V10 검수 기록](docs/production/V10-GIMMICKS.md), 기본 원정 구조는 [V9.9 검수 기록](docs/production/V99-FOUR-STAGES.md), 능력·용어 표시는 [V9.8 검수 기록](docs/production/V98-READABILITY.md), 서사는 [V9.7 서사·검수 기록](docs/production/V97-STORY.md), 튜토리얼 구조는 [V9.6 에이전트 검수 기록](docs/production/V96-AGENT-REVIEW.md), 아트 제작은 [V9.5 검수 기록](docs/production/V95-VERIFICATION.md), 지도·유인·저장 상세는 [V9.2 검증 기록](docs/production/V92-VERIFICATION.md)을 기준으로 봅니다. 로컬 Chromium의 모바일 화면 검수, 실제 휴대폰 검수, GitHub Actions 배포 확인은 서로 구분합니다. 이번 작업 환경에서 공개 플레이 주소 직접 접속은 프록시 403으로 제한됐으며, 로컬 실행 성공을 공개 주소 접속 성공으로 표시하지 않습니다. 자동 탐험은 규칙과 경로를 확인하는 보조 수단이며 실제 사람의 난이도나 승률을 보장하지 않습니다. 이전 기록은 [V9.1](docs/production/V91-VERIFICATION.md)과 [V9](docs/production/V9-VERIFICATION.md)에 보존합니다.
+규칙·저장 호환·지름길·소리·숨결·좌표와 튜토리얼의 실제 행동 결과를 검사합니다. 현재 위험 조정 후보는 [V10.2 검수 기록](docs/production/V102-RISK.md), 첫 원정 안내는 [V10.1 검수 기록](docs/production/V101-FIRST-MINUTES.md), 기믹과 지도는 [V10 검수 기록](docs/production/V10-GIMMICKS.md), 기본 원정 구조는 [V9.9 검수 기록](docs/production/V99-FOUR-STAGES.md), 능력·용어 표시는 [V9.8 검수 기록](docs/production/V98-READABILITY.md), 서사는 [V9.7 서사·검수 기록](docs/production/V97-STORY.md), 튜토리얼 구조는 [V9.6 에이전트 검수 기록](docs/production/V96-AGENT-REVIEW.md), 아트 제작은 [V9.5 검수 기록](docs/production/V95-VERIFICATION.md), 지도·유인·저장 상세는 [V9.2 검증 기록](docs/production/V92-VERIFICATION.md)을 기준으로 봅니다. 로컬 Chromium의 모바일 화면 검수, 실제 휴대폰 검수, GitHub Actions 배포 확인은 서로 구분합니다. 이번 작업 환경에서 공개 플레이 주소 직접 접속은 프록시 403으로 제한됐으며, 로컬 실행 성공을 공개 주소 접속 성공으로 표시하지 않습니다. 자동 탐험은 규칙과 경로를 확인하는 보조 수단이며 실제 사람의 난이도나 승률을 보장하지 않습니다. 이전 기록은 [V9.1](docs/production/V91-VERIFICATION.md)과 [V9](docs/production/V9-VERIFICATION.md)에 보존합니다.
 
 ## 이전 버전 기록
 

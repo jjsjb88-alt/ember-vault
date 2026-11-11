@@ -1,0 +1,324 @@
+{
+  "scope": "Fixed map-aware policies; synthetic engine tests, not human difficulty or learning evidence",
+  "calibrationSeeds": [
+    1,
+    60
+  ],
+  "holdoutSeeds": [
+    1001,
+    1060
+  ],
+  "parameters": {
+    "healing": 12,
+    "heal": 4,
+    "prepareHeal": 3,
+    "campHeal": 3,
+    "breathBase": 3,
+    "echoFactor": 2,
+    "depthFactor": 1,
+    "detectAt": 5,
+    "move": [
+      1,
+      2,
+      2,
+      2
+    ],
+    "enemies": [
+      [
+        3,
+        8,
+        3
+      ],
+      [
+        10,
+        12,
+        4
+      ],
+      [
+        12,
+        10,
+        4
+      ],
+      [
+        18,
+        20,
+        5
+      ],
+      [
+        19,
+        20,
+        4
+      ]
+    ]
+  },
+  "groups": {
+    "calibration": {
+      "rogue": {
+        "walk": {
+          "runs": 60,
+          "wins": 0,
+          "winRate": 0,
+          "deaths": 60,
+          "losses": 60,
+          "cutoffs": 0,
+          "winTurns": null,
+          "allTurns": 8.18,
+          "hp": null,
+          "taken": 26,
+          "hides": 0,
+          "lures": 0
+        },
+        "quiet": {
+          "runs": 60,
+          "wins": 32,
+          "winRate": 0.5333333333333333,
+          "deaths": 28,
+          "losses": 28,
+          "cutoffs": 0,
+          "winTurns": 18.88,
+          "allTurns": 18.38,
+          "hp": 15.06,
+          "taken": 18.32,
+          "hides": 4.98,
+          "lures": 0.98
+        },
+        "ablation": {
+          "runs": 60,
+          "wins": 18,
+          "winRate": 0.3,
+          "deaths": 42,
+          "losses": 42,
+          "cutoffs": 0,
+          "winTurns": 18.61,
+          "allTurns": 15.12,
+          "hp": 8.33,
+          "taken": 23.78,
+          "hides": 0,
+          "lures": 0
+        }
+      },
+      "knight": {
+        "walk": {
+          "runs": 60,
+          "wins": 0,
+          "winRate": 0,
+          "deaths": 60,
+          "losses": 60,
+          "cutoffs": 0,
+          "winTurns": null,
+          "allTurns": 8.2,
+          "hp": null,
+          "taken": 32,
+          "hides": 0,
+          "lures": 0
+        },
+        "quiet": {
+          "runs": 60,
+          "wins": 42,
+          "winRate": 0.7,
+          "deaths": 18,
+          "losses": 18,
+          "cutoffs": 0,
+          "winTurns": 22.55,
+          "allTurns": 22.05,
+          "hp": 17.02,
+          "taken": 20.25,
+          "hides": 5.28,
+          "lures": 1.02
+        },
+        "ablation": {
+          "runs": 60,
+          "wins": 9,
+          "winRate": 0.15,
+          "deaths": 51,
+          "losses": 51,
+          "cutoffs": 0,
+          "winTurns": 19.11,
+          "allTurns": 15.62,
+          "hp": 7.22,
+          "taken": 32.93,
+          "hides": 0,
+          "lures": 0
+        }
+      },
+      "mage": {
+        "walk": {
+          "runs": 60,
+          "wins": 0,
+          "winRate": 0,
+          "deaths": 60,
+          "losses": 60,
+          "cutoffs": 0,
+          "winTurns": null,
+          "allTurns": 6.4,
+          "hp": null,
+          "taken": 23.4,
+          "hides": 0,
+          "lures": 0
+        },
+        "quiet": {
+          "runs": 60,
+          "wins": 30,
+          "winRate": 0.5,
+          "deaths": 30,
+          "losses": 30,
+          "cutoffs": 0,
+          "winTurns": 19.03,
+          "allTurns": 17.6,
+          "hp": 13,
+          "taken": 17.63,
+          "hides": 4.37,
+          "lures": 1
+        },
+        "ablation": {
+          "runs": 60,
+          "wins": 1,
+          "winRate": 0.016666666666666666,
+          "deaths": 59,
+          "losses": 59,
+          "cutoffs": 0,
+          "winTurns": 14,
+          "allTurns": 10.97,
+          "hp": 7,
+          "taken": 24.48,
+          "hides": 0,
+          "lures": 0
+        }
+      }
+    },
+    "holdout": {
+      "rogue": {
+        "walk": {
+          "runs": 60,
+          "wins": 0,
+          "winRate": 0,
+          "deaths": 60,
+          "losses": 60,
+          "cutoffs": 0,
+          "winTurns": null,
+          "allTurns": 7.72,
+          "hp": null,
+          "taken": 25.87,
+          "hides": 0,
+          "lures": 0
+        },
+        "quiet": {
+          "runs": 60,
+          "wins": 38,
+          "winRate": 0.6333333333333333,
+          "deaths": 22,
+          "losses": 22,
+          "cutoffs": 0,
+          "winTurns": 19.05,
+          "allTurns": 17.95,
+          "hp": 13.53,
+          "taken": 17.77,
+          "hides": 4.57,
+          "lures": 0.95
+        },
+        "ablation": {
+          "runs": 60,
+          "wins": 10,
+          "winRate": 0.16666666666666666,
+          "deaths": 50,
+          "losses": 50,
+          "cutoffs": 0,
+          "winTurns": 18.2,
+          "allTurns": 14.47,
+          "hp": 8.4,
+          "taken": 24.83,
+          "hides": 0,
+          "lures": 0
+        }
+      },
+      "knight": {
+        "walk": {
+          "runs": 60,
+          "wins": 0,
+          "winRate": 0,
+          "deaths": 60,
+          "losses": 60,
+          "cutoffs": 0,
+          "winTurns": null,
+          "allTurns": 8.28,
+          "hp": null,
+          "taken": 32,
+          "hides": 0,
+          "lures": 0
+        },
+        "quiet": {
+          "runs": 60,
+          "wins": 42,
+          "winRate": 0.7,
+          "deaths": 18,
+          "losses": 18,
+          "cutoffs": 0,
+          "winTurns": 22.05,
+          "allTurns": 21.28,
+          "hp": 16.14,
+          "taken": 21.37,
+          "hides": 5.13,
+          "lures": 1
+        },
+        "ablation": {
+          "runs": 60,
+          "wins": 12,
+          "winRate": 0.2,
+          "deaths": 48,
+          "losses": 48,
+          "cutoffs": 0,
+          "winTurns": 19.92,
+          "allTurns": 15.98,
+          "hp": 7.58,
+          "taken": 32.17,
+          "hides": 0,
+          "lures": 0
+        }
+      },
+      "mage": {
+        "walk": {
+          "runs": 60,
+          "wins": 0,
+          "winRate": 0,
+          "deaths": 60,
+          "losses": 60,
+          "cutoffs": 0,
+          "winTurns": null,
+          "allTurns": 6.33,
+          "hp": null,
+          "taken": 23.67,
+          "hides": 0,
+          "lures": 0
+        },
+        "quiet": {
+          "runs": 60,
+          "wins": 28,
+          "winRate": 0.4666666666666667,
+          "deaths": 32,
+          "losses": 32,
+          "cutoffs": 0,
+          "winTurns": 19.86,
+          "allTurns": 17.9,
+          "hp": 12.36,
+          "taken": 17.93,
+          "hides": 4.67,
+          "lures": 1.12
+        },
+        "ablation": {
+          "runs": 60,
+          "wins": 5,
+          "winRate": 0.08333333333333333,
+          "deaths": 55,
+          "losses": 55,
+          "cutoffs": 0,
+          "winTurns": 20.2,
+          "allTurns": 12.53,
+          "hp": 4,
+          "taken": 24.83,
+          "hides": 0,
+          "lures": 0
+        }
+      }
+    }
+  }
+}

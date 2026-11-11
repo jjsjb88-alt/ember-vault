@@ -1,0 +1,28 @@
+name: Rules and balance
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm run check
+      - run: npm test
+      - run: node docs/plan/tools/measure-risk.mjs risk-results.json
+      - run: node docs/plan/tools/measure-campaign.mjs campaign-results.json
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: risk-results
+          path: |
+            risk-results.json
+            campaign-results.json
+            dist/sw-assets.json

@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {CARDS} from '../dist/engine.js';
+import {CARDS,BASE_CARD_IDS} from '../dist/engine.js';
 import {TOKEN_IDS,PROP_IDS,GRADES,tokenInfo,tokenMarkup,richGlyph,itemMarkup} from '../dist/token-art.js';
 const pngSize=path=>{const data=fs.readFileSync(new URL(path,import.meta.url));assert.equal(data.toString('ascii',1,4),'PNG');return [data.readUInt32BE(16),data.readUInt32BE(20)];};
-test('every real ability and relic/prop has a separate delivered 256px image',()=>{
- assert.deepEqual(TOKEN_IDS,Object.keys(CARDS));assert.equal(TOKEN_IDS.length,24);assert.equal(PROP_IDS.length,12);
- for(const id of TOKEN_IDS)assert.deepEqual(pngSize(`../dist/assets/v95/tokens/${id}.png`),[256,256]);
+test('foundational illustrations and all sixty memory variations resolve to delivered high-resolution art',()=>{
+ assert.deepEqual(TOKEN_IDS,Object.keys(CARDS));assert.equal(TOKEN_IDS.length,60);assert.equal(BASE_CARD_IDS.length,24);assert.equal(PROP_IDS.length,12);
+ for(const id of TOKEN_IDS)assert.deepEqual(pngSize(`../dist/assets/v95/tokens/${CARDS[id].art||id}.png`),[256,256]);
  for(const id of PROP_IDS)assert.deepEqual(pngSize(`../dist/assets/v95/props/${id}.png`),[256,256]);
  assert.deepEqual(pngSize('../dist/assets/v95/rarity-frames.png'),[384,96]);
 });

@@ -1,0 +1,27 @@
+{
+  "result": "PASS",
+  "scope": "Explicit isolated pre-V10 storage fixtures; not normal play or user learning tests.",
+  "fixtures": [
+    {
+      "layout": "classic",
+      "result": "PASS",
+      "original_preserved_until_start": true,
+      "new_marker_survives_reload": true,
+      "errors": []
+    },
+    {
+      "layout": "expanded",
+      "result": "PASS",
+      "original_preserved_until_start": true,
+      "new_marker_survives_reload": true,
+      "errors": []
+    },
+    {
+      "layout": "staged",
+      "result": "PASS",
+      "original_preserved_until_start": true,
+      "new_marker_survives_reload": true,
+      "errors": []
+    }
+  ]
+}

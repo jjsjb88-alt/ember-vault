@@ -1,5 +1,5 @@
-import {CARDS} from './engine.js?v=20261109a';
-import {makeFxLayer} from './fx-layer.js?v=20261109a';
+import {CARDS} from './engine.js?v=20261111b';
+import {makeFxLayer} from './fx-layer.js?v=20261111b';
 import * as collectBurst from './vendor/pixelfx/fx/pickups/collect-burst.js';
 import * as runeCircle from './vendor/pixelfx/fx/arcane/rune-circle.js';
 
@@ -17,7 +17,7 @@ export function tokenInfo(id,grade){
  const card=CARDS[id];if(!card)throw new Error(`Unknown memory: ${id}`);
  const tier=grade|| (card.cost<=2?'common':card.cost<=4?'uncommon':card.cost===5?'rare':'epic');
  if(!GRADES[tier])throw new Error(`Unknown grade: ${tier}`);
- return {id,card,tier,...GRADES[tier],src:`./assets/v95/tokens/${id}.webp`};
+ return {id,card,tier,...GRADES[tier],src:`./assets/v95/tokens/${CARDS[id]?.art||id}.webp`};
 }
 export function tokenMarkup(id,{size=48,grade,awaken=false}={}){
  const info=tokenInfo(id,grade);
@@ -34,7 +34,7 @@ export function richGlyph(name,size=32){
 const images=new Map();
 export function drawAssetIcon(ctx,name,x,y,size){
  const id=iconCards[name],prop=iconProps[name];if(!id&&!prop||typeof Image==='undefined')return false;
- const src=id?`./assets/v95/tokens/${id}.webp`:`./assets/v95/props/${prop}.webp`;
+ const src=id?`./assets/v95/tokens/${CARDS[id]?.art||id}.webp`:`./assets/v95/props/${prop}.webp`;
  if(!images.has(src)){const img=new Image();img.src=src;images.set(src,img);}
  const img=images.get(src);if(!img.complete||!img.naturalWidth)return false;
  ctx.save();ctx.imageSmoothingEnabled=true;ctx.drawImage(img,x,y,size,size);ctx.restore();return true;

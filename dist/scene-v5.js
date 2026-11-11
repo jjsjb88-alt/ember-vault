@@ -1,26 +1,30 @@
-import {hasGimmicks,roomGimmick,passageRule,worldPassageOpen} from './dungeon-gimmicks.js?v=20261109a';
-import {isStaged,STAGES} from './expedition-stages.js?v=20261109a';
-import {neighbours,moveStatus} from './engine.js?v=20261109a';
-import {icon,sprite} from './art.js?v=20261109a';
-import {DIRECTIONS,travelVector,walkFrame,motionFrame,mapLayout,projectMap,mapPassage,passagePoint,hitMapRoom,exitAnchor,hitExit} from './scene-layout.js?v=20261109a';
-import {WALK_FRAMES} from './rogue-frames.js?v=20261109a';
-import {ATTACK_FRAMES} from './rogue-attack-frames.js?v=20261109a';
-import {RELIC_MOTION} from './rogue-relic-frames.js?v=20261109a';
-import {prepareFrames} from './sprite-atlas.js?v=20261109a';
-import {roomEnvironment} from './encounter.js?v=20261109a';
-import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261109a';
-import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261109a';
+import {translate} from './i18n.js?v=20261111b';
+import {site} from './world.js?v=20261111b';
+import {enemyArt,ENEMIES} from './content/enemies.js?v=20261111b';
+import {ROLES} from './engine.js?v=20261111b';
+import {hasGimmicks,roomGimmick,passageRule,worldPassageOpen} from './dungeon-gimmicks.js?v=20261111b';
+import {isStaged,STAGES} from './expedition-stages.js?v=20261111b';
+import {neighbours,moveStatus} from './engine.js?v=20261111b';
+import {icon,sprite} from './art.js?v=20261111b';
+import {DIRECTIONS,travelVector,walkFrame,motionFrame,mapLayout,projectMap,mapPassage,passagePoint,hitMapRoom,exitAnchor,hitExit} from './scene-layout.js?v=20261111b';
+import {WALK_FRAMES} from './rogue-frames.js?v=20261111b';
+import {ATTACK_FRAMES} from './rogue-attack-frames.js?v=20261111b';
+import {RELIC_MOTION} from './rogue-relic-frames.js?v=20261111b';
+import {prepareFrames} from './sprite-atlas.js?v=20261111b';
+import {roomEnvironment} from './encounter.js?v=20261111b';
+import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261111b';
+import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261111b';
 
 export function makeRenderer(canvas,getState,minimap){
  const c=canvas.getContext('2d'),mc=minimap.getContext('2d');
  const image=src=>{const i=new Image();i.src=src;return i;};
- const background=image('./assets/library-stage-v5.png');
+ const background=image('./assets/library-stage-v5.webp');
  const backgrounds={library:background};
- function backdrop(room){const key=room.row>=4?'moonstone':roomEnvironment(room);return backgrounds[key]??=(image(key==='moonstone'?'./assets/v9/environment/b5-moonstone-vault.png':key==='refuge'?'./assets/ember-refuge-v6.png':'./assets/lunar-vault-v6.png'));}
- const atlas=image('./assets/rogue-walk-v5.png');
- const attackAtlas=image('./assets/rogue-attack-v5.png');
+ function backdrop(room){const key=room.row>=4?'moonstone':roomEnvironment(room);return backgrounds[key]??=(image(key==='moonstone'?'./assets/v9/environment/b5-moonstone-vault.png':key==='refuge'?'./assets/ember-refuge-v6.webp':'./assets/lunar-vault-v6.webp'));}
+ const atlas=image('./assets/rogue-walk-v5.webp');
+ const attackAtlas=new Image();
  const relicAtlas=new Image();
- function preloadRelic(){if(getState().role==='rogue'&&!relicAtlas.src)relicAtlas.src=RELIC_MOTION.sheet;}
+ function preloadRelic(){if(getState().relic&&getState().role==='rogue'&&!relicAtlas.src)relicAtlas.src=RELIC_MOTION.sheet;}
  preloadRelic();
  let attackFrames=null;
  attackAtlas.onload=()=>{attackFrames=prepareFrames(attackAtlas,ATTACK_FRAMES);};
@@ -31,7 +35,7 @@ export function makeRenderer(canvas,getState,minimap){
  const noxPoses=[0,1,2,3].map(i=>image(`./assets/v95/nox-poses/nox-${i}.webp`));
  const focusRing=image('./assets/v9/props/focus/focus-ring.png');
  const winchIcon=image('./assets/v9/props/glyph-shortcut.png');
- const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ let reduced=matchMedia('(prefers-reduced-motion: reduce)').matches||document.body.classList.contains('user-reduced-motion');window.addEventListener('ember-settings',e=>{reduced=matchMedia('(prefers-reduced-motion: reduce)').matches||e.detail.reduceMotion;});
  let W=1200,H=650,cssWidth=1200,cssHeight=650,alive=true,zoom=false,lastPos=-1,lastSound=-1,entered=-10000,sounded=-10000;
  let hitAt=-10000,damageAt=-10000,hover=-1,label='',lastTime=0,vector={x:1,y:-.5,direction:7};
  let recentEnemy=null,recentEnemyPos=-1;
@@ -46,14 +50,14 @@ export function makeRenderer(canvas,getState,minimap){
  function glow(ctx,x,y,r,color){const g=ctx.createRadialGradient(x,y,1,x,y,r);g.addColorStop(0,color);g.addColorStop(1,'#0000');ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2);}
  function shadow(x,y,w){c.fillStyle='#0107128c';c.beginPath();c.ellipse(x,y,w,w*.24,0,0,Math.PI*2);c.fill();}
  function legacyActor(kind,x,y,height,ms,flip=false){
-  const hero=['rogue','knight','mage'].indexOf(kind),source=hero>=0?heroes:objects;
+  kind=ROLES[kind]?.artRole||enemyArt(kind);const hero=['rogue','knight','mage'].indexOf(kind),source=hero>=0?heroes:objects;
   const id=hero>=0?hero:kind==='dragon'?2:kind==='sentinel'?1:0,sh=hero>=0?(source.naturalHeight||560):540,sw=hero>=0?(source.naturalWidth/3||512):512,width=height*sw/sh;
   shadow(x,y,width*.24);c.save();c.translate(x,y);if(flip)c.scale(-1,1);
   if(source.complete&&source.naturalWidth)c.drawImage(source,id*sw,0,sw,sh,-width/2,-height+(reduced?0:Math.sin(ms*.002)*.6),width,height);
   else sprite(c,kind==='rogue'?'hero':kind,0,0,3,ms/1000);c.restore();
  }
  function hero(x,y,height,ms,walking,attack){
-  if(getState().role!=='rogue'||!atlas.complete||!atlas.naturalWidth){legacyActor(getState().role,x,y,height,ms,vector.x<0);return;}
+  if((ROLES[getState().role]?.artRole||getState().role)!=='rogue'||!atlas.complete||!atlas.naturalWidth){legacyActor(getState().role,x,y,height,ms,vector.x<0);return;}
   const age=interaction?.type==='relic'&&interaction.at!==null?ms-interaction.at:-1;
   const relicFrame=motionFrame(age,RELIC_MOTION.durationsMs);
   if(!reduced&&!walking&&!attack&&relicFrame>=0&&relicAtlas.complete&&relicAtlas.naturalWidth){
@@ -77,7 +81,7 @@ export function makeRenderer(canvas,getState,minimap){
   if(r.type==='merchant'||r.host==='nox'){const pose=noxPoses[document.querySelector('#cutscene[open][data-speaker=guest]')?2:document.querySelector('#modal[open][data-mode=market]')?1:getState().tradeStory?.lastBuy?3:0];if(pose?.complete&&pose.naturalWidth){const width=height*pose.naturalWidth/pose.naturalHeight;shadow(x,y,width*.24);c.drawImage(pose,x-width/2,y-height,width,height);}return;}
   if(!r.used&&['relic','mechanism','chest'].includes(r.type)&&focusRing.complete&&focusRing.naturalWidth){const beat=reduced?0:ms%960,frame=beat<260?0:beat<480?1:beat<740?2:3;const width=height*1.1;c.save();c.globalAlpha=.7;c.drawImage(focusRing,1+frame*50,1,48,48,x-width/2,y-width*.16,width,width*.32);c.restore();}
   const relicId=r.relic?.value===56?'dragon-memory':r.relic?.icon==='crown'?'crown':r.relic?.icon==='heartgem'?'heart':'moon';
-  const custom=hasGimmicks(getState())&&r.id===14?winchProp:hasGimmicks(getState())&&r.id===16?propArt.shrine:r.type==='mechanism'?winchProp:r.type==='relic'?propArt[relicId]:r.type==='chest'?cacheProp:propArt[r.type];
+  const custom=hasGimmicks(getState())&&r.id===site(getState(),14)?winchProp:hasGimmicks(getState())&&r.id===site(getState(),16)?propArt.shrine:r.type==='mechanism'?winchProp:r.type==='relic'?propArt[relicId]:r.type==='chest'?cacheProp:propArt[r.type];
   if(custom?.complete&&custom.naturalWidth){const size=height*.93;shadow(x,y,size*.27);c.save();if(r.used)c.globalAlpha=.4;c.drawImage(custom,x-size/2,y-size*.92,size,size);c.restore();if(r.used&&!(r.type==='mechanism'&&interaction)){const font=Math.max(14,11*W/cssWidth);c.fillStyle='#b8dfcc';c.font=`${font}px system-ui`;c.textAlign='center';c.fillText(r.type==='mechanism'?'승강 통로 개방':'사용 완료',x,y+font);}return;}
   const id={chest:0,camp:1,shrine:2,relic:2,mechanism:2}[r.type];
   if(id===undefined||!objects.complete||!objects.naturalWidth)return;
@@ -91,7 +95,7 @@ export function makeRenderer(canvas,getState,minimap){
   const s=getState();if(s.phase!=='playing'||s.pending)return;
   for(const id of neighbours(s)){
    if(!moveStatus(s,id).allowed)continue;
-   const p=exitAnchor(s.pos,id);if(!p)continue;const tx=p.x*W,ty=p.y*H+20;
+   const p=exitAnchor(s.pos,id,neighbours(s),!!s.worldVersion);if(!p)continue;const tx=p.x*W,ty=p.y*H+20;
    c.save();c.strokeStyle='#ffce76';c.lineWidth=hover===id?3:2;c.globalAlpha=hover===id?.8:.3;
    c.setLineDash([4,12]);c.lineDashOffset=reduced?0:-ms*.018;
    c.beginPath();c.moveTo(x,y);c.quadraticCurveTo((x+tx)/2,y,tx,ty);c.stroke();c.setLineDash([]);
@@ -127,7 +131,7 @@ export function makeRenderer(canvas,getState,minimap){
     const px=Math.min(6,Math.max(FX_PIXEL,Math.ceil(Math.max(W/320,H/180)))),fw=320*px,fh=180*px;
     const fx=W<=fw?Math.min(fw/2,Math.max(W-fw/2,hx2)):hx2,fy=H<=fh?Math.min(fh/2,Math.max(H-fh/2,ey-heroH*.42)):ey-heroH*.42;
     frameFx=makeFxLayer(px);frameFx.add(FX.impactFrame,{x:fx,y:fy,palette:PALETTES.frame,lines:56,seed},{tag:'frame'});}
-   try{navigator.vibrate?.(vibration(plan));}catch{}
+   try{if(document.body.dataset.vibration!=='false')navigator.vibrate?.(vibration(plan));}catch{}
   }
   c.save();if(!reduced&&ms-damageAt<240)c.translate(Math.sin(ms*.09)*4,0);
   if(!reduced&&plan){const [sx,sy]=shakeOffset(since-CONTACT_MS,plan,hitAt);if(sx||sy)c.translate(sx,sy);}
@@ -163,8 +167,8 @@ export function makeRenderer(canvas,getState,minimap){
   if(foe){if(fading)c.globalAlpha=dying?(killing.at===null?1:Math.max(0,Math.min(1,1-(ms-killing.at-500)/1900)))*(attack>0?.75+.25*Math.cos(attack*Math.PI*6):1):Math.max(0,1-attack*1.2);
    const recoil=attack&&!reduced?Math.sin(Math.min(1,attack*2)*Math.PI)*heroH*.14:0;
    // on contact the struck creature flashes white for the first frames of the freeze
-   const flash=frozen&&since-CONTACT_MS<(plan?.heavy?70:45);if(flash)c.filter='brightness(2.6) saturate(.3)';
-   legacyActor(foe.kind,ex+recoil,ey-recoil*.3,heroH*(foe.kind==='dragon'?1.35:1.04),ms,true);c.globalAlpha=1;if(flash)c.filter='none';
+   if(foe.hue)c.filter=`hue-rotate(${foe.hue}deg)`;const flash=frozen&&since-CONTACT_MS<(plan?.heavy?70:45);if(document.body.classList.contains('color-safe')&&foe.hue)c.filter='saturate(.65)';if(flash)c.filter='brightness(2.6) saturate(.3)';
+   legacyActor(foe.kind,ex+recoil,ey-recoil*.3,heroH*(foe.kind==='dragon'?1.35:1.04),ms,true);c.globalAlpha=1;c.filter='none';
    if(!fading&&foe.mode!=='idle'){c.font=`bold ${Math.round(heroH*.24)}px serif`;c.textAlign='center';c.fillStyle=foe.mode==='hunt'?'#ff7667':'#ffc85a';c.shadowColor=c.fillStyle;c.shadowBlur=14;c.fillText(foe.mode==='hunt'?'!':'?',ex,ey-heroH*1.1);c.shadowBlur=0;}
   }
   if(!reduced)killFx.render(c,W,H,ms);
@@ -190,11 +194,11 @@ export function makeRenderer(canvas,getState,minimap){
   if(!reduced)frameFx.render(c,W,H,ms);
  }
  function drawMap(ctx,w,h,ms,large=false){
-  const s=getState(),pixel=large?w/cssWidth:1,options={roomCount:s.rooms.length},grid=mapLayout(w,h,options),at=id=>projectMap(id,w,h,options);
+  const s=getState(),pixel=large?w/cssWidth:1,options={roomCount:s.rooms.length,secretEdge:[site(s,16),19]},grid=mapLayout(w,h,options),at=id=>projectMap(id,w,h,options);
   const labelSize=(cssWidth>800?12:11)*pixel;
   const box=large?Math.min(26*pixel,Math.max(10*pixel,grid.rowGap-labelSize-8*pixel)):Math.min(21,grid.rowGap*.52);
   const labelWidth=grid.columnGap*.88;
-  function roomLabel(text){while(text.length>1&&ctx.measureText(text).width>labelWidth)text=text.slice(0,-2)+'…';return text;}
+  function roomLabel(text){text=translate(text);while(text.length>1&&ctx.measureText(text).width>labelWidth)text=text.slice(0,-2)+'…';return text;}
   const available=new Set(neighbours(s).filter(id=>moveStatus(s,id).allowed));
   ctx.clearRect(0,0,w,h);ctx.fillStyle=large?'#06111af5':'#08121ace';ctx.fillRect(0,0,w,h);
   for(const[a,b]of s.edges){const path=mapPassage(a,b,w,h,options),A=path.start,B=path.end,seen=s.rooms[a].seen&&s.rooms[b].seen;
@@ -233,6 +237,6 @@ export function makeRenderer(canvas,getState,minimap){
  function hitMap(el,x,y){const q=el.getBoundingClientRect();if(!q.width||!q.height)return-1;return hitMapRoom((x-q.left)/q.width*el.width,(y-q.top)/q.height*el.height,el.width,el.height,{roomCount:getState().rooms.length});}
  return {setHover(id){hover=id;},setZoom(on){zoom=!!on;return zoom;},hit(x,y){
   if(zoom)return hitMap(canvas,x,y);
-  const q=canvas.getBoundingClientRect(),s=getState();return hitExit(s.pos,neighbours(s),(x-q.left)/q.width,(y-q.top)/q.height);
- },hitMini(x,y){return hitMap(minimap,x,y);},burst(type='attack',text='',info={}){if(type==='attack'){interaction=null;interactFx.clear();restFrame=1;hitAt=performance.now();label=text;plan=hitPlan(info.dmg||0,!!info.kill,info.maxHp||0);landed=!!reduced;return reduced?SWING_MS:swingDuration(plan);}if(type==='mechanism'||type==='relic'){interactFx.clear();interaction={type,text:text||(type==='mechanism'?'승강 통로 개방':'유물 회수'),pos:getState().pos,at:null};return;}if(type==='bad')damageAt=performance.now();if(type==='reward'){rewardAt=performance.now();rewardLabel=text;}},reset(){restFrame=1;interaction=null;interactFx.clear();groundFx.clear();killFx.clear();hitFx.clear();frameFx.clear();plan=null;landed=true;killing=null;lastPos=-1;lastSound=-1;recentEnemy=null;recentEnemyPos=-1;rewardAt=-10000;hitAt=-10000;},stop(){alive=false;observer.disconnect();}};
+  const q=canvas.getBoundingClientRect(),s=getState();return hitExit(s.pos,neighbours(s),(x-q.left)/q.width,(y-q.top)/q.height,!!s.worldVersion);
+ },hitMini(x,y){return hitMap(minimap,x,y);},burst(type='attack',text='',info={}){if(type==='attack'){if(!attackAtlas.src)attackAtlas.src='./assets/rogue-attack-v5.png';interaction=null;interactFx.clear();restFrame=1;hitAt=performance.now();label=text;plan=hitPlan(info.dmg||0,!!info.kill,info.maxHp||0);landed=!!reduced;return reduced?SWING_MS:swingDuration(plan);}if(type==='mechanism'||type==='relic'){interactFx.clear();interaction={type,text:text||(type==='mechanism'?'승강 통로 개방':'유물 회수'),pos:getState().pos,at:null};return;}if(type==='bad')damageAt=performance.now();if(type==='reward'){rewardAt=performance.now();rewardLabel=text;}},reset(){restFrame=1;interaction=null;interactFx.clear();groundFx.clear();killFx.clear();hitFx.clear();frameFx.clear();plan=null;landed=true;killing=null;lastPos=-1;lastSound=-1;recentEnemy=null;recentEnemyPos=-1;rewardAt=-10000;hitAt=-10000;},stop(){alive=false;observer.disconnect();}};
 }

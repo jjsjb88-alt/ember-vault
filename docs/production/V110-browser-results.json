@@ -1,0 +1,174 @@
+{
+  "scope": "Local Chromium normal-action UI policies. Seeds read from a fresh UI; no game state injected. Legacy saves are isolated fixtures.",
+  "runs": [
+    {
+      "viewport": [
+        360,
+        640
+      ],
+      "role": "mage",
+      "policy": "managed-stealth",
+      "result": "PASS",
+      "errors": [],
+      "http_errors": [],
+      "request_failures": [],
+      "checks": [
+        "new-campaign-profile",
+        "mapped-routes-and-checkpoints",
+        "normal-action-policy-match",
+        "state-and-rng-match",
+        "reload-preserves-result"
+      ],
+      "seed": 3369856928,
+      "expected_outcome": "won",
+      "action_index": 71,
+      "last_action": {
+        "type": "interact"
+      },
+      "translationBeforeReload": {
+        "language": "en",
+        "ready": true,
+        "missing": [
+          "쫓기는 이를 살려 냈던 마지막 두 걸음.",
+          "숨결이 바로 옆 방까지 왔다.",
+          "반격 1 · 용의 숨결 · 이 방 메아리 3"
+        ]
+      },
+      "translation": {
+        "language": "en",
+        "ready": true,
+        "missing": []
+      },
+      "outcome": {
+        "phase": "won",
+        "hp": 17,
+        "turn": 18,
+        "reason": "용의 기억을 품고 지상으로 돌아왔습니다.",
+        "healingUsed": 4,
+        "noiseMade": 45
+      }
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "role": "knight",
+      "policy": "managed-stealth",
+      "result": "PASS",
+      "errors": [],
+      "http_errors": [],
+      "request_failures": [],
+      "checks": [
+        "new-campaign-profile",
+        "mapped-routes-and-checkpoints",
+        "normal-action-policy-match",
+        "state-and-rng-match",
+        "reload-preserves-result"
+      ],
+      "seed": 3369858846,
+      "expected_outcome": "won",
+      "action_index": 75,
+      "last_action": {
+        "type": "interact"
+      },
+      "translationBeforeReload": {
+        "language": "ja",
+        "ready": true,
+        "missing": [
+          "쫓기는 이를 살려 냈던 마지막 두 걸음.",
+          "소음 / 공격",
+          "반격 1 · 용의 숨결 · 이 방 메아리 1",
+          "— 메아리 없는 방에는 닿지 않습니다 · 방어 2",
+          "용의 기억실의 메아리가 탄다.",
+          "고요의 공명제단의 메아리가 탄다.",
+          "숨결이 닿지 않았다.",
+          "메아리 2곳이 타서 사라졌습니다. 이 방은 조용했습니다."
+        ]
+      },
+      "translation": {
+        "language": "ja",
+        "ready": true,
+        "missing": []
+      },
+      "outcome": {
+        "phase": "won",
+        "hp": 10,
+        "turn": 19,
+        "reason": "용의 기억을 품고 지상으로 돌아왔습니다.",
+        "healingUsed": 4,
+        "noiseMade": 46
+      }
+    },
+    {
+      "viewport": [
+        800,
+        360
+      ],
+      "role": "rogue",
+      "policy": "managed-stealth",
+      "result": "PASS",
+      "errors": [],
+      "http_errors": [],
+      "request_failures": [],
+      "checks": [
+        "new-campaign-profile",
+        "mapped-routes-and-checkpoints",
+        "normal-action-policy-match",
+        "state-and-rng-match",
+        "reload-preserves-result"
+      ],
+      "seed": 3369854747,
+      "expected_outcome": "won",
+      "action_index": 65,
+      "last_action": {
+        "type": "interact"
+      },
+      "translationBeforeReload": {
+        "language": "ko",
+        "ready": true,
+        "missing": []
+      },
+      "translation": {
+        "language": "ko",
+        "ready": true,
+        "missing": []
+      },
+      "outcome": {
+        "phase": "won",
+        "hp": 20,
+        "turn": 15,
+        "reason": "용의 기억을 품고 지상으로 돌아왔습니다.",
+        "healingUsed": 0,
+        "noiseMade": 32
+      }
+    }
+  ],
+  "legacy": {
+    "result": "PASS",
+    "scope": "Explicit isolated pre-V10 storage fixtures; not normal play or user learning tests.",
+    "fixtures": [
+      {
+        "layout": "classic",
+        "result": "PASS",
+        "original_preserved_until_start": true,
+        "new_marker_survives_reload": true,
+        "errors": []
+      },
+      {
+        "layout": "expanded",
+        "result": "PASS",
+        "original_preserved_until_start": true,
+        "new_marker_survives_reload": true,
+        "errors": []
+      },
+      {
+        "layout": "staged",
+        "result": "PASS",
+        "original_preserved_until_start": true,
+        "new_marker_survives_reload": true,
+        "errors": []
+      }
+    ]
+  }
+}

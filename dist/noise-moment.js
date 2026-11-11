@@ -1,11 +1,11 @@
-import {soundWavePlan} from './encounter.js?v=20261109a';
-import {makeFxLayer,FX} from './fx-layer.js?v=20261109a';
-import {lairRoom} from './engine.js?v=20261109a';
-import {mapLayout,projectMap,mapPassage,passagePoint} from './scene-layout.js?v=20261109a';
+import {soundWavePlan} from './encounter.js?v=20261111b';
+import {makeFxLayer,FX} from './fx-layer.js?v=20261111b';
+import {lairRoom} from './engine.js?v=20261111b';
+import {mapLayout,projectMap,mapPassage,passagePoint} from './scene-layout.js?v=20261111b';
 
 export function makeNoiseMoment(dialog,{cue=()=>{},getSound=()=>false,toggleSound=()=>{}}={}){
  let active=false,timers=[],frame=0,fxFrame=0,callback=null,previousFocus=null;
- const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ let reduced=matchMedia('(prefers-reduced-motion: reduce)').matches||document.body.classList.contains('user-reduced-motion');window.addEventListener('ember-settings',e=>{reduced=matchMedia('(prefers-reduced-motion: reduce)').matches||e.detail.reduceMotion;});
  const q=s=>dialog.querySelector(s);
  function passage(ctx,path,progress=1){const end=passagePoint(path,progress);ctx.beginPath();ctx.moveTo(path.start.x,path.start.y);if(path.control)ctx.quadraticCurveTo(path.start.x+(path.control.x-path.start.x)*progress,path.start.y+(path.control.y-path.start.y)*progress,end.x,end.y);else ctx.lineTo(end.x,end.y);ctx.stroke();return end;}
  const later=(fn,ms)=>timers.push(setTimeout(()=>{if(active)fn();},ms));

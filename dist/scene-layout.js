@@ -32,9 +32,10 @@ export function projectMap(id,w,h,options){
 // Lift passages bend around the intervening floor so they never look connected to its room.
 export function mapPassage(from,to,w,h,options){
  const grid=mapLayout(w,h,options),start=projectMap(from,w,h,options),end=projectMap(to,w,h,options);
- const secret=(from===16&&to===19)||(from===19&&to===16);
+ const special=options?.secretEdge;const secret=special?special.includes(from)&&special.includes(to):(from===16&&to===19)||(from===19&&to===16);
  const lift=Math.abs(to-from)>grid.columns&&from%grid.columns===to%grid.columns;
- return {start,end,lift,secret,control:secret?{x:(start.x+end.x)/2,y:start.y-grid.rowGap*.8}:lift?{x:start.x+grid.columnGap*.7,y:(start.y+end.y)/2}:null};
+ const diagonal=Math.abs(from%4-to%4)>0&&Math.floor(from/4)!==Math.floor(to/4);
+ return {start,end,lift,secret,control:diagonal?{x:(start.x+end.x)/2+grid.columnGap*.25,y:(start.y+end.y)/2-grid.rowGap*.2}:secret?{x:(start.x+end.x)/2,y:start.y-grid.rowGap*.8}:lift?{x:start.x+grid.columnGap*.7,y:(start.y+end.y)/2}:null};
 }
 export function passagePoint(path,t){
  const {start:a,end:b,control:c}=path,u=1-t;
@@ -52,11 +53,12 @@ export function hitMapRoom(x,y,w,h,options){
 }
 
 // Shared normalized anchors for the visible room buttons and floor hit areas.
-export function exitAnchor(from,to){
+export function exitAnchor(from,to,ids=null,generated=false){
+ if(generated&&ids){const i=[...ids].sort((a,b)=>a-b).indexOf(to);if(i<0)return null;return {x:.19+(i%3)*.30,y:.40+Math.floor(i/3)*.28,arrow:travelVector(from,to).x>0?'↗':'↙'};}
  if(from===16&&to===19||from===19&&to===16)return {x:.60,y:.65,arrow:'◈'};
  if(Math.abs(to-from)>=8&&from%4===to%4)return {x:.49,y:.65,arrow:'⇵'};
  return ({1:{x:.43,y:.30,arrow:'↗'},4:{x:.81,y:.66,arrow:'↘'},[-1]:{x:.18,y:.66,arrow:'↙'},[-4]:{x:.18,y:.45,arrow:'↖'}})[to-from]??null;
 }
-export function hitExit(from,ids,x,y){
- return ids.find(id=>{const p=exitAnchor(from,id);return p&&((x-p.x)/.12)**2+((y-p.y)/.09)**2<=1;})??-1;
+export function hitExit(from,ids,x,y,generated=false){
+ return ids.find(id=>{const p=exitAnchor(from,id,ids,generated);return p&&((x-p.x)/.12)**2+((y-p.y)/.09)**2<=1;})??-1;
 }
