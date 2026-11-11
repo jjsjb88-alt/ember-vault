@@ -1,7 +1,8 @@
+import {translate} from './i18n.js?v=20261111b';
 // 연습 대사 컷신: 화면 위아래를 검은 띠로 가리고, 말하는 쪽의 초상과 이름, 한 글자씩 써지는 대사.
 // 화면 아무 곳이나 누르면(또는 Enter/Space) 글자를 다 보여 주고, 한 번 더 누르면 다음 대사.
 // 컷신은 줄을 서서 차례로 재생된다. 추출·소음 연출처럼 움직이는 창이 열려 있으면 그것이 닫힐 때까지 기다린다.
-import {makeFxLayer} from './fx-layer.js?v=20261111a';
+import {makeFxLayer} from './fx-layer.js?v=20261111b';
 import * as spiritFlame from './vendor/pixelfx/fx/fire/spirit-flame.js';
 
 // 깜부기: 등불 속 잿불. spirit-flame을 따뜻한 잿불 색으로.
@@ -33,7 +34,9 @@ export function makeCutscene({reduced = false, tutorName = '깜부기', heroPort
  document.body.appendChild(dialog);
  const $ = s => dialog.querySelector(s);
  const queue = makeQueue();
- let current = null, index = 0, typed = 0, typeTimer = 0, raf = 0, waiting = 0, playing = false;
+ window.addEventListener('ember-settings',event=>{reduced=matchMedia('(prefers-reduced-motion: reduce)').matches||event.detail.reduceMotion;});
+ reduced=reduced||document.body.classList.contains('user-reduced-motion');
+ let displayLine='', current = null, index = 0, typed = 0, typeTimer = 0, raf = 0, waiting = 0, playing = false;
  const fx = makeFxLayer(3), flame = $('.cut-flame'), fctx = flame.getContext('2d');
  let wisp = null, blinkAt = 0;
 
@@ -44,7 +47,7 @@ export function makeCutscene({reduced = false, tutorName = '깜부기', heroPort
   if(!reduced) fx.render(fctx, flame.width, flame.height, now);
   else {fctx.fillStyle = '#ffa13a'; fctx.beginPath(); fctx.ellipse(90, 120, 26, 44, 0, 0, Math.PI * 2); fctx.fill();}
   // 눈: 불꽃 가운데 두 점, 가끔 깜빡인다. 말할 때는 살짝 위아래로 들썩.
-  const talking = current && typed < [...current.lines[index][1]].length;
+  const talking = current && typed < [...displayLine].length;
   const bob = talking && !reduced ? Math.round(Math.sin(now / 70)) * 2 : 0;
   if(now > blinkAt + 3200) blinkAt = now;
   const blink = now - blinkAt < 120;
@@ -55,7 +58,7 @@ export function makeCutscene({reduced = false, tutorName = '깜부기', heroPort
  }
 
  function show(){
-  const [who, line] = current.lines[index];
+  const [who, sourceLine] = current.lines[index], line=translate(sourceLine);displayLine=line;
   const tutor = who === tutorName;
   dialog.dataset.speaker = tutor ? 'tutor' : Object.hasOwn(portraits,who) ? 'guest' : 'hero';
   $('.cut-name').textContent = who;
@@ -72,8 +75,8 @@ export function makeCutscene({reduced = false, tutorName = '깜부기', heroPort
  }
  function advance(){
   if(!current) return;
-  const chars = [...current.lines[index][1]];
-  if(typed < chars.length){clearInterval(typeTimer); typed = chars.length; $('.cut-line').textContent = current.lines[index][1]; $('.cut-more').hidden = false; return;}
+  const chars = [...displayLine];
+  if(typed < chars.length){clearInterval(typeTimer); typed = chars.length; $('.cut-line').textContent = displayLine; $('.cut-more').hidden = false; return;}
   index++;
   if(index < current.lines.length) return show();
   finish();

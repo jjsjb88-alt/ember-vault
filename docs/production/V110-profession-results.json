@@ -1,0 +1,45 @@
+{
+  "scope": "Normal engine policies with the pool available when each profession unlocks; not human tests.",
+  "rows": [
+    {
+      "role": "rogue",
+      "axis": "stealth",
+      "runs": 0,
+      "wins": 10,
+      "of": 10,
+      "cutoffs": 0
+    },
+    {
+      "role": "knight",
+      "axis": "ward",
+      "runs": 0,
+      "wins": 8,
+      "of": 10,
+      "cutoffs": 0
+    },
+    {
+      "role": "mage",
+      "axis": "cycle",
+      "runs": 0,
+      "wins": 8,
+      "of": 10,
+      "cutoffs": 0
+    },
+    {
+      "role": "warden",
+      "axis": "echo",
+      "runs": 5,
+      "wins": 6,
+      "of": 10,
+      "cutoffs": 0
+    },
+    {
+      "role": "cantor",
+      "axis": "noise",
+      "runs": 10,
+      "wins": 1,
+      "of": 10,
+      "cutoffs": 0
+    }
+  ]
+}

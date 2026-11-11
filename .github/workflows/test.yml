@@ -17,7 +17,12 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: node docs/plan/tools/measure-risk.mjs risk-results.json
+      - run: node docs/plan/tools/measure-campaign.mjs campaign-results.json
+      - run: npm run build
       - uses: actions/upload-artifact@v4
         with:
           name: risk-results
-          path: risk-results.json
+          path: |
+            risk-results.json
+            campaign-results.json
+            dist/sw-assets.json

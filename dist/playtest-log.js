@@ -1,0 +1,4 @@
+const KEY='ember-vault-playtest-v1';
+export function loadPlaytest(storage){try{const d=JSON.parse(storage.getItem(KEY));return d?.version===1&&Array.isArray(d.events)&&Array.isArray(d.feedback)?d:{version:1,consent:false,events:[],feedback:[]};}catch{return {version:1,consent:false,events:[],feedback:[]};}}
+export function recordPlaytest(storage,event,data={}){try{const d=loadPlaytest(storage);if(!d.consent)return;d.events.push({event,time:Date.now(),...data});d.events=d.events.slice(-1000);storage.setItem(KEY,JSON.stringify(d));}catch{}}
+export function saveFeedback(storage,{consent,text,audio}){const d=loadPlaytest(storage);d.consent=!!consent;d.feedback.push({time:Date.now(),text:String(text).slice(0,1000),audio:['yes','no','unknown'].includes(audio)?audio:'unknown'});if(!d.consent)d.events=[];storage.setItem(KEY,JSON.stringify(d));return d;}

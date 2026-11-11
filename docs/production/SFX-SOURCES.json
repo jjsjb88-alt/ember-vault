@@ -1,0 +1,160 @@
+{
+  "files": [
+    {
+      "file": "stone.mp3",
+      "sourceRepository": "https://github.com/facebookincubator/Meta-open-sound",
+      "sourcePath": "corpora/oculus-audio-pack/ogg/FEETHmn_ShoeConcreteWalk_OS_01.ogg",
+      "sourceUrl": "https://github.com/facebookincubator/Meta-open-sound/blob/main/corpora/oculus-audio-pack/ogg/FEETHmn_ShoeConcreteWalk_OS_01.ogg",
+      "author": "Oculus VR, LLC",
+      "license": "CC-BY-4.0",
+      "sourceGitBlob": "3b4b4406086e518a7bf7a5b7b95fa750c012b022",
+      "sourceSha256": "75e19656920f306c3344d18bf6c80734375164302acbb00ea2ec1168639a2dde",
+      "gameSha256": "45fc7dc7a272490640ffb652f9bf47001e51b4862d845a5c65d50b9547a0c3d9",
+      "edit": "Excerpt up to 0.6s, fade, -22 LUFS, mono 44.1kHz MP3 80k."
+    },
+    {
+      "file": "moss.mp3",
+      "sourceRepository": "https://github.com/facebookincubator/Meta-open-sound",
+      "sourcePath": "corpora/oculus-audio-pack/ogg/FEETHmn_ShoeGrassWalk_OS_01.ogg",
+      "sourceUrl": "https://github.com/facebookincubator/Meta-open-sound/blob/main/corpora/oculus-audio-pack/ogg/FEETHmn_ShoeGrassWalk_OS_01.ogg",
+      "author": "Oculus VR, LLC",
+      "license": "CC-BY-4.0",
+      "sourceGitBlob": "9d51df719485fea293a74539a2c53c9744a248e7",
+      "sourceSha256": "c183568af66a6b2c03e892fdafa1336d9c8845cc41e0de6aabfc5d7f1c4c46cd",
+      "gameSha256": "4c84ce6f809bb046b7da0dc806b4b3fd84bce981f193b8d2f1072f5ecba02943",
+      "edit": "Excerpt up to 0.6s, fade, -22 LUFS, mono 44.1kHz MP3 80k."
+    },
+    {
+      "file": "shards.mp3",
+      "sourceRepository": "https://github.com/facebookincubator/Meta-open-sound",
+      "sourcePath": "corpora/oculus-audio-pack/ogg/FEETHmn_ShoeDirtWalk_OS_01.ogg",
+      "sourceUrl": "https://github.com/facebookincubator/Meta-open-sound/blob/main/corpora/oculus-audio-pack/ogg/FEETHmn_ShoeDirtWalk_OS_01.ogg",
+      "author": "Oculus VR, LLC",
+      "license": "CC-BY-4.0",
+      "sourceGitBlob": "f06cbb1d09539bf08e8aa08b105d5a78bda3ab9c",
+      "sourceSha256": "09a4a929df589698ffe1b7244c45648464ff4ed7685212f74f8149a6fe399b00",
+      "gameSha256": "daab332fd31d4bc7cbed0b742972574b48e504b399aa56498cd2f8aacc90ac0d",
+      "edit": "Excerpt up to 0.6s, fade, -22 LUFS, mono 44.1kHz MP3 80k."
+    },
+    {
+      "file": "water.mp3",
+      "sourceRepository": "https://github.com/wyzowl/sfx-kit",
+      "sourcePath": "sounds/everyday-props/props-splash.wav",
+      "sourceUrl": "https://github.com/wyzowl/sfx-kit/blob/main/sounds/everyday-props/props-splash.wav",
+      "author": "Wyzowl",
+      "license": "CC0-1.0",
+      "sourceGitBlob": "16ec045474e157771cd1205bc9b9763dec064015",
+      "sourceSha256": "88f6f171cda211e2edfee3189c6cc9a7c133029c073e4acc5246c337125a4a37",
+      "gameSha256": "98a7f6298b78becccfc179e001127f1011c15714af99aa8e44571f44310cf88c",
+      "edit": "Excerpt up to 0.6s, fade, -22 LUFS, mono 44.1kHz MP3 80k."
+    },
+    {
+      "file": "attack.mp3",
+      "sourceRepository": "https://github.com/facebookincubator/Meta-open-sound",
+      "sourcePath": "corpora/oculus-audio-pack/ogg/WEAPSwrd_SwordClash_OS_01.ogg",
+      "sourceUrl": "https://github.com/facebookincubator/Meta-open-sound/blob/main/corpora/oculus-audio-pack/ogg/WEAPSwrd_SwordClash_OS_01.ogg",
+      "author": "Oculus VR, LLC",
+      "license": "CC-BY-4.0",
+      "sourceGitBlob": "5b16232a493d41b4f1f2549092a5beab5a2c7492",
+      "sourceSha256": "0a40c0373b02eebfe048042e07e925231c84f080639c086993823484e6407e0d",
+      "gameSha256": "c6a651858f851cef4046b662cb52d17cf601892a74b394f790a85b703227db28",
+      "edit": "Excerpt up to 0.7s, fade, -22 LUFS, mono 44.1kHz MP3 80k."
+    },
+    {
+      "file": "card.mp3",
+      "sourceRepository": "https://github.com/wyzowl/sfx-kit",
+      "sourcePath": "sounds/foley/foley-paper-slide.wav",
+      "sourceUrl": "https://github.com/wyzowl/sfx-kit/blob/main/sounds/foley/foley-paper-slide.wav",
+      "author": "Wyzowl",
+      "license": "CC0-1.0",
+      "sourceGitBlob": "d6fde16b6e750a777bacc58bf10beb3effed5d1e",
+      "sourceSha256": "5c46a7e86caeb6f71249fa294b5e654866f283c0470d39ab756b671f7c4c2e17",
+      "gameSha256": "7442e7858ad2224999d37a8aa925cd47732059eb2dcdb124fb9dbbb172375639",
+      "edit": "Excerpt up to 0.55s, fade, -22 LUFS, mono 44.1kHz MP3 80k."
+    },
+    {
+      "file": "buy.mp3",
+      "sourceRepository": "https://github.com/wyzowl/sfx-kit",
+      "sourcePath": "sounds/money/money-coins-pour.wav",
+      "sourceUrl": "https://github.com/wyzowl/sfx-kit/blob/main/sounds/money/money-coins-pour.wav",
+      "author": "Wyzowl",
+      "license": "CC0-1.0",
+      "sourceGitBlob": "ba91f8809e6ef2ae3b202f7c3a63a7a4697d8f5c",
+      "sourceSha256": "269722e36b8f7b2ef34d1f4385b8a8ec15ee757b595586cd8492a71fd6155a99",
+      "gameSha256": "815aeb22a7bd971e3c6b759eaa21a59471a0e78af663f77ea41831af51e47457",
+      "edit": "Excerpt up to 1.1s, fade, -22 LUFS, mono 44.1kHz MP3 80k."
+    },
+    {
+      "file": "lure.mp3",
+      "sourceRepository": "https://github.com/wyzowl/sfx-kit",
+      "sourcePath": "sounds/impacts/impact-light-firm.wav",
+      "sourceUrl": "https://github.com/wyzowl/sfx-kit/blob/main/sounds/impacts/impact-light-firm.wav",
+      "author": "Wyzowl",
+      "license": "CC0-1.0",
+      "sourceGitBlob": "5d2af3fab7780cce41de42b24936a7032f259456",
+      "sourceSha256": "751a1ec3b67f4f11a90e410d0ada78c0f0e64859fb06352994181abe737725c5",
+      "gameSha256": "1930f8482bab40f58bd920dd0fe2d18ba962d6004abc466d69d40fd8814c582b",
+      "edit": "Excerpt up to 0.5s, fade, -22 LUFS, mono 44.1kHz MP3 80k."
+    },
+    {
+      "file": "breath.mp3",
+      "sourceRepository": "https://github.com/wyzowl/sfx-kit",
+      "sourcePath": "sounds/reverse-whooshes/reverse-whoosh-medium-strong.wav",
+      "sourceUrl": "https://github.com/wyzowl/sfx-kit/blob/main/sounds/reverse-whooshes/reverse-whoosh-medium-strong.wav",
+      "author": "Wyzowl",
+      "license": "CC0-1.0",
+      "sourceGitBlob": "b823c9958579d2d22380956c3661b1090b1a96f4",
+      "sourceSha256": "334a35c64b5943029ab7bca0047e9f3a87d54a2fae961512ff24ccea86203d6e",
+      "gameSha256": "0d1c19b3bcedc07cdcbc05b7bbf2f24e950545323a5e1db35cbe5790fe3b69c1",
+      "edit": "Excerpt up to 1.3s, fade, -22 LUFS, mono 44.1kHz MP3 80k."
+    },
+    {
+      "file": "collapse.mp3",
+      "sourceRepository": "https://github.com/wyzowl/sfx-kit",
+      "sourcePath": "sounds/cinematic-hits/cinematic-slam-big.wav",
+      "sourceUrl": "https://github.com/wyzowl/sfx-kit/blob/main/sounds/cinematic-hits/cinematic-slam-big.wav",
+      "author": "Wyzowl",
+      "license": "CC0-1.0",
+      "sourceGitBlob": "fea3e93cd2707f3017720eece71a1ed2b25f676f",
+      "sourceSha256": "c408030e25e636a865678c25d0e6eceeee5d74e06f04e65f9353443cec46f8ca",
+      "gameSha256": "a75a27e730c40eee7946d6783e05b3ab884c108697a1eeae8d2581b16af65f47",
+      "edit": "Excerpt up to 1.2s, fade, -22 LUFS, mono 44.1kHz MP3 80k."
+    },
+    {
+      "file": "bad.mp3",
+      "sourceRepository": "https://github.com/wyzowl/sfx-kit",
+      "sourcePath": "sounds/notifications/notification-error-soft.wav",
+      "sourceUrl": "https://github.com/wyzowl/sfx-kit/blob/main/sounds/notifications/notification-error-soft.wav",
+      "author": "Wyzowl",
+      "license": "CC0-1.0",
+      "sourceGitBlob": "fd9d4847e5b474b08d241f343040ba6795d432ee",
+      "sourceSha256": "a4fbba71503798c6c3f375b41e69d2f4dcf43866a1a29273eaa54a0280c8f339",
+      "gameSha256": "27dcd924d68955357216a4f82e34d6b39ad18f726ca2500812db56bfb4908f65",
+      "edit": "Excerpt up to 0.9s, fade, -22 LUFS, mono 44.1kHz MP3 80k."
+    },
+    {
+      "file": "win.mp3",
+      "sourceRepository": "https://github.com/wyzowl/sfx-kit",
+      "sourcePath": "sounds/notifications/notification-success-chime.wav",
+      "sourceUrl": "https://github.com/wyzowl/sfx-kit/blob/main/sounds/notifications/notification-success-chime.wav",
+      "author": "Wyzowl",
+      "license": "CC0-1.0",
+      "sourceGitBlob": "55852b6f939bb76d53d2d92d80e73eb01dea2aef",
+      "sourceSha256": "6ef5c3d646a31b7382049f32011c44f2675cdd2524ab6ffa1c9b54533c49a44e",
+      "gameSha256": "2fd6ad70df8521153780a285d9a55d4865f62f2a71f3a7e27e5725ade5b8df61",
+      "edit": "Excerpt up to 1.5s, fade, -22 LUFS, mono 44.1kHz MP3 80k."
+    },
+    {
+      "file": "turn.mp3",
+      "sourceRepository": "https://github.com/wyzowl/sfx-kit",
+      "sourcePath": "sounds/everyday-props/props-shop-bell.wav",
+      "sourceUrl": "https://github.com/wyzowl/sfx-kit/blob/main/sounds/everyday-props/props-shop-bell.wav",
+      "author": "Wyzowl",
+      "license": "CC0-1.0",
+      "sourceGitBlob": "c7ac3adf6d4c141b6f931cbd354c4e53b9e4c134",
+      "sourceSha256": "f2ff475cf65456f1da810869729c4c31c765dd2ff65ea620580de24c918e9877",
+      "gameSha256": "d12353bbf64cd5bdd119bb38c6e3045775c8c40ede65afd808ceb22b2008522d",
+      "edit": "Excerpt up to 0.8s, fade, -22 LUFS, mono 44.1kHz MP3 80k."
+    }
+  ]
+}

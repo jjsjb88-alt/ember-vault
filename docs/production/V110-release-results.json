@@ -1,0 +1,142 @@
+{
+  "scope": "Chromium software checks. Fresh UI for settings/transfer/offline; an isolated audio\ncomponent fixture for decoding and gain checks. No human hearing or device claims.",
+  "result": "PASS",
+  "errors": [],
+  "http_errors": [],
+  "checks": [
+    "settings-accessibility-language-through-controls",
+    "export-import-review-before-replacement",
+    "full-offline-pack-root-link-reopen-and-real-turn",
+    "eight-music-decodes-user-gesture-playback-danger-gain-and-mute",
+    "explicit-update-fixture-preserves-save-and-reloads-once"
+  ],
+  "coldPayloadBytes": 9692097,
+  "coldBudgetPass": true,
+  "audioDecoded": [
+    {
+      "name": "upper",
+      "duration": 45
+    },
+    {
+      "name": "middle",
+      "duration": 45
+    },
+    {
+      "name": "lower",
+      "duration": 45
+    },
+    {
+      "name": "deep",
+      "duration": 45
+    },
+    {
+      "name": "refuge",
+      "duration": 45
+    },
+    {
+      "name": "danger",
+      "duration": 45
+    },
+    {
+      "name": "won",
+      "duration": 45
+    },
+    {
+      "name": "lost",
+      "duration": 45
+    },
+    {
+      "name": "stone",
+      "duration": 0.18532879818594103
+    },
+    {
+      "name": "water",
+      "duration": 0.6
+    },
+    {
+      "name": "shards",
+      "duration": 0.4319954648526077
+    },
+    {
+      "name": "moss",
+      "duration": 0.5508616780045351
+    },
+    {
+      "name": "attack",
+      "duration": 0.7
+    },
+    {
+      "name": "buy",
+      "duration": 1.1
+    },
+    {
+      "name": "card",
+      "duration": 0.4914965986394558
+    },
+    {
+      "name": "lure",
+      "duration": 0.09850340136054422
+    },
+    {
+      "name": "breath",
+      "duration": 0.8369841269841269
+    },
+    {
+      "name": "collapse",
+      "duration": 1.2
+    },
+    {
+      "name": "win",
+      "duration": 0.9625170068027211
+    },
+    {
+      "name": "bad",
+      "duration": 0.5665079365079365
+    },
+    {
+      "name": "turn",
+      "duration": 0.8
+    }
+  ],
+  "audioBase": {
+    "track": "upper",
+    "pressure": 0,
+    "enabled": true,
+    "ready": true,
+    "basePlaying": true,
+    "layerPlaying": false,
+    "layerGain": 0,
+    "voices": 0
+  },
+  "audioDanger": {
+    "track": "upper",
+    "pressure": 9,
+    "enabled": true,
+    "ready": true,
+    "basePlaying": true,
+    "layerPlaying": true,
+    "layerGain": 0.09372659772634506,
+    "voices": 0
+  },
+  "audioStageTracks": [
+    "upper",
+    "middle",
+    "lower",
+    "deep",
+    "refuge",
+    "won",
+    "lost"
+  ],
+  "uiBeforeUpdate": {
+    "pool": false,
+    "noise": false,
+    "actionBusy": false,
+    "dialogMode": "settings",
+    "pwa": {
+      "scope": "http://127.0.0.1:38107/",
+      "waiting": "installed",
+      "installing": null,
+      "reloading": false
+    }
+  }
+}

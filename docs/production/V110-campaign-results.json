@@ -1,0 +1,378 @@
+{
+  "scope": "Deterministic normal-action engine policies, not human novice tests. Managed policies use known structural routes and the full unlock pool.",
+  "seeds": [
+    1,
+    60
+  ],
+  "worlds": {
+    "seeds": 200,
+    "unique": 200,
+    "unreachable": 0,
+    "maxQuietOrderShare": 0.01
+  },
+  "managed": [
+    {
+      "axis": "stealth",
+      "wins": 58,
+      "of": 60,
+      "axisWins": 58,
+      "meanWinTurns": 21.84,
+      "cutoffs": 0
+    },
+    {
+      "axis": "noise",
+      "wins": 50,
+      "of": 60,
+      "axisWins": 42,
+      "meanWinTurns": 17.96,
+      "cutoffs": 0
+    },
+    {
+      "axis": "echo",
+      "wins": 57,
+      "of": 60,
+      "axisWins": 48,
+      "meanWinTurns": 22.21,
+      "cutoffs": 0
+    },
+    {
+      "axis": "ward",
+      "wins": 57,
+      "of": 60,
+      "axisWins": 44,
+      "meanWinTurns": 22.26,
+      "cutoffs": 0
+    },
+    {
+      "axis": "cycle",
+      "wins": 58,
+      "of": 60,
+      "axisWins": 45,
+      "meanWinTurns": 20.91,
+      "cutoffs": 0
+    },
+    {
+      "axis": "path",
+      "wins": 57,
+      "of": 60,
+      "axisWins": 57,
+      "meanWinTurns": 23.3,
+      "cutoffs": 0
+    }
+  ],
+  "walk": [
+    {
+      "role": "rogue",
+      "wins": 2,
+      "of": 60,
+      "hpDeaths": 58,
+      "cutoffs": 0
+    },
+    {
+      "role": "knight",
+      "wins": 3,
+      "of": 60,
+      "hpDeaths": 57,
+      "cutoffs": 0
+    },
+    {
+      "role": "mage",
+      "wins": 0,
+      "of": 60,
+      "hpDeaths": 60,
+      "cutoffs": 0
+    }
+  ],
+  "acquiredMedalPrevalence": [
+    {
+      "id": "ropewalk",
+      "wins": 149,
+      "share": 0.4421
+    },
+    {
+      "id": "velvet",
+      "wins": 129,
+      "share": 0.3828
+    },
+    {
+      "id": "mothcloak",
+      "wins": 105,
+      "share": 0.3116
+    },
+    {
+      "id": "wayfinder",
+      "wins": 73,
+      "share": 0.2166
+    },
+    {
+      "id": "veildance",
+      "wins": 72,
+      "share": 0.2136
+    },
+    {
+      "id": "spark",
+      "wins": 70,
+      "share": 0.2077
+    },
+    {
+      "id": "hushblade",
+      "wins": 70,
+      "share": 0.2077
+    },
+    {
+      "id": "starroute",
+      "wins": 64,
+      "share": 0.1899
+    },
+    {
+      "id": "echoeraser",
+      "wins": 53,
+      "share": 0.1573
+    },
+    {
+      "id": "sneak",
+      "wins": 52,
+      "share": 0.1543
+    },
+    {
+      "id": "surveyor",
+      "wins": 52,
+      "share": 0.1543
+    },
+    {
+      "id": "stoneoath",
+      "wins": 47,
+      "share": 0.1395
+    },
+    {
+      "id": "bash",
+      "wins": 45,
+      "share": 0.1335
+    },
+    {
+      "id": "returnstar",
+      "wins": 39,
+      "share": 0.1157
+    },
+    {
+      "id": "fury",
+      "wins": 39,
+      "share": 0.1157
+    },
+    {
+      "id": "softmap",
+      "wins": 36,
+      "share": 0.1068
+    },
+    {
+      "id": "ironmarch",
+      "wins": 36,
+      "share": 0.1068
+    },
+    {
+      "id": "packlight",
+      "wins": 35,
+      "share": 0.1039
+    },
+    {
+      "id": "nightbreath",
+      "wins": 34,
+      "share": 0.1009
+    },
+    {
+      "id": "echojar",
+      "wins": 33,
+      "share": 0.0979
+    },
+    {
+      "id": "blade",
+      "wins": 33,
+      "share": 0.0979
+    },
+    {
+      "id": "thunder",
+      "wins": 29,
+      "share": 0.0861
+    },
+    {
+      "id": "moonshuffle",
+      "wins": 28,
+      "share": 0.0831
+    },
+    {
+      "id": "guard",
+      "wins": 26,
+      "share": 0.0772
+    },
+    {
+      "id": "rootguard",
+      "wins": 25,
+      "share": 0.0742
+    },
+    {
+      "id": "coalheart",
+      "wins": 24,
+      "share": 0.0712
+    },
+    {
+      "id": "quickstudy",
+      "wins": 23,
+      "share": 0.0682
+    },
+    {
+      "id": "step",
+      "wins": 21,
+      "share": 0.0623
+    },
+    {
+      "id": "ambush",
+      "wins": 20,
+      "share": 0.0593
+    },
+    {
+      "id": "scout",
+      "wins": 20,
+      "share": 0.0593
+    },
+    {
+      "id": "twinflame",
+      "wins": 20,
+      "share": 0.0593
+    },
+    {
+      "id": "silence",
+      "wins": 18,
+      "share": 0.0534
+    },
+    {
+      "id": "farewell",
+      "wins": 18,
+      "share": 0.0534
+    },
+    {
+      "id": "farvoice",
+      "wins": 18,
+      "share": 0.0534
+    },
+    {
+      "id": "acrobat",
+      "wins": 17,
+      "share": 0.0504
+    },
+    {
+      "id": "riposte",
+      "wins": 16,
+      "share": 0.0475
+    },
+    {
+      "id": "memoryriver",
+      "wins": 15,
+      "share": 0.0445
+    },
+    {
+      "id": "loudchorus",
+      "wins": 15,
+      "share": 0.0445
+    },
+    {
+      "id": "slash",
+      "wins": 13,
+      "share": 0.0386
+    },
+    {
+      "id": "sentinel",
+      "wins": 13,
+      "share": 0.0386
+    },
+    {
+      "id": "lanternwall",
+      "wins": 13,
+      "share": 0.0386
+    },
+    {
+      "id": "roarshield",
+      "wins": 13,
+      "share": 0.0386
+    },
+    {
+      "id": "heldbreath",
+      "wins": 12,
+      "share": 0.0356
+    },
+    {
+      "id": "echoengine",
+      "wins": 12,
+      "share": 0.0356
+    },
+    {
+      "id": "focus",
+      "wins": 11,
+      "share": 0.0326
+    },
+    {
+      "id": "ashbrush",
+      "wins": 10,
+      "share": 0.0297
+    },
+    {
+      "id": "ironmemory",
+      "wins": 10,
+      "share": 0.0297
+    },
+    {
+      "id": "brassdeal",
+      "wins": 8,
+      "share": 0.0237
+    },
+    {
+      "id": "hearth",
+      "wins": 8,
+      "share": 0.0237
+    },
+    {
+      "id": "potion",
+      "wins": 7,
+      "share": 0.0208
+    },
+    {
+      "id": "lantern",
+      "wins": 7,
+      "share": 0.0208
+    },
+    {
+      "id": "archive",
+      "wins": 6,
+      "share": 0.0178
+    },
+    {
+      "id": "wisdom",
+      "wins": 5,
+      "share": 0.0148
+    },
+    {
+      "id": "echo",
+      "wins": 4,
+      "share": 0.0119
+    },
+    {
+      "id": "healing",
+      "wins": 4,
+      "share": 0.0119
+    },
+    {
+      "id": "ghost",
+      "wins": 3,
+      "share": 0.0089
+    },
+    {
+      "id": "rush",
+      "wins": 2,
+      "share": 0.0059
+    }
+  ],
+  "endings": [
+    "seal",
+    "remember"
+  ],
+  "prevalenceScope": "Medals acquired through recruitment, market purchase or enemy rewards, excluding the fixed profession opening bags. Counts indicate any acquisition, even if later removed."
+}

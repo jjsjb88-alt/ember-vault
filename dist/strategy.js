@@ -1,6 +1,7 @@
-import {gimmickPassable} from './dungeon-gimmicks.js?v=20261111a';
-import {isStaged,RETURN_LIFT_EDGE} from './expedition-stages.js?v=20261111a';
-import {apply,enemyTurn,neighbours,moveCost,moveNoise,previewNoise,TERRAINS} from './engine.js?v=20261111a';
+import {lureRaw} from './content/keepsakes.js?v=20261111b';
+import {gimmickPassable} from './dungeon-gimmicks.js?v=20261111b';
+import {isStaged,RETURN_LIFT_EDGE} from './expedition-stages.js?v=20261111b';
+import {apply,enemyTurn,neighbours,moveCost,moveNoise,previewNoise,TERRAINS} from './engine.js?v=20261111b';
 
 // Only charted passages are used. This is a travel estimate, not a combat forecast.
 export function returnRoute(s){
@@ -35,7 +36,7 @@ export function lureForecast(s,id){
  const copy=JSON.parse(JSON.stringify(s));
  const assumption='유인 후 추가 행동 없이 지금 위치에서 턴을 마칠 때';
  const result=apply(copy,{type:'lure',id});
- const base={ok:result.ok,reason:result.ok?'':result.message,cost:1,noise:5,assumption};
+ const base={ok:result.ok,reason:result.ok?'':result.message,cost:1,noise:lureRaw(s),assumption};
  if(!result.ok)return {...base,moves:[],entersPlayer:false,summary:result.message};
  const heard=new Set(copy.lastSound.heard.map(e=>e.id));
  const known=copy.rooms.filter(r=>s.rooms[r.id].seen&&r.enemy?.hp>0).map(r=>({
@@ -48,7 +49,7 @@ export function lureForecast(s,id){
   const moved=destination!==from;
   const kind=moved?'move':from===s.pos?'counter':enemy.anchored?'anchored':memory<=0||target===null?'idle':mode==='listen'?'listen':from===target?'at-target':'blocked';
   const to=s.rooms[destination].seen?destination:null;
-  return {from,to,name:enemy.name,fromName:s.rooms[from].name,toName:to===null?'어둠 속':s.rooms[to].name,
+  return {from,to,name:enemy.name,sense:enemy.sense||'sound',fromName:s.rooms[from].name,toName:to===null?'어둠 속':s.rooms[to].name,
    heard:heard.has(from),entersPlayer:moved&&destination===s.pos,kind,mode,targetChanged};
  });
  const arrivals=moves.filter(e=>e.entersPlayer),moving=moves.filter(e=>e.kind==='move');

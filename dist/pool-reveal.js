@@ -1,7 +1,7 @@
-import {abilityEffectsMarkup} from './ability-guide.js?v=20261111a';
-import {CARDS,neighbours,moveCost} from './engine.js?v=20261111a';
-import {paintIcons} from './art.js?v=20261111a';
-import {tokenMarkup,richGlyph} from './token-art.js?v=20261111a';
+import {abilityEffectsMarkup} from './ability-guide.js?v=20261111b';
+import {CARDS,neighbours,moveCost} from './engine.js?v=20261111b';
+import {paintIcons} from './art.js?v=20261111b';
+import {tokenMarkup,richGlyph} from './token-art.js?v=20261111b';
 
 const KEYS=['sword','move','skill','block','quiet','rattle'];
 const VALUES=[['sword','공격력'],['move','이동력'],['skill','기술'],['block','방어']];
@@ -26,10 +26,10 @@ export function revealStakes(state,shown){
 export function buildRevealPlan(state){
  const ids=[...state.played],totals={...state.poolTotal};
  const effect=id=>{const e=CARDS[id].e;return Object.fromEntries(KEYS.map(k=>[k,k==='quiet'?Math.max(0,-(e.noise||0)):k==='rattle'?Math.max(0,e.noise||0):(e[k]||0)]));};
- const base=Object.fromEntries(KEYS.map(k=>[k,Math.max(0,(totals[k]||0)-ids.reduce((n,id)=>n+effect(id)[k],0))]));
+ const base=Object.fromEntries(KEYS.map(k=>[k,Math.max(0,(totals[k]||0)-ids.reduce((n,id,i)=>n+(state.drawEffects?.length===ids.length&&state.drawEffects[i]?.id===id?state.drawEffects[i].delta[k]||0:effect(id)[k]),0))]));
  let slots=Math.min(5,ids.length),sum={...base};
  const steps=ids.map((id,index)=>{
-  const delta=effect(id),before={...sum},beforeSlots=slots;
+  const delta=state.drawEffects?.length===ids.length&&state.drawEffects[index]?.id===id?state.drawEffects[index].delta:effect(id),before={...sum},beforeSlots=slots;
   for(const k of KEYS)sum[k]+=delta[k];
   slots=Math.min(ids.length,slots+(CARDS[id].e.draw||0));
   return {id,index,delta,before,totals:{...sum},slots,added:slots-beforeSlots,last:index===ids.length-1};
@@ -124,7 +124,7 @@ export function makePoolReveal(dialog,{cue=()=>{},getSound=()=>false,toggleSound
   root.innerHTML=`<div class="reveal-grain" aria-hidden="true"></div><div class="reveal-top"><div><span class="reveal-kicker">추출 직전</span><h2 id="revealTitle">금고가 숨을 죽인다</h2></div><button data-reveal="sound" type="button"></button></div><p id="revealStakes">${stakes}</p>${story?`<p class="reveal-story">${story}</p>`:''}<div class="reveal-slots" aria-label="추출 진행"></div><div class="reveal-stage"><div class="reveal-orb" aria-hidden="true"><div class="orb-ring outer"></div><div class="orb-ring inner"></div><div class="orb-rays"></div><div class="reveal-orb-core"><span class="sealed-mark">✧</span></div>${Array.from({length:12},(_,i)=>`<i class="orb-mote" style="--n:${i}"></i>`).join('')}</div><div class="reveal-identity"><span class="reveal-count">봉인된 능력 ${visibleSlots}개</span><h3 class="reveal-name">능력을 불러오는 중</h3><p class="reveal-effect">작은 힘 하나가, 탈출을 결정합니다.</p></div></div><p class="ledger-scroll-hint">메달 목록은 위아래로 스크롤할 수 있어요.</p><div class="reveal-sources" tabindex="0" aria-label="메달별 자동 합산 내역" hidden></div><div class="reveal-bottom"><div class="reveal-totals">${VALUES.map(([key,name])=>`<div class="reveal-stat ${key}" data-total="${key}"><span>${name}</span><strong>0</strong><em></em></div>`).join('')}</div><div class="reveal-traits"></div><button class="reveal-skip" data-reveal="skip" type="button">결과 바로 보기 →</button></div><p class="reveal-announcement sr-only" aria-live="polite" aria-atomic="true"></p>`;
   dialog.dataset.phase='gather';dialog.dataset.family='gold';soundButton();totals(plan.base);strip();
   document.body.classList.add('drawing-pool');dialog.showModal();q('[data-reveal="skip"]').focus({preventScroll:true});cue('gather');
-  if(fast||matchMedia('(prefers-reduced-motion: reduce)').matches||!plan.steps.length)summary();else later(anticipate,520);
+  if(fast||matchMedia('(prefers-reduced-motion: reduce)').matches||document.body.classList.contains('user-reduced-motion')||!plan.steps.length)summary();else later(anticipate,520);
  }
  function advance(){if(noiseHeld){noiseHeld=false;q('[data-reveal="skip"]').textContent='결과 바로 보기 →';return plan.steps[index].last?summary():anticipate();}complete?close():summary();}
  root.addEventListener('click',ev=>{const action=ev.target.closest('[data-reveal]')?.dataset.reveal;if(action==='skip')advance();if(action==='sound'){toggleSound();soundButton();}});

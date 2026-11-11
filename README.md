@@ -1,18 +1,27 @@
-# 잿불 금고 · Ember Vault V10.2 후보
+# 잿불 금고 · Ember Vault V11
 
-한국어 싱글플레이 풀빌딩 던전 크롤러. [바로 플레이](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261109a) · [첫 금고 털이 연습](https://jjsjb88-alt.github.io/ember-vault/dist/?v=20261109a&tutorial=1)
+모바일 웹에서 약10분을 목표로 하는 싱글플레이 풀빌딩 던전 탐험. [공개 게임 주소](https://jjsjb88-alt.github.io/ember-vault/) · [PR #20](https://github.com/jjsjb88-alt/ember-vault/pull/20). **PR 병합·Pages 배포 전에는 공개 주소가 기존 main 버전을 제공합니다.**
 
-## PR #20 · V10.2 위험 조정 후보
+## V11 · 네 구역의 기억 원정
 
-중층부터 이동 비용을 높이고, 적과 메아리를 따라오는 숨결을 강화했습니다. 경계5 이상이면 적이 더 멀리 듣습니다. 실제 회복은 원정 전체12, 보급 최대4·정비/휴식 최대3으로 제한하며 메달 회복도 함께 계산합니다. 새 탐험만 이 수치를 적용하고 기존 저장과 별도 회상은 유지합니다.
+상층→중층→하층→심층을 내려가 유물을 회수하고 돌아옵니다. 세 정비소에서 메달·주머니·보급을 준비합니다. 새 지도와 울림/흡음/붕괴, 메달60종·적10종·지속 유물16종, 직업별 시작 주머니와 영입 풀, 판 사이 해금·두 결말·난도10단계를 연결했습니다. 기존 저장은 원래 규칙으로 이어갑니다.
 
-조정 시드에서 소음 관리 정책의 승률은 도적53.3%·기사70%·마법사50%, 걷기 정책은 모두0%였습니다. 별도 시드의 마법사46.7%와 사람 테스트는 남아 있어 최종 난이도 확정으로 보지 않습니다. [수치·정책·검증](docs/production/V102-RISK.md) · [6단계 계획과 진행 상태](docs/plan/MASTERPIECE-PLAN.md).
+구역 음악과 위험층, 재질별 발소리와 전용 효과음을 추가했습니다. PWA 설치·오프라인·저장 파일 이전, 영·일 언어 설정, 큰 글씨·색 보조·진동/움직임 끄기를 제공합니다. 번역 사전은 초벌이며 기존 일지·상세 회상의 일부 한국어 문장은 보완 대상입니다.
+
+자동 비교에서 걷기 정책 승리는 직업별2/60·3/60·0/60, 전체 해금 풀의 여섯 관리 정책은50~58/60이었습니다. 사람 초심자의 승률이나 실제10분을 뜻하지 않습니다. 사람20명 테스트·실기기·잔여 번역·최종 권리 검토는 출시 전 남아 있습니다.
+
+[변경·측정·재현](docs/production/V110-ROADMAP.md) · [전체 계획과 진행](docs/plan/MASTERPIECE-PLAN.md) · [사람 테스트 양식](docs/production/V110-PLAYTEST-KIT.md) · [음악 출처](docs/production/AUDIO-SOURCES.json) · [효과음 출처](docs/production/SFX-SOURCES.json).
 
 ```bash
 npm run check
 npm test
 npm run test:balance
+npm run test:campaign
+npm run build
+python -m http.server 8093 --directory _site
 ```
+
+아래는 이전 버전의 구현 기록입니다. V10.2 수치와 비교 표본은 [기록](docs/production/V102-RISK.md)에 보존하며 현재 새 원정과 구분합니다.
 
 ## V10.1 — 짧은 상층 안내와 읽히는 자동 합산
 
