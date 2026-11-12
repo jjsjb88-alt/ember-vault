@@ -1,9 +1,9 @@
-import {site} from './world.js?v=20261111b';
-import {liftCost,liftRaw,restRaw} from './content/keepsakes.js?v=20261111b';
-import {hasRisk,RISK,healingLeft,healingAmount,healingNote,soundLoss} from './risk-rules.js?v=20261111b';
-import {hasGimmicks,worldPassageOpen} from './dungeon-gimmicks.js?v=20261111b';
-import {isStaged,checkpointIndex} from './expedition-stages.js?v=20261111b';
-import {enemyTurn,neighbours,previewNoise,dragonDue,breathPlan} from './engine.js?v=20261111b';
+import {site} from './world.js?v=20261112a';
+import {liftCost,liftRaw,restRaw} from './content/keepsakes.js?v=20261112a';
+import {hasRisk,RISK,healingLeft,healingAmount,healingNote,soundLoss} from './risk-rules.js?v=20261112a';
+import {hasGimmicks,worldPassageOpen} from './dungeon-gimmicks.js?v=20261112a';
+import {isStaged,checkpointIndex} from './expedition-stages.js?v=20261112a';
+import {enemyTurn,neighbours,previewNoise,dragonDue,breathPlan} from './engine.js?v=20261112a';
 
 export function roomEnvironment(room){return ['camp','merchant','checkpoint'].includes(room.type)?'refuge':['relic','shrine'].includes(room.type)?'vault':'library';}
 

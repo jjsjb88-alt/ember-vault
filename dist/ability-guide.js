@@ -1,4 +1,4 @@
-import {CARDS} from './engine.js?v=20261111b';
+import {CARDS} from './engine.js?v=20261112a';
 
 // Display rules shared by the game and artbook. These never resolve a draw or
 // inspect a run; numbers always come from the existing card definitions.

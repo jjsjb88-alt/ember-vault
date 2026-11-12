@@ -1,7 +1,7 @@
-import {lureRaw} from './content/keepsakes.js?v=20261111b';
-import {gimmickPassable} from './dungeon-gimmicks.js?v=20261111b';
-import {isStaged,RETURN_LIFT_EDGE} from './expedition-stages.js?v=20261111b';
-import {apply,enemyTurn,neighbours,moveCost,moveNoise,previewNoise,TERRAINS} from './engine.js?v=20261111b';
+import {lureRaw} from './content/keepsakes.js?v=20261112a';
+import {gimmickPassable} from './dungeon-gimmicks.js?v=20261112a';
+import {isStaged,RETURN_LIFT_EDGE} from './expedition-stages.js?v=20261112a';
+import {apply,enemyTurn,neighbours,moveCost,moveNoise,previewNoise,TERRAINS} from './engine.js?v=20261112a';
 
 // Only charted passages are used. This is a travel estimate, not a combat forecast.
 export function returnRoute(s){

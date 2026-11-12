@@ -1,5 +1,5 @@
-import {EXTRA_CARDS,AXES} from './content/memories.js?v=20261111b';
-import {KEEPSAKES} from './content/keepsakes.js?v=20261111b';
+import {EXTRA_CARDS,AXES} from './content/memories.js?v=20261112a';
+import {KEEPSAKES} from './content/keepsakes.js?v=20261112a';
 export const PROFILE_KEY='ember-vault-profile-v1';
 export function freshProfile(){return {version:1,runs:0,wins:0,embers:0,heat:0,maxHeat:0,settled:[],endings:[],history:[]};}
 export function validProfile(p){return !!(p&&p.version===1&&['runs','wins','embers','heat','maxHeat'].every(k=>Number.isSafeInteger(p[k])&&p[k]>=0)&&p.wins<=p.runs&&p.heat<=p.maxHeat&&p.maxHeat<=10&&Array.isArray(p.settled)&&p.settled.length<=10000&&new Set(p.settled).size===p.settled.length&&p.settled.every(v=>typeof v==='string'&&v.length>0&&v.length<=100)&&Array.isArray(p.endings)&&p.endings.every(e=>['seal','remember'].includes(e))&&Array.isArray(p.history)&&p.history.length<=30&&p.history.every(e=>e&&typeof e.id==='string'&&typeof e.won==='boolean'&&Number.isSafeInteger(e.turn)&&e.turn>0&&['rogue','knight','mage','warden','cantor'].includes(e.role)&&Number.isInteger(e.heat)&&e.heat>=0&&e.heat<=10&&[null,'seal','remember'].includes(e.ending)&&Number.isFinite(e.score)&&e.score>=0));}

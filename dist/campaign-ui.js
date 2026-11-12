@@ -1,10 +1,10 @@
-import {CARDS,ROLES,stageOffers} from './engine.js?v=20261111b';
-import {KEEPSAKES} from './content/keepsakes.js?v=20261111b';
-import {ENEMIES} from './content/enemies.js?v=20261111b';
-import {unlocks} from './progression.js?v=20261111b';
-import {noxChapter} from './campaign-story.js?v=20261111b';
-import {tokenMarkup,itemMarkup} from './token-art.js?v=20261111b';
-import {abilityEffectsMarkup} from './ability-guide.js?v=20261111b';
+import {CARDS,ROLES,stageOffers} from './engine.js?v=20261112a';
+import {KEEPSAKES} from './content/keepsakes.js?v=20261112a';
+import {ENEMIES} from './content/enemies.js?v=20261112a';
+import {unlocks} from './progression.js?v=20261112a';
+import {noxChapter} from './campaign-story.js?v=20261112a';
+import {tokenMarkup,itemMarkup} from './token-art.js?v=20261112a';
+import {abilityEffectsMarkup} from './ability-guide.js?v=20261112a';
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;');
 export function keepsakeChoiceMarkup(s){return `<p class="modal-sub">기억 유물은 들고 있는 동안 원정 규칙을 바꿉니다. 시작 유물을 포함해 최대3개를 간직합니다.</p><div class="campaign-choices">${s.pending.options.map(id=>`<button data-act="keepsake" data-id="${id}">${itemMarkup(KEEPSAKES[id].art,64)}<strong>${KEEPSAKES[id].name}</strong><p>${KEEPSAKES[id].text}</p><small>${KEEPSAKES[id].lore}</small></button>`).join('')}</div><div class="modal-actions"><button data-act="skipKeepsake" class="subtle-button">이 기억은 남겨 두기</button></div>`;}
 export function endingChoiceMarkup(){return `<p class="first-help-text">유물 안에서 아직 돌아오지 못한 이름들이 울립니다. 어떤 약속을 가지고 지상으로 돌아갈까요?</p><div class="campaign-choices"><button data-act="ending" data-id="seal">${itemMarkup('seal',72)}<strong>문을 닫아 고요를 지키기</strong><p>은신 +3 · 회수 소리5 · 귀환 제한10턴</p><small>잠들고 싶었던 기억들에게 고요를 약속합니다.</small></button><button data-act="ending" data-id="remember">${itemMarkup('lantern',72)}<strong>이름을 함께 데려가기</strong><p>방어 +3 · 회수 소리8 · 귀환 제한10턴</p><small>잊힌 이름들을 금고 밖에서 다시 부르기로 합니다.</small></button></div>`;}

@@ -1,10 +1,10 @@
-import {restRaw} from './content/keepsakes.js?v=20261111b';
-import {site} from './world.js?v=20261111b';
-import {hasRisk,RISK,healingLeft,healingAmount,healingNote,soundLoss} from './risk-rules.js?v=20261111b';
-import {hasGimmicks,roomGimmick,STAGE_GIMMICK_PLANS} from './dungeon-gimmicks.js?v=20261111b';
-import {neighbours,passagePreview,MODES,previewNoise} from './engine.js?v=20261111b';
-import {stageIndex} from './expedition-stages.js?v=20261111b';
-import {itemMarkup} from './token-art.js?v=20261111b';
+import {restRaw} from './content/keepsakes.js?v=20261112a';
+import {site} from './world.js?v=20261112a';
+import {hasRisk,RISK,healingLeft,healingAmount,healingNote,soundLoss} from './risk-rules.js?v=20261112a';
+import {hasGimmicks,roomGimmick,STAGE_GIMMICK_PLANS} from './dungeon-gimmicks.js?v=20261112a';
+import {neighbours,passagePreview,MODES,previewNoise} from './engine.js?v=20261112a';
+import {stageIndex} from './expedition-stages.js?v=20261112a';
+import {itemMarkup} from './token-art.js?v=20261112a';
 export function passageGuideMarkup(s,mode=s.mode){
  if(!hasGimmicks(s))return '';
  const here=roomGimmick(s,s.pos);
