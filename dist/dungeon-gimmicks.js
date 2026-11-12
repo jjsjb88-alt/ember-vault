@@ -1,5 +1,5 @@
-import {site,isCollapsed} from './world.js?v=20261111b';
-import {hasRisk,RISK} from './risk-rules.js?v=20261111b';
+import {site,isCollapsed} from './world.js?v=20261112a';
+import {hasRisk,RISK} from './risk-rules.js?v=20261112a';
 // Optional generation marker: previously saved expeditions retain their original rules.
 export const SECRET_EDGE=[16,19];
 export function hasGimmicks(s){return s?.layout==='staged'&&s.gimmicksVersion===1;}

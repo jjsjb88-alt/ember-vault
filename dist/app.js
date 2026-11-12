@@ -1,38 +1,39 @@
-import {makeAudioDirector} from './audio-director.js?v=20261111b';
-import {loadSettings,saveSettings,applySettings,settingsMarkup} from './settings.js?v=20261111b';
-import {setLanguage} from './i18n.js?v=20261111b';
-import {setupPwa} from './pwa.js?v=20261111b';
-import {exportSave,parseSave,importSave,downloadText} from './save-transfer.js?v=20261111b';
-import {recordPlaytest,loadPlaytest,saveFeedback} from './playtest-log.js?v=20261111b';
-import {site} from './world.js?v=20261111b';
-import {KEEPSAKES,provisionRaw,lureRaw,liftCost} from './content/keepsakes.js?v=20261111b';
-import {ENEMIES} from './content/enemies.js?v=20261111b';
-import {loadProfile,saveProfile,settleProfile,unlocks} from './progression.js?v=20261111b';
-import {stageStory,noxChapter,endingStory} from './campaign-story.js?v=20261111b';
-import {keepsakeChoiceMarkup,endingChoiceMarkup,progressMarkup,contentCodexMarkup,feedbackMarkup,carriedKeepsakesMarkup} from './campaign-ui.js?v=20261111b';
-import {hasRisk,RISK,healingLeft,healingAmount,healingNote,soundLoss} from './risk-rules.js?v=20261111b';
-import {startFirstRun,recordFirstRun,firstRunGoal,firstRunMemory,actionReceipt,returnForecast} from './first-run.js?v=20261111b';
-import {hasGimmicks,roomGimmick,passageRule,movementGimmickReason,worldPassageOpen} from './dungeon-gimmicks.js?v=20261111b';
-import {passageGuideMarkup,conduitMarkup} from './gimmick-presentation.js?v=20261111b';
-import {STAGES,isStaged,stageIndex,stageLabel,checkpointIndex,expeditionBonuses} from './expedition-stages.js?v=20261111b';
-import {stageTrackMarkup,stageCampMarkup,stagePlanMarkup,stageChoiceLines} from './stage-presentation.js?v=20261111b';
-import {CARDS,ROLES,STARTING_KEEPSAKES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,breathPlan,echoFadeEvery,MEMORY_MAX} from './engine.js?v=20261111b';
-import {paintIcons} from './art.js?v=20261111b';
-import {makeRenderer} from './scene-v5.js?v=20261111b';
-import {makePoolReveal} from './pool-reveal.js?v=20261111b';
-import {pageOf,pager} from './pages.js?v=20261111b';
-import {exitAnchor} from './scene-layout.js?v=20261111b';
-import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261111b';
-import {makeNoiseMoment} from './noise-moment.js?v=20261111b';
-import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,createTutorialRun,tutorialAllows,tutorialAdvance,tutorialChapter,tutorialTargets,tutorialHint,tutorialMapLesson,tutorialActionReason} from './tutorial.js?v=20261111b';
-import {makeCutscene} from './cutscene.js?v=20261111b';
-import {returnRoute,routeAdvice,lureForecast} from './strategy.js?v=20261111b';
-import {createTutorialJournal,recordTutorialAction,tutorialRecap} from './tutorial-journal.js?v=20261111b';
-import {loadTutorialProgress,saveTutorialProgress,clearTutorialProgress} from './tutorial-storage.js?v=20261111b';
-import {MERCHANT,marketContext,meetingLines,memoryLore,purchaseLines,MERCHANT_STORY} from './merchant-story.js?v=20261111b';
-import {tokenMarkup,gradeLabel,itemMarkup,richGlyph} from './token-art.js?v=20261111b';
-import {abilityEffectsMarkup,abilityNotesMarkup,glossaryMarkup} from './ability-guide.js?v=20261111b';
-import {firstExpeditionGoal} from './first-expedition.js?v=20261111b';
+import {makeAudioDirector} from './audio-director.js?v=20261112a';
+import {loadSettings,saveSettings,applySettings,settingsMarkup} from './settings.js?v=20261112a';
+import {setLanguage} from './i18n.js?v=20261112a';
+import {setupPwa} from './pwa.js?v=20261112a';
+import {exportSave,parseSave,importSave,downloadText} from './save-transfer.js?v=20261112a';
+import {recordPlaytest,loadPlaytest,saveFeedback} from './playtest-log.js?v=20261112a';
+import {site} from './world.js?v=20261112a';
+import {KEEPSAKES,provisionRaw,lureRaw,liftCost} from './content/keepsakes.js?v=20261112a';
+import {ENEMIES} from './content/enemies.js?v=20261112a';
+import {loadProfile,saveProfile,settleProfile,unlocks} from './progression.js?v=20261112a';
+import {stageStory,noxChapter,endingStory} from './campaign-story.js?v=20261112a';
+import {keepsakeChoiceMarkup,endingChoiceMarkup,progressMarkup,contentCodexMarkup,feedbackMarkup,carriedKeepsakesMarkup} from './campaign-ui.js?v=20261112a';
+import {hasRisk,RISK,healingLeft,healingAmount,healingNote,soundLoss} from './risk-rules.js?v=20261112a';
+import {startFirstRun,recordFirstRun,firstRunGoal,firstRunMemory,actionReceipt,returnForecast} from './first-run.js?v=20261112a';
+import {loadLessons,markLesson,lessonAfterAction,lessonBeforeBreath,breathWarning} from './breath-lesson.js?v=20261112a';
+import {hasGimmicks,roomGimmick,passageRule,movementGimmickReason,worldPassageOpen} from './dungeon-gimmicks.js?v=20261112a';
+import {passageGuideMarkup,conduitMarkup} from './gimmick-presentation.js?v=20261112a';
+import {STAGES,isStaged,stageIndex,stageLabel,checkpointIndex,expeditionBonuses} from './expedition-stages.js?v=20261112a';
+import {stageTrackMarkup,stageCampMarkup,stagePlanMarkup,stageChoiceLines} from './stage-presentation.js?v=20261112a';
+import {CARDS,ROLES,STARTING_KEEPSAKES,MODES,TERRAINS,ALERTS,newRun,apply,neighbours,moveCost,moveStatus,moveNoise,previewNoise,validSave,migrateSave,dragonDue,breathPlan,echoFadeEvery,MEMORY_MAX} from './engine.js?v=20261112a';
+import {paintIcons} from './art.js?v=20261112a';
+import {makeRenderer} from './scene-v5.js?v=20261112a';
+import {makePoolReveal} from './pool-reveal.js?v=20261112a';
+import {pageOf,pager} from './pages.js?v=20261112a';
+import {exitAnchor} from './scene-layout.js?v=20261112a';
+import {roomInteraction,turnImpact,tensionNeeded,soundNotice} from './encounter.js?v=20261112a';
+import {makeNoiseMoment} from './noise-moment.js?v=20261112a';
+import {TUTORIAL_STEPS,TUTORIAL_PROLOGUE,TUTORIAL_TURN,createTutorialRun,tutorialAllows,tutorialAdvance,tutorialChapter,tutorialTargets,tutorialHint,tutorialMapLesson,tutorialActionReason} from './tutorial.js?v=20261112a';
+import {makeCutscene} from './cutscene.js?v=20261112a';
+import {returnRoute,routeAdvice,lureForecast} from './strategy.js?v=20261112a';
+import {createTutorialJournal,recordTutorialAction,tutorialRecap} from './tutorial-journal.js?v=20261112a';
+import {loadTutorialProgress,saveTutorialProgress,clearTutorialProgress} from './tutorial-storage.js?v=20261112a';
+import {MERCHANT,marketContext,meetingLines,memoryLore,purchaseLines,MERCHANT_STORY} from './merchant-story.js?v=20261112a';
+import {tokenMarkup,gradeLabel,itemMarkup,richGlyph} from './token-art.js?v=20261112a';
+import {abilityEffectsMarkup,abilityNotesMarkup,glossaryMarkup} from './ability-guide.js?v=20261112a';
+import {firstExpeditionGoal} from './first-expedition.js?v=20261112a';
 const $=s=>document.querySelector(s),SAVE_KEY='ember-vault-save-v2',BEST_KEY='ember-vault-best-v1';
 const safeStorage=(()=>{try{return localStorage;}catch{return null;}})();
 let settings=loadSettings(safeStorage);applySettings(settings);setLanguage(settings.language);
@@ -41,6 +42,8 @@ let pendingImport=null;
 let state,storageOK=true,best=0,sound=false,selectedRole='rogue',dialogMode='',lastFocus=null,toastTimer,audio,migrated=false,loadedRun=false,fastDraw=false;
 try{let saved=JSON.parse(localStorage.getItem(SAVE_KEY));if(!validSave(saved)){const prior=JSON.parse(localStorage.getItem('ember-vault-save-v1'));if(prior){saved=migrateSave(prior);migrated=!!saved;}}loadedRun=validSave(saved);state=loadedRun?saved:newRun({layout:'staged',risk:true,campaign:true,...initialCampaignOptions()});best=Number(localStorage.getItem(BEST_KEY))||0;sound=localStorage.getItem('ember-vault-sound')==='on';fastDraw=localStorage.getItem('ember-vault-fast-draw')!=='off';}catch{state=newRun({layout:'staged',risk:true,campaign:true,...initialCampaignOptions()});storageOK=false;}
 let profile=loadProfile(safeStorage);
+let lessons=loadLessons(safeStorage);
+function currentBreathWarning(s){if(tutorial||!s.echo||s.phase!=='playing'||s.pending)return null;const f=s.campaignVersion===1?turnImpact(s):null,due=f?f.breathDue||dragonDue(s):dragonDue(s);return breathWarning(f?.forecast||s,f?.breath||(due?breathPlan(s):null),due);}
 let glossaryBack=null,guideTravelMode='walk',lastReceipt='';
 let handPage=0,enemyPage=0,lureMode=false,travelUntil=0,actionBusy=false,tutorial=null,tutorialSeen=false,tutorialCompleted=false,mapOpen=false,modeOpen=false,lurePreviewTarget=null,firstExpeditionSelected=false,lastTutorialRecap=null;
 let storedTutorial=null,tutorialStorageOK=true,tutorialRecoveryNotice='';
@@ -160,7 +163,7 @@ function beginFirstRun(){
  if(fresh)poolReveal.start(state,{fast:true,explain:true,holdSummary:true});
 }
 function showFirstRunHelp(){
- const goal=firstRunGoal(state)||returnForecast(state);if(!goal)return;
+ const goal=currentBreathWarning(state)||firstRunGoal(state)||returnForecast(state);if(!goal)return;
  openModal(modalShell(goal.title,'원할 때 펼쳐 보는 안내',`<p class="first-help-text">${esc(goal.text)}</p><p class="first-help-text">${esc(goal.hint)}</p><div class="modal-actions"><button class="large-button" data-act="close">내 선택 계속하기 →</button>${state.firstRun?.enabled?'<button class="subtle-button" data-act="firstRunDismiss">짧은 안내 마치기</button>':''}</div>`),'firstRunHelp');
 }
 function showTutorialIntro(){
@@ -219,7 +222,7 @@ function renderTutorial(){
 const coachSpot=document.createElement('div');coachSpot.className='coach-spot';coachSpot.hidden=true;coachSpot.setAttribute('aria-hidden','true');document.body.appendChild(coachSpot);let coachShift=0,coachShiftX=0,placedCoach=null;
 (function spotLoop(){
  let show=false;
- if((tutorial||firstRunGoal(state)||returnForecast(state))&&!mapOpen&&!document.querySelector('dialog[open]')){
+ if((tutorial||currentBreathWarning(state)||firstRunGoal(state)||returnForecast(state))&&!mapOpen&&!document.querySelector('dialog[open]')){
   let l=Infinity,t=Infinity,r=-Infinity,b=-Infinity;const boxes=[];
   for(const e of document.querySelectorAll('.coach-target')){const q=e.getBoundingClientRect();if(!q.width||!q.height)continue;boxes.push(q);l=Math.min(l,q.left);t=Math.min(t,q.top);r=Math.max(r,q.right);b=Math.max(b,q.bottom);}
   // An independent goal still has to leave every legal choice physically reachable.
@@ -322,8 +325,8 @@ function renderObjective(){
  const el=$('#expeditionGoal'),s=state,firstGoal=firstExpeditionGoal(s),route=returnRoute(s),lift=s.edges.some(([a,b])=>a===9&&b===17||a===17&&b===9);
  el.hidden=!!tutorial||s.phase!=='playing';if(el.hidden)return;
  el.classList.toggle('carrying',!!s.relic);
- const quickGoal=firstRunGoal(s),returnGoal=returnForecast(s),context=quickGoal||returnGoal;el.classList.toggle('first-run-goal',!!context);
- if(context){el.innerHTML=`<button data-act="firstRunHelp" aria-label="${esc(context.title)}. 안내 펼치기"><strong>${esc(context.title)}</strong><small>${quickGoal?'깜부기 · 필요하면 안내 보기':'숨결 예고 · 눌러서 확인'}</small></button>`;el.title=context.text;return;}
+ const warn=currentBreathWarning(s),quickGoal=warn||firstRunGoal(s),returnGoal=returnForecast(s),context=quickGoal||returnGoal;el.classList.toggle('first-run-goal',!!context);el.classList.toggle('breath-warning',!!warn?.danger);
+ if(context){el.innerHTML=`<button data-act="firstRunHelp" aria-label="${esc(context.title)}. 안내 펼치기"><strong>${esc(context.title)}</strong><small>${warn?'숨결 예고 · 눌러서 피하는 법 보기':quickGoal?'깜부기 · 필요하면 안내 보기':'숨결 예고 · 눌러서 확인'}</small></button>`;el.title=context.text;return;}
  if(isStaged(s)){const index=stageIndex(s),ready=s.stagePrepared.filter(Boolean).length;el.innerHTML=`<span>${stageTrackMarkup(s)}<strong class="stage-objective">${s.relic?'용의 기억을 입구로':'심층의 용의 기억을 회수하세요'}</strong><small class="stage-subtitle">${s.relic?`귀환 ${s.countdown}턴 · 보급 ${s.provisions}개`:`${STAGES[index].title} · 층간 준비 ${ready}/3`}</small></span>`;el.title=STAGES[index].description;return;}
 
  if(firstGoal){el.innerHTML=`<span class="objective-mark" aria-hidden="true">${s.relic?'◆':'◇'}</span><span><strong>${esc(firstGoal.title)}</strong><small>${esc(firstGoal.detail)}</small><em>${esc(firstGoal.note)}</em></span>`;el.title='유물을 하나 품고 입구에서 탈출하면 첫 목표를 이룹니다.';return;}
@@ -467,7 +470,12 @@ function act(action,fromJudge=false){
  if(action.type==='lure'&&!action.confirmed)return showLurePreview(action.id);
  if(action.type==='end'&&!action.drawn&&state.echo&&state.phase==='playing'&&!state.pending&&(dragonDue(state)||(state.campaignVersion===1&&turnImpact(state).breathDue))){
   const f=turnImpact(state);
-  if(!f.lethal){noiseMoment.judge(f.forecast||state,f.breath||breathPlan(state),f.block,()=>act({...action,drawn:true},true),()=>{});return true;}
+  if(!f.lethal){
+   const plan=f.breath||breathPlan(state),run=state,open=()=>{if(state===run)noiseMoment.judge(f.forecast||state,plan,f.block,()=>act({...action,drawn:true},true),()=>{});};
+   const lesson=tutorial?null:lessonBeforeBreath(state,plan,lessons,ROLES[state.role].short);
+   if(lesson){markLesson(safeStorage,lessons,lesson.key);cutscene.play(lesson.lines,open);}else open();
+   return true;
+  }
  }
  const practiceStep=TUTORIAL_STEPS[tutorial?.index],practiceBefore=tutorial?structuredClone(state):null,beforeHP=state.hp,priorRelic=state.relic?.value||0,wasRelic=!!state.relic,roomType=state.rooms[state.pos].type,enemyHP=state.rooms[state.pos].enemy?.hp||0,enemyMax=state.rooms[state.pos].enemy?.maxHp||0,previousNoise=state.noise,previousSeq=state.soundSeq,previousGold=state.gold;
  const impact=action.type==='end'?turnImpact(state):null;
@@ -505,6 +513,7 @@ function act(action,fromJudge=false){
   if(!tutorial&&isStaged(state)&&checkpointIndex(state)>=0&&!state.pending){if(['prepare','purge'].includes(action.type)){$('#modal').close();dialogMode='';cutscene.play(stageChoiceLines(action),()=>{if(state===actionRun)openStageCamp();},merchantScene());}else if(['cancelPurge','buyKey','buyKeepsake'].includes(action.type))openStageCamp();}
   if(!tutorial&&dialogMode==='conduit'&&['quietSeal','interact'].includes(action.type))showConduit();
   if(!tutorial&&state.campaignVersion===1&&action.type==='move'&&!state.pending){const depth=state.rooms[state.pos].stage;if(!state.storySeen.includes(depth)){state.storySeen.push(depth);save();if(settings.story)cutscene.play(stageStory(depth,ROLES[state.role].short));}}
+  if(!tutorial&&!['mode','end'].includes(action.type)&&!document.querySelector('#modal[open]')){const lesson=lessonAfterAction(state,lessons,ROLES[state.role].short);if(lesson){markLesson(safeStorage,lessons,lesson.key);cutscene.play(lesson.lines);}}
   if(action.type==='end'&&state.phase==='playing'&&!state.pending){const draw=()=>poolReveal.start(state,{fast:tutorial?!!practiceStep?.fastDraw:state.firstRun?.enabled?true:fastDraw,explain:!!state.firstRun,holdSummary:!!firstRunMemory(state),holdNoise:!!tutorial,beforeHp:beforeHP,memory:tutorial&&practiceStep?.key==='draw-recruit'?{id:'spark',source:'녹스가 맡긴 사수의 기억',line:'끝까지 겨눴던 손의 온기가 단검에 옮겨붙습니다.'}:firstRunMemory(state)});if(tutorial&&practiceStep?.key==='wait-lure')cutscene.play(TUTORIAL_TURN,draw);else draw();}
   document.body.classList.remove('turn-impact');
  };
@@ -557,7 +566,7 @@ document.addEventListener('click',ev=>{
  if(a==='firstExpedition')return showNew(true);
  if(a==='tutorialHelp'){if(!tutorial||TUTORIAL_STEPS[tutorial.index]?.key!=='escape')return;const focused=document.activeElement===b;tutorial.returnHelp=!tutorial.returnHelp;tutorial.returnHelpUsed ||= tutorial.returnHelp;persistTutorial();renderTutorial();if(focused)$('[data-act="tutorialHelp"]')?.focus({preventScroll:true});return;}
  if(a==='glossary')return showGlossary(b.dataset.return,b.dataset.pile,Number(b.dataset.page)||0);
- if(a==='codex')return window.open('./artbook.html?v=20261111b','_blank','noopener');
+ if(a==='codex')return window.open('./artbook.html?v=20261112a','_blank','noopener');
  if(a==='merchantTalk'){
   const run=state;$('#modal').close();dialogMode='';cutscene.play(MERCHANT_STORY,()=>{if(state===run)openMarket();},merchantScene());return;
  }

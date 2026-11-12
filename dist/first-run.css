@@ -55,3 +55,7 @@
 @media(max-height:430px) and (orientation:landscape){#poolReveal.explained[data-phase=complete] .ledger-scroll-hint{display:block}}
 .reveal-source strong{font-size:18px}.reveal-source .ability-effect{font-size:16px}.reveal-source .ability-effect b{font-size:20px}
 .play-surface.map-open .expedition-goal.first-run-goal{display:none}
+
+/* 숨결 예고: 이 방에 닿는 턴에는 붉게 */
+.expedition-goal.breath-warning>button{background:#3a120cf5;border-color:#ff8a5c;color:#ffe0c8;animation:breathWarn 1.4s ease-in-out infinite}.expedition-goal.breath-warning>button>small{color:#ffb79a}
+@keyframes breathWarn{50%{box-shadow:0 0 18px #ff5a2e88}}@media(prefers-reduced-motion:reduce){.expedition-goal.breath-warning>button{animation:none}}

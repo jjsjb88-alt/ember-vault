@@ -1,4 +1,4 @@
-import {configureGimmicks} from './dungeon-gimmicks.js?v=20261111b';
+import {configureGimmicks} from './dungeon-gimmicks.js?v=20261112a';
 // Four expedition stages share the existing twenty-room canvas. Older layouts
 // keep their own topology, relics and rules; this is only for a new staged run.
 export const STAGES=[

@@ -1,19 +1,19 @@
-import {translate} from './i18n.js?v=20261111b';
-import {site} from './world.js?v=20261111b';
-import {enemyArt,ENEMIES} from './content/enemies.js?v=20261111b';
-import {ROLES} from './engine.js?v=20261111b';
-import {hasGimmicks,roomGimmick,passageRule,worldPassageOpen} from './dungeon-gimmicks.js?v=20261111b';
-import {isStaged,STAGES} from './expedition-stages.js?v=20261111b';
-import {neighbours,moveStatus} from './engine.js?v=20261111b';
-import {icon,sprite} from './art.js?v=20261111b';
-import {DIRECTIONS,travelVector,walkFrame,motionFrame,mapLayout,projectMap,mapPassage,passagePoint,hitMapRoom,exitAnchor,hitExit} from './scene-layout.js?v=20261111b';
-import {WALK_FRAMES} from './rogue-frames.js?v=20261111b';
-import {ATTACK_FRAMES} from './rogue-attack-frames.js?v=20261111b';
-import {RELIC_MOTION} from './rogue-relic-frames.js?v=20261111b';
-import {prepareFrames} from './sprite-atlas.js?v=20261111b';
-import {roomEnvironment} from './encounter.js?v=20261111b';
-import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261111b';
-import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261111b';
+import {translate} from './i18n.js?v=20261112a';
+import {site} from './world.js?v=20261112a';
+import {enemyArt,ENEMIES} from './content/enemies.js?v=20261112a';
+import {ROLES} from './engine.js?v=20261112a';
+import {hasGimmicks,roomGimmick,passageRule,worldPassageOpen} from './dungeon-gimmicks.js?v=20261112a';
+import {isStaged,STAGES} from './expedition-stages.js?v=20261112a';
+import {neighbours,moveStatus} from './engine.js?v=20261112a';
+import {icon,sprite} from './art.js?v=20261112a';
+import {DIRECTIONS,travelVector,walkFrame,motionFrame,mapLayout,projectMap,mapPassage,passagePoint,hitMapRoom,exitAnchor,hitExit} from './scene-layout.js?v=20261112a';
+import {WALK_FRAMES} from './rogue-frames.js?v=20261112a';
+import {ATTACK_FRAMES} from './rogue-attack-frames.js?v=20261112a';
+import {RELIC_MOTION} from './rogue-relic-frames.js?v=20261112a';
+import {prepareFrames} from './sprite-atlas.js?v=20261112a';
+import {roomEnvironment} from './encounter.js?v=20261112a';
+import {makeFxLayer,FX,PALETTES,actorFromSprite,FX_PIXEL} from './fx-layer.js?v=20261112a';
+import {hitPlan,swingClock,swingDuration,inHitStop,shakeOffset,popScale,vibration,CONTACT_MS,SWING_MS} from './hit-juice.js?v=20261112a';
 
 export function makeRenderer(canvas,getState,minimap){
  const c=canvas.getContext('2d'),mc=minimap.getContext('2d');

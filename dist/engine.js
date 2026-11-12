@@ -1,10 +1,10 @@
-import {EXTRA_CARDS} from './content/memories.js?v=20261111b';
-import {KEEPSAKES,hasKeepsake,lureRaw,provisionRaw,liftCost,liftRaw,restRaw} from './content/keepsakes.js?v=20261111b';
-import {ENEMIES} from './content/enemies.js?v=20261111b';
-import {configureWorld,site,worldValid,isCollapsed} from './world.js?v=20261111b';
-import {hasRisk,configureRisk,RISK,heal,healingAmount,healingLeft,riskBreathDamage,soundLoss} from './risk-rules.js?v=20261111b';
-import {hasGimmicks,passageRule,movementGimmickReason,worldPassageOpen,movementDirectionAllowed,SECRET_EDGE} from './dungeon-gimmicks.js?v=20261111b';
-import {STAGES,STAGE_ROOMS,RETURN_LIFT_EDGE,isStaged,stageIndex,checkpointIndex,configureStages,expeditionBonuses} from './expedition-stages.js?v=20261111b';
+import {EXTRA_CARDS} from './content/memories.js?v=20261112a';
+import {KEEPSAKES,hasKeepsake,lureRaw,provisionRaw,liftCost,liftRaw,restRaw} from './content/keepsakes.js?v=20261112a';
+import {ENEMIES} from './content/enemies.js?v=20261112a';
+import {configureWorld,site,worldValid,isCollapsed} from './world.js?v=20261112a';
+import {hasRisk,configureRisk,RISK,heal,healingAmount,healingLeft,riskBreathDamage,soundLoss} from './risk-rules.js?v=20261112a';
+import {hasGimmicks,passageRule,movementGimmickReason,worldPassageOpen,movementDirectionAllowed,SECRET_EDGE} from './dungeon-gimmicks.js?v=20261112a';
+import {STAGES,STAGE_ROOMS,RETURN_LIFT_EDGE,isStaged,stageIndex,checkpointIndex,configureStages,expeditionBonuses} from './expedition-stages.js?v=20261112a';
 export const VERSION=2;
 export function objectParticle(name){const code=String(name).codePointAt(String(name).length-1);return code>=0xac00&&code<=0xd7a3&&(code-0xac00)%28?'을':'를';}
 export const ROLES={

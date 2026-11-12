@@ -1,4 +1,4 @@
-const VERSION='ember-vault-complete-'+(self.EMBER_RELEASE_ID||'dev-20261111b'),CACHE=VERSION+'-core',PACK=VERSION+'-pack';let manifest=null;const BASE=self.EMBER_ASSET_BASE||new URL('./',self.location.href),asset=p=>new URL(p,BASE).href;
+const VERSION='ember-vault-complete-'+(self.EMBER_RELEASE_ID||'dev-20261112a'),CACHE=VERSION+'-core',PACK=VERSION+'-pack';let manifest=null;const BASE=self.EMBER_ASSET_BASE||new URL('./',self.location.href),asset=p=>new URL(p,BASE).href;
 const paths=async()=>{if(manifest)return manifest;const saved=await(await caches.open(CACHE)).match(asset('./sw-assets.json'));if(saved)return manifest=await saved.json();const response=await fetch(asset('./sw-assets.json'),{cache:'no-store'});if(!response.ok)throw Error('Release manifest unavailable');const data=await response.json();if(self.EMBER_RELEASE_ID&&data.releaseId!==self.EMBER_RELEASE_ID)throw Error('Release changed during installation');return manifest=data;};
 async function verifiedFetch(path,data){
  const url=asset(path),expected=data.integrity[path];
