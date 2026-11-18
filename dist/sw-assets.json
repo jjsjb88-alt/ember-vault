@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "releaseId": "ec107dc8abfa106b",
+  "releaseId": "07093d68f18a6ece",
   "integrity": {
     "./ability-guide.css": "b75eed16ede66004b626f1b38dd92555debdb5d75ba00a756e2f354fbe2a4e04",
     "./ability-guide.js": "6b1c96b9bbb7e17afa61c39796d42288e8d36d699385b3b0168dff21cb5eb6fc",
@@ -130,7 +130,7 @@
     "./assets/v95/tokens/treasure.webp": "73557e9dd999e20dd4d6b1653146630802fb83158e5edc88a30335fb0744739e",
     "./assets/v95/tokens/wisdom.webp": "01b42343ff818c87698d75913f3a5972f6543404ef78b45c164e54735c0722cc",
     "./audio-director.js": "20519b6a71a8fa7747cf64803263c379b896f449dcfa3fa2422bfd43658c1e88",
-    "./breath-lesson.js": "87cc30f6c66ed41181383890a71dda1eaa5da78d37ded7cab1b919cb74cf0c38",
+    "./breath-lesson.js": "a066c92e25aa122720c68569ca3b5814e95955d7f54f83ad566386eb8a865544",
     "./campaign-story.js": "20833eb82254a1f6c0ad875e0501495e026c63e3ba02dc00fb255319f5aa0359",
     "./campaign-ui.js": "35895e99fa893daa3b926916cd6fcecb9c8dd2c842c9922d1ad99b777ef897a8",
     "./campaign.css": "3920500e3b96a53aa1a93f588cec2df908f0188a4432f4680cefb6016779a036",
@@ -155,8 +155,8 @@
     "./i18n.js": "4b01b8ebd390548c335073c9b04665a8577c6b45e3bb6d8542640ff682610ca7",
     "./index.html": "a287df749ae842cd2e4a07c588d6d2862f1cb8c3ad5bc53ea9fefd9aabc771ec",
     "./landscape.css": "b066db7bff7e3f0fe540ded014f01187457256358ace535f61a292206f36f82c",
-    "./locales/en.json": "12f933ad7d67e22172ed4a1647da4a7ce6709b1b386097a2309a560c4a0fa353",
-    "./locales/ja.json": "1a04192b23dc901631b1a067f41b0a6109bd90d12fd77fcfe800dd344bd250ce",
+    "./locales/en.json": "3fff8c71002d0717c67281129311bcb414ad1e7aa74a025e5f6590a6acf085e5",
+    "./locales/ja.json": "a47821df3de696d7350e2243a633cc6914ea783f815e46385c1dfb601c088155",
     "./manifest.webmanifest": "616e8f4ea7dcb4a00b41601d3ddf05238c0c735a47f26599bc87ec8627730f46",
     "./merchant-story.js": "911ff53d6310f2a106680952109b031b6b8cf639d2a54366010fe82938d9f5fb",
     "./merchant.css": "ab8c80863b40e3aee2020c368ecab9ca5218120f54627bdbc1d50921a46816ed",
@@ -612,6 +612,6 @@
     "./viewport.css",
     "./world.js"
   ],
-  "coreBytes": 6242341,
-  "totalBytes": 31531636
+  "coreBytes": 6242170,
+  "totalBytes": 31531465
 }
