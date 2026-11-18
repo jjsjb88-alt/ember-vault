@@ -30,3 +30,33 @@ test('every lesson line stays one short cutscene line and exists in both locales
  const en=JSON.parse(fs.readFileSync(new URL('../dist/locales/en.json',import.meta.url))),ja=JSON.parse(fs.readFileSync(new URL('../dist/locales/ja.json',import.meta.url)));
  for(const lines of Object.values(LESSONS))for(const [who,line] of lines){assert.ok(who&&line.length<=95,line);assert.ok(en[line]&&!/[가-힣]/.test(en[line]),'en: '+line);assert.ok(ja[line]&&!/[가-힣]/.test(ja[line]),'ja: '+line);}
 });
+
+test('alert lesson matches the risk hearing boundary, not echo decay', async()=>{
+ const {soundLoss}=await import('../dist/risk-rules.js');
+ const {echoFadeEvery}=await import('../dist/engine.js');
+ const s=newRun({seed:5,layout:'staged',risk:true,campaign:true});
+ s.memory=2;s.heat=3;
+ const cadence=echoFadeEvery(s);
+ for(const noise of [4,5,7,8]){
+  s.noise=noise;
+  assert.equal(soundLoss(s),noise>=5?1:2);
+  assert.equal(lessonAfterAction(s,['echo'])?.key??null,noise>=5&&noise<8?'alert':null);
+  assert.equal(echoFadeEvery(s),cadence,'alert does not control echo fading');
+ }
+ assert.ok(LESSONS.alert[0][1].includes('다섯 이상'));
+ assert.ok(!LESSONS.alert[0][1].includes('더디게'));
+});
+test('safe breath copy describes the path, not an assumed silent room',()=>{
+ const s=newRun({seed:5,layout:'staged',risk:true,campaign:true});
+ s.echo[s.pos]=2;
+ const plan={hit:false,path:[],damage:0,echo:2};
+ assert.ok(breathWarning(s,plan,true).title.includes('경로 밖'));
+ assert.ok(!LESSONS.breathSafe.some(([,line])=>line==='이 방은 조용해.'));
+});
+test('lower alert does not cancel a relic-scheduled breath',()=>{
+ const s=newRun({seed:5,layout:'staged',risk:true,campaign:true});
+ s.relic={name:'test',value:1};s.turn=3;s.noise=4;s.echo[s.pos]=3;
+ assert.equal(dragonDue(s),'relic');
+ const plan=breathPlan(s);assert.ok(plan.hit);
+ assert.ok(breathWarning(s,plan,true).hint.includes('정기 숨결은 멈추지'));
+});
